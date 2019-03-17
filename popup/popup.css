@@ -1,7 +1,8 @@
 html, body {
     width: 300px;
+    margin: 10px;
 }
 
-h1 {
-    color: deeppink;
+.hidden {
+    display: none;
 }
