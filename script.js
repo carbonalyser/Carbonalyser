@@ -16,6 +16,7 @@ setByteLengthPerOrigin = (origin, byteLength) => {
   let bytePerOrigin = undefined === statsJson[origin] ? 0 : parseInt(statsJson[origin]);
   statsJson[origin] = bytePerOrigin + byteLength;
 
+  console.log('set ' + origin + ' + ' + byteLength);
   localStorage.setItem('stats', JSON.stringify(statsJson));
 }
 
@@ -45,6 +46,14 @@ handleMessage = (request, sender, sendResponse) => {
     );
 
     sendResponse({response: "Finished !"});
+
+    return;
+  }
+
+  if ('stop' === request.action) {
+    browser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+
+    sendResponse({response: "Stopped !"});
   }
 }
 
