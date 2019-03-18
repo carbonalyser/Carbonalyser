@@ -16,17 +16,53 @@ handleResponse = message => {
 
 handleError = error => console.log(`Error: ${error}`);
 
-getStats = () => {
+parseStats = () => {
   const stats = localStorage.getItem('stats');
-  const statsParsed = null === stats ? {} : JSON.parse(stats);
+  return null === stats ? {} : JSON.parse(stats);
+}
+
+getStats = () => {
+  const stats = parseStats();
+  let total = 0;
+  const sortedStats = [];
+
+  for (let origin in stats) {
+    total += stats[origin];
+    sortedStats.push({ 'origin': origin, 'byte': stats[origin] });
+  }
+
+  sortedStats.sort(function(a, b) {
+    return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
+  });
+
+  const highestStats = sortedStats.slice(0, 10);
+  let subtotal = 0;
+  for (let index in highestStats) {
+    subtotal += highestStats[index].byte;
+  }
+
+  highestStats.push({ 'origin': 'Others', 'byte': total - subtotal });
+
+  return {
+    'total': total,
+    'highestStats': highestStats
+  }
+}
+
+toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100) + ' Mb';
+
+showStats = () => {
+  const stats = getStats();
 
   let html = '';
 
-  for (let origin in statsParsed) {
-    html += '<li>' + origin + ': ' + (Math.round(100 * statsParsed[origin]/1024/1024) / 100) + ' Mb</li>';
+  for (let index in stats.highestStats) {
+    html += `<li>${stats.highestStats[index].origin}: ${toMegaByte(stats.highestStats[index].byte)}</li>`;
   }
 
-  statsElement.innerHTML = '<ul>' + html + '</ul>'
+  html = `<p>Total: ${toMegaByte(stats.total)}</p><ul>${html}</ul>`;
+
+  statsElement.innerHTML = html;
 }
 
 start = () => {
@@ -49,8 +85,8 @@ stop = () => {
 }
 
 init = () => {
-  getStats();
-  statsInterval = setInterval(getStats, 2000);
+  showStats();
+  statsInterval = setInterval(showStats, 2000);
 
   if (null === localStorage.getItem('analysisStarted')) {
     return;
