@@ -5,6 +5,18 @@ const translations = {
   }
 };
 
+const defaultGeolocation = 'European Union';
+const userGeolocation = defaultGeolocation;
+
+const kWhPerByte = 0.00000000152;
+
+const carbonIntensityFactorInGCO2ePerKWh = {
+  'European Union': '27.6',
+  'United States': '49.3',
+  'China': '68.1',
+  'Other': '51.9'
+};
+
 const language = 'fr' === navigator.language.toLowerCase().substr(0, 2) ? 'fr' : 'en';
 console.log(translations.hello[language]);
 
@@ -69,7 +81,10 @@ showStats = () => {
     html += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
   }
 
-  html = `<p>Total: ${toMegaByte(stats.total)}</p><ul>${html}</ul>`;
+  const kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
+  const gCO2e = Math.round(100 * kWhTotal * carbonIntensityFactorInGCO2ePerKWh[userGeolocation]) / 100;
+
+  html = `<p>Total: ${toMegaByte(stats.total)}</p><p>${kWhTotal} kWh</p><p>${gCO2e} gCO2e</p><ul>${html}</ul>`;
 
   statsElement.innerHTML = html;
 }
