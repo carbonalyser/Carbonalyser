@@ -78,8 +78,12 @@ showStats = () => {
   const stats = getStats();
 
   let list = '';
+  const labels = [];
+  const series = [];
 
   for (let index in stats.highestStats) {
+    labels.push(stats.highestStats[index].percent > 5 ? stats.highestStats[index].origin : ' ');
+    series.push(stats.highestStats[index].percent);
     list += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
   }
 
@@ -89,6 +93,7 @@ showStats = () => {
   const kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
 
   const html = `<p>Total: ${toMegaByte(stats.total)}</p>
+    <div class="ct-chart ct-golden-section"></div>
     <ul>${list}</ul>
     <p>${kWhTotal} kWh | ${kgCO2e} kgCO2e</p>
     <p>${kmByCar} km by car</p>
@@ -96,6 +101,17 @@ showStats = () => {
   `;
 
   statsElement.innerHTML = html;
+
+  new Chartist.Pie('.ct-chart', {
+    labels: labels,
+    series: series
+  }, {
+    donut: true,
+    donutWidth: 60,
+    donutSolid: true,
+    startAngle: 270,
+    showLabel: true
+  });
 }
 
 start = () => {
