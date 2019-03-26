@@ -41,7 +41,16 @@ getStats = () => {
     subtotal += highestStats[index].byte;
   }
 
-  highestStats.push({ 'origin': 'Others', 'byte': total - subtotal });
+  if (total > 0) {
+    const remaining = total - subtotal;
+    if (remaining > 0) {
+      highestStats.push({'origin': 'Others', 'byte': remaining});
+    }
+
+    highestStats.forEach(function (item) {
+      item.percent = Math.round(100 * item.byte / total)
+    });
+  }
 
   return {
     'total': total,
@@ -57,7 +66,7 @@ showStats = () => {
   let html = '';
 
   for (let index in stats.highestStats) {
-    html += `<li>${stats.highestStats[index].origin}: ${toMegaByte(stats.highestStats[index].byte)}</li>`;
+    html += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
   }
 
   html = `<p>Total: ${toMegaByte(stats.total)}</p><ul>${html}</ul>`;
