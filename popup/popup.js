@@ -9,12 +9,14 @@ const defaultGeolocation = 'European Union';
 const userGeolocation = defaultGeolocation;
 
 const kWhPerByte = 0.00000000152;
+const OneKWhEquivalentKmByCar = 2.7;
+const OneKWhEquivalentChargedSmartphones = 90;
 
-const carbonIntensityFactorInGCO2ePerKWh = {
-  'European Union': '27.6',
-  'United States': '49.3',
-  'China': '68.1',
-  'Other': '51.9'
+const carbonIntensityFactorInKgCO2ePerKWh = {
+  'European Union': '0.276',
+  'United States': '0.493',
+  'China': '0.681',
+  'Other': '0.519'
 };
 
 const language = 'fr' === navigator.language.toLowerCase().substr(0, 2) ? 'fr' : 'en';
@@ -75,16 +77,23 @@ toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100) + ' Mb';
 showStats = () => {
   const stats = getStats();
 
-  let html = '';
+  let list = '';
 
   for (let index in stats.highestStats) {
-    html += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
+    list += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
   }
 
   const kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
-  const gCO2e = Math.round(100 * kWhTotal * carbonIntensityFactorInGCO2ePerKWh[userGeolocation]) / 100;
+  const kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
+  const chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
+  const kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
 
-  html = `<p>Total: ${toMegaByte(stats.total)}</p><p>${kWhTotal} kWh</p><p>${gCO2e} gCO2e</p><ul>${html}</ul>`;
+  const html = `<p>Total: ${toMegaByte(stats.total)}</p>
+    <ul>${list}</ul>
+    <p>${kWhTotal} kWh | ${kgCO2e} kgCO2e</p>
+    <p>${kmByCar} km by car</p>
+    <p>${chargedSmartphones} charged smartphones</p>
+  `;
 
   statsElement.innerHTML = html;
 }
@@ -108,7 +117,21 @@ stop = () => {
   localStorage.removeItem('analysisStarted');
 }
 
+reset = () => {
+  if (!confirm('Are you sure?')) {
+    return;
+  }
+
+  localStorage.removeItem('stats');
+  showStats();
+}
+
 init = () => {
+  const stats = localStorage.getItem('stats');
+  if (null === stats) {
+    resetButton.style.display = 'none';
+  }
+
   showStats();
   statsInterval = setInterval(showStats, 2000);
 
@@ -117,6 +140,7 @@ init = () => {
   }
 
   start();
+  resetButton.style.display = 'block';
 }
 
 hide = element => element.classList.add('hidden');
@@ -131,5 +155,8 @@ startButton.addEventListener('click', start);
 
 const stopButton = document.getElementById('stopButton');
 stopButton.addEventListener('click', stop);
+
+const resetButton = document.getElementById('resetButton');
+resetButton.addEventListener('click', reset);
 
 init();
