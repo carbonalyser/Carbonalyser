@@ -9,8 +9,8 @@ const defaultGeolocation = 'European Union';
 const userGeolocation = defaultGeolocation;
 
 const kWhPerByte = 0.00000000152;
-const OneKWhEquivalentKmByCar = 2.7;
-const OneKWhEquivalentChargedSmartphones = 90;
+const OneKWhEquivalentKmByCar = 2.4;
+const OneKWhEquivalentChargedSmartphones = 63;
 
 const carbonIntensityFactorInKgCO2ePerKWh = {
   'European Union': '0.276',
