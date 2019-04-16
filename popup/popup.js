@@ -23,6 +23,7 @@ const language = 'fr' === navigator.language.toLowerCase().substr(0, 2) ? 'fr' :
 console.log(translations.hello[language]);
 
 let statsInterval;
+let pieChart;
 
 handleResponse = message => {
   console.log(`Message from the background script:  ${message.response}`);
@@ -93,7 +94,6 @@ showStats = () => {
   const kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
 
   const html = `<p>Total: ${toMegaByte(stats.total)}</p>
-    <div class="ct-chart ct-golden-section"></div>
     <ul>${list}</ul>
     <p>${kWhTotal} kWh | ${kgCO2e} kgCO2e</p>
     <p>${kmByCar} km by car</p>
@@ -102,16 +102,17 @@ showStats = () => {
 
   statsElement.innerHTML = html;
 
-  new Chartist.Pie('.ct-chart', {
-    labels: labels,
-    series: series
-  }, {
-    donut: true,
-    donutWidth: 60,
-    donutSolid: true,
-    startAngle: 270,
-    showLabel: true
-  });
+  if (!pieChart) {
+    pieChart = new Chartist.Pie('.ct-chart', { labels, series }, {
+      donut: true,
+      donutWidth: 60,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: true
+    });
+  } else {
+    pieChart.update({ labels, series });
+  }
 }
 
 start = () => {
@@ -151,13 +152,13 @@ init = () => {
   }
 
   showStats();
-  statsInterval = setInterval(showStats, 2000);
 
   if (null === localStorage.getItem('analysisStarted')) {
     return;
   }
 
   start();
+  statsInterval = setInterval(showStats, 2000);
 }
 
 hide = element => element.classList.add('hidden');
