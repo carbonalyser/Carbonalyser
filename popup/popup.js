@@ -140,12 +140,14 @@ reset = () => {
 
   localStorage.removeItem('stats');
   showStats();
+  hide(resetButton);
 }
 
 init = () => {
-  const stats = localStorage.getItem('stats');
-  if (null === stats) {
-    resetButton.style.display = 'none';
+  if (null === localStorage.getItem('stats')) {
+    hide(resetButton);
+  } else {
+    show(resetButton);
   }
 
   showStats();
@@ -156,7 +158,6 @@ init = () => {
   }
 
   start();
-  resetButton.style.display = 'block';
 }
 
 hide = element => element.classList.add('hidden');
