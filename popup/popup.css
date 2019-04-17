@@ -1,8 +1,15 @@
 html, body {
-    width: 300px;
-    margin: 10px;
+    width: 400px;
+    margin: 6px;
 }
 
 .hidden {
     display: none;
+}
+
+.button {
+    padding: 6px;
+    border-radius: 6px;
+    border: 2px solid #86797d;
+    background: #fff;
 }

@@ -9,9 +9,11 @@
 
 <body>
 <p id="analysisInProgressMessage" class="hidden">Analysis in progress. Start browsing the web, then come back here to get stats!</p>
-<button id="startButton">Run analysis</button>
-<button id="stopButton" class="hidden">Stop analysis</button>
-<button id="resetButton" class="hidden">Reset data</button>
+<div>
+    <button id="startButton" class="button">Run analysis</button>
+    <button id="stopButton" class="button hidden">Stop analysis</button>
+    <button id="resetButton" class="button hidden">Reset data</button>
+</div>
 <div class="ct-chart ct-golden-section"></div>
 <div id="stats"></div>
 <script src="vendor/chartist/chartist.js"></script>
