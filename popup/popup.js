@@ -78,41 +78,49 @@ toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100) + ' Mb';
 showStats = () => {
   const stats = getStats();
 
-  let list = '';
-  const labels = [];
-  const series = [];
+  let kWhTotal = 0;
+  let kmByCar = 0;
+  let chargedSmartphones = 0;
+  let kgCO2e = 0;
 
-  for (let index in stats.highestStats) {
-    labels.push(stats.highestStats[index].percent > 5 ? stats.highestStats[index].origin : ' ');
-    series.push(stats.highestStats[index].percent);
-    list += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
+  if (stats.total > 0) {
+    show(statsElement);
+    let list = '';
+    const labels = [];
+    const series = [];
+
+    for (let index in stats.highestStats) {
+      labels.push(stats.highestStats[index].percent > 5 ? stats.highestStats[index].origin : ' ');
+      series.push(stats.highestStats[index].percent);
+      list += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
+    }
+
+    kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
+    kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
+    chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
+    kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
+    listElement.innerHTML = `<ul>${list}</ul>`;
+
+    if (!pieChart) {
+      pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
+        donut: true,
+        donutWidth: 60,
+        donutSolid: true,
+        startAngle: 270,
+        showLabel: true
+      });
+    } else {
+      pieChart.update({labels, series});
+    }
   }
 
-  const kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
-  const kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
-  const chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
-  const kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
-
-  const html = `<p>Total: ${toMegaByte(stats.total)}</p>
-    <ul>${list}</ul>
+  const html = `
+    <p>Total: ${toMegaByte(stats.total)}</p>
     <p>${kWhTotal} kWh | ${kgCO2e} kgCO2e</p>
     <p>${kmByCar} km by car</p>
     <p>${chargedSmartphones} charged smartphones</p>
   `;
-
-  statsElement.innerHTML = html;
-
-  if (!pieChart) {
-    pieChart = new Chartist.Pie('.ct-chart', { labels, series }, {
-      donut: true,
-      donutWidth: 60,
-      donutSolid: true,
-      startAngle: 270,
-      showLabel: true
-    });
-  } else {
-    pieChart.update({ labels, series });
-  }
+  equivalenceElement.innerHTML = html;
 }
 
 start = () => {
@@ -140,6 +148,7 @@ reset = () => {
   }
 
   localStorage.removeItem('stats');
+  hide(statsElement);
   showStats();
   hide(resetButton);
 }
@@ -167,6 +176,8 @@ show = element => element.classList.remove('hidden');
 const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
 
 const statsElement = document.getElementById('stats');
+const listElement = document.getElementById('list');
+const equivalenceElement = document.getElementById('equivalence');
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', start);

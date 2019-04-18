@@ -1,15 +1,70 @@
 html, body {
     width: 400px;
-    margin: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+hr {
+    border: 1px solid #999999;
+    height: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.header-links {
+    float: right;
+    margin-top: -20px;
+}
+
+.header-links a {
+    color: #999999;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.header-links a:hover {
+    text-decoration: underline;
 }
 
 .hidden {
     display: none;
 }
 
+.body {
+    padding: 6px;
+}
+
 .button {
     padding: 6px;
     border-radius: 6px;
-    border: 2px solid #86797d;
+    border: 2px solid #999999;
     background: #fff;
+}
+
+.column60 {
+    width: 60%;
+    float: left;
+}
+
+.column40 {
+    width: 40%;
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+#stats ul {
+    margin: 0;
+    padding: 0;
+}
+
+#stats ul li {
+    margin: 0;
+    padding: 0;
 }
