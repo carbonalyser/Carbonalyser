@@ -12,26 +12,27 @@
     <h1>Plugin Name</h1>
 
     <div class="header-links">
-        <a href="#" id="informationLink">More information</a>
-        <a href="#" id="legalNoticeLink">Legal notice</a>
+        <a href="https://theshiftproject.org/lean-ict/" id="informationLink">More information</a>
+        <a href="https://theshiftproject.org/mentions-legales/" id="legalNoticeLink">Legal notice</a>
     </div>
     <hr>
 
-    <p id="analysisInProgressMessage" class="hidden">Analysis in progress. Start browsing the web, then come back here to get stats!</p>
     <div>
         <button id="startButton" class="button">Run analysis</button>
         <button id="stopButton" class="button hidden">Stop analysis</button>
         <button id="resetButton" class="button hidden">Reset data</button>
     </div>
-    <hr>
+    <p id="analysisInProgressMessage" class="hidden">Analysis in progress. Start browsing the web, then come back here to get stats!</p>
 
-    <div id="stats" class="row">
-        <div class="column60"><div class="ct-chart ct-golden-section"></div></div>
-        <div class="column40"><div id="list"></div></div>
+    <div id="stats" class="hidden">
+        <hr>
+        <div class="leftColumn"><div class="ct-chart ct-golden-section"></div></div>
+        <div class="rightColumn"><div id="list"></div></div>
         <div class="clear"></div>
         <hr>
+        <div id="equivalence"></div>
     </div>
-    <div id="equivalence"></div>
+
 </div>
 <script src="vendor/chartist/chartist.js"></script>
 <script src="popup.js"></script>

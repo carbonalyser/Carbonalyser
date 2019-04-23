@@ -73,7 +73,7 @@ getStats = () => {
   }
 }
 
-toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100) + ' Mb';
+toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100);
 
 showStats = () => {
   const stats = getStats();
@@ -99,7 +99,7 @@ showStats = () => {
     kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
     chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
     kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
-    listElement.innerHTML = `<ul>${list}</ul>`;
+    listElement.innerHTML = `<span class="title">Top 10 du trafic lié à votre navigation</span><ul>${list}</ul>`;
 
     if (!pieChart) {
       pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -115,10 +115,50 @@ showStats = () => {
   }
 
   const html = `
-    <p>Total: ${toMegaByte(stats.total)}</p>
-    <p>${kWhTotal} kWh | ${kgCO2e} kgCO2e</p>
-    <p>${kmByCar} km by car</p>
-    <p>${chargedSmartphones} charged smartphones</p>
+    <div class="column50">
+        <div class="block">
+            <img src="img/arrows.svg" />
+            ${toMegaByte(stats.total)}
+            <span class="unit">Mb</span>
+        </div>
+    </div>
+    <div class="column50">
+        <div class="block">
+            <img src="img/energy.svg" />
+            ${kWhTotal}
+            <span class="unit">kWh</span>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="column50">
+        <div class="block">&nbsp;</div>
+    </div>
+    <div class="column50">
+        <div class="block">
+            <img src="img/gco2.svg" />
+            ${kgCO2e}
+            <span class="unit">kgCO<sub>2</sub></span>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <hr>
+    <p>Les émissions de CO<sub>2</sub> liées à votre usage du numérique est équivalente à :</p>
+    <div class="column50">
+        <div class="block">
+            <img src="img/smartphone.svg" />
+            ${chargedSmartphones}
+            <span class="unit">charged smartphones</span>
+        </div>
+    </div>
+    <div class="column50">
+        <div class="block">
+            <img src="img/car.svg" />
+            ${kmByCar}
+            <span class="unit">km by car</span>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <p><a href="https://theshiftproject.org/lean-ict/" class="button">Comment changer cela ? Quelle responsabilité ?</a></p>
   `;
   equivalenceElement.innerHTML = html;
 }
