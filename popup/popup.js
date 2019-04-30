@@ -50,7 +50,7 @@ getStats = () => {
     return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
   });
 
-  const highestStats = sortedStats.slice(0, 10);
+  const highestStats = sortedStats.slice(0, 9);
   let subtotal = 0;
   for (let index in highestStats) {
     subtotal += highestStats[index].byte;
@@ -85,21 +85,31 @@ showStats = () => {
 
   if (stats.total > 0) {
     show(statsElement);
-    let list = '';
     const labels = [];
     const series = [];
 
+    const statsListItemsElement = document.getElementById('statsListItems');
+    while (statsListItemsElement.firstChild) {
+      statsListItemsElement.removeChild(statsListItemsElement.firstChild);
+    }
+
     for (let index in stats.highestStats) {
+      if (stats.highestStats[index].percent < 1) {
+        continue;
+      }
+
       labels.push(stats.highestStats[index].percent > 5 ? stats.highestStats[index].origin : ' ');
       series.push(stats.highestStats[index].percent);
-      list += `<li>${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}</li>`;
+      const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
+      const li = document.createElement("LI");
+      li.appendChild(text);
+      statsListItemsElement.appendChild(li);
     }
 
     kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
     kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
     chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
     kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
-    listElement.innerHTML = `<span class="title">Top 10 du trafic lié à votre navigation</span><ul>${list}</ul>`;
 
     if (!pieChart) {
       pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -112,55 +122,13 @@ showStats = () => {
     } else {
       pieChart.update({labels, series});
     }
-  }
 
-  const html = `
-    <div class="column50">
-        <div class="block">
-            <img src="img/arrows.svg" />
-            ${toMegaByte(stats.total)}
-            <span class="unit">Mb</span>
-        </div>
-    </div>
-    <div class="column50">
-        <div class="block">
-            <img src="img/energy.svg" />
-            ${kWhTotal}
-            <span class="unit">kWh</span>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <div class="column50">
-        <div class="block">&nbsp;</div>
-    </div>
-    <div class="column50">
-        <div class="block">
-            <img src="img/gco2.svg" />
-            ${kgCO2e}
-            <span class="unit">kgCO<sub>2</sub></span>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <hr>
-    <p>Les émissions de CO<sub>2</sub> liées à votre usage du numérique est équivalente à :</p>
-    <div class="column50">
-        <div class="block">
-            <img src="img/smartphone.svg" />
-            ${chargedSmartphones}
-            <span class="unit">charged smartphones</span>
-        </div>
-    </div>
-    <div class="column50">
-        <div class="block">
-            <img src="img/car.svg" />
-            ${kmByCar}
-            <span class="unit">km by car</span>
-        </div>
-    </div>
-    <div class="clear"></div>
-    <p><a href="https://theshiftproject.org/lean-ict/" class="button">Comment changer cela ? Quelle responsabilité ?</a></p>
-  `;
-  equivalenceElement.innerHTML = html;
+    document.getElementById('mbTotalValue').textContent = toMegaByte(stats.total);
+    document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
+    document.getElementById('kgCO2eValue').textContent = kgCO2e.toString();
+    document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
+    document.getElementById('kmByCarValue').textContent = kmByCar.toString();
+  }
 }
 
 start = () => {
@@ -216,8 +184,6 @@ show = element => element.classList.remove('hidden');
 const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
 
 const statsElement = document.getElementById('stats');
-const listElement = document.getElementById('list');
-const equivalenceElement = document.getElementById('equivalence');
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', start);

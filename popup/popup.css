@@ -49,6 +49,12 @@ hr {
     cursor: pointer;
 }
 
+.button-fullwidth {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
 #stats .leftColumn {
     width: 50%;
     float: left;
@@ -85,17 +91,17 @@ hr {
     padding-left: 26px;
 }
 
-#list {
+#statsListItems {
     overflow: hidden;
     font-size: 10px;
 }
 
-#list ul {
+ul#statsListItems {
     margin: 0;
     padding: 10px;
 }
 
-#list .title {
+#statsListTitle {
     color: #999999;
 }
 
@@ -109,7 +115,7 @@ hr {
     font-size: 16px;
 }
 
-#equivalence span {
+#equivalence span.unit {
     font-size: 10px;
     display: block;
 }

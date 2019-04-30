@@ -27,10 +27,62 @@
     <div id="stats" class="hidden">
         <hr>
         <div class="leftColumn"><div class="ct-chart ct-golden-section"></div></div>
-        <div class="rightColumn"><div id="list"></div></div>
+        <div class="rightColumn">
+            <span id="statsListTitle">Top 10 traffic related to your navigation</span>
+            <ul id="statsListItems"></ul>
+        </div>
         <div class="clear"></div>
         <hr>
-        <div id="equivalence"></div>
+        <div id="equivalence">
+            <p id="equivalenceTitle">
+                En x jours de navigation,
+                vous avez fait transiter X Mb de données. Cela a nécessité X kWh d'électricité, soit X gCO<sub>2</sub>
+            </p>
+            <div class="column50">
+                <div class="block">
+                    <img src="img/arrows.svg" />
+                    <span id="mbTotalValue"></span>
+                    <span id="mbTotalUnit" class="unit">Mb</span>
+                </div>
+            </div>
+            <div class="column50">
+                <div class="block">
+                    <img src="img/energy.svg" />
+                    <span id="kWhTotalValue"></span>
+                    <span id="kWhTotalUnit" class="unit">kWh</span>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="column50">
+                <div class="block">&nbsp;</div>
+            </div>
+            <div class="column50">
+                <div class="block">
+                    <img src="img/gco2.svg" />
+                    <span id="kgCO2eValue"></span>
+                    <span id="kgCO2eItem" class="unit">kgCO<sub>2</sub></span>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <hr>
+            <p id="co2EquivalenceTitle">The CO<sub>2</sub> emissions related to your digital use is equivalent to:</p>
+            <div class="column50">
+                <div class="block">
+                    <img src="img/smartphone.svg" />
+                    <span id="chargedSmartphonesValue"></span>
+                    <span id="chargedSmartphonesUnit" class="unit">charged smartphones</span>
+                </div>
+            </div>
+            <div class="column50">
+                <div class="block">
+                    <img src="img/car.svg" />
+                    <span id="kmByCarValue"></span>
+                    <span id="kmByCarUnit" class="unit">km by car</span>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <p><a href="https://theshiftproject.org/lean-ict/" class="button button-fullwidth">Comment changer cela ? Quelle responsabilité ?</a></p>
+        </div>
     </div>
 
 </div>
