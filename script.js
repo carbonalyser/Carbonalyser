@@ -36,22 +36,27 @@ headersReceivedListener = (requestDetails) => {
   return {};
 }
 
+setBrowserIcon = (type) => {
+  browser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+}
+
 handleMessage = (request, sender, sendResponse) => {
   if ('start' === request.action) {
+    setBrowserIcon('on');
+
     browser.webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
       {urls: ["<all_urls>"]},
       ["blocking", "responseHeaders"]
     );
-
     sendResponse({response: "Finished !"});
 
     return;
   }
 
   if ('stop' === request.action) {
+    setBrowserIcon('off');
     browser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-
     sendResponse({response: "Stopped !"});
   }
 }
