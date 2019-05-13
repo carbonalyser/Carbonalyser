@@ -1,0 +1,38 @@
+{
+  "moreInformation": {
+    "message": "More information",
+    "description": "More information link title"
+  },
+  "moreInformationUrl": {
+    "message": "https://theshiftproject.org/en/lean-ict-2/",
+    "description": "More information url"
+  },
+  "legalNotice": {
+    "message": "Legal notice",
+    "description": "Legal notice link title"
+  },
+  "legalNoticeUrl": {
+    "message": "https://theshiftproject.org/en/general-conditions-of-use/",
+    "description": "Legal notice url"
+  },
+  "startButton": {
+    "message": "Run analysis",
+    "description": "Run analysis button"
+  },
+  "stopButton": {
+    "message": "Stop analysis",
+    "description": "Stop analysis button"
+  },
+  "reset": {
+    "message": "Reset data",
+    "description": "Reset data button"
+  },
+  "analysisInProgress": {
+    "message": "Analysis in progress. Start browsing the web, then come back here to get stats!",
+    "description": "Analysis in progress message"
+  },
+  "topTraffic": {
+    "message": "Top 10 traffic related to your navigation",
+    "description": "Top traffic list title"
+  }
+}

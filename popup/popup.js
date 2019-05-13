@@ -1,10 +1,3 @@
-const translations = {
-  'hello': {
-    'fr': 'Bonjour !',
-    'en': 'Hello!'
-  }
-};
-
 const defaultGeolocation = 'European Union';
 const userGeolocation = defaultGeolocation;
 
@@ -19,14 +12,11 @@ const carbonIntensityFactorInKgCO2ePerKWh = {
   'Other': '0.519'
 };
 
-const language = 'fr' === navigator.language.toLowerCase().substr(0, 2) ? 'fr' : 'en';
-console.log(translations.hello[language]);
-
 let statsInterval;
 let pieChart;
 
 handleResponse = message => {
-  console.log(`Message from the background script:  ${message.response}`);
+  console.log(`${message.response}`);
 }
 
 handleError = error => console.log(`Error: ${error}`);
@@ -178,6 +168,14 @@ init = () => {
   statsInterval = setInterval(showStats, 2000);
 }
 
+translate = (target, translationKey) => {
+  target.appendChild(document.createTextNode(browser.i18n.getMessage(translationKey)));
+}
+
+translateHref = (target, translationKey) => {
+  target.href = browser.i18n.getMessage(translationKey);
+}
+
 hide = element => element.classList.add('hidden');
 show = element => element.classList.remove('hidden');
 
@@ -193,5 +191,13 @@ stopButton.addEventListener('click', stop);
 
 const resetButton = document.getElementById('resetButton');
 resetButton.addEventListener('click', reset);
+
+document.querySelectorAll('[translate]').forEach(function(element) {
+  translate(element, element.getAttribute('translate'));
+});
+
+document.querySelectorAll('[translate-href]').forEach(function(element) {
+  translateHref(element, element.getAttribute('translate-href'));
+});
 
 init();

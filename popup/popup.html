@@ -12,31 +12,30 @@
     <h1>Plugin Name</h1>
 
     <div class="header-links">
-        <a href="https://theshiftproject.org/lean-ict/" id="informationLink">More information</a>
-        <a href="https://theshiftproject.org/mentions-legales/" id="legalNoticeLink">Legal notice</a>
+        <a id="informationLink" translate="moreInformation" translate-href="moreInformationUrl"></a>
+        <a id="legalNoticeLink" translate="legalNotice" translate-href="legalNoticeUrl"></a>
     </div>
     <hr>
 
     <div>
-        <button id="startButton" class="button">Run analysis</button>
-        <button id="stopButton" class="button hidden">Stop analysis</button>
-        <button id="resetButton" class="button hidden">Reset data</button>
+        <button id="startButton" class="button" translate="start"></button>
+        <button id="stopButton" class="button hidden" translate="stop"></button>
+        <button id="resetButton" class="button hidden" translate="reset"></button>
     </div>
-    <p id="analysisInProgressMessage" class="hidden">Analysis in progress. Start browsing the web, then come back here to get stats!</p>
+    <p id="analysisInProgressMessage" class="hidden" translate="analysisInProgress"></p>
 
     <div id="stats" class="hidden">
         <hr>
         <div class="leftColumn"><div class="ct-chart ct-golden-section"></div></div>
         <div class="rightColumn">
-            <span id="statsListTitle">Top 10 traffic related to your navigation</span>
+            <span id="statsListTitle" translate="topTraffic"></span>
             <ul id="statsListItems"></ul>
         </div>
         <div class="clear"></div>
         <hr>
         <div id="equivalence">
             <p id="equivalenceTitle">
-                En x jours de navigation,
-                vous avez fait transiter X Mb de données. Cela a nécessité X kWh d'électricité, soit X gCO<sub>2</sub>
+                En x jours de navigation, vous avez fait transiter X Mb de données. Cela a nécessité X kWh d'électricité, soit X gCO2
             </p>
             <div class="column50">
                 <div class="block">
@@ -65,7 +64,7 @@
             </div>
             <div class="clear"></div>
             <hr>
-            <p id="co2EquivalenceTitle">The CO<sub>2</sub> emissions related to your digital use is equivalent to:</p>
+            <p id="co2EquivalenceTitle">The CO2 emissions related to your digital use is equivalent to:</p>
             <div class="column50">
                 <div class="block">
                     <img src="img/smartphone.svg" />

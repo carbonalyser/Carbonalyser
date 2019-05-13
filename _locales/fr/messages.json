@@ -1,0 +1,38 @@
+{
+  "moreInformation": {
+    "message": "Informations",
+    "description": "Titre du lien plus d'informations"
+  },
+  "moreInformationUrl": {
+    "message": "https://theshiftproject.org/lean-ict/",
+    "description": "Url plus d'informations"
+  },
+  "legalNotice": {
+    "message": "Mentions légales",
+    "description": "Titre du lien mentions légales"
+  },
+  "legalNoticeUrl": {
+    "message": "https://theshiftproject.org/mentions-legales/",
+    "description": "Url des mentions légales"
+  },
+  "start": {
+    "message": "Démarrer l'analyse",
+    "description": "Bouton démarrer l'analyse"
+  },
+  "stop": {
+    "message": "Stopper l'analyse",
+    "description": "Bouton stopper l'analyse"
+  },
+  "reset": {
+    "message": "Ré-initialiser les données",
+    "description": "Bouton Ré-initialiser les données"
+  },
+  "analysisInProgress": {
+    "message": "Analyse en cours. Naviguez sur le web puis revenez ici pour les résultats.",
+    "description": "Message analyse en cours"
+  },
+  "topTraffic": {
+    "message": "Top 10 du trafic relatif à votre navigation",
+    "description": "Titre de la liste Top trafic"
+  }
+}
