@@ -34,5 +34,23 @@
   "topTraffic": {
     "message": "Top 10 traffic related to your navigation",
     "description": "Top traffic list title"
+  },
+  "equivalenceTitle": {
+    "message": "En x jours de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $GCO2$ gCO2",
+    "description": "Equivalence",
+    "placeholders": {
+      "mbtotal" : {
+        "content" : "$1",
+        "example" : "10"
+      },
+      "kwh" : {
+        "content" : "$2",
+        "example" : "99"
+      },
+      "gco2" : {
+        "content" : "$3",
+        "example" : "199"
+      }
+    }
   }
 }
