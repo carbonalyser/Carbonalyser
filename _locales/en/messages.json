@@ -15,11 +15,11 @@
     "message": "https://theshiftproject.org/en/general-conditions-of-use/",
     "description": "Legal notice url"
   },
-  "startButton": {
+  "start": {
     "message": "Run analysis",
     "description": "Run analysis button"
   },
-  "stopButton": {
+  "stop": {
     "message": "Stop analysis",
     "description": "Stop analysis button"
   },
