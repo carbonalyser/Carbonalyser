@@ -88,7 +88,7 @@ showStats = () => {
         continue;
       }
 
-      labels.push(stats.highestStats[index].percent > 5 ? stats.highestStats[index].origin : ' ');
+      labels.push(stats.highestStats[index].percent > 40 ? stats.highestStats[index].origin : ' ');
       series.push(stats.highestStats[index].percent);
       const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
       const li = document.createElement("LI");
