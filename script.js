@@ -71,6 +71,7 @@ handleMessage = (request, sender, sendResponse) => {
 
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
+      addOneMinuteInterval = null;
     }
   }
 }
