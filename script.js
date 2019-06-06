@@ -40,6 +40,14 @@ setBrowserIcon = (type) => {
   browser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 }
 
+addOneMinute = () => {
+  let duration = localStorage.getItem('duration');
+  duration = null === duration ? 1 : 1 * duration + 1;
+  localStorage.setItem('duration', duration);
+}
+
+let addOneMinuteInterval;
+
 handleMessage = (request, sender, sendResponse) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
@@ -49,7 +57,10 @@ handleMessage = (request, sender, sendResponse) => {
       {urls: ["<all_urls>"]},
       ["blocking", "responseHeaders"]
     );
-    sendResponse({response: "Finished !"});
+
+    if (!addOneMinuteInterval) {
+      addOneMinuteInterval = setInterval(addOneMinute, 60000);
+    }
 
     return;
   }
@@ -57,7 +68,10 @@ handleMessage = (request, sender, sendResponse) => {
   if ('stop' === request.action) {
     setBrowserIcon('off');
     browser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-    sendResponse({response: "Stopped !"});
+
+    if (addOneMinuteInterval) {
+      clearInterval(addOneMinuteInterval);
+    }
   }
 }
 

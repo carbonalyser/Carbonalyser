@@ -113,6 +113,10 @@ showStats = () => {
       pieChart.update({labels, series});
     }
 
+    let duration = localStorage.getItem('duration');
+    duration = null === duration ? 0 : duration;
+
+    document.getElementById('duration').textContent = duration.toString();
     document.getElementById('mbTotalValue').textContent = toMegaByte(stats.total);
     document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
     document.getElementById('kgCO2eValue').textContent = kgCO2e.toString();
@@ -146,6 +150,7 @@ reset = () => {
   }
 
   localStorage.removeItem('stats');
+  localStorage.removeItem('duration');
   hide(statsElement);
   showStats();
   hide(resetButton);
