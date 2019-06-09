@@ -57,6 +57,11 @@ hr {
     text-align: center;
 }
 
+.fullwidth {
+    width: 100%;
+    display: block;
+}
+
 #stats .leftColumn {
     width: 50%;
     float: left;
@@ -120,4 +125,8 @@ ul#statsListItems {
 #equivalence span.unit {
     font-size: 10px;
     display: block;
+}
+
+.selectRegionHelp {
+    margin-top: 0px;
 }

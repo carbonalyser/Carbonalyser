@@ -1,4 +1,4 @@
-const defaultGeolocation = 'European Union';
+const defaultGeolocation = 'regionEuropeanUnion';
 const userGeolocation = defaultGeolocation;
 
 const kWhPerByte = 0.00000000152;
@@ -6,10 +6,10 @@ const OneKWhEquivalentKmByCar = 2.4;
 const OneKWhEquivalentChargedSmartphones = 63;
 
 const carbonIntensityFactorInKgCO2ePerKWh = {
-  'European Union': '0.276',
-  'United States': '0.493',
-  'China': '0.681',
-  'Other': '0.519'
+  'regionEuropeanUnion': '0.276',
+  'regionUnitedStates': '0.493',
+  'regionChina': '0.681',
+  'regionOther': '0.519'
 };
 
 let statsInterval;

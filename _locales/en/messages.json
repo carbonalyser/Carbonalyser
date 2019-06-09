@@ -52,5 +52,23 @@
         "example" : "199"
       }
     }
+  },
+  "selectRegionPlaceholder": {
+    "message": "Select your localisation"
+  },
+  "regionEuropeanUnion": {
+    "message": "European Union"
+  },
+  "regionUnitedStates": {
+    "message": "United States"
+  },
+  "regionChina": {
+    "message": "China"
+  },
+  "regionOther": {
+    "message": "Other"
+  },
+  "selectRegionHelp": {
+    "message": "Not required but the result will be more relevant."
   }
 }
