@@ -1,5 +1,5 @@
-const defaultGeolocation = 'regionEuropeanUnion';
-const userGeolocation = defaultGeolocation;
+const defaultLocation = 'regionEuropeanUnion';
+let userLocation = defaultLocation;
 
 const kWhPerByte = 0.00000000152;
 const OneKWhEquivalentKmByCar = 2.4;
@@ -14,12 +14,6 @@ const carbonIntensityFactorInKgCO2ePerKWh = {
 
 let statsInterval;
 let pieChart;
-
-handleResponse = message => {
-  console.log(`${message.response}`);
-}
-
-handleError = error => console.log(`Error: ${error}`);
 
 parseStats = () => {
   const stats = localStorage.getItem('stats');
@@ -99,7 +93,7 @@ showStats = () => {
     kWhTotal = Math.round(1000 * stats.total * kWhPerByte) / 1000;
     kmByCar = Math.round(1000 * kWhTotal * OneKWhEquivalentKmByCar) / 1000;
     chargedSmartphones = Math.round(kWhTotal * OneKWhEquivalentChargedSmartphones);
-    kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userGeolocation]) / 1000;
+    kgCO2e = Math.round(1000 * kWhTotal * carbonIntensityFactorInKgCO2ePerKWh[userLocation]) / 1000;
 
     if (!pieChart) {
       pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -126,8 +120,8 @@ showStats = () => {
 }
 
 start = () => {
-  const sending = browser.runtime.sendMessage({ action: 'start' });
-  sending.then(handleResponse, handleError);
+  browser.runtime.sendMessage({ action: 'start' });
+
   hide(startButton);
   show(stopButton);
   show(analysisInProgressMessage);
@@ -135,8 +129,8 @@ start = () => {
 }
 
 stop = () => {
-  const sending = browser.runtime.sendMessage({ action: 'stop' });
-  sending.then(handleResponse, handleError);
+  browser.runtime.sendMessage({ action: 'stop' });
+
   hide(stopButton);
   show(startButton);
   hide(analysisInProgressMessage);
@@ -157,6 +151,13 @@ reset = () => {
 }
 
 init = () => {
+  const selectedRegion = localStorage.getItem('selectedRegion');
+
+  if (null !== selectedRegion) {
+    userLocation = selectedRegion;
+    selectRegion.value = selectedRegion;
+  }
+
   if (null === localStorage.getItem('stats')) {
     hide(resetButton);
   } else {
@@ -171,6 +172,18 @@ init = () => {
 
   start();
   statsInterval = setInterval(showStats, 2000);
+}
+
+selectRegionHandler = (event) => {
+  const selectedRegion = event.target.value;
+
+  if ('' === selectedRegion) {
+    return;
+  }
+
+  localStorage.setItem('selectedRegion', selectedRegion);
+  userLocation = selectedRegion;
+  showStats();
 }
 
 translate = (target, translationKey) => {
@@ -196,6 +209,9 @@ stopButton.addEventListener('click', stop);
 
 const resetButton = document.getElementById('resetButton');
 resetButton.addEventListener('click', reset);
+
+const selectRegion = document.getElementById('selectRegion');
+selectRegion.addEventListener('change', selectRegionHandler);
 
 document.querySelectorAll('[translate]').forEach(function(element) {
   translate(element, element.getAttribute('translate'));
