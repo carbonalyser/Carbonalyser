@@ -77,5 +77,17 @@
   },
   "selectRegionHelp": {
     "message": "Not required but the result will be more relevant."
+  },
+  "howToChange": {
+    "message": "How to change that? What responsibility?"
+  },
+  "chargedSmartphonesUnit": {
+    "message": "charged smartphones"
+  },
+  "kmByCarUnit": {
+    "message": "kms by car"
+  },
+  "mbTotalUnit": {
+    "message": "Mb"
   }
 }
