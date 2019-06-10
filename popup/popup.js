@@ -119,12 +119,19 @@ showStats = () => {
       pieChart.update({labels, series});
     }
 
+    const megaByteTotal = toMegaByte(stats.total);
     document.getElementById('duration').textContent = duration.toString();
-    document.getElementById('mbTotalValue').textContent = toMegaByte(stats.total);
+    document.getElementById('mbTotalValue').textContent = megaByteTotal;
     document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
     document.getElementById('kgCO2eValue').textContent = kgCO2eTotal.toString();
     document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
     document.getElementById('kmByCarValue').textContent = kmByCar.toString();
+
+    const equivalenceTitle = document.getElementById('equivalenceTitle');
+    while (equivalenceTitle.firstChild) {
+      equivalenceTitle.removeChild(equivalenceTitle.firstChild);
+    }
+    equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), kgCO2eTotal.toString()])));
   }
 }
 

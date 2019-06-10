@@ -35,20 +35,27 @@
     "message": "Top 10 traffic related to your navigation",
     "description": "Top traffic list title"
   },
+  "digitalEquivalenceTitle": {
+    "message": "The CO2 emissions related to your digital use is equivalent to:"
+  },
   "equivalenceTitle": {
-    "message": "En x jours de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $GCO2$ gCO2",
+    "message": "In $MINUTES$ minutes of navigation, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $KGCO2$ kgCO2",
     "description": "Equivalence",
     "placeholders": {
-      "mbtotal" : {
+      "minutes" : {
         "content" : "$1",
+        "example" : "60"
+      },
+      "mbtotal" : {
+        "content" : "$2",
         "example" : "10"
       },
       "kwh" : {
-        "content" : "$2",
+        "content" : "$3",
         "example" : "99"
       },
-      "gco2" : {
-        "content" : "$3",
+      "kgco2" : {
+        "content" : "$4",
         "example" : "199"
       }
     }

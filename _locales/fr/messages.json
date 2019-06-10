@@ -35,20 +35,27 @@
     "message": "Top 10 du trafic relatif à votre navigation",
     "description": "Titre de la liste Top trafic"
   },
+  "digitalEquivalenceTitle": {
+    "message": "Les émissions de CO2 liées à votre utilisation d'internet équivaut à :"
+  },
   "equivalenceTitle": {
-    "message": "En x jours de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $GCO2$ gCO2",
+    "message": "En $MINUTES$ minutes de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $KGCO2$ kgCO2",
     "description": "Equivalence",
     "placeholders": {
-      "mbtotal" : {
+      "minutes" : {
         "content" : "$1",
+        "example" : "60"
+      },
+      "mbtotal" : {
+        "content" : "$2",
         "example" : "10"
       },
       "kwh" : {
-        "content" : "$2",
+        "content" : "$3",
         "example" : "99"
       },
-      "gco2" : {
-        "content" : "$3",
+      "kgco2" : {
+        "content" : "$4",
         "example" : "199"
       }
     }
