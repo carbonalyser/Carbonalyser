@@ -118,6 +118,11 @@ ul#statsListItems {
     float: left;
 }
 
+#equivalence img.icon-car {
+    width: 44px;
+    margin-right: 6px;
+}
+
 #equivalence .block {
     font-size: 16px;
 }
