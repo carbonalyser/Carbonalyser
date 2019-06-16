@@ -66,6 +66,9 @@
   "regionEuropeanUnion": {
     "message": "European Union"
   },
+  "regionFrance": {
+    "message": "France"
+  },
   "regionUnitedStates": {
     "message": "United States"
   },

@@ -11,6 +11,7 @@ const GESgCO2ForOneChargedSmartphone = 8.3;
 
 const carbonIntensityFactorIngCO2PerKWh = {
   'regionEuropeanUnion': 276,
+  'regionFrance': 34.8,
   'regionUnitedStates': 493,
   'regionChina': 681,
   'regionOther': defaultCarbonIntensityFactorIngCO2PerKWh
