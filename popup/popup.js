@@ -1,19 +1,19 @@
 const defaultLocation = 'regionOther';
 let userLocation = defaultLocation;
 
-const defaultCarbonIntensityFactorInKgCO2ePerKWh = 0.519;
+const defaultCarbonIntensityFactorIngCO2PerKWh = 519;
 const kWhPerByteDataCenter = 0.00000000072;
 const kWhPerByteNetwork = 0.00000000152;
 const kWhPerMinuteDevice = 0.00021;
 
-const GESKgCO2ForOneKmByCar = 0.220;
-const GESKgCO2ForOneChargedSmartphone = 0.0083;
+const GESgCO2ForOneKmByCar = 220;
+const GESgCO2ForOneChargedSmartphone = 8.3;
 
-const carbonIntensityFactorInKgCO2ePerKWh = {
-  'regionEuropeanUnion': 0.276,
-  'regionUnitedStates': 0.493,
-  'regionChina': 0.681,
-  'regionOther': defaultCarbonIntensityFactorInKgCO2ePerKWh
+const carbonIntensityFactorIngCO2PerKWh = {
+  'regionEuropeanUnion': 276,
+  'regionUnitedStates': 493,
+  'regionChina': 681,
+  'regionOther': defaultCarbonIntensityFactorIngCO2PerKWh
 };
 
 let statsInterval;
@@ -61,7 +61,7 @@ getStats = () => {
   }
 }
 
-toMegaByte = (value) => (Math.round(100 * value/1024/1024) / 100);
+toMegaByte = (value) => (Math.round(value/1024/1024));
 
 showStats = () => {
   const stats = getStats();
@@ -93,19 +93,19 @@ showStats = () => {
     duration = null === duration ? 0 : duration;
 
     const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
-    const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorInKgCO2ePerKWh;
+    const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
 
     const kWhNetworkTotal = stats.total * kWhPerByteNetwork;
-    const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorInKgCO2ePerKWh;
+    const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
 
     const kWhDeviceTotal = duration * kWhPerMinuteDevice;
-    const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorInKgCO2ePerKWh[userLocation];
+    const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorIngCO2PerKWh[userLocation];
 
     const kWhTotal = Math.round(1000 * (kWhDataCenterTotal + kWhNetworkTotal + kWhDeviceTotal)) / 1000;
-    const kgCO2eTotal = Math.round(1000 * (GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal)) / 1000;
+    const gCO2Total = Math.round(GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal);
 
-    const kmByCar = Math.round(1000 * kgCO2eTotal / GESKgCO2ForOneKmByCar) / 1000;
-    const chargedSmartphones = Math.round(kgCO2eTotal / GESKgCO2ForOneChargedSmartphone);
+    const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
+    const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
 
     if (!pieChart) {
       pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -123,7 +123,7 @@ showStats = () => {
     document.getElementById('duration').textContent = duration.toString();
     document.getElementById('mbTotalValue').textContent = megaByteTotal;
     document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
-    document.getElementById('kgCO2eValue').textContent = kgCO2eTotal.toString();
+    document.getElementById('gCO2Value').textContent = gCO2Total.toString();
     document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
     document.getElementById('kmByCarValue').textContent = kmByCar.toString();
 
@@ -131,7 +131,7 @@ showStats = () => {
     while (equivalenceTitle.firstChild) {
       equivalenceTitle.removeChild(equivalenceTitle.firstChild);
     }
-    equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), kgCO2eTotal.toString()])));
+    equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
   }
 }
 
