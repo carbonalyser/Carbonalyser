@@ -32,7 +32,7 @@
     "description": "Analysis in progress message"
   },
   "topTraffic": {
-    "message": "Top 10 traffic related to your navigation",
+    "message": "Top 5 traffic related to your navigation",
     "description": "Top traffic list title"
   },
   "digitalEquivalenceTitle": {
@@ -92,5 +92,8 @@
   },
   "mbTotalUnit": {
     "message": "Mb"
+  },
+  "statsOthers": {
+    "message": "Others"
   }
 }

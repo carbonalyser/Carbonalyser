@@ -39,7 +39,7 @@ getStats = () => {
     return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
   });
 
-  const highestStats = sortedStats.slice(0, 9);
+  const highestStats = sortedStats.slice(0, 4);
   let subtotal = 0;
   for (let index in highestStats) {
     subtotal += highestStats[index].byte;
@@ -48,7 +48,7 @@ getStats = () => {
   if (total > 0) {
     const remaining = total - subtotal;
     if (remaining > 0) {
-      highestStats.push({'origin': 'Others', 'byte': remaining});
+      highestStats.push({'origin': translate('statsOthers'), 'byte': remaining});
     }
 
     highestStats.forEach(function (item) {
@@ -82,7 +82,7 @@ showStats = () => {
         continue;
       }
 
-      labels.push(stats.highestStats[index].percent > 40 ? stats.highestStats[index].origin : ' ');
+      labels.push(stats.highestStats[index].origin);
       series.push(stats.highestStats[index].percent);
       const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
       const li = document.createElement("LI");
@@ -203,8 +203,12 @@ selectRegionHandler = (event) => {
   showStats();
 }
 
-translate = (target, translationKey) => {
-  target.appendChild(document.createTextNode(browser.i18n.getMessage(translationKey)));
+translate = (translationKey) => {
+  return browser.i18n.getMessage(translationKey);
+}
+
+translateText = (target, translationKey) => {
+  target.appendChild(document.createTextNode(translate(translationKey)));
 }
 
 translateHref = (target, translationKey) => {
@@ -231,7 +235,7 @@ const selectRegion = document.getElementById('selectRegion');
 selectRegion.addEventListener('change', selectRegionHandler);
 
 document.querySelectorAll('[translate]').forEach(function(element) {
-  translate(element, element.getAttribute('translate'));
+  translateText(element, element.getAttribute('translate'));
 });
 
 document.querySelectorAll('[translate-href]').forEach(function(element) {
