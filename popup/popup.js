@@ -66,74 +66,81 @@ toMegaByte = (value) => (Math.round(value/1024/1024));
 
 showStats = () => {
   const stats = getStats();
+  hide(selectRegionForm);
 
-  if (stats.total > 0) {
-    show(statsElement);
-    const labels = [];
-    const series = [];
-
-    const statsListItemsElement = document.getElementById('statsListItems');
-    while (statsListItemsElement.firstChild) {
-      statsListItemsElement.removeChild(statsListItemsElement.firstChild);
-    }
-
-    for (let index in stats.highestStats) {
-      if (stats.highestStats[index].percent < 1) {
-        continue;
-      }
-
-      labels.push(stats.highestStats[index].origin);
-      series.push(stats.highestStats[index].percent);
-      const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
-      const li = document.createElement("LI");
-      li.appendChild(text);
-      statsListItemsElement.appendChild(li);
-    }
-
-    let duration = localStorage.getItem('duration');
-    duration = null === duration ? 0 : duration;
-
-    const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
-    const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-    const kWhNetworkTotal = stats.total * kWhPerByteNetwork;
-    const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-    const kWhDeviceTotal = duration * kWhPerMinuteDevice;
-    const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorIngCO2PerKWh[userLocation];
-
-    const kWhTotal = Math.round(1000 * (kWhDataCenterTotal + kWhNetworkTotal + kWhDeviceTotal)) / 1000;
-    const gCO2Total = Math.round(GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal);
-
-    const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
-    const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
-
-    if (!pieChart) {
-      pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
-        donut: true,
-        donutWidth: 60,
-        donutSolid: true,
-        startAngle: 270,
-        showLabel: true
-      });
-    } else {
-      pieChart.update({labels, series});
-    }
-
-    const megaByteTotal = toMegaByte(stats.total);
-    document.getElementById('duration').textContent = duration.toString();
-    document.getElementById('mbTotalValue').textContent = megaByteTotal;
-    document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
-    document.getElementById('gCO2Value').textContent = gCO2Total.toString();
-    document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
-    document.getElementById('kmByCarValue').textContent = kmByCar.toString();
-
-    const equivalenceTitle = document.getElementById('equivalenceTitle');
-    while (equivalenceTitle.firstChild) {
-      equivalenceTitle.removeChild(equivalenceTitle.firstChild);
-    }
-    equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
+  if (stats.total === 0) {
+    return;
   }
+
+  show(statsElement);
+  const labels = [];
+  const series = [];
+
+  const statsListItemsElement = document.getElementById('statsListItems');
+  while (statsListItemsElement.firstChild) {
+    statsListItemsElement.removeChild(statsListItemsElement.firstChild);
+  }
+
+  for (let index in stats.highestStats) {
+    if (stats.highestStats[index].percent < 1) {
+      continue;
+    }
+
+    labels.push(stats.highestStats[index].origin);
+    series.push(stats.highestStats[index].percent);
+    const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
+    const li = document.createElement("LI");
+    li.appendChild(text);
+    statsListItemsElement.appendChild(li);
+  }
+
+  let duration = localStorage.getItem('duration');
+  duration = null === duration ? 0 : duration;
+
+  if (duration >= 15) {
+    show(selectRegionForm);
+  }
+
+  const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
+  const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
+
+  const kWhNetworkTotal = stats.total * kWhPerByteNetwork;
+  const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
+
+  const kWhDeviceTotal = duration * kWhPerMinuteDevice;
+  const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorIngCO2PerKWh[userLocation];
+
+  const kWhTotal = Math.round(1000 * (kWhDataCenterTotal + kWhNetworkTotal + kWhDeviceTotal)) / 1000;
+  const gCO2Total = Math.round(GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal);
+
+  const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
+  const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
+
+  if (!pieChart) {
+    pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
+      donut: true,
+      donutWidth: 60,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: true
+    });
+  } else {
+    pieChart.update({labels, series});
+  }
+
+  const megaByteTotal = toMegaByte(stats.total);
+  document.getElementById('duration').textContent = duration.toString();
+  document.getElementById('mbTotalValue').textContent = megaByteTotal;
+  document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
+  document.getElementById('gCO2Value').textContent = gCO2Total.toString();
+  document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
+  document.getElementById('kmByCarValue').textContent = kmByCar.toString();
+
+  const equivalenceTitle = document.getElementById('equivalenceTitle');
+  while (equivalenceTitle.firstChild) {
+    equivalenceTitle.removeChild(equivalenceTitle.firstChild);
+  }
+  equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
 }
 
 start = () => {
@@ -221,6 +228,7 @@ show = element => element.classList.remove('hidden');
 const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
 
 const statsElement = document.getElementById('stats');
+const selectRegionForm = document.getElementById('selectRegionForm');
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', start);
