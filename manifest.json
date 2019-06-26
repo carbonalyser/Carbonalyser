@@ -5,7 +5,7 @@
   "author": "Richard Hanna",
   "version": "1.0",
   "icons": {
-    "128": "icons/icon-128.png"
+    "48": "icons/icon-on-48.png"
   },
   "permissions": [
     "storage",
