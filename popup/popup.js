@@ -66,7 +66,6 @@ toMegaByte = (value) => (Math.round(value/1024/1024));
 
 showStats = () => {
   const stats = getStats();
-  hide(selectRegionForm);
 
   if (stats.total === 0) {
     return;
@@ -96,10 +95,6 @@ showStats = () => {
 
   let duration = localStorage.getItem('duration');
   duration = null === duration ? 0 : duration;
-
-  if (duration >= 15) {
-    show(selectRegionForm);
-  }
 
   const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
   const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
@@ -228,7 +223,6 @@ show = element => element.classList.remove('hidden');
 const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
 
 const statsElement = document.getElementById('stats');
-const selectRegionForm = document.getElementById('selectRegionForm');
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', start);
