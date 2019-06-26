@@ -95,5 +95,8 @@
   },
   "statsOthers": {
     "message": "Autres"
+  },
+  "resetConfirmation": {
+    "message": "Confirmer la réinitialisation des statistiques?"
   }
 }

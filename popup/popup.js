@@ -158,7 +158,7 @@ stop = () => {
 }
 
 reset = () => {
-  if (!confirm('Are you sure?')) {
+  if (!confirm(translate('resetConfirmationy'))) {
     return;
   }
 

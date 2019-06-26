@@ -95,5 +95,8 @@
   },
   "statsOthers": {
     "message": "Others"
+  },
+  "resetConfirmation": {
+    "message": "Confirm the statistics reset?"
   }
 }
