@@ -1,5 +1,9 @@
 # Carbonalyser
 
+## Installation
+
+Add the add-on to Firefox: https://addons.mozilla.org/fr/firefox/addon/carbonalyser/
+
 ## Overview
 
 The add-on "Carbonalyser" allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
