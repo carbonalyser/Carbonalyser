@@ -20,24 +20,37 @@ setByteLengthPerOrigin = (origin, byteLength) => {
 }
 
 headersReceivedListener = (requestDetails) => {
-  let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
+  const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+  let byteLength = 0;
 
-  filter.ondata = event => {
-    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-    setByteLengthPerOrigin(origin, event.data.byteLength);
+  try {
+    let filter = chrome.webRequest.filterResponseData(requestDetails.requestId);
 
-    filter.write(event.data);
-  };
+    filter.ondata = event => {
+      byteLength += event.data.byteLength;
+      filter.write(event.data);
+    };
 
-  filter.onstop = () => {
-    filter.disconnect();
-  };
+    setByteLengthPerOrigin(origin, byteLength);
 
-  return {};
+    filter.onstop = () => {
+      filter.disconnect();
+    };
+
+    return {};
+  } catch (error) {
+    requestDetails.responseHeaders.forEach((header) => {
+      if (header.name === 'Content-Length') {
+        byteLength += header.value;
+      }
+    });
+
+    setByteLengthPerOrigin(origin, byteLength);
+  }
 }
 
 setBrowserIcon = (type) => {
-  browser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+  chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 }
 
 addOneMinute = () => {
@@ -52,7 +65,7 @@ handleMessage = (request, sender, sendResponse) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
-    browser.webRequest.onHeadersReceived.addListener(
+    chrome.webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
       {urls: ["<all_urls>"]},
       ["blocking", "responseHeaders"]
@@ -67,7 +80,7 @@ handleMessage = (request, sender, sendResponse) => {
 
   if ('stop' === request.action) {
     setBrowserIcon('off');
-    browser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+    chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
 
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
@@ -76,4 +89,4 @@ handleMessage = (request, sender, sendResponse) => {
   }
 }
 
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);
