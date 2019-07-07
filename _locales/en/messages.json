@@ -39,7 +39,7 @@
     "message": "The CO2 emissions related to your digital use is equivalent to:"
   },
   "equivalenceTitle": {
-    "message": "In $MINUTES$ minutes of navigation, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2",
+    "message": "In $MINUTES$ minutes of navigation, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2e",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
