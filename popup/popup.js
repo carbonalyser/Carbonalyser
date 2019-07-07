@@ -158,7 +158,7 @@ stop = () => {
 }
 
 reset = () => {
-  if (!confirm(translate('resetConfirmationy'))) {
+  if (!confirm(translate('resetConfirmation'))) {
     return;
   }
 
