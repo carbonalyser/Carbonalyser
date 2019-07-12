@@ -43,6 +43,10 @@ None of your data are collected: all browsing data are analyzed directly on the 
 
 The source code of this program is available in open access, to ensure transparency and for any other purpose. 
 
+## Methodology
+
+See: https://theshiftproject.org/en/carbonalyser-browser-extension/
+
 ## Support & source code
 
 Questions, bug reports and feature requests are to be addressed to communication@theshiftproject.org
