@@ -32,14 +32,14 @@
     "description": "Analysis in progress message"
   },
   "topTraffic": {
-    "message": "Top 5 traffic related to your navigation",
+    "message": "Top 5 traffic related to your browsing",
     "description": "Top traffic list title"
   },
   "digitalEquivalenceTitle": {
     "message": "The CO2 emissions related to your digital use is equivalent to:"
   },
   "equivalenceTitle": {
-    "message": "In $MINUTES$ minutes of navigation, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2e",
+    "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2e",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
