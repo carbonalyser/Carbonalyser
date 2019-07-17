@@ -3,7 +3,6 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="vendor/chartist/chartist.css"/>
 <link rel="stylesheet" href="popup.css"/>
 </head>
 
@@ -25,13 +24,43 @@
 
     <p id="analysisInProgressMessage" class="hidden" translate="analysisInProgress"></p>
 
-    <div id="stats" class="hidden">
+    <div id="stats" class="shidden">
         <hr>
 
-        <div class="leftColumn"><div class="ct-chart ct-golden-section"></div></div>
+        <div class="leftColumn">
+            <svg width="160" height="160" class="chart">
+                <defs>
+                    <pattern class="chart__pattern" id="chart-pattern1" x="10px" y="10px" width="20" height="3" patternUnits="userSpaceOnUse">
+                        <rect class="_background" x="0" y="0" width="20" height="3"/>
+                        <rect class="_shape" x="0" y="0" width="20" height="1"/>
+                    </pattern>
+                    <pattern class="chart__pattern" id="chart-pattern2" x="3px" y="3px" width="3" height="3" patternUnits="userSpaceOnUse">
+                        <rect class="_background" x="0" y="0" width="3" height="3"/>
+                        <rect class="_shape" x="0" y="0" width="1" height="1"/>
+                    </pattern>
+                    <pattern class="chart__pattern" id="chart-pattern3" x="10px" y="10px" width="3" height="20" patternUnits="userSpaceOnUse">
+                        <rect class="_background" x="0" y="0" width="3" height="20"/>
+                        <rect class="_shape" x="0" y="0" width="1" height="20"/>
+                    </pattern>
+                    <pattern class="chart__pattern" id="chart-pattern4" x="10px" y="10px" width="4" height="4" patternUnits="userSpaceOnUse">
+                        <rect class="_background" x="0" y="0" width="4" height="4"/>
+                        <line class="_shape" x1="0" y1="4" x2="4" y2="0"/>
+                    </pattern>
+                    <pattern class="chart__pattern" id="chart-pattern5" x="10px" y="10px" width="4" height="4" patternUnits="userSpaceOnUse">
+                        <rect class="_background" x="0" y="0" width="4" height="4"/>
+                        <line class="_shape" x1="0" y1="0" x2="4" y2="4"/>
+                    </pattern>
+                </defs>
+                <circle r="80" cx="80" cy="80" id="chart-part1" class="chart__part"></circle>
+                <circle r="80" cx="80" cy="80" id="chart-part2" class="chart__part"></circle>
+                <circle r="80" cx="80" cy="80" id="chart-part3" class="chart__part"></circle>
+                <circle r="80" cx="80" cy="80" id="chart-part4" class="chart__part"></circle>
+                <circle r="80" cx="80" cy="80" id="chart-part5" class="chart__part"></circle>
+            </svg>
+        </div>
         <div class="rightColumn">
             <span id="statsListTitle" translate="topTraffic"></span>
-            <ul id="statsListItems"></ul>
+            <ul id="statsListItems" class="statsListItems"></ul>
         </div>
         <div class="clear"></div>
 

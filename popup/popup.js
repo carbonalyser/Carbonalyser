@@ -76,9 +76,14 @@ showStats = () => {
   const series = [];
 
   const statsListItemsElement = document.getElementById('statsListItems');
-  while (statsListItemsElement.firstChild) {
+  /*while (statsListItemsElement.firstChild) {
     statsListItemsElement.removeChild(statsListItemsElement.firstChild);
-  }
+  }*/
+
+  statsListItemsElement.innerHTML = '';
+
+  let _template = '';
+  let _counter = 1;
 
   for (let index in stats.highestStats) {
     if (stats.highestStats[index].percent < 1) {
@@ -87,11 +92,36 @@ showStats = () => {
 
     labels.push(stats.highestStats[index].origin);
     series.push(stats.highestStats[index].percent);
-    const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
-    const li = document.createElement("LI");
-    li.appendChild(text);
-    statsListItemsElement.appendChild(li);
+
+    _template += '<li data-chart="' + _counter + '">';
+      _template += '<svg width="10" height="10">';
+        _template += '<rect x="0" y="0" width="10" height="10" />';
+      _template += '</svg>';
+      _template += '<strong>' + stats.highestStats[index].percent + '%</strong> ' + stats.highestStats[index].origin;
+    _template += '</li>';
+
+    _counter++;
   }
+
+  statsListItemsElement.innerHTML = _template;
+
+  document.querySelectorAll('#statsListItems li').forEach(function(element) {
+    element.addEventListener('mouseover', function() {
+      document.querySelectorAll('.chart__part').forEach(function(element) {
+        element.classList.add('is-disabled');
+      });
+      
+      document.getElementById('chart-part' + this.dataset.chart).classList.remove('is-disabled');
+      this.classList.add('is-active');
+    });
+
+    element.addEventListener('mouseout', function() {
+      document.querySelectorAll('.chart__part').forEach(function(element) {
+        element.classList.remove('is-disabled');
+      });
+      this.classList.remove('is-active');
+    });
+  });
 
   let duration = localStorage.getItem('duration');
   duration = null === duration ? 0 : duration;
@@ -111,17 +141,22 @@ showStats = () => {
   const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
   const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
 
-  if (!pieChart) {
-    pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
-      donut: true,
-      donutWidth: 60,
-      donutSolid: true,
-      startAngle: 270,
-      showLabel: true
-    });
-  } else {
-    pieChart.update({labels, series});
-  }
+    let _strokeDashoffset     = 0;
+    let _strokeDasharrayValue = 0;
+    let _strokeDasharraySize  = 503;
+
+    for(let i = 0; i < series.length; i++) {
+      _strokeDasharrayValue = (series[i] / 100) * 503;
+
+      if( i == series.length - 1) {
+        _strokeDasharrayValue = 503 + _strokeDasharrayValue;
+      }
+
+      document.getElementById('chart-part' + ( i + 1 )).style.strokeDasharray = _strokeDasharrayValue + ' ' + _strokeDasharraySize;
+      document.getElementById('chart-part' + ( i + 1 )).style.strokeDashoffset = _strokeDashoffset;
+
+      _strokeDashoffset -= _strokeDasharrayValue;
+    }
 
   const megaByteTotal = toMegaByte(stats.total);
   document.getElementById('duration').textContent = duration.toString();
