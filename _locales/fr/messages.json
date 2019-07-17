@@ -36,10 +36,10 @@
     "description": "Titre de la liste Top trafic"
   },
   "digitalEquivalenceTitle": {
-    "message": "Les émissions de CO2 liées à votre utilisation d'internet équivaut à :"
+    "message": "Les émissions de <abbr title=\"dioxyde de carbone\">CO<sub>2</sub></abbr> liées à votre utilisation d'internet équivaut à :"
   },
   "equivalenceTitle": {
-    "message": "En $MINUTES$ minutes de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $GCO2$ gCO2e",
+    "message": "En $MINUTES$ minutes de navigation, vous avez fait transiter $MBTOTAL$ <abbr title=\"mégaoctets\">Mo</abbr> de données. Cela a nécessité $KWH$ <abbr title=\"kilowatt-heures\">kWh</abbr> d'électricité, soit $GCO2$ <abbr title=\"grammes d'équivalent en dioxyde de carbone\">gCO2e</abbr>",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
@@ -84,14 +84,23 @@
   "howToChange": {
     "message": "Comment changer cela ? Quelle responsabilité ?"
   },
+  "kWhUnit": {
+    "message": "kilowatt-heures"
+  },
+  "gCO2Unit": {
+    "message": "grammes d'équivalent en dioxyde de carbone"
+  },
   "chargedSmartphonesUnit": {
     "message": "smartphones rechargés"
   },
   "kmByCarUnit": {
-    "message": "kms en voiture"
+    "message": "<abbr title=\"kilomètre\">km</abbr> en voiture"
   },
   "mbTotalUnit": {
     "message": "Mo"
+  },
+  "mbTotalUnitTitle": {
+    "message": "mégaoctets"
   },
   "statsOthers": {
     "message": "Autres"

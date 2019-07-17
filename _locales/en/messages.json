@@ -36,10 +36,10 @@
     "description": "Top traffic list title"
   },
   "digitalEquivalenceTitle": {
-    "message": "The CO2 emissions related to your digital use is equivalent to:"
+    "message": "The <abbr title=\"carbon dioxide\">CO<sub>2</sub></abbr> emissions related to your digital use is equivalent to:"
   },
   "equivalenceTitle": {
-    "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2e",
+    "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ <abbr title=\"megabyte\">MB<abbr> of data. This required $KWH$ <abbr title=\"kilowatt hours\">kWh</abbr> of electricity, or $GCO2$ <abbr title=\"grams of carbon dioxide equivalent\">gCO2e</abbr>",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
@@ -84,14 +84,23 @@
   "howToChange": {
     "message": "How to change that? What responsibility?"
   },
+  "kWhUnit": {
+    "message": "kilowatt hours"
+  },
+  "gCO2Unit": {
+    "message": "grams of carbon dioxide equivalent"
+  },
   "chargedSmartphonesUnit": {
     "message": "charged smartphones"
   },
   "kmByCarUnit": {
-    "message": "kms by car"
+    "message": "<abbr title=\"kilometer\">km</abbr> by car"
   },
   "mbTotalUnit": {
     "message": "Mb"
+  },
+  "mbTotalUnitTitle": {
+    "message": "megabyte"
   },
   "statsOthers": {
     "message": "Others"

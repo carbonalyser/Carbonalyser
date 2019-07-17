@@ -55,53 +55,42 @@
 
         <div id="equivalence">
             <p id="equivalenceTitle"></p>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/time.svg" />
+            <ul class="equivalenceList">
+                <li>
+                    <img src="img/time.svg" alt="" />
                     <span id="duration"></span>
                     <span id="durationItem" class="unit">minutes</span>
-                </div>
-            </div>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/energy.svg" />
+                </li>
+                <li>
+                    <img src="img/energy.svg" alt="" />
                     <span id="kWhTotalValue"></span>
-                    <span id="kWhTotalUnit" class="unit">kWh</span>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/arrows.svg" />
+                    <abbr id="kWhTotalUnit" class="unit" title="kWhUnit">kWh</abbr>
+                </li>
+                <li>
+                    <img src="img/arrows.svg" alt="" />
                     <span id="mbTotalValue"></span>
-                    <span id="mbTotalUnit" class="unit" translate="mbTotalUnit"></span>
-                </div>
-            </div>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/gco2.svg" />
+                    <abbr id="mbTotalUnit" class="unit" title="mbTotalUnitTitle" translate="mbTotalUnit"></abbr>
+                </li>
+                <li>
+                    <img src="img/gco2.svg" alt="" />
                     <span id="gCO2Value"></span>
-                    <span id="gCO2Item" class="unit">gCO<sub>2</sub>e</span>
-                </div>
-            </div>
-            <div class="clear"></div>
+                    <abbr id="gCO2Item" title="gCO2Unit" class="unit">gCO<sub>2</sub>e</abbr>
+                </li>
+            </ul>
 
-            <p translate="digitalEquivalenceTitle"></p>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/smartphone.svg" />
+            <p translate-html="digitalEquivalenceTitle"></p>
+            <ul class="equivalenceList">
+                <li>
+                    <img src="img/smartphone.svg" alt="" />
                     <span id="chargedSmartphonesValue"></span>
                     <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
-                </div>
-            </div>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/car.svg" class="icon-car" />
+                </li>
+                <li>
+                    <img src="img/car.svg" alt="" class="icon-car" />
                     <span id="kmByCarValue"></span>
-                    <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
-                </div>
-            </div>
-            <div class="clear"></div>
+                    <span id="kmByCarUnit" class="unit" translate-html="kmByCarUnit"></span>
+                </li>
+            </ul>
             <p><a class="button button-fullwidth" translate="howToChange" translate-href="moreInformationUrl"></a></p>
         </div>
     </div>

@@ -135,7 +135,11 @@ showStats = () => {
   while (equivalenceTitle.firstChild) {
     equivalenceTitle.removeChild(equivalenceTitle.firstChild);
   }
-  equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
+
+  const text = document.createElement("div");
+  text.innerHTML = browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()]);
+
+  equivalenceTitle.appendChild(text);
 }
 
 start = () => {
@@ -214,7 +218,15 @@ translateText = (target, translationKey) => {
 }
 
 translateHref = (target, translationKey) => {
-  target.href = browser.i18n.getMessage(translationKey);
+  target.href = translate(translationKey);
+}
+
+translateHtml = (target, translationKey) => {
+  target.innerHTML = translate(translationKey);
+}
+
+translateA11y = (target, translationKey) => {
+  target.setAttribute('title', translate(translationKey) );
 }
 
 hide = element => element.classList.add('hidden');
@@ -242,6 +254,14 @@ document.querySelectorAll('[translate]').forEach(function(element) {
 
 document.querySelectorAll('[translate-href]').forEach(function(element) {
   translateHref(element, element.getAttribute('translate-href'));
+});
+
+document.querySelectorAll('[translate-html]').forEach(function(element) {
+  translateHtml(element, element.getAttribute('translate-html'));
+});
+
+document.querySelectorAll('[title]').forEach(function(element) {
+  translateA11y(element, element.getAttribute('title'));
 });
 
 init();
