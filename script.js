@@ -24,9 +24,11 @@ headersReceivedListener = (requestDetails) => {
 
   filter.ondata = event => {
     const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-    setByteLengthPerOrigin(origin, event.data.byteLength);
-
-    filter.write(event.data);
+    
+    if(origin != 'localhost') {
+      setByteLengthPerOrigin(origin, event.data.byteLength);
+      filter.write(event.data);
+    }
   };
 
   filter.onstop = () => {
