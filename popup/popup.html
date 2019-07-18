@@ -17,14 +17,14 @@
     <hr>
 
     <div>
-        <button id="startButton" class="button" translate="start"></button>
-        <button id="stopButton" class="button hidden" translate="stop"></button>
-        <button id="resetButton" class="button hidden" translate="reset"></button>
+        <button id="startButton" class="startButton button" translate="start"></button>
+        <button id="stopButton" class="stopButton button hidden" translate="stop"></button>
+        <button id="resetButton" class="resetButton button hidden" translate="reset"></button>
     </div>
 
     <p id="analysisInProgressMessage" class="hidden" translate="analysisInProgress"></p>
 
-    <div id="stats" class="hidden">
+    <div id="stats" class="stats hidden">
         <hr>
 
         <div class="column">
@@ -59,13 +59,13 @@
             </svg>
         </div>
         <div class="column">
-            <span id="statsListTitle" translate="topTraffic"></span>
+            <span id="statsListTitle" class="statsListTitle" translate="topTraffic"></span>
             <ul id="statsListItems" class="statsListItems"></ul>
         </div>
 
         <hr>
 
-        <div id="selectRegionForm">
+        <div id="selectRegionForm" class="selectRegionForm">
             <select id="selectRegion">
                 <option value="" translate="selectRegionPlaceholder"></option>
                 <option value="regionEuropeanUnion" translate="regionEuropeanUnion"></option>
@@ -77,7 +77,7 @@
             <p translate="selectRegionHelp"></p>
         </div>
 
-        <div id="equivalence">
+        <div id="equivalence" class="equivalence">
             <p id="equivalenceTitle"></p>
             <ul class="equivalenceList">
                 <li>

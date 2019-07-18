@@ -204,16 +204,20 @@ hr {
     display: block;
 }
  
-#stats {
+.stats {
     display: flex;
     flex-wrap: wrap;
+
+    &.hidden {
+        display: none;
+    }
 
     .column {
         flex: 1;
     }
 }
 
-#selectRegionForm {
+.selectRegionForm {
     width: 100%;
 
     select {
@@ -221,52 +225,53 @@ hr {
     }
 }
  
-#startButton, #stopButton {
+.startButton, .stopButton {
     background: url('img/run.svg') no-repeat 4px 5px;
     background-size: 20px;
     padding-left: 26px;
 }
  
-#resetButton {
+.resetButton {
     background: url('img/reload.svg') no-repeat 4px 5px;
     background-size: 20px;
     padding-left: 26px;
 }
  
-#statsListItems {
+.statsListItems {
     overflow: hidden;
     font-size: 12px;
-}
- 
-ul#statsListItems {
     margin: 0;
     padding: 10px;
 }
  
-#statsListTitle {
+.statsListTitle {
     color: #666;
 }
  
-#equivalence img {
-    margin-top: -8px;
-    width: 50px;
-    float: left;
+.equivalence {
+    img {
+        margin-top: -8px;
+        width: 50px;
+        float: left;
+
+        &.icon-car {
+            width: 44px;
+            margin-right: 6px;
+        }
+    }
+
+    .block {
+        font-size: 16px;
+    }
+
+    span, abbr {
+        &.unit {
+            font-size: 10px;
+            display: block;
+        }
+    }
 }
- 
-#equivalence img.icon-car {
-    width: 44px;
-    margin-right: 6px;
-}
- 
-#equivalence .block {
-    font-size: 16px;
-}
- 
-#equivalence span.unit, #equivalence abbr.unit {
-    font-size: 10px;
-    display: block;
-}
- 
+
 .equivalenceList {
     display: flex;
     flex-wrap: wrap;
