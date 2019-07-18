@@ -84,12 +84,15 @@
   "howToChange": {
     "message": "How to change that? What responsibility?"
   },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/en/article/unsustainable-use-online-video/"
+  },
   "kWhUnit": {
     "message": "kilowatt hours"
   },
   "gCO2Unit": {
     "message": "grams of carbon dioxide equivalent"
-  },
+  }
   "chargedSmartphonesUnit": {
     "message": "charged smartphones"
   },

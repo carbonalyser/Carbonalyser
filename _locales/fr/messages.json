@@ -84,12 +84,15 @@
   "howToChange": {
     "message": "Comment changer cela ? Quelle responsabilité ?"
   },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/article/climat-insoutenable-usage-video/"
+  },
   "kWhUnit": {
     "message": "kilowatt-heures"
   },
   "gCO2Unit": {
     "message": "grammes d'équivalent en dioxyde de carbone"
-  },
+  }  
   "chargedSmartphonesUnit": {
     "message": "smartphones rechargés"
   },
