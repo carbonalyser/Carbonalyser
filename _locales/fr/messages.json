@@ -84,6 +84,9 @@
   "howToChange": {
     "message": "Comment changer cela ? Quelle responsabilité ?"
   },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/article/climat-insoutenable-usage-video/"
+  },
   "chargedSmartphonesUnit": {
     "message": "smartphones rechargés"
   },

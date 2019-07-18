@@ -84,6 +84,9 @@
   "howToChange": {
     "message": "How to change that? What responsibility?"
   },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/en/article/unsustainable-use-online-video/"
+  },
   "chargedSmartphonesUnit": {
     "message": "charged smartphones"
   },
