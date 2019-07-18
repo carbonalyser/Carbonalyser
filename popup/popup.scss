@@ -1,0 +1,281 @@
+.chart {
+    background: #ddd;
+    border-radius: 50%;
+    display: block;
+    transform: rotate(-90deg);
+    position: relative;
+    margin: 20px auto;
+ 
+    &__pattern {
+        ._background {
+            stroke: none;
+        }
+ 
+        ._shape {
+            stroke: none;
+            fill: #ddd;
+            opacity: 0.4;
+        }
+ 
+        &:nth-of-type(1) {
+            ._background {
+                fill: #07538d;
+            }
+        }
+ 
+        &:nth-of-type(2) {
+            ._background {
+                fill: #f16f22;
+            }
+        }
+ 
+        &:nth-of-type(3) {
+            ._background {
+                fill: #895383;
+            }
+        }
+ 
+        &:nth-of-type(4) {
+            ._background {
+                fill: #85ab5c;
+            }
+ 
+            ._shape {
+                stroke: #ddd;
+                fill: none;
+            }
+        }
+ 
+        &:nth-of-type(5) {
+            ._background {
+                fill: #c8254b;
+            }
+ 
+            ._shape {
+                stroke: #ddd;
+                fill: none;
+            }
+        }
+    }
+ 
+    &__part {
+        position: absolute;
+        top: 0;
+        left: 0;
+        stroke-width: 160;
+        stroke-dashoffset: 0;
+        stroke-dasharray: 0 503;
+        fill: none;
+        transition: all 0.4s;
+ 
+        &.is-disabled {
+            opacity: 0.4;
+        }
+ 
+        &:nth-of-type(1) {
+            stroke: url( "#chart-pattern1" );
+        }
+ 
+        &:nth-of-type(2) {
+            stroke: url( "#chart-pattern2" );
+        }
+ 
+        &:nth-of-type(3) {
+            stroke: url( "#chart-pattern3" );
+        }
+ 
+        &:nth-of-type(4) {
+            stroke: url( "#chart-pattern4" );
+        }
+ 
+        &:nth-of-type(5) {
+            stroke: url( "#chart-pattern5" );
+        }
+    }
+}
+ 
+.statsListItems {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+ 
+    li {
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+ 
+        svg {
+            margin-right: 5px;
+        }
+ 
+        &:nth-of-type(1) {
+            svg {
+                fill: url( "#chart-pattern1" );
+            }
+        }
+ 
+        &:nth-of-type(2) {
+            svg {
+                fill: url( "#chart-pattern2" );
+            }
+        }
+ 
+        &:nth-of-type(3) {
+            svg {
+                fill: url( "#chart-pattern3" );
+            }
+        }
+ 
+        &:nth-of-type(4) {
+            svg {
+                fill: url( "#chart-pattern4" );
+            }
+        }
+ 
+        &:nth-of-type(5) {
+            svg {
+                fill: url( "#chart-pattern5" );
+            }
+        }
+    }
+}
+ 
+h1 {
+    margin: 0;
+}
+ 
+hr {
+    border: thin solid #999;
+    height: 0;
+    padding: 0;
+    line-height: 0;
+    width: 100%;
+}
+ 
+.header-links {
+    float: right;
+    margin-top: -20px;
+
+    a {
+        color: #666;
+        margin-right: 10px;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+ 
+.hidden {
+    display: none;
+}
+ 
+.body {
+    max-width: 500px;
+    min-width: 370px;
+    width: 100%;
+    margin: 0;
+    padding: 6px;
+    overflow-x: hidden;
+    background: white;
+    box-sizing: border-box;
+}
+ 
+.button {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 2px solid #999;
+    background: #fff;
+    font-size: 14px;
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+ 
+.button-fullwidth {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+ 
+.fullwidth {
+    width: 100%;
+    display: block;
+}
+ 
+#stats {
+    display: flex;
+    flex-wrap: wrap;
+
+    .column {
+        flex: 1;
+    }
+}
+
+#selectRegionForm {
+    width: 100%;
+
+    select {
+        width: 100%;
+    }
+}
+ 
+#startButton, #stopButton {
+    background: url('img/run.svg') no-repeat 4px 5px;
+    background-size: 20px;
+    padding-left: 26px;
+}
+ 
+#resetButton {
+    background: url('img/reload.svg') no-repeat 4px 5px;
+    background-size: 20px;
+    padding-left: 26px;
+}
+ 
+#statsListItems {
+    overflow: hidden;
+    font-size: 12px;
+}
+ 
+ul#statsListItems {
+    margin: 0;
+    padding: 10px;
+}
+ 
+#statsListTitle {
+    color: #666;
+}
+ 
+#equivalence img {
+    margin-top: -8px;
+    width: 50px;
+    float: left;
+}
+ 
+#equivalence img.icon-car {
+    width: 44px;
+    margin-right: 6px;
+}
+ 
+#equivalence .block {
+    font-size: 16px;
+}
+ 
+#equivalence span.unit, #equivalence abbr.unit {
+    font-size: 10px;
+    display: block;
+}
+ 
+.equivalenceList {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        min-width: 100px;
+        flex: 1;
+    }
+}

@@ -18,7 +18,6 @@ const carbonIntensityFactorIngCO2PerKWh = {
 };
 
 let statsInterval;
-let pieChart;
 
 parseStats = () => {
   const stats = localStorage.getItem('stats');
@@ -76,11 +75,6 @@ showStats = () => {
   const series = [];
 
   const statsListItemsElement = document.getElementById('statsListItems');
-  /*while (statsListItemsElement.firstChild) {
-    statsListItemsElement.removeChild(statsListItemsElement.firstChild);
-  }*/
-
-  statsListItemsElement.innerHTML = '';
 
   let _template = '';
   let _counter = 1;
@@ -93,34 +87,21 @@ showStats = () => {
     labels.push(stats.highestStats[index].origin);
     series.push(stats.highestStats[index].percent);
 
-    _template += '<li data-chart="' + _counter + '">';
-      _template += '<svg width="10" height="10">';
-        _template += '<rect x="0" y="0" width="10" height="10" />';
-      _template += '</svg>';
-      _template += '<strong>' + stats.highestStats[index].percent + '%</strong> ' + stats.highestStats[index].origin;
-    _template += '</li>';
+    _template += `<li data-chart="${_counter}">
+    <svg width="10" height="10">
+      <rect x="0" y="0" width="10" height="10" />
+        </svg>
+      <strong>${stats.highestStats[index].percent}%</strong> ${stats.highestStats[index].origin}
+      </li>`;
 
     _counter++;
   }
 
-  statsListItemsElement.innerHTML = _template;
+  statsListItemsElement.innerHTML = DOMPurify.sanitize( _template );
 
   document.querySelectorAll('#statsListItems li').forEach(function(element) {
-    element.addEventListener('mouseover', function() {
-      document.querySelectorAll('.chart__part').forEach(function(element) {
-        element.classList.add('is-disabled');
-      });
-      
-      document.getElementById('chart-part' + this.dataset.chart).classList.remove('is-disabled');
-      this.classList.add('is-active');
-    });
-
-    element.addEventListener('mouseout', function() {
-      document.querySelectorAll('.chart__part').forEach(function(element) {
-        element.classList.remove('is-disabled');
-      });
-      this.classList.remove('is-active');
-    });
+    element.addEventListener('mouseover', focusChartPartHandler);
+    element.addEventListener('mouseout', focusChartPartHandler);
   });
 
   let duration = localStorage.getItem('duration');
@@ -143,7 +124,7 @@ showStats = () => {
 
     let _strokeDashoffset     = 0;
     let _strokeDasharrayValue = 0;
-    let _strokeDasharraySize  = 503;
+    let _strokeDasharraySize  = 503; // Math.floor( Math.PI() * 2 * ChartRadius ) + 1
 
     for(let i = 0; i < series.length; i++) {
       _strokeDasharrayValue = (series[i] / 100) * 503;
@@ -172,7 +153,7 @@ showStats = () => {
   }
 
   const text = document.createElement("div");
-  text.innerHTML = browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()]);
+  text.innerHTML = DOMPurify.sanitize( browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()]) );
 
   equivalenceTitle.appendChild(text);
 }
@@ -244,6 +225,35 @@ selectRegionHandler = (event) => {
   showStats();
 }
 
+focusChartPartHandler = (event) => {
+  const target = event.target;
+  const type = event.type;
+  const selectedChartPart = 'chart-part' + target.dataset.chart;
+
+  if(type == 'mouseover') {
+    disableChartParts();
+
+    document.getElementById(selectedChartPart).classList.remove('is-disabled');
+    target.classList.add('is-active');
+  } else if(type == 'mouseout') {
+    enableChartParts();
+
+    target.classList.remove('is-active');
+  }
+}
+
+disableChartParts = () => {
+  document.querySelectorAll('.chart__part').forEach(function(element) {
+    element.classList.add('is-disabled');
+  });
+}
+
+enableChartParts = () => {
+  document.querySelectorAll('.chart__part').forEach(function(element) {
+    element.classList.remove('is-disabled');
+  });
+}
+
 translate = (translationKey) => {
   return browser.i18n.getMessage(translationKey);
 }
@@ -257,7 +267,7 @@ translateHref = (target, translationKey) => {
 }
 
 translateHtml = (target, translationKey) => {
-  target.innerHTML = translate(translationKey);
+  target.innerHTML = DOMPurify.sanitize( translate(translationKey) );
 }
 
 translateA11y = (target, translationKey) => {
@@ -291,12 +301,12 @@ document.querySelectorAll('[translate-href]').forEach(function(element) {
   translateHref(element, element.getAttribute('translate-href'));
 });
 
-document.querySelectorAll('[translate-html]').forEach(function(element) {
-  translateHtml(element, element.getAttribute('translate-html'));
-});
-
 document.querySelectorAll('[title]').forEach(function(element) {
   translateA11y(element, element.getAttribute('title'));
+});
+
+document.querySelectorAll('[translate-html]').forEach(function(element) {
+  translateHtml(element, element.getAttribute('translate-html'));
 });
 
 init();
