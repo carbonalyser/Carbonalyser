@@ -67,10 +67,6 @@ getStats = () => {
 
 toMegaByte = (value) => (Math.round(value/1024/1024));
 
-getNbSites = () => {
-  const statsListItemsElement = document.getElementById('statsListItems');
-};
-
 showStats = () => {
   const stats = getStats();
 
