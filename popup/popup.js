@@ -1,6 +1,9 @@
 const defaultLocation = 'regionOther';
 let userLocation = defaultLocation;
 
+const defaultNbSites = 5;
+let userNbSitesDisplayed = defaultNbSites;
+
 const defaultCarbonIntensityFactorIngCO2PerKWh = 519;
 const kWhPerByteDataCenter = 0.00000000072;
 const kWhPerByteNetwork = 0.00000000152;
@@ -39,7 +42,7 @@ getStats = () => {
     return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
   });
 
-  const highestStats = sortedStats.slice(0, 4);
+  const highestStats = sortedStats.slice(0, userNbSitesDisplayed-1);
   let subtotal = 0;
   for (let index in highestStats) {
     subtotal += highestStats[index].byte;
@@ -63,6 +66,10 @@ getStats = () => {
 }
 
 toMegaByte = (value) => (Math.round(value/1024/1024));
+
+getNbSites = () => {
+  const statsListItemsElement = document.getElementById('statsListItems');
+};
 
 showStats = () => {
   const stats = getStats();
@@ -177,6 +184,13 @@ init = () => {
     selectRegion.value = selectedRegion;
   }
 
+  const valueNbSites = localStorage.getItem('nbSitesToDisplay');
+
+  if (null !== valueNbSites) {
+    userNbSitesDisplayed = valueNbSites;
+    nbSitesField.value = valueNbSites;
+  }
+
   if (null === localStorage.getItem('stats')) {
     hide(resetButton);
   } else {
@@ -202,6 +216,14 @@ selectRegionHandler = (event) => {
 
   localStorage.setItem('selectedRegion', selectedRegion);
   userLocation = selectedRegion;
+  showStats();
+}
+
+nbSitesFieldHandler = (event) => {
+  const valueNbSites = event.target.value;
+
+  localStorage.setItem('nbSitesToDisplay', valueNbSites);
+  userNbSitesDisplayed = valueNbSites;
   showStats();
 }
 
@@ -235,6 +257,9 @@ resetButton.addEventListener('click', reset);
 
 const selectRegion = document.getElementById('selectRegion');
 selectRegion.addEventListener('change', selectRegionHandler);
+
+const nbSitesField = document.getElementById('statsNbSitesDisplayed');
+nbSitesField.addEventListener('change', nbSitesFieldHandler);
 
 document.querySelectorAll('[translate]').forEach(function(element) {
   translateText(element, element.getAttribute('translate'));

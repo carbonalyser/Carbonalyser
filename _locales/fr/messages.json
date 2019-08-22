@@ -35,6 +35,10 @@
     "message": "Top 5 du trafic relatif à votre navigation",
     "description": "Titre de la liste Top trafic"
   },
+  "nbSitesDisplayed": {
+    "message": "Nombre de sites à afficher",
+    "description": "Titre du champ NbSitesDisplayed"
+  },
   "digitalEquivalenceTitle": {
     "message": "Les émissions de CO2 liées à votre utilisation d'internet équivaut à :"
   },
