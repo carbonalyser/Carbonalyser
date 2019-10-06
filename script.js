@@ -9,6 +9,8 @@ extractHostname = (url) => {
   return hostname;
 }
 
+isFromLocalMachine = (origin) => (origin === "localhost" || origin === "127.0.0.1");
+
 setByteLengthPerOrigin = (origin, byteLength) => {
   const stats = localStorage.getItem('stats');
   const statsJson = null === stats ? {} : JSON.parse(stats);
@@ -24,8 +26,10 @@ headersReceivedListener = (requestDetails) => {
 
   filter.ondata = event => {
     const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-    setByteLengthPerOrigin(origin, event.data.byteLength);
 
+    if(!isFromLocalMachine(origin)) {
+      setByteLengthPerOrigin(origin, event.data.byteLength);
+    }
     filter.write(event.data);
   };
 
