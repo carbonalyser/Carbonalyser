@@ -52,6 +52,20 @@ See: https://theshiftproject.org/en/carbonalyser-browser-extension/
 Questions, bug reports and feature requests are to be addressed to communication@theshiftproject.org
 
 Source code is available in open access: https://github.com/supertanuki/Carbonalyser
+
+## Contribute
+
+To install the extension locally:
+
+* Clone this repo
+
+* Open Firefox
+
+* Enter “about:debugging#/runtime/this-firefox” in the URL bar
+
+* Click “Load Temporary Add-on”
+
+* Open the extension’s directory where you cloned this repo
  
 ## Contributors
 
