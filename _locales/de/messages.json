@@ -1,0 +1,105 @@
+{
+  "moreInformation": {
+    "message": "Über",
+    "description": "Über link titel"
+  },
+  "moreInformationUrl": {
+    "message": "https://theshiftproject.org/en/carbonalyser-browser-extension/",
+    "description": "Über url"
+  },
+  "legalNotice": {
+    "message": "Impressum/Lizenz",
+    "description": "Impressum und Lizenz link titel"
+  },
+  "legalNoticeUrl": {
+    "message": "https://theshiftproject.org/en/general-conditions-of-use/",
+    "description": "Lizenz url"
+  },
+  "start": {
+    "message": "Analyse starten",
+    "description": "Analyse starten Knopf"
+  },
+  "stop": {
+    "message": "Analyse stoppen",
+    "description": "Analyse stoppen Knopf"
+  },
+  "reset": {
+    "message": "Zurücksetzen",
+    "description": "Zurücksetzen Knopf"
+  },
+  "analysisInProgress": {
+    "message": "Analyse läuft. Surfe im Web und komm dann wieder um deine Statistiken zu sehen!",
+    "description": "Analyse läuft Nachricht"
+  },
+  "topTraffic": {
+    "message": "Top 5 Datenverbraucher",
+    "description": "Top 5 Datenverbraucher liste titel"
+  },
+  "digitalEquivalenceTitle": {
+    "message": "Die CO2-Emissionen deines Browsens entsprechen:"
+  },
+  "equivalenceTitle": {
+    "message": "In $MINUTES$ Minuten hast du $MBTOTAL$ MB heruntergeladen. Das hat $KWH$ kWh oder $GCO2$ gCO2e gebraucht",
+    "description": "Äquivalenz",
+    "placeholders": {
+      "minutes" : {
+        "content" : "$1",
+        "example" : "60"
+      },
+      "mbtotal" : {
+        "content" : "$2",
+        "example" : "10"
+      },
+      "kwh" : {
+        "content" : "$3",
+        "example" : "99"
+      },
+      "gco2" : {
+        "content" : "$4",
+        "example" : "199"
+      }
+    }
+  },
+  "selectRegionPlaceholder": {
+    "message": "Wähle dein Land aus"
+  },
+  "regionEuropeanUnion": {
+    "message": "Europäische Union"
+  },
+  "regionFrance": {
+    "message": "Frankreich"
+  },
+  "regionUnitedStates": {
+    "message": "USA"
+  },
+  "regionChina": {
+    "message": "China"
+  },
+  "regionOther": {
+    "message": "Andere"
+  },
+  "selectRegionHelp": {
+    "message": "Die Länderauswahl ist nicht zwingend erforderlich, lässt uns aber deine Ergebnisse besser anpassen."
+  },
+  "howToChange": {
+    "message": "Was kann ich ändern? Verantwortungsbewusstsein? [EN]"
+  },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/en/article/unsustainable-use-online-video/"
+  },
+  "chargedSmartphonesUnit": {
+    "message": "geladene Handys"
+  },
+  "kmByCarUnit": {
+    "message": "km mit dem Auto"
+  },
+  "mbTotalUnit": {
+    "message": "MB"
+  },
+  "statsOthers": {
+    "message": "Andere"
+  },
+  "resetConfirmation": {
+    "message": "Zurücksetzen bestätigen?"
+  }
+}
