@@ -2,8 +2,8 @@ const defaultLocation = 'regionOther';
 let userLocation = defaultLocation;
 
 const defaultCarbonIntensityFactorIngCO2PerKWh = 519;
-const kWhPerByteDataCenter = 0.00000000072;
-const kWhPerByteNetwork = 0.00000000152;
+const kWhPerByteDataCenter = 0.000000000072;
+const kWhPerByteNetwork = 0.000000000152;
 const kWhPerMinuteDevice = 0.00021;
 
 const GESgCO2ForOneKmByCar = 220;
