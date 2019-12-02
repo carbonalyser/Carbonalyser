@@ -3,7 +3,7 @@
   "name": "Carbonalyser",
   "description": "Analyse Internet usage carbon footprint",
   "author": "Richard Hanna",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "icons": {
     "48": "icons/icon-on-48.png"
   },
