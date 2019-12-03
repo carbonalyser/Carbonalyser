@@ -11,7 +11,7 @@ h1 {
 }
 
 hr {
-    border: 1px solid #999999;
+    border: 1px solid #757575;
     height: 0;
     padding: 0;
     line-height: 0;
@@ -23,7 +23,7 @@ hr {
 }
 
 .header-links a {
-    color: #999999;
+    color: #757575;
     margin-right: 10px;
     text-decoration: none;
 }
@@ -43,7 +43,7 @@ hr {
 .button {
     padding: 6px 8px;
     border-radius: 6px;
-    border: 2px solid #999999;
+    border: 2px solid #757575;
     background: #fff;
     font-size: 14px;
     text-decoration: none;
@@ -109,7 +109,7 @@ ul#statsListItems {
 }
 
 #statsListTitle {
-    color: #999999;
+    color: #757575;
 }
 
 #equivalence img {
@@ -127,10 +127,12 @@ ul#statsListItems {
     font-size: 16px;
 }
 
-#equivalence span.unit {
+#equivalence span.unit, #equivalence abbr.unit {
     font-size: 10px;
     display: block;
 }
+
+
 
 .selectRegionHelp {
     margin-top: 0px;

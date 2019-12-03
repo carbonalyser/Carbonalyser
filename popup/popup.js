@@ -135,7 +135,7 @@ showStats = () => {
   while (equivalenceTitle.firstChild) {
     equivalenceTitle.removeChild(equivalenceTitle.firstChild);
   }
-  equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
+  equivalenceTitle.innerHTML = DOMPurify.sanitize( browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()]));
 }
 
 start = () => {
@@ -217,6 +217,14 @@ translateHref = (target, translationKey) => {
   target.href = browser.i18n.getMessage(translationKey);
 }
 
+translateHtml = (target, translationKey) => {
+  target.innerHTML = DOMPurify.sanitize( translate(translationKey) );
+}
+
+translateA11y = (target, translationKey) => {
+  target.setAttribute('title', translate(translationKey) );
+}
+
 hide = element => element.classList.add('hidden');
 show = element => element.classList.remove('hidden');
 
@@ -242,6 +250,14 @@ document.querySelectorAll('[translate]').forEach(function(element) {
 
 document.querySelectorAll('[translate-href]').forEach(function(element) {
   translateHref(element, element.getAttribute('translate-href'));
+});
+
+document.querySelectorAll('[title]').forEach(function(element) {
+  translateA11y(element, element.getAttribute('title'));
+});
+
+document.querySelectorAll('[translate-html]').forEach(function(element) {
+  translateHtml(element, element.getAttribute('translate-html'));
 });
 
 init();
