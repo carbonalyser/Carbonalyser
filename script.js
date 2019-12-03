@@ -20,24 +20,18 @@ setByteLengthPerOrigin = (origin, byteLength) => {
 }
 
 headersReceivedListener = (requestDetails) => {
-  let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
-
-  filter.ondata = event => {
-    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-    setByteLengthPerOrigin(origin, event.data.byteLength);
-
-    filter.write(event.data);
-  };
-
-  filter.onstop = () => {
-    filter.disconnect();
-  };
+     const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+     const rhf = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
+     const rh = undefined === rhf ? {value: 0} 
+      : rhf;
+     const requestSize = new Number(rh.value); 
+     setByteLengthPerOrigin(origin, requestSize);
 
   return {};
 }
 
 setBrowserIcon = (type) => {
-  browser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+  chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 }
 
 addOneMinute = () => {
@@ -52,7 +46,7 @@ handleMessage = (request, sender, sendResponse) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
-    browser.webRequest.onHeadersReceived.addListener(
+    chrome.webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
       {urls: ["<all_urls>"]},
       ["blocking", "responseHeaders"]
@@ -67,7 +61,7 @@ handleMessage = (request, sender, sendResponse) => {
 
   if ('stop' === request.action) {
     setBrowserIcon('off');
-    browser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+    chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
 
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
@@ -76,4 +70,4 @@ handleMessage = (request, sender, sendResponse) => {
   }
 }
 
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);
