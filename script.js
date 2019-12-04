@@ -20,7 +20,7 @@ setByteLengthPerOrigin = (origin, byteLength) => {
 }
 
 headersReceivedListener = (requestDetails) => {
-     const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+     const origin = extractHostname(!requestDetails.initiator ? (!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl) : requestDetails.initiator);
      const rhf = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
      const rh = undefined === rhf ? {value: 0} 
       : rhf;

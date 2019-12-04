@@ -131,12 +131,12 @@ describe ('addOneMinute', function(){
 describe ('headersReceivedListener', function(){
     let rd = {};
     // backup for spied methods
+    const DOMAIN_NAME = 'http://www.spotify.com';
     const extractHostNameBackup = extractHostname;
     const setByteLengthPerOriginBackup = setByteLengthPerOrigin;
 
     this.beforeEach(function(done){
         rd = {
-            initiator: 'http://www.spotify.com',
             url: 'https://audio-ak-spotify-com.akamaized.net/audio/25cdff43133cae53f93fc8ad58af83c080792f03?__token__=exp=1574937651~hmac=2b46cc453c414848d67825d49db7943d7b35ac760d11aebd702659b250b1c9cf',
             responseHeaders: [
                 {name:'Last-Modified',value:'Thu, 18 Apr 2019 18:16:43 GMT'},
@@ -163,8 +163,21 @@ describe ('headersReceivedListener', function(){
         done();
     });
 
-    it('should call extractHostname with provided when initiator (originUrl) is provided from parameter', function(done){
+    it('should call extractHostName with provided originUrl when it is provided from parameter (Mozilla Firefox Browser behavior)', function(done){
         extractHostname = chai.spy();
+
+        rd.originUrl = DOMAIN_NAME;
+
+        headersReceivedListener(rd);
+
+        expect(extractHostname).to.have.been.called.with(rd.originUrl);
+        done();
+    });
+
+    it('should call extractHostname with Initiator when it is provided from parameter (Chrome Browser behavior)', function(done){
+        extractHostname = chai.spy();
+
+        rd.initiator = DOMAIN_NAME;
 
         headersReceivedListener(rd);
 
@@ -172,7 +185,7 @@ describe ('headersReceivedListener', function(){
         done();
     });
 
-    it('should call extractHostname with url when Initiator (originUrl) is not provided from from parameter', function(done){
+    it('should call extractHostname with url when neither Initiator nor originUrl is not provided from from parameter', function(done){
         extractHostname = chai.spy();
 
         rd.initiator = undefined;
@@ -185,6 +198,8 @@ describe ('headersReceivedListener', function(){
 
     it('should call setByteLengthPerOrigin with request size passed in parameter', function(done){
         setByteLengthPerOrigin = chai.spy();
+
+        rd.initiator = DOMAIN_NAME;
         
         headersReceivedListener(rd);
         
@@ -194,7 +209,8 @@ describe ('headersReceivedListener', function(){
 
     it('should call setByteLengthPerOrigin with zero request size when request size is UNDEFINED', function(done){
         setByteLengthPerOrigin = chai.spy();
-        
+
+        rd.initiator = DOMAIN_NAME;
         rd.responseHeaders = [];
         headersReceivedListener(rd);
         
