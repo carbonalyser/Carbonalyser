@@ -128,6 +128,32 @@ describe ('addOneMinute', function(){
     });
 });
 
+describe('isChromeExtension', function(){
+    this.afterEach(function(done){
+        //MOCK browser object for Chrome Extension Context
+        browser = undefined;
+        done();
+    });
+
+    it('should return true when Chrome Extension', function(done){
+        var result = isChromeExtension();
+        result.should.equals(true);
+        done();
+    });
+
+    it('should return false when not Chrome Extension', function(done){
+        //MOCK browser for Mozilla Extension Context
+        browser = {};
+
+        var result = isChromeExtension();
+        result.should.equals(false);
+
+        //MOCK deletion
+        browser = undefined;
+        done();
+    });
+});
+
 describe ('headersReceivedListener', function(){
     let requestDetails = {};
     // backup for spied methods
@@ -160,17 +186,27 @@ describe ('headersReceivedListener', function(){
         //reset chai spies
         extractHostname = extractHostNameBackup;
         setByteLengthPerOrigin = setByteLengthPerOriginBackup;
+
+        //reset mock browser
+        browser = undefined;
         done();
     });
 
     it('should call extractHostName with provided originUrl when it is provided from parameter (Mozilla Firefox Browser behavior)', function(done){
         extractHostname = chai.spy();
+        browser = {
+            webRequest : {
+                }
+        };
+        chai.spy.on(browser.webRequest, 'filterResponseData', function(requestId){
+            return {};
+        });
 
         requestDetails.originUrl = DOMAIN_NAME;
 
         headersReceivedListener(requestDetails);
 
-        expect(extractHostname).to.have.been.called.with(requestDetails.originUrl);
+        expect(browser.webRequest.filterResponseData).to.have.been.called();
         done();
     });
 
@@ -217,5 +253,4 @@ describe ('headersReceivedListener', function(){
         expect(setByteLengthPerOrigin).to.have.been.called.with('www.spotify.com', new Number(0));
         done();
     });
-
 });

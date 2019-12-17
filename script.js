@@ -19,14 +19,33 @@ setByteLengthPerOrigin = (origin, byteLength) => {
   localStorage.setItem('stats', JSON.stringify(statsJson));
 }
 
+isChromeExtension = () => {
+  return (typeof(browser) === 'undefined');
+}
+
 headersReceivedListener = (requestDetails) => {
-     const origin = extractHostname(!requestDetails.initiator ? (!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl) : requestDetails.initiator);
+  if(isChromeExtension()){
+     const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
      const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
      const contentLength = undefined === responseHeadersContentLength ? {value: 0} 
       : responseHeadersContentLength;
      const requestSize = new Number(contentLength.value); 
      setByteLengthPerOrigin(origin, requestSize);
+  }
+  else {
+    let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
 
+    filter.ondata = event => {
+      const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+      setByteLengthPerOrigin(origin, event.data.byteLength);
+
+      filter.write(event.data);
+    };
+
+    filter.onstop = () => {
+      filter.disconnect();
+    };
+  }
   return {};
 }
 
