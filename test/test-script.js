@@ -128,7 +128,7 @@ describe ('addOneMinute', function(){
     });
 });
 
-describe('isChromeExtension', function(){
+describe('isChrome', function(){
     this.afterEach(function(done){
         //MOCK browser object for Chrome Extension Context
         browser = undefined;
@@ -136,7 +136,7 @@ describe('isChromeExtension', function(){
     });
 
     it('should return true when Chrome Extension', function(done){
-        var result = isChromeExtension();
+        var result = isChrome();
         result.should.equals(true);
         done();
     });
@@ -145,7 +145,7 @@ describe('isChromeExtension', function(){
         //MOCK browser for Mozilla Extension Context
         browser = {};
 
-        var result = isChromeExtension();
+        var result = isChrome();
         result.should.equals(false);
 
         //MOCK deletion

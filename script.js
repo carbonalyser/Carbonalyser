@@ -19,12 +19,12 @@ setByteLengthPerOrigin = (origin, byteLength) => {
   localStorage.setItem('stats', JSON.stringify(statsJson));
 }
 
-isChromeExtension = () => {
+isChrome = () => {
   return (typeof(browser) === 'undefined');
 }
 
 headersReceivedListener = (requestDetails) => {
-  if(isChromeExtension()){
+  if(isChrome()){
      const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
      const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
      const contentLength = undefined === responseHeadersContentLength ? {value: 0} 
