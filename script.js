@@ -1,4 +1,4 @@
-extractHostname = (url) => {
+const extractHostname = (url) => {
   let hostname = url.indexOf("//") > -1 ? url.split('/')[2] : url.split('/')[0];
 
   // find & remove port number
@@ -9,7 +9,7 @@ extractHostname = (url) => {
   return hostname;
 }
 
-setByteLengthPerOrigin = (origin, byteLength) => {
+const setByteLengthPerOrigin = (origin, byteLength) => {
   const stats = localStorage.getItem('stats');
   const statsJson = null === stats ? {} : JSON.parse(stats);
 
@@ -19,11 +19,19 @@ setByteLengthPerOrigin = (origin, byteLength) => {
   localStorage.setItem('stats', JSON.stringify(statsJson));
 }
 
-headersReceivedListener = (requestDetails) => {
-  let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
+const headersReceivedListener = (requestDetails) => {
+  // Do not count bytes from requests from local cache
+  if (requestDetails.fromCache) return
 
+  const filter = browser.webRequest.filterResponseData(requestDetails.requestId);
   filter.ondata = event => {
-    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+    let origin
+    // If Incognito request we do not track the domain origin
+    if (requestDetails.incognito) {
+      origin = 'Incognito'
+    } else {
+      origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+    }
     setByteLengthPerOrigin(origin, event.data.byteLength);
 
     filter.write(event.data);
@@ -36,11 +44,11 @@ headersReceivedListener = (requestDetails) => {
   return {};
 }
 
-setBrowserIcon = (type) => {
+const setBrowserIcon = (type) => {
   browser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 }
 
-addOneMinute = () => {
+const addOneMinute = () => {
   let duration = localStorage.getItem('duration');
   duration = null === duration ? 1 : 1 * duration + 1;
   localStorage.setItem('duration', duration);
@@ -48,7 +56,7 @@ addOneMinute = () => {
 
 let addOneMinuteInterval;
 
-handleMessage = (request, sender, sendResponse) => {
+const handleMessage = (request, sender, sendResponse) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
