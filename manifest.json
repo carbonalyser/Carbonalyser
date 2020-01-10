@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Carbonalyser",
   "description": "Analyse Internet usage carbon footprint",
-  "author": "Richard Hanna",
+  "author": "TheShiftProject",
   "version": "1.1.0",
   "icons": {
     "48": "icons/icon-on-48.png"

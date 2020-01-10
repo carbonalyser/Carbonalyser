@@ -1,7 +1,7 @@
 {
   "name": "carbonalyzer",
   "version": "1.0.0",
-  "description": "carbonalyser chrome extension",
+  "description": "Analyse Internet usage carbon footprint",
   "main": "script.js",
   "directories": {
     "extension": "extension",
@@ -18,7 +18,7 @@
     "test": "mocha test/test-script.js",
     "coverage": "nyc mocha"
   },
-  "author": "c.lacoste",
+  "author": "TheShiftProject",
   "license": "MIT",
   "dependencies": {}
 }
