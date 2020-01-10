@@ -135,11 +135,11 @@ showStats = () => {
   while (equivalenceTitle.firstChild) {
     equivalenceTitle.removeChild(equivalenceTitle.firstChild);
   }
-  equivalenceTitle.appendChild(document.createTextNode(browser.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
+  equivalenceTitle.appendChild(document.createTextNode(chrome.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
 }
 
 start = () => {
-  browser.runtime.sendMessage({ action: 'start' });
+  chrome.runtime.sendMessage({ action: 'start' });
 
   hide(startButton);
   show(stopButton);
@@ -148,7 +148,7 @@ start = () => {
 }
 
 stop = () => {
-  browser.runtime.sendMessage({ action: 'stop' });
+  chrome.runtime.sendMessage({ action: 'stop' });
 
   hide(stopButton);
   show(startButton);
@@ -206,7 +206,7 @@ selectRegionHandler = (event) => {
 }
 
 translate = (translationKey) => {
-  return browser.i18n.getMessage(translationKey);
+  return chrome.i18n.getMessage(translationKey);
 }
 
 translateText = (target, translationKey) => {
@@ -214,7 +214,7 @@ translateText = (target, translationKey) => {
 }
 
 translateHref = (target, translationKey) => {
-  target.href = browser.i18n.getMessage(translationKey);
+  target.href = chrome.i18n.getMessage(translationKey);
 }
 
 hide = element => element.classList.add('hidden');
