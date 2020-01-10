@@ -7,7 +7,7 @@ extractHostname = (url) => {
   hostname = hostname.split('?')[0];
 
   return hostname;
-}
+};
 
 setByteLengthPerOrigin = (origin, byteLength) => {
   const stats = localStorage.getItem('stats');
@@ -17,47 +17,49 @@ setByteLengthPerOrigin = (origin, byteLength) => {
   statsJson[origin] = bytePerOrigin + byteLength;
 
   localStorage.setItem('stats', JSON.stringify(statsJson));
-}
+};
 
 isChrome = () => {
   return (typeof(browser) === 'undefined');
-}
+};
 
 headersReceivedListener = (requestDetails) => {
-  if(isChrome()){
+  if (isChrome()) {
      const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
      const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
-     const contentLength = undefined === responseHeadersContentLength ? {value: 0} 
+     const contentLength = undefined === responseHeadersContentLength ? {value: 0}
       : responseHeadersContentLength;
-     const requestSize = new Number(contentLength.value); 
+     const requestSize = parseInt(contentLength.value, 10);
      setByteLengthPerOrigin(origin, requestSize);
+
+     return {};
   }
-  else {
-    let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
 
-    filter.ondata = event => {
-      const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-      setByteLengthPerOrigin(origin, event.data.byteLength);
+  let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
 
-      filter.write(event.data);
-    };
+  filter.ondata = event => {
+    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+    setByteLengthPerOrigin(origin, event.data.byteLength);
 
-    filter.onstop = () => {
-      filter.disconnect();
-    };
-  }
+    filter.write(event.data);
+  };
+
+  filter.onstop = () => {
+    filter.disconnect();
+  };
+
   return {};
-}
+};
 
 setBrowserIcon = (type) => {
   chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
-}
+};
 
 addOneMinute = () => {
   let duration = localStorage.getItem('duration');
   duration = null === duration ? 1 : 1 * duration + 1;
   localStorage.setItem('duration', duration);
-}
+};
 
 let addOneMinuteInterval;
 
@@ -87,6 +89,6 @@ handleMessage = (request, sender, sendResponse) => {
       addOneMinuteInterval = null;
     }
   }
-}
+};
 
 chrome.runtime.onMessage.addListener(handleMessage);
