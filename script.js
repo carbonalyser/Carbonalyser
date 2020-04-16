@@ -31,7 +31,7 @@ headersReceivedListener = (requestDetails) => {
   
   if (isChrome()) {
     // If Incognito request we do not track the domain origin
-     const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator));
+     const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(requestDetails.initiator ? requestDetails.initiator : requestDetails.url));
      const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
      const contentLength = undefined === responseHeadersContentLength ? {value: 0}
       : responseHeadersContentLength;
