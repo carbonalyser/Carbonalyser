@@ -45,7 +45,7 @@ headersReceivedListener = (requestDetails) => {
 
   filter.ondata = event => {
     // If Incognito request we do not track the domain origin
-    const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl));
+    const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(requestDetails.originUrl ? requestDetails.originUrl : requestDetails.url));
     setByteLengthPerOrigin(origin, event.data.byteLength);
 
     filter.write(event.data);
