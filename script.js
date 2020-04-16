@@ -27,7 +27,7 @@ headersReceivedListener = (requestDetails) => {
   // Do not count bytes from requests from local cache
   if (requestDetails.fromCache) return
 
-  let CONST_INCOGNITO = 'Incognito';
+  const CONST_INCOGNITO = 'Incognito';
   
   if (isChrome()) {
     // If Incognito request we do not track the domain origin
