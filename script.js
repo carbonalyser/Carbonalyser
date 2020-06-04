@@ -63,14 +63,14 @@ addOneMinute = () => {
 
 let addOneMinuteInterval;
 
-handleMessage = (request, sender, sendResponse) => {
+handleMessage = (request) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
     chrome.webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
-      {urls: ["<all_urls>"]},
-      ["blocking", "responseHeaders"]
+      {urls: ['<all_urls>']},
+      ['responseHeaders']
     );
 
     if (!addOneMinuteInterval) {
