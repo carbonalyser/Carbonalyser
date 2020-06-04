@@ -2,7 +2,8 @@
 
 ## Installation
 
-Add the add-on to Firefox: https://addons.mozilla.org/fr/firefox/addon/carbonalyser/
+* Firefox: https://addons.mozilla.org/fr/firefox/addon/carbonalyser/
+* Chrome: https://chrome.google.com/webstore/detail/oblfkaonopplpldppkjdhnlcmkhgbcok
 
 ## Overview
 
