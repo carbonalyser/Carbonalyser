@@ -3,7 +3,7 @@
 ## Installation
 
 * Firefox: https://addons.mozilla.org/fr/firefox/addon/carbonalyser/
-* Chrome: [see this issue](https://github.com/carbonalyser/Carbonalyser/issues/42)
+* Chrome and Edge: [see this issue](https://github.com/carbonalyser/Carbonalyser/issues/42)
 
 ## Overview
 
