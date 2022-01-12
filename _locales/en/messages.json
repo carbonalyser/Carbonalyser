@@ -35,6 +35,10 @@
     "message": "Top 5 traffic related to your browsing",
     "description": "Top traffic list title"
   },
+  "nbSitesDisplayed": {
+    "message": "Number of websites to display",
+    "description": "NbSitesDisplayed field title"
+  },
   "digitalEquivalenceTitle": {
     "message": "The CO2 emissions related to your digital use is equivalent to:"
   },
