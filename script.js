@@ -24,8 +24,14 @@ isChrome = () => {
 };
 
 headersReceivedListener = (requestDetails) => {
+  // Do not count bytes from requests from local cache
+  if (requestDetails.fromCache) return
+
+  const CONST_INCOGNITO = 'Incognito';
+  
   if (isChrome()) {
-     const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+    // If Incognito request we do not track the domain origin
+     const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(requestDetails.initiator ? requestDetails.initiator : requestDetails.url));
      const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
      const contentLength = undefined === responseHeadersContentLength ? {value: 0}
       : responseHeadersContentLength;
@@ -38,7 +44,8 @@ headersReceivedListener = (requestDetails) => {
   let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
 
   filter.ondata = event => {
-    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+    // If Incognito request we do not track the domain origin
+    const origin = (requestDetails.incognito ? CONST_INCOGNITO : extractHostname(requestDetails.originUrl ? requestDetails.originUrl : requestDetails.url));
     setByteLengthPerOrigin(origin, event.data.byteLength);
 
     filter.write(event.data);
@@ -51,7 +58,7 @@ headersReceivedListener = (requestDetails) => {
   return {};
 };
 
-setBrowserIcon = (type) => {
+const setBrowserIcon = (type) => {
   chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 };
 

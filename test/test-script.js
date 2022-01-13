@@ -156,6 +156,7 @@ describe('headersReceivedListener', function () {
     let requestDetails = {};
     // backup for spied methods
     const DOMAIN_NAME = 'http://www.spotify.com';
+    const INCOGNITO_CONST = 'Test';
     const extractHostNameBackup = extractHostname;
     const setByteLengthPerOriginBackup = setByteLengthPerOrigin;
 
@@ -210,6 +211,7 @@ describe('headersReceivedListener', function () {
         done();
     });
 
+
     it('should call extractHostname with Initiator when it is provided from parameter (Chrome Browser behavior)', function (done) {
         extractHostname = chai.spy();
 
@@ -218,6 +220,31 @@ describe('headersReceivedListener', function () {
         headersReceivedListener(requestDetails);
 
         expect(extractHostname).to.have.been.called.with(requestDetails.initiator);
+        done();
+    });
+
+    it('should use incognito as Origin when Incognito is provided from parameter (Chrome Browser behavior)', function (done) {
+        extractHostname = chai.spy();
+        setByteLengthPerOrigin = chai.spy();
+
+        requestDetails.incognito = INCOGNITO_CONST;
+
+        headersReceivedListener(requestDetails);
+
+        expect(extractHostname).to.not.have.been.called();
+        expect(setByteLengthPerOrigin).to.have.been.called.with('Incognito');
+        done();
+    });
+
+    it('should use incognito as Origin when Incognito is provided from parameter (Mozilla Firefox Browser behavior)', function (done) {
+        extractHostname = chai.spy();
+        setByteLengthPerOrigin = chai.spy();
+
+        requestDetails.incognito = INCOGNITO_CONST;
+        headersReceivedListener(requestDetails);
+
+        expect(extractHostname).to.not.have.been.called();
+        expect(setByteLengthPerOrigin).to.have.been.called.with('Incognito');
         done();
     });
 
@@ -252,5 +279,16 @@ describe('headersReceivedListener', function () {
 
         expect(setByteLengthPerOrigin).to.have.been.called.with('www.spotify.com', 0);
         done();
+    });
+
+    it('should not call setByteLengthPerOrigin when fromCache is defined', function(done){
+        setByteLengthPerOrigin = chai.spy();
+
+        requestDetails.fromCache = "test";
+        requestDetails.responseHeaders = [];
+        headersReceivedListener(requestDetails);
+
+        expect(setByteLengthPerOrigin).to.not.have.been.called();
+    done();
     });
 });
