@@ -1,0 +1,105 @@
+{
+  "moreInformation": {
+    "message": "更多信息",
+    "description": "更多信息标题"
+  },
+  "moreInformationUrl": {
+    "message": "https://theshiftproject.org/en/carbonalyser-browser-extension/",
+    "description": "更多信息原文链接"
+  },
+  "legalNotice": {
+    "message": "法律声明",
+    "description": "法律声明标题"
+  },
+  "legalNoticeUrl": {
+    "message": "https://theshiftproject.org/en/general-conditions-of-use/",
+    "description": "法律声明原文链接"
+  },
+  "start": {
+    "message": "开始分析",
+    "description": "开始分析按钮"
+  },
+  "stop": {
+    "message": "停止分析",
+    "description": "停止分析按钮"
+  },
+  "reset": {
+    "message": "重置数据",
+    "description": "数据重置按钮"
+  },
+  "analysisInProgress": {
+    "message": "记录已开始，您可正常浏览网页，需要查看能耗分析时返回此页即可。",
+    "description": "正在记录显示信息"
+  },
+  "topTraffic": {
+    "message": "在您浏览的网站中，使用流量最大的五个网站",
+    "description": "流量排名列"
+  },
+  "digitalEquivalenceTitle": {
+    "message": "您的浏览活动所排放的二氧化碳相当于："
+  },
+  "equivalenceTitle": {
+    "message": "您累计浏览时间为$MINUTES$分钟，使用流量共$MBTOTAL$MB，耗电$KWH$千瓦时，二氧化碳排量为$GCO2$gCO2e",
+    "description": "二氧化碳排量换算",
+    "placeholders": {
+      "minutes" : {
+        "content" : "$1",
+        "example" : "60"
+      },
+      "mbtotal" : {
+        "content" : "$2",
+        "example" : "10"
+      },
+      "kwh" : {
+        "content" : "$3",
+        "example" : "99"
+      },
+      "gco2" : {
+        "content" : "$4",
+        "example" : "199"
+      }
+    }
+  },
+  "selectRegionPlaceholder": {
+    "message": "选择您的位置"
+  },
+  "regionEuropeanUnion": {
+    "message": "欧盟"
+  },
+  "regionFrance": {
+    "message": "法国"
+  },
+  "regionUnitedStates": {
+    "message": "美国"
+  },
+  "regionChina": {
+    "message": "中国"
+  },
+  "regionOther": {
+    "message": "其它地区"
+  },
+  "selectRegionHelp": {
+    "message": "本信息并非必填，但可使能耗换算更为精确。"
+  },
+  "howToChange": {
+    "message": "怎样改善使用习惯，更为环保负责地使用网络？"
+  },
+  "howToChangeUrl": {
+    "message": "https://theshiftproject.org/en/article/unsustainable-use-online-video/"
+  },
+  "chargedSmartphonesUnit": {
+    "message": "充满电的智能手机"
+  },
+  "kmByCarUnit": {
+    "message": "公里车程"
+  },
+  "mbTotalUnit": {
+    "message": "MB"
+  },
+  "statsOthers": {
+    "message": "其它"
+  },
+  "resetConfirmation": {
+    "message": "确认清零？"
+  }
+}
