@@ -23,30 +23,25 @@ isChrome = () => {
   return (typeof(browser) === 'undefined');
 };
 
+// Firefox 1.0+ - detect Gecko engine
+isFirefox = () => {
+  return (typeof InstallTrigger !== 'undefined');
+};
+
 headersReceivedListener = (requestDetails) => {
-  if (isChrome()) {
-     const origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
-     const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
-     const contentLength = undefined === responseHeadersContentLength ? {value: 0}
-      : responseHeadersContentLength;
-     const requestSize = parseInt(contentLength.value, 10);
-     setByteLengthPerOrigin(origin, requestSize);
-
-     return {};
+  let origin;
+  if ( isFirefox() ) {
+      origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+  } else if (isChrome()) {
+      origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+  } else {
+      console.error("Your browser is not supported sorry ...");
   }
-
-  let filter = browser.webRequest.filterResponseData(requestDetails.requestId);
-
-  filter.ondata = event => {
-    const origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-    setByteLengthPerOrigin(origin, event.data.byteLength);
-
-    filter.write(event.data);
-  };
-
-  filter.onstop = () => {
-    filter.disconnect();
-  };
+  const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
+  const contentLength = undefined === responseHeadersContentLength ? {value: 0}
+   : responseHeadersContentLength;
+  const requestSize = parseInt(contentLength.value, 10);
+  setByteLengthPerOrigin(origin, requestSize);
 
   return {};
 };
