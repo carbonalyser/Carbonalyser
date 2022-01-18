@@ -9,24 +9,29 @@ extractHostname = (url) => {
   return hostname;
 };
 
-function getOrCreateStats() {
+// retrieve or create a stats object.
+getOrCreateStats = () => {
   const stats = localStorage.getItem('stats');
   const statsJson = null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
   return statsJson;
 }
 
-incBytesDataCenterLengthPerOrigin = (origin, byteLength) => {
+// increment some stat in the stats storage.
+incBytesPerOrigin = (classType, origin, bytes) => {
   const statsJson = getOrCreateStats();
-  const bytePerOrigin = undefined === statsJson.bytesDataCenter[origin] ? 0 : parseInt(statsJson.bytesDataCenter[origin]);
-  statsJson.bytesDataCenter[origin] = bytePerOrigin + byteLength;
+  const bytePerOrigin = undefined === statsJson[classType][origin] ? 0 : parseInt(statsJson[classType][origin]);
+  statsJson[classType][origin] = bytePerOrigin + bytes;
   localStorage.setItem('stats', JSON.stringify(statsJson));
-};
+}
 
-incBytesNetworkLengthPerOrigin = (origin, bytes) => {
-  const statsJson = getOrCreateStats();
-  const bytePerOrigin = undefined === statsJson.bytesNetwork[origin] ? 0 : parseInt(statsJson.bytesNetwork[origin]);
-  statsJson.bytesNetwork[origin] = bytePerOrigin + bytes;
-  localStorage.setItem('stats', JSON.stringify(statsJson));
+// increment the amount of bytes classified as stored in datacenter in the stats storage.
+incBytesDataCenter = (origin, bytes) => {
+  incBytesPerOrigin("bytesDataCenter", origin, bytes);
+}
+
+// increment the amount of bytes classified as coming over network in the stats storage.
+incBytesNetwork = (origin, bytes) => {
+  incBytesPerOrigin("bytesNetwork", origin, bytes);
 }
 
 isChrome = () => {
@@ -38,18 +43,26 @@ isFirefox = () => {
   return (typeof InstallTrigger !== 'undefined');
 };
 
+// This is trigger when a download start.
+// Since the we can grab only the download start, we have to check manually for its completion.
 downloadCompletedCheckLoop = async function (object) {
   for(downloadItem of (await browser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
-      incBytesDataCenterLengthPerOrigin(origin, downloadItem.bytesReceived);
-      incBytesNetworkLengthPerOrigin(origin, 20 + 20);
+      incBytesDataCenter(origin, downloadItem.bytesReceived);
+      incBytesNetwork(origin, BYTES_TCP_HEADER + BYTES_IP_HEADER);
       return;
     }
   }
   setTimeout(downloadCompletedCheckLoop, 1000, object);
 }
 
+const BYTES_TCP_HEADER = 20;
+const BYTES_IP_HEADER  = 20;
+// Headers line are always terminated by CRLF cf https://stackoverflow.com/questions/5757290/http-header-line-break-style
+const BYTES_HTTP_END   = 2;
+
+// This is triggered when some headers are received.
 headersReceivedListener = (requestDetails) => {
   let origin;
   if ( isFirefox() ) {
@@ -65,15 +78,16 @@ headersReceivedListener = (requestDetails) => {
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
    : responseHeadersContentLength;
   const requestSize = parseInt(contentLength.value, 10);
-  incBytesDataCenterLengthPerOrigin(origin, requestSize);
+  incBytesDataCenter(origin, requestSize);
 
   // Extract bytes from the network
-  let lengthNetwork = 20 + 20;
-  for(var a = 0; a < requestDetails.responseHeaders.length; a = a +1) {
-    var obj = requestDetails.responseHeaders[a];
-    lengthNetwork += (obj.name + ": " + obj.value).length;
+  // Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
+  let lengthNetwork = BYTES_TCP_HEADER + BYTES_IP_HEADER;
+  for(let a = 0; a < requestDetails.responseHeaders.length; a ++) {
+    const responseHeader = requestDetails.responseHeaders[a];
+    lengthNetwork += (responseHeader.name + ": " + responseHeader.value).length + BYTES_HTTP_END;
   }
-  incBytesNetworkLengthPerOrigin(origin, lengthNetwork);
+  incBytesNetwork(origin, lengthNetwork);
 
   return {};
 };

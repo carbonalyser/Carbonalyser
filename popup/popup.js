@@ -37,7 +37,6 @@ getStats = () => {
   }
 
   for (let origin in stats.bytesNetwork) {
-    console.info("origin=" + origin);
     totalNetwork += stats.bytesNetwork[origin];
 
     const found = sortedStats.find(element => element.origin == origin);
