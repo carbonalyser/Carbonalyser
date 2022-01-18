@@ -9,7 +9,6 @@ extractHostname = (url) => {
   return hostname;
 };
 
-// retrieve or create a stats object.
 getOrCreateStats = () => {
   const stats = localStorage.getItem('stats');
   const statsJson = null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
@@ -32,13 +31,6 @@ incBytesDataCenter = (origin, bytes) => {
 // increment the amount of bytes classified as coming over network in the stats storage.
 incBytesNetwork = (origin, bytes) => {
   incBytesPerOrigin("bytesNetwork", origin, bytes);
-}
-
-incBytesNetworkLengthPerOrigin = (origin, bytes) => {
-  const statsJson = getOrCreateStats();
-  const bytePerOrigin = undefined === statsJson.bytesNetwork[origin] ? 0 : parseInt(statsJson.bytesNetwork[origin]);
-  statsJson.bytesNetwork[origin] = bytePerOrigin + bytes;
-  localStorage.setItem('stats', JSON.stringify(statsJson));
 }
 
 isChrome = () => {

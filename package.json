@@ -8,10 +8,10 @@
     "test": "test"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "chai-spies": "^1.0.0",
     "chrome-mock": "0.0.9",
-    "mocha": "^6.2.2",
+    "mocha": "^6.2.3",
     "nyc": "^14.1.1"
   },
   "scripts": {
@@ -19,6 +19,5 @@
     "coverage": "nyc mocha"
   },
   "author": "TheShiftProject",
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }

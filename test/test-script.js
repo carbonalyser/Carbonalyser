@@ -4,6 +4,19 @@ expect = chai.expect,
     assert = chai.assert,
     should = chai.should();
 
+const Mocha = require('mocha');
+const mocha = new Mocha();
+const runner = mocha.run(function(failures){
+    process.on('exit', function () {
+      process.exit(failures);
+    });
+  });
+  
+// This is how we get results.
+runner.on('fail', function(test, err){
+    console.log(err);
+});
+
 chai.use(spies);
 
 //MOCK GLOBAL STORAGE
@@ -55,8 +68,7 @@ describe('extractHostName', function () {
     });
 
 });
-
-describe('setByteLengthPerOrigin', function () {
+describe('incBytesDataCenter', function () {
 
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
@@ -66,9 +78,8 @@ describe('setByteLengthPerOrigin', function () {
 
     it('should put url in local storage with entered byte length', function (done) {
         const origin = "www.youtube.fr", value = 50;
-        setByteLengthPerOrigin(origin, value);
-
-        var result = JSON.parse(localStorage.getItem("stats"));
+        incBytesDataCenter(origin, value);
+        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
 
         result.should.have.property(origin).with.equal(value);
         done();
@@ -76,10 +87,10 @@ describe('setByteLengthPerOrigin', function () {
 
     it('should increase in the local storage existing byte length for the same url', function (done) {
         const origin = "www.youtube.fr";
-        setByteLengthPerOrigin(origin, 128);
-        setByteLengthPerOrigin(origin, 64);
+        incBytesDataCenter(origin, 128);
+        incBytesDataCenter(origin, 64);
 
-        var result = JSON.parse(localStorage.getItem("stats"));
+        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
 
         result.should.have.property(origin).with.equal(192);
         done();
@@ -87,13 +98,29 @@ describe('setByteLengthPerOrigin', function () {
 
     it('should increase in the local storage existing byte length for different url', function (done) {
         const origin = "www.youtube.fr", origin2 = "www.spotify.com";
-        setByteLengthPerOrigin(origin, 128);
-        setByteLengthPerOrigin(origin2, 64);
+        incBytesDataCenter(origin, 128);
+        incBytesDataCenter(origin2, 64);
 
-        var result = JSON.parse(localStorage.getItem("stats"));
-
+        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
         result.should.have.property(origin).with.equal(128);
         result.should.have.property(origin2).with.equal(64);
+        done();
+    });
+});
+
+describe('getOrCreateStats', function() {
+    this.beforeEach(function (done) {
+        //reset local storage before each test to make independant tests
+        localStorage = storageMock();
+        done();
+    });
+
+    it('should retrieve or create a stats object', function(done) {
+        var expected = {bytesDataCenter: {}, bytesNetwork: {}};
+        var storage = getOrCreateStats();
+        var storage2 = getOrCreateStats();
+        expect(expected).to.deep.equal(storage);
+        expect(expected).to.deep.equal(storage2);
         done();
     });
 });
@@ -142,12 +169,14 @@ describe('isChrome', function () {
     it('should return false when not Chrome Extension', function (done) {
         //MOCK browser for Mozilla Extension Context
         browser = {};
+        InstallTrigger = {};
 
         var result = isChrome();
         result.should.equals(false);
 
         //MOCK deletion
         browser = undefined;
+        InstallTrigger = undefined;
         done();
     });
 });
@@ -157,7 +186,7 @@ describe('headersReceivedListener', function () {
     // backup for spied methods
     const DOMAIN_NAME = 'http://www.spotify.com';
     const extractHostNameBackup = extractHostname;
-    const setByteLengthPerOriginBackup = setByteLengthPerOrigin;
+    const incBytesDataCenterBackup = incBytesDataCenter;
 
     this.beforeEach(function (done) {
         requestDetails = {
@@ -186,27 +215,26 @@ describe('headersReceivedListener', function () {
     this.afterEach(function (done) {
         //reset chai spies
         extractHostname = extractHostNameBackup;
-        setByteLengthPerOrigin = setByteLengthPerOriginBackup;
+        incBytesDataCenter = incBytesDataCenterBackup;
 
         //reset mock browser
         browser = undefined;
+        InstallTrigger = undefined;
         done();
     });
 
     it('should call extractHostName with provided originUrl when it is provided from parameter (Mozilla Firefox Browser behavior)', function (done) {
-        extractHostname = chai.spy();
         browser = {
             webRequest: {}
         };
-        chai.spy.on(browser.webRequest, 'filterResponseData', function (requestId) {
-            return {};
-        });
+        InstallTrigger = {};
+        extractHostname = chai.spy();
 
         requestDetails.originUrl = DOMAIN_NAME;
 
         headersReceivedListener(requestDetails);
 
-        expect(browser.webRequest.filterResponseData).to.have.been.called();
+        expect(extractHostname).to.have.been.called.with(requestDetails.originUrl);
         done();
     });
 
@@ -232,25 +260,25 @@ describe('headersReceivedListener', function () {
         done();
     });
 
-    it('should call setByteLengthPerOrigin with request size passed in parameter', function (done) {
-        setByteLengthPerOrigin = chai.spy();
+    it('should call incBytesDataCenter with request size passed in parameter', function (done) {
+        incBytesDataCenter = chai.spy();
 
         requestDetails.initiator = DOMAIN_NAME;
 
         headersReceivedListener(requestDetails);
 
-        expect(setByteLengthPerOrigin).to.have.been.called.with('www.spotify.com', 165377);
+        expect(incBytesDataCenter).to.have.been.called.with('www.spotify.com', 165377);
         done();
     });
 
-    it('should call setByteLengthPerOrigin with zero request size when request size is UNDEFINED', function (done) {
-        setByteLengthPerOrigin = chai.spy();
+    it('should call incBytesDataCenter with zero request size when request size is UNDEFINED', function (done) {
+        incBytesDataCenter = chai.spy();
 
         requestDetails.initiator = DOMAIN_NAME;
         requestDetails.responseHeaders = [];
         headersReceivedListener(requestDetails);
 
-        expect(setByteLengthPerOrigin).to.have.been.called.with('www.spotify.com', 0);
+        expect(incBytesDataCenter).to.have.been.called.with('www.spotify.com', 0);
         done();
     });
 });
