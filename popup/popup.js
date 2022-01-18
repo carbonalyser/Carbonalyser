@@ -22,18 +22,33 @@ let pieChart;
 
 parseStats = () => {
   const stats = localStorage.getItem('stats');
-  return null === stats ? {} : JSON.parse(stats);
+  return null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
 }
 
 getStats = () => {
   const stats = parseStats();
   let total = 0;
+  let totalDataCenter = 0, totalNetwork = 0;
   const sortedStats = [];
 
-  for (let origin in stats) {
-    total += stats[origin];
-    sortedStats.push({ 'origin': origin, 'byte': stats[origin] });
+  for (let origin in stats.bytesDataCenter) {
+    totalDataCenter += stats.bytesDataCenter[origin];
+    sortedStats.push({ 'origin': origin, 'byte': stats.bytesDataCenter[origin] });
   }
+
+  for (let origin in stats.bytesNetwork) {
+    console.info("origin=" + origin);
+    totalNetwork += stats.bytesNetwork[origin];
+
+    const found = sortedStats.find(element => element.origin == origin);
+    if ( found ===undefined ) {
+      sortedStats.push({ 'origin': origin, 'byte': stats.bytesNetwork[origin]});
+    } else {
+      found.byte += stats.bytesNetwork[origin];
+    }
+  }
+
+  total = totalDataCenter + totalNetwork;
 
   sortedStats.sort(function(a, b) {
     return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
@@ -58,6 +73,8 @@ getStats = () => {
 
   return {
     'total': total,
+    'totalDataCenter': totalDataCenter,
+    'totalNetwork': totalNetwork,
     'highestStats': highestStats
   }
 }
@@ -96,7 +113,7 @@ showStats = () => {
   let duration = localStorage.getItem('duration');
   duration = null === duration ? 0 : duration;
 
-  const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
+  const kWhDataCenterTotal = stats.totalDataCenter * kWhPerByteDataCenter;
   const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
 
   const kWhNetworkTotal = stats.total * kWhPerByteNetwork;

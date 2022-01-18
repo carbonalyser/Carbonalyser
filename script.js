@@ -9,14 +9,25 @@ extractHostname = (url) => {
   return hostname;
 };
 
-incByteLengthPerOrigin = (origin, byteLength) => {
+function getOrCreateStats() {
   const stats = localStorage.getItem('stats');
-  const statsJson = null === stats ? {} : JSON.parse(stats);
+  const statsJson = null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
+  return statsJson;
+}
 
-  let bytePerOrigin = undefined === statsJson[origin] ? 0 : parseInt(statsJson[origin]);
-  statsJson[origin] = bytePerOrigin + byteLength;
+incBytesDataCenterLengthPerOrigin = (origin, byteLength) => {
+  const statsJson = getOrCreateStats();
+  const bytePerOrigin = undefined === statsJson.bytesDataCenter[origin] ? 0 : parseInt(statsJson.bytesDataCenter[origin]);
+  statsJson.bytesDataCenter[origin] = bytePerOrigin + byteLength;
   localStorage.setItem('stats', JSON.stringify(statsJson));
 };
+
+incBytesNetworkLengthPerOrigin = (origin, bytes) => {
+  const statsJson = getOrCreateStats();
+  const bytePerOrigin = undefined === statsJson.bytesNetwork[origin] ? 0 : parseInt(statsJson.bytesNetwork[origin]);
+  statsJson.bytesNetwork[origin] = bytePerOrigin + bytes;
+  localStorage.setItem('stats', JSON.stringify(statsJson));
+}
 
 isChrome = () => {
   return (typeof(browser) === 'undefined');
@@ -30,7 +41,9 @@ isFirefox = () => {
 downloadCompletedCheckLoop = async function (object) {
   for(downloadItem of (await browser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
-      incByteLengthPerOrigin(extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer), downloadItem.bytesReceived);
+      const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
+      incBytesDataCenterLengthPerOrigin(origin, downloadItem.bytesReceived);
+      incBytesNetworkLengthPerOrigin(origin, 20 + 20);
       return;
     }
   }
@@ -47,11 +60,20 @@ headersReceivedListener = (requestDetails) => {
       console.error("Your browser is not supported sorry ...");
   }
 
+  // Extract bytes from datacenters
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
    : responseHeadersContentLength;
   const requestSize = parseInt(contentLength.value, 10);
-  incByteLengthPerOrigin(origin, requestSize);
+  incBytesDataCenterLengthPerOrigin(origin, requestSize);
+
+  // Extract bytes from the network
+  let lengthNetwork = 20 + 20;
+  for(var a = 0; a < requestDetails.responseHeaders.length; a = a +1) {
+    var obj = requestDetails.responseHeaders[a];
+    lengthNetwork += (obj.name + ": " + obj.value).length;
+  }
+  incBytesNetworkLengthPerOrigin(origin, lengthNetwork);
 
   return {};
 };
