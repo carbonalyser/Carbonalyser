@@ -157,6 +157,7 @@ describe('isChrome', function () {
     this.afterEach(function (done) {
         //MOCK browser object for Chrome Extension Context
         browser = undefined;
+        InstallTrigger = undefined;
         done();
     });
 
@@ -173,6 +174,34 @@ describe('isChrome', function () {
 
         var result = isChrome();
         result.should.equals(false);
+
+        //MOCK deletion
+        browser = undefined;
+        InstallTrigger = undefined;
+        done();
+    });
+});
+
+describe('isFirefox', function () {
+    this.afterEach(function (done) {
+        browser = undefined;
+        InstallTrigger = undefined;
+        done();
+    });
+
+    it('should return false when Firefox Extension', function (done) {
+        var result = isFirefox();
+        result.should.equals(false);
+        done();
+    });
+
+    it('should return true when not Chrome Extension', function (done) {
+        //MOCK browser for Mozilla Extension Context
+        browser = {};
+        InstallTrigger = {};
+
+        var result = isFirefox();
+        result.should.equals(true);
 
         //MOCK deletion
         browser = undefined;
