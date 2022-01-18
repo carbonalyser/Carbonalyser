@@ -69,16 +69,30 @@ const BYTES_IP_HEADER  = 20;
 // Headers line are always terminated by CRLF cf https://stackoverflow.com/questions/5757290/http-header-line-break-style
 const BYTES_HTTP_END   = 2;
 
+// Get origin from request details
+getOriginFromRequestDetail = (requestDetails) => {
+  if ( isFirefox() ) {
+    return extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+  } else if (isChrome()) {
+    return extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+  }
+  console.error("Your browser is not supported sorry ...");
+  return null;
+}
+
+// Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
+getBytesFromHeaders = (headers) => {
+  let lengthNetwork = BYTES_TCP_HEADER + BYTES_IP_HEADER;
+  for(let a = 0; a < headers.length; a ++) {
+    const h = headers[a];
+    lengthNetwork += (h.name + ": " + h.value).length + BYTES_HTTP_END;
+  }
+  return lengthNetwork;
+}
+
 // This is triggered when some headers are received.
 headersReceivedListener = (requestDetails) => {
-  let origin;
-  if ( isFirefox() ) {
-      origin = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-  } else if (isChrome()) {
-      origin = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
-  } else {
-      console.error("Your browser is not supported sorry ...");
-  }
+  const origin = getOriginFromRequestDetail(requestDetails);
 
   // Extract bytes from datacenters
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
@@ -88,16 +102,16 @@ headersReceivedListener = (requestDetails) => {
   incBytesDataCenter(origin, requestSize);
 
   // Extract bytes from the network
-  // Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
-  let lengthNetwork = BYTES_TCP_HEADER + BYTES_IP_HEADER;
-  for(let a = 0; a < requestDetails.responseHeaders.length; a ++) {
-    const responseHeader = requestDetails.responseHeaders[a];
-    lengthNetwork += (responseHeader.name + ": " + responseHeader.value).length + BYTES_HTTP_END;
-  }
-  incBytesNetwork(origin, lengthNetwork);
+  incBytesNetwork(origin, getBytesFromHeaders(requestDetails.responseHeaders));
 
   return {};
 };
+
+// Take amount of data sent by the client in headers
+sendHeadersListener = (requestDetails) => {
+    const origin = getOriginFromRequestDetail(requestDetails);
+    incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
+}
 
 setBrowserIcon = (type) => {
   chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
@@ -121,7 +135,13 @@ handleMessage = (request) => {
       ['responseHeaders']
     );
 
-    browser.downloads.onCreated.addListener(downloadCompletedCheckLoop);
+    chrome.webRequest.onSendHeaders.addListener(
+      sendHeadersListener,
+      {urls: ['<all_urls>']},
+      ['requestHeaders']
+    );
+
+    chrome.downloads.onCreated.addListener(downloadCompletedCheckLoop);
 
     if (!addOneMinuteInterval) {
       addOneMinuteInterval = setInterval(addOneMinute, 60000);
