@@ -9,13 +9,12 @@ extractHostname = (url) => {
   return hostname;
 };
 
-setByteLengthPerOrigin = (origin, byteLength) => {
+incByteLengthPerOrigin = (origin, byteLength) => {
   const stats = localStorage.getItem('stats');
   const statsJson = null === stats ? {} : JSON.parse(stats);
 
   let bytePerOrigin = undefined === statsJson[origin] ? 0 : parseInt(statsJson[origin]);
   statsJson[origin] = bytePerOrigin + byteLength;
-
   localStorage.setItem('stats', JSON.stringify(statsJson));
 };
 
@@ -28,6 +27,16 @@ isFirefox = () => {
   return (typeof InstallTrigger !== 'undefined');
 };
 
+downloadCompletedCheckLoop = async function (object) {
+  for(downloadItem of (await browser.downloads.search({id: object.id}))) {
+    if ( downloadItem.state == "complete" ) {
+      incByteLengthPerOrigin(extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer), downloadItem.bytesReceived);
+      return;
+    }
+  }
+  setTimeout(downloadCompletedCheckLoop, 1000, object);
+}
+
 headersReceivedListener = (requestDetails) => {
   let origin;
   if ( isFirefox() ) {
@@ -37,11 +46,12 @@ headersReceivedListener = (requestDetails) => {
   } else {
       console.error("Your browser is not supported sorry ...");
   }
+
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
    : responseHeadersContentLength;
   const requestSize = parseInt(contentLength.value, 10);
-  setByteLengthPerOrigin(origin, requestSize);
+  incByteLengthPerOrigin(origin, requestSize);
 
   return {};
 };
@@ -68,6 +78,8 @@ handleMessage = (request) => {
       ['responseHeaders']
     );
 
+    browser.downloads.onCreated.addListener(downloadCompletedCheckLoop);
+
     if (!addOneMinuteInterval) {
       addOneMinuteInterval = setInterval(addOneMinute, 60000);
     }
@@ -78,7 +90,7 @@ handleMessage = (request) => {
   if ('stop' === request.action) {
     setBrowserIcon('off');
     chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-
+    chrome.downloads.onCreated.removeListener(downloadCompletedCheckLoop);
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
       addOneMinuteInterval = null;

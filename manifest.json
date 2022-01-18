@@ -10,7 +10,8 @@
   "permissions": [
     "storage",
     "webRequest",
-    "<all_urls>"
+    "<all_urls>",
+    "downloads"
   ],
   "background": {
     "scripts": [
