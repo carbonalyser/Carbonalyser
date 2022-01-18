@@ -34,6 +34,13 @@ incBytesNetwork = (origin, bytes) => {
   incBytesPerOrigin("bytesNetwork", origin, bytes);
 }
 
+incBytesNetworkLengthPerOrigin = (origin, bytes) => {
+  const statsJson = getOrCreateStats();
+  const bytePerOrigin = undefined === statsJson.bytesNetwork[origin] ? 0 : parseInt(statsJson.bytesNetwork[origin]);
+  statsJson.bytesNetwork[origin] = bytePerOrigin + bytes;
+  localStorage.setItem('stats', JSON.stringify(statsJson));
+}
+
 isChrome = () => {
   return (typeof(browser) === 'undefined');
 };
