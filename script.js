@@ -116,9 +116,14 @@ addOneMinute = () => {
 };
 
 let addOneMinuteInterval;
+let currentState = '';
 
 handleMessage = (request) => {
   if ('start' === request.action) {
+    if ( currentState === request.action ) {
+      return;
+    }
+    currentState = request.action;
     setBrowserIcon('on');
 
     chrome.webRequest.onHeadersReceived.addListener(
@@ -140,9 +145,11 @@ handleMessage = (request) => {
     }
 
     return;
-  }
-
-  if ('stop' === request.action) {
+  } else if ('stop' === request.action) {
+    if ( currentState === request.action ) {
+      return;
+    }
+    currentState = request.action;
     setBrowserIcon('off');
     chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
     chrome.downloads.onCreated.removeListener(downloadCompletedCheckLoop);
