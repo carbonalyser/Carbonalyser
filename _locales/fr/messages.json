@@ -101,5 +101,17 @@
   },
   "resetConfirmation": {
     "message": "Confirmer la réinitialisation des statistiques?"
+  },
+  "statsMoreResults": {
+    "message": "Plus de résultats"
+  },
+  "topResultsSite": {
+    "message": "Site"
+  },
+  "topResultsData": {
+    "message": "Donnée téléchargée depuis le datacenter (Mo)"
+  },
+  "topResultsDataNetwork": {
+    "message": "Bande passante consommée (Mo)"
   }
 }

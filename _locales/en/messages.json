@@ -101,5 +101,17 @@
   },
   "resetConfirmation": {
     "message": "Confirm the statistics reset?"
+  },
+  "statsMoreResults": {
+    "message": "More results"
+  },
+  "topResultsSite": {
+    "message": "Site"
+  },
+  "topResultsData": {
+    "message": "Data retrieved from datacenter (MB)"
+  },
+  "topResultsDataNetwork": {
+    "message": "Bandwidth consumed (MB)"
   }
 }

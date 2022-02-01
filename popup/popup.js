@@ -173,6 +173,12 @@ stop = () => {
   localStorage.removeItem('analysisStarted');
 }
 
+openMoreResults = async () => {
+  const url = chrome.runtime.getURL("tab/tab.html");
+  browser.tabs.create({url: url, active: true});
+  window.close();
+}
+
 reset = () => {
   if (!confirm(translate('resetConfirmation'))) {
     return;
@@ -239,6 +245,9 @@ show = element => element.classList.remove('hidden');
 const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
 
 const statsElement = document.getElementById('stats');
+
+const statsMoreResults = document.getElementById('statsMoreResults');
+statsMoreResults.addEventListener('click', openMoreResults);
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', start);
