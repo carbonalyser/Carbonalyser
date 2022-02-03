@@ -121,5 +121,6 @@ getStats = () => {
         'highestStats': highestStats
     }
 }
-  
-toMegaByte = (value) => (Math.round(value/1024/1024));
+
+toMegaByte = (value) => (Math.round(value/1000/1000));
+toMebiByte = (value) => (Math.round(value/1024/1024));

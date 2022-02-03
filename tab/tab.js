@@ -4,7 +4,6 @@ const statsStorage = getOrCreateStats();
 const topResults = document.getElementById("topResults");
 const stats = getStats();
 
-console.error(stats);
 for(let i = 0; i < stats.highestStats.length; i ++) {
     const stat = stats.highestStats[i];
     const percent = document.createElement("td");
