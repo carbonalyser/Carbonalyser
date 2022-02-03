@@ -43,23 +43,6 @@ hr {
     padding: 6px;
 }
 
-.button {
-    padding: 6px 8px;
-    border-radius: 6px;
-    border: 2px solid #999999;
-    background: #fff;
-    font-size: 14px;
-    text-decoration: none;
-    color: #000;
-    cursor: pointer;
-}
-
-.button-fullwidth {
-    width: 100%;
-    display: block;
-    text-align: center;
-}
-
 .fullwidth {
     width: 100%;
     display: block;
@@ -75,28 +58,18 @@ hr {
     float: left;
 }
 
-.column33 {
-    width: 33%;
-    float: left;
-}
-
-.column50 {
-    width: 50%;
-    float: left;
-}
-
 .clear {
     clear: both;
 }
 
 #startButton, #stopButton {
-    background: url('img/run.svg') no-repeat 4px 5px;
+    background: url('/img/run.svg') no-repeat 4px 5px;
     background-size: 20px;
     padding-left: 26px;
 }
 
 #resetButton {
-    background: url('img/reload.svg') no-repeat 4px 5px;
+    background: url('/img/reload.svg') no-repeat 4px 5px;
     background-size: 20px;
     padding-left: 26px;
 }
@@ -113,26 +86,6 @@ ul#statsListItems {
 
 #statsListTitle {
     color: #999999;
-}
-
-#equivalence img {
-    margin-top: -8px;
-    width: 50px;
-    float: left;
-}
-
-#equivalence img.icon-car {
-    width: 44px;
-    margin-right: 6px;
-}
-
-#equivalence .block {
-    font-size: 16px;
-}
-
-#equivalence span.unit {
-    font-size: 10px;
-    display: block;
 }
 
 .selectRegionHelp {

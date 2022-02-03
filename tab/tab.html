@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="bootstrap.min.css"/>
+        <link rel="stylesheet" href="/lib/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/lib/common.css"/>
         <link rel="stylesheet" href="tab.css"/>
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     </head>
@@ -22,7 +23,57 @@
                 <div class="container">
                     <div class="row">
                         <div id="resultsLeftColumn" class="col-3">
-                           
+                            <div id="equivalence">
+                                <p id="equivalenceTitle"></p>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/time.svg" />
+                                        <span id="duration"></span>
+                                        <span id="durationItem" class="unit">minutes</span>
+                                    </div>
+                                </div>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/energy.svg" />
+                                        <span id="kWhTotalValue"></span>
+                                        <span id="kWhTotalUnit" class="unit">kWh</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/arrows.svg" />
+                                        <span id="mbTotalValue"></span>
+                                        <span id="mbTotalUnit" class="unit" translate="mbTotalUnit"></span>
+                                    </div>
+                                </div>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/gco2.svg" />
+                                        <span id="gCO2Value"></span>
+                                        <span id="gCO2Item" class="unit">gCO<sub>2</sub>e</span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                    
+                                <p translate="digitalEquivalenceTitle"></p>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/smartphone.svg" />
+                                        <span id="chargedSmartphonesValue"></span>
+                                        <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
+                                    </div>
+                                </div>
+                                <div class="column50">
+                                    <div class="block">
+                                        <img src="/img/car.svg" class="icon-car" />
+                                        <span id="kmByCarValue"></span>
+                                        <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                <p><a class="button" translate="howToChange" translate-href="howToChangeUrl" target="_blank"></a></p>
+                            </div>
                         </div>
                         <div id="resultsRightColumn" class="col-7">
                             <table class="table table-striped">
@@ -57,10 +108,10 @@
                 </div>
             </div>
         </div>
-        <script src="jquery-3.3.1.slim.min.js" ></script>
-        <script src="popper.min.js" ></script>
-        <script src="bootstrap.min.js" ></script>
-        <script src="../lib.js"></script>
+        <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
+        <script src="/lib/popper.min.js" ></script>
+        <script src="/lib/bootstrap.min.js" ></script>
+        <script src="/lib/lib.js"></script>
         <script src="tab.js"></script>
     </body>
 </html>

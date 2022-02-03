@@ -15,7 +15,7 @@
   ],
   "background": {
     "scripts": [
-      "lib.js",
+      "lib/lib.js",
       "script.js"
     ]
   },
