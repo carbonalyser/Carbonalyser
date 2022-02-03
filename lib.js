@@ -132,5 +132,6 @@ getStats = (numberOfResultShow) => {
     }
 }
 
+toMegaByteNoRound = (value) => ((value * 0.000001).toFixed(2))
 toMegaByte = (value) => (Math.round(value/1000/1000));
 toMebiByte = (value) => (Math.round(value/1024/1024));

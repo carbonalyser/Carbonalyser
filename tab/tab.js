@@ -14,8 +14,8 @@ for(let i = 0; i < stats.highestStats.length; i ++) {
     tr.className = "oneResult";
     percent.textContent = stat.percent;
     site.textContent = stat.origin;
-    data.textContent = toMegaByte(statsStorage.bytesDataCenter[stat.origin]).toFixed(2);
-    network.textContent = toMegaByte(statsStorage.bytesNetwork[stat.origin] + statsStorage.bytesDataCenter[stat.origin]).toFixed(2);
+    data.textContent = toMegaByteNoRound(statsStorage.bytesDataCenter[stat.origin]);
+    network.textContent = toMegaByteNoRound(statsStorage.bytesNetwork[stat.origin] + statsStorage.bytesDataCenter[stat.origin]);
     tr.appendChild(percent);
     tr.appendChild(site);
     tr.appendChild(data);

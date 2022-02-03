@@ -18,18 +18,27 @@
         </ul>
 
         <div class="tab-content">
-            <div id="topResultsDiv" class="tab-pane fade show active" role="tabpanel" aria-labelledby="tab-topResults">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col" translate="topResultsPercent"></th>
-                            <th scope="col" translate="topResultsSite"></th>
-                            <th scope="col" translate="topResultsData"></th>
-                            <th scope="col" translate="topResultsDataNetwork"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="topResults"></tbody>
-                </table>
+            <div id="topResultsDiv" class="container tab-pane fade show active" role="tabpanel" aria-labelledby="tab-topResults">
+                <div class="container">
+                    <div class="row">
+                        <div id="resultsLeftColumn" class="col-3">
+                           
+                        </div>
+                        <div id="resultsRightColumn" class="col-7">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" translate="topResultsPercent"></th>
+                                        <th scope="col" translate="topResultsSite"></th>
+                                        <th scope="col" translate="topResultsData"></th>
+                                        <th scope="col" translate="topResultsDataNetwork"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topResults"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
                 <div id="selectRegionForm">
