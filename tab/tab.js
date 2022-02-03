@@ -1,40 +1,22 @@
-translate = (translationKey) => {
-    return chrome.i18n.getMessage(translationKey);
-}
+loadTranslations();
 
-translateText = (target, translationKey) => {
-    target.appendChild(document.createTextNode(translate(translationKey)));
-}
-
-translateHref = (target, translationKey) => {
-    target.href = chrome.i18n.getMessage(translationKey);
-}
-  
-document.querySelectorAll('[translate]').forEach(function(element) {
-    translateText(element, element.getAttribute('translate'));
-  });
-  
-document.querySelectorAll('[translate-href]').forEach(function(element) {
-    translateHref(element, element.getAttribute('translate-href'));
-});
-  
-getOrCreateStats = () => {
-    const stats = localStorage.getItem('stats');
-    const statsJson = null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
-    return statsJson;
-}
-
-const stats = getOrCreateStats();
-
+const statsStorage = getOrCreateStats();
 const topResults = document.getElementById("topResults");
-for(let origin in stats.bytesDataCenter) {
+const stats = getStats();
+
+console.error(stats);
+for(let i = 0; i < stats.highestStats.length; i ++) {
+    const stat = stats.highestStats[i];
+    const percent = document.createElement("td");
     const tr = document.createElement("tr");
     const site = document.createElement("td");
-    site.textContent = origin;
     const data = document.createElement("td");
-    data.textContent = (stats.bytesDataCenter[origin] * 0.000001).toFixed(2);
     const network = document.createElement("td");
-    network.textContent = ((stats.bytesNetwork[origin] + stats.bytesDataCenter[origin]) * 0.000001).toFixed(2);
+    percent.textContent = stat.percent;
+    site.textContent = stat.origin;
+    data.textContent = (statsStorage.bytesDataCenter[stat.origin] * 0.000001).toFixed(2);
+    network.textContent = ((statsStorage.bytesNetwork[stat.origin] + statsStorage.bytesDataCenter[stat.origin]) * 0.000001).toFixed(2);
+    tr.appendChild(percent);
     tr.appendChild(site);
     tr.appendChild(data);
     tr.appendChild(network);

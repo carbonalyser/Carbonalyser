@@ -113,5 +113,8 @@
   },
   "topResultsDataNetwork": {
     "message": "Bande passante consommée (Mo)"
+  },
+  "topResultsPercent": {
+    "message": "Part dans le total (%)"
   }
 }

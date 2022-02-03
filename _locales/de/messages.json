@@ -113,5 +113,8 @@
   },
   "topResultsDataNetwork": {
     "message": "Bandbreite verbraucht (MB)"
+  },
+  "topResultsPercent": {
+    "message": "Insgesamt teilen (%)"
   }
 }
