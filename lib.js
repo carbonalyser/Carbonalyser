@@ -69,7 +69,7 @@ parseStats = () => {
     return null === stats ? {bytesDataCenter: {}, bytesNetwork: {}} : JSON.parse(stats);
 }
 
-getStats = () => {
+getStats = (numberOfResultShow) => {
     const stats = parseStats();
     let total = 0;
     let totalDataCenter = 0, totalNetwork = 0;
@@ -85,9 +85,9 @@ getStats = () => {
 
         const found = sortedStats.find(element => element.origin == origin);
         if ( found ===undefined ) {
-        sortedStats.push({ 'origin': origin, 'byte': stats.bytesNetwork[origin]});
+            sortedStats.push({ 'origin': origin, 'byte': stats.bytesNetwork[origin]});
         } else {
-        found.byte += stats.bytesNetwork[origin];
+            found.byte += stats.bytesNetwork[origin];
         }
     }
 
@@ -97,7 +97,17 @@ getStats = () => {
         return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
     });
 
-    const highestStats = sortedStats.slice(0, 4);
+    let highestStats;
+    if ( numberOfResultShow === undefined ) {
+        highestStats = sortedStats;
+    } else {
+        if ( numberOfResultShow <= 0 ) {
+            console.error("you specified " + numberOfResultShow + " as the number of results to show ...");
+            return undefined;
+        } else {
+            highestStats = sortedStats.slice(0, numberOfResultShow-1);
+        }
+    }
     let subtotal = 0;
     for (let index in highestStats) {
         subtotal += highestStats[index].byte;
@@ -106,11 +116,11 @@ getStats = () => {
     if (total > 0) {
         const remaining = total - subtotal;
         if (remaining > 0) {
-        highestStats.push({'origin': translate('statsOthers'), 'byte': remaining});
+            highestStats.push({'origin': translate('statsOthers'), 'byte': remaining});
         }
 
         highestStats.forEach(function (item) {
-        item.percent = Math.round(100 * item.byte / total)
+            item.percent = Math.round(100 * item.byte / total)
         });
     }
 

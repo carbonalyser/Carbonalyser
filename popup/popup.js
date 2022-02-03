@@ -21,7 +21,7 @@ let statsInterval;
 let pieChart;
 
 showStats = () => {
-  const stats = getStats();
+  const stats = getStats(5);
 
   if (stats.total === 0) {
     return;
