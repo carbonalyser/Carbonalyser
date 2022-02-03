@@ -22,13 +22,16 @@ hr {
     margin-top: -20px;
 }
 
-.header-links a {
+#statsMoreResults {
+    cursor: pointer;
+}
+.header-links a, #statsMoreResults {
     color: #999999;
     margin-right: 10px;
     text-decoration: none;
 }
 
-.header-links a:hover {
+.header-links a:hover, #statsMoreResults:hover {
     text-decoration: underline;
 }
 
