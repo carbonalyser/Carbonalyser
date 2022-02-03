@@ -7,17 +7,49 @@
     </head>
 
     <body>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col" translate="topResultsPercent"></th>
-                    <th scope="col" translate="topResultsSite"></th>
-                    <th scope="col" translate="topResultsData"></th>
-                    <th scope="col" translate="topResultsDataNetwork"></th>
-                </tr>
-            </thead>
-            <tbody id="topResults"></tbody>
-        </table>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" style="cursor: pointer;">
+                <div href="#topResultsDiv" id="tab-topResults" class="nav-link active" role="tab" data-toggle="tab" aria-controls="topResultsDiv" aria-selected="true" translate="topResultsTabTitle"></div>
+            </li>
+            <li class="nav-item" style="cursor: pointer;">
+                <div href="#settingsDiv" id="tab-settings" class="nav-link" role="tab" data-toggle="tab" aria-controls="settingsDiv" aria-selected="false" translate="settings"></div>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="topResultsDiv" class="tab-pane fade show active" role="tabpanel" aria-labelledby="tab-topResults">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col" translate="topResultsPercent"></th>
+                            <th scope="col" translate="topResultsSite"></th>
+                            <th scope="col" translate="topResultsData"></th>
+                            <th scope="col" translate="topResultsDataNetwork"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="topResults"></tbody>
+                </table>
+            </div>
+            <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
+                <div id="selectRegionForm">
+                    <p class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
+                    <p>
+                        <select id="selectRegion">
+                            <option value="" translate="selectRegionPlaceholder"></option>
+                            <option value="regionEuropeanUnion" translate="regionEuropeanUnion"></option>
+                            <option value="regionFrance" translate="regionFrance"></option>
+                            <option value="regionUnitedStates" translate="regionUnitedStates"></option>
+                            <option value="regionChina" translate="regionChina"></option>
+                            <option value="regionOther" translate="regionOther"></option>
+                        </select>
+                    </p>
+                    <p class="selectRegionHelp" translate="selectRegionHelp"></p>
+                </div>
+            </div>
+        </div>
+        <script src="jquery-3.3.1.slim.min.js" ></script>
+        <script src="popper.min.js" ></script>
+        <script src="bootstrap.min.js" ></script>
         <script src="../lib.js"></script>
         <script src="tab.js"></script>
     </body>

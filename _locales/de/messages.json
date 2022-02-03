@@ -116,5 +116,11 @@
   },
   "topResultsPercent": {
     "message": "Insgesamt teilen (%)"
+  },
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "topResultsTabTitle": {
+    "message": "Results"
   }
 }

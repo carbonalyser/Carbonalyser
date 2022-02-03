@@ -21,3 +21,17 @@ for(let i = 0; i < stats.highestStats.length; i ++) {
     tr.appendChild(network);
     topResults.appendChild(tr);
 }
+
+selectRegionHandler = (event) => {
+    const selectedRegion = event.target.value;
+  
+    if ('' === selectedRegion) {
+      return;
+    }
+  
+    localStorage.setItem('selectedRegion', selectedRegion);
+    userLocation = selectedRegion;
+}
+
+const selectRegion = document.getElementById('selectRegion');
+selectRegion.addEventListener('change', selectRegionHandler);

@@ -116,5 +116,11 @@
   },
   "topResultsPercent": {
     "message": "Part dans le total (%)"
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "topResultsTabTitle": {
+    "message": "Résultats"
   }
 }
