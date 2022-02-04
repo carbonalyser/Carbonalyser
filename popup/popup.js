@@ -113,8 +113,8 @@ selectRegionHandler = (event) => {
     return;
   }
 
-  localStorage.setItem('selectedRegion', selectedRegion);
   userLocation = selectedRegion;
+  localStorage.setItem('selectedRegion', selectedRegion);
   showStats();
 }
 
