@@ -44,3 +44,7 @@
     display: block;
     text-align: center;
 }
+
+.clear {
+    clear: both;
+}

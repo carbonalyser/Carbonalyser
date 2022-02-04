@@ -58,10 +58,6 @@ hr {
     float: left;
 }
 
-.clear {
-    clear: both;
-}
-
 #startButton, #stopButton {
     background: url('/img/run.svg') no-repeat 4px 5px;
     background-size: 20px;
