@@ -1,14 +1,3 @@
-const defaultLocation = 'regionOther';
-let userLocation = defaultLocation;
-
-const carbonIntensityFactorIngCO2PerKWh = {
-  'regionEuropeanUnion': 276,
-  'regionFrance': 34.8,
-  'regionUnitedStates': 493,
-  'regionChina': 681,
-  'regionOther': defaultCarbonIntensityFactorIngCO2PerKWh
-};
-
 let statsInterval;
 let pieChart;
 
@@ -41,7 +30,7 @@ showStats = () => {
     statsListItemsElement.appendChild(li);
   }
 
-  computedEquivalence = computeEquivalenceFromStatsItem(stats);
+  const computedEquivalence = computeEquivalenceFromStatsItem(stats);
 
   if (!pieChart) {
     pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -55,19 +44,7 @@ showStats = () => {
     pieChart.update({labels, series});
   }
 
-  const megaByteTotal = toMegaByte(stats.total);
-  document.getElementById('duration').textContent = computedEquivalence.duration.toString();
-  document.getElementById('mbTotalValue').textContent = megaByteTotal;
-  document.getElementById('kWhTotalValue').textContent = computedEquivalence.kWhTotal.toString();
-  document.getElementById('gCO2Value').textContent = computedEquivalence.gCO2Total.toString();
-  document.getElementById('chargedSmartphonesValue').textContent = computedEquivalence.chargedSmartphones.toString();
-  document.getElementById('kmByCarValue').textContent = computedEquivalence.kmByCar.toString();
-
-  const equivalenceTitle = document.getElementById('equivalenceTitle');
-  while (equivalenceTitle.firstChild) {
-    equivalenceTitle.removeChild(equivalenceTitle.firstChild);
-  }
-  equivalenceTitle.appendChild(document.createTextNode(chrome.i18n.getMessage('equivalenceTitle', [computedEquivalence.duration.toString(), megaByteTotal, computedEquivalence.kWhTotal.toString(), computedEquivalence.gCO2Total.toString()])));
+  injectEquivalentIntoHTML(stats, computedEquivalence);
 }
 
 start = () => {
@@ -90,7 +67,7 @@ stop = () => {
 }
 
 openMoreResults = async () => {
-  const url = chrome.runtime.getURL("tab/tab.html");
+  const url = chrome.runtime.getURL("/tab/tab.html");
   browser.tabs.create({url: url, active: true});
   window.close();
 }
@@ -108,11 +85,9 @@ reset = () => {
 }
 
 init = () => {
-  const selectedRegion = localStorage.getItem('selectedRegion');
 
-  if (null !== selectedRegion) {
-    userLocation = selectedRegion;
-    selectRegion.value = selectedRegion;
+  if ( getSelectedRegion() !== null ) {
+    selectRegion.value = userLocation;
   }
 
   if (null === localStorage.getItem('stats')) {
