@@ -1,14 +1,6 @@
 const defaultLocation = 'regionOther';
 let userLocation = defaultLocation;
 
-const defaultCarbonIntensityFactorIngCO2PerKWh = 519;
-const kWhPerByteDataCenter = 0.000000000072;
-const kWhPerByteNetwork = 0.000000000152;
-const kWhPerMinuteDevice = 0.00021;
-
-const GESgCO2ForOneKmByCar = 220;
-const GESgCO2ForOneChargedSmartphone = 8.3;
-
 const carbonIntensityFactorIngCO2PerKWh = {
   'regionEuropeanUnion': 276,
   'regionFrance': 34.8,
@@ -49,23 +41,7 @@ showStats = () => {
     statsListItemsElement.appendChild(li);
   }
 
-  let duration = localStorage.getItem('duration');
-  duration = null === duration ? 0 : duration;
-
-  const kWhDataCenterTotal = stats.totalDataCenter * kWhPerByteDataCenter;
-  const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-  const kWhNetworkTotal = stats.total * kWhPerByteNetwork;
-  const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-  const kWhDeviceTotal = duration * kWhPerMinuteDevice;
-  const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorIngCO2PerKWh[userLocation];
-
-  const kWhTotal = Math.round(1000 * (kWhDataCenterTotal + kWhNetworkTotal + kWhDeviceTotal)) / 1000;
-  const gCO2Total = Math.round(GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal);
-
-  const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
-  const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
+  computedEquivalence = computeEquivalenceFromStatsItem(stats);
 
   if (!pieChart) {
     pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -80,18 +56,18 @@ showStats = () => {
   }
 
   const megaByteTotal = toMegaByte(stats.total);
-  document.getElementById('duration').textContent = duration.toString();
+  document.getElementById('duration').textContent = computedEquivalence.duration.toString();
   document.getElementById('mbTotalValue').textContent = megaByteTotal;
-  document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
-  document.getElementById('gCO2Value').textContent = gCO2Total.toString();
-  document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
-  document.getElementById('kmByCarValue').textContent = kmByCar.toString();
+  document.getElementById('kWhTotalValue').textContent = computedEquivalence.kWhTotal.toString();
+  document.getElementById('gCO2Value').textContent = computedEquivalence.gCO2Total.toString();
+  document.getElementById('chargedSmartphonesValue').textContent = computedEquivalence.chargedSmartphones.toString();
+  document.getElementById('kmByCarValue').textContent = computedEquivalence.kmByCar.toString();
 
   const equivalenceTitle = document.getElementById('equivalenceTitle');
   while (equivalenceTitle.firstChild) {
     equivalenceTitle.removeChild(equivalenceTitle.firstChild);
   }
-  equivalenceTitle.appendChild(document.createTextNode(chrome.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
+  equivalenceTitle.appendChild(document.createTextNode(chrome.i18n.getMessage('equivalenceTitle', [computedEquivalence.duration.toString(), megaByteTotal, computedEquivalence.kWhTotal.toString(), computedEquivalence.gCO2Total.toString()])));
 }
 
 start = () => {
