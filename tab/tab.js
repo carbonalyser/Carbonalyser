@@ -19,8 +19,8 @@ init = () => {
       tr.className = "oneResult";
       percent.textContent = stat.percent;
       site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(statsStorage.bytesDataCenter[stat.origin]);
-      network.textContent = toMegaByteNoRound(statsStorage.bytesNetwork[stat.origin] + statsStorage.bytesDataCenter[stat.origin]);
+      data.textContent = toMegaByteNoRound(statsStorage.bytesDataCenter[stat.origin].total);
+      network.textContent = toMegaByteNoRound(statsStorage.bytesNetwork[stat.origin].total + statsStorage.bytesDataCenter[stat.origin].total);
       tr.appendChild(percent);
       tr.appendChild(site);
       tr.appendChild(data);

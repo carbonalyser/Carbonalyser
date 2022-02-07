@@ -82,7 +82,8 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, value);
         var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
 
-        result.should.have.property(origin).with.equal(value);
+        result.should.have.property(origin);
+        result[origin].should.have.property("total").with.equal(value);
         done();
     })
 
@@ -93,7 +94,8 @@ describe('incBytesDataCenter', function () {
 
         var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
 
-        result.should.have.property(origin).with.equal(192);
+        result.should.have.property(origin);
+        result[origin].should.have.property("total").with.equal(192);
         done();
     });
 
@@ -103,8 +105,10 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin2, 64);
 
         var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
-        result.should.have.property(origin).with.equal(128);
-        result.should.have.property(origin2).with.equal(64);
+        result.should.have.property(origin);
+        result[origin].should.have.property("total").with.equal(128);
+        result.should.have.property(origin2);
+        result[origin2].should.have.property("total").with.equal(64);
         done();
     });
 });
