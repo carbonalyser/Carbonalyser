@@ -125,5 +125,8 @@
   },
   "history": {
     "message": "Historic"
+  },
+  "tabHistoryPieTitle": {
+    "message": "Data comsumption repartition between web sites"
   }
 }

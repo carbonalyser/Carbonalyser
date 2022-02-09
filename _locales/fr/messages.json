@@ -125,5 +125,8 @@
   },
   "history": {
     "message": "Historique"
+  },
+  "tabHistoryPieTitle": {
+    "message": "Répartition de votre consommation de données entre les sites web"
   }
 }

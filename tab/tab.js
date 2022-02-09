@@ -1,3 +1,27 @@
+// Create a sum of data for all websites
+createSumOfData = (dataObject) => {
+  const rv = {};
+  for(let origin in dataObject) {
+    for(let tso in dataObject[origin].dots ) {
+      const ts = parseInt(tso);
+      if ( rv[ts] === undefined ) {
+        rv[ts] = 0;
+      }
+      rv[ts] += dataObject[origin].dots[ts];
+    }
+  }
+  return rv;
+}
+
+// create an object containing sum of data
+createObjectFromSumOfData = (sod) => {
+  const rv = [];
+  for(let ts in sod) {
+    rv.push({x: parseInt(ts), y: parseInt(sod[ts])});
+  }
+  return rv;
+}
+
 init = () => {
 
   if ( getSelectedRegion() !== null ) {
@@ -29,28 +53,6 @@ init = () => {
   }
 
   injectEquivalentIntoHTML(stats, computedEquivalence);
-
-  createSumOfData = (dataObject) => {
-    const rv = {};
-    for(let origin in dataObject) {
-      for(let tso in dataObject[origin].dots ) {
-        const ts = parseInt(tso);
-        if ( rv[ts] === undefined ) {
-          rv[ts] = 0;
-        }
-        rv[ts] += dataObject[origin].dots[ts];
-      }
-    }
-    return rv;
-  }
-
-  createObjectFromSumOfData = (sod) => {
-    const rv = [];
-    for(let ts in sod) {
-      rv.push({x: parseInt(ts), y: parseInt(sod[ts])});
-    }
-    return rv;
-  }
 
   const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter);
   const bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork);
@@ -119,9 +121,7 @@ init = () => {
                 callback: function(value, index, ticks) {
                     return toMegaByteNoRound(value);
                 }
-            },
-            //min: 10,
-            //max: 1 * 1000000
+            }
         }
       }
     },
@@ -132,23 +132,48 @@ init = () => {
     config
   );
 
-  /*
-  new Chartist.Line('#historyDiv', {
-    labels: labels,
-    series: [
-      serie
-    ]
-  }, {
-    height: "100%",
-    fullWidth: true,
-    chartPadding: {
-      right: 40,
-      top: 40,
-      left: 40,
-      bottom: 40
+  // create the pie chart
+  const topStats = getStats(100);
+  const labels = [], series = [];
+  for (let index in topStats.highestStats) {
+    if (topStats.highestStats[index].percent < 1) {
+      continue;
     }
-  });
-*/
+
+    labels.push(topStats.highestStats[index].origin);
+    series.push(topStats.highestStats[index].percent);
+  }
+
+  const CHART_COLORS = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(201, 203, 207)'
+  };
+
+  const pieData = {
+    labels: labels,
+    datasets: [{
+      label: 'Share of websites',
+      data: series,
+      backgroundColor: Object.values(CHART_COLORS)
+    }]
+  };
+  
+  const pieConfig = {
+    type: 'pie',
+    data: pieData
+  };
+
+  new Chart(
+    document.getElementById('historyPieCanvas'),
+    pieConfig
+  );
+
+
 }
 
 selectRegionHandler = (event) => {
@@ -167,4 +192,6 @@ selectRegion.addEventListener('change', selectRegionHandler);
 
 loadTranslations();
 
-init();
+window.addEventListener("load", function(event) {
+  init();
+});

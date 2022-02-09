@@ -125,5 +125,8 @@
   },
   "history": {
     "message": "Historisch"
+  },
+  "tabHistoryPieTitle": {
+    "message": "Aufschlüsselung Ihrer Datennutzung zwischen Websites"
   }
 }

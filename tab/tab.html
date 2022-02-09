@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="/lib/bootstrap.min.css"/>
         <link rel="stylesheet" href="/lib/common.css"/>
         <link rel="stylesheet" href="tab.css"/>
+        <link rel="stylesheet" href="/lib/chartist/chartist.css"/>
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     </head>
 
@@ -95,7 +96,21 @@
                 </div>
             </div>
             <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
-                <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
+                        </div>
+                        <div class="col-7">
+                            <div class="row">
+                                <h4 style="width: 100%; text-align: center;" translate="tabHistoryPieTitle"></h4>
+                            </div>
+                            <div class="row  ct-chart ct-golden-section" style="width: 500px; height: 500px;">
+                                <canvas id="historyPieCanvas" style="width:100%;max-width:700px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
                 <div id="selectRegionForm">
@@ -115,6 +130,7 @@
             </div>
         </div>
         <script src="/lib/chart.js"></script>
+        <script src="/lib/chartjs-plugin-labels.js"></script>
         <script src="/lib/luxon@^2.js"></script>
         <script src="/lib/chartjs-adapter-luxon@^1.js"></script>
         <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
