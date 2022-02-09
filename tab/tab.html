@@ -9,16 +9,19 @@
     </head>
 
     <body>
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist" style="max-height: 20%;">
             <li class="nav-item" style="cursor: pointer;">
                 <div href="#topResultsDiv" id="tab-topResults" class="nav-link active" role="tab" data-toggle="tab" aria-controls="topResultsDiv" aria-selected="true" translate="topResultsTabTitle"></div>
             </li>
             <li class="nav-item" style="cursor: pointer;">
                 <div href="#settingsDiv" id="tab-settings" class="nav-link" role="tab" data-toggle="tab" aria-controls="settingsDiv" aria-selected="false" translate="settings"></div>
             </li>
+            <li class="nav-item" style="cursor: pointer;">
+                <div href="#historyDiv" id="tab-history" class="nav-link" role="tab" data-toggle="tab" aria-controls="historyDiv" aria-selected="false" translate="history"></div>
+            </li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content" style="height: 80%;">
             <div id="topResultsDiv" class="container tab-pane fade show active" role="tabpanel" aria-labelledby="tab-topResults">
                 <div class="container-fluid">
                     <div class="row flex-fill">
@@ -91,6 +94,9 @@
                     </div>
                 </div>
             </div>
+            <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
+                <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
+            </div>
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
                 <div id="selectRegionForm">
                     <p class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
@@ -108,6 +114,9 @@
                 </div>
             </div>
         </div>
+        <script src="/lib/chart.js"></script>
+        <script src="/lib/luxon@^2.js"></script>
+        <script src="/lib/chartjs-adapter-luxon@^1.js"></script>
         <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
         <script src="/lib/popper.min.js" ></script>
         <script src="/lib/bootstrap.min.js" ></script>

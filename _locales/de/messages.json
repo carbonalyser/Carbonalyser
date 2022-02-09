@@ -122,5 +122,8 @@
   },
   "topResultsTabTitle": {
     "message": "Results"
+  },
+  "history": {
+    "message": "Historisch"
   }
 }
