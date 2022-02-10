@@ -128,5 +128,14 @@
   },
   "tabHistoryPieTitle": {
     "message": "Répartition de votre consommation de données entre les sites web"
+  },
+  "historyChartTitle": {
+    "message": "Consommation de données lissée en fonction du temps"
+  },
+  "historyChartXAxis": {
+    "message": "Temps"
+  },
+  "historyChartYAxis": {
+    "message": "Consommation de données (mo)"
   }
 }

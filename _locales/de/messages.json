@@ -128,5 +128,14 @@
   },
   "tabHistoryPieTitle": {
     "message": "Aufschlüsselung Ihrer Datennutzung zwischen Websites"
+  },
+  "historyChartTitle": {
+    "message": "Zeitgeglättete Datennutzung" 
+  },
+  "historyChartXAxis": {
+    "message": "Zeit"
+  },
+  "historyChartYAxis": {
+    "message": "Datenverbrauch (MB)"
   }
 }

@@ -162,7 +162,7 @@ init = () => {
         },
         title: {
           display: true,
-          text: 'Data consumption over the time'
+          text: translate('historyChartTitle')
         },
         decimation: {
           enabled: true,
@@ -175,7 +175,9 @@ init = () => {
             wheel: {
               enabled: true,
             },
-            drag: true,
+            drag: {
+              enabled: true
+            },
             mode: 'x',
           }
         }
@@ -185,14 +187,14 @@ init = () => {
         x: {
           title: {
             display: true,
-            text: 'Time'
+            text: translate('historyChartXAxis')
           }, 
           type: 'time'
         },
         y: {
             title: {
               display: true,
-              text: 'Data consumption (mo)'
+              text: translate('historyChartYAxis')
             },
             ticks: {
                 // Include a dollar sign in the ticks

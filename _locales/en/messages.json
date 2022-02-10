@@ -128,5 +128,14 @@
   },
   "tabHistoryPieTitle": {
     "message": "Data comsumption repartition between web sites"
+  },
+  "historyChartTitle": {
+    "message": "Smoothed data consumption over the time"
+  },
+  "historyChartXAxis": {
+    "message": "Time"
+  },
+  "historyChartYAxis": {
+    "message": "Data consumption (MB)"
   }
 }
