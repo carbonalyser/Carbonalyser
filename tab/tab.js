@@ -22,6 +22,28 @@ createObjectFromSumOfData = (sod) => {
   return rv;
 }
 
+// create moving average from the sum of datas (ordered)
+// tsInterval number of seconds of interval
+createMovingAverage = (sod, tsInterval=10) => {
+  let avgSum = 0;         // sum for average
+  const dots = [];        // dots for the graph
+  const stackedSums = []; // stack of sums
+
+  for(let obj of sod) {
+    let ts = obj.x;
+    const cmp = ts - tsInterval;
+    avgSum += obj.y;
+    stackedSums.push(obj);
+
+    while(stackedSums[0].x < cmp) {
+      avgSum -= stackedSums.shift().y;
+    }
+
+    dots.push({x: ts, y: (avgSum/(stackedSums[stackedSums.length-1].x-stackedSums[0].x))});
+  }
+  return dots;
+}
+
 init = () => {
 
   if ( getSelectedRegion() !== null ) {
@@ -54,6 +76,7 @@ init = () => {
 
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
+  // Compute sum of datas
   const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter);
   const bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork);
   for(let ts in bytesDataCenterUnordered) {
@@ -63,8 +86,11 @@ init = () => {
       bytesNetworkUnordered[ts] += bytesDataCenterUnordered[ts];
     }
   }
-  const bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered);
+  let bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered);
   const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered);
+  bytesDataCenterObjectForm = bytesDataCenterObjectForm.sort((a, b) => {
+      return a.x < a.y;
+  });
 
   const data = {
     datasets: [
