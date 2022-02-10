@@ -24,7 +24,7 @@ createSumOfData = (dataObject, tsInterval=60*10) => {
 // create 0 data point when time ellapsed is too high
 // assuming sod sorted
 // ts in seconds
-fillSODGaps = (sod, tsInterval=60) => {
+fillSODGaps = (sod, tsInterval=60*10) => {
   tsInterval *= 1000;
   let previous = undefined;
   const keys = Object.keys(sod).sort((a,b) => a > b);
@@ -124,10 +124,11 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 30);
-  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 30);
+  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 60);
+  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
   fillSODGaps(bytesNetworkUnordered);
+  fillSODGaps(bytesDataCenterUnordered);
   const bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
   const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
 
@@ -137,19 +138,15 @@ init = () => {
         label: 'Data used from datacenter',
         data: bytesDataCenterObjectForm,
         borderColor: 'rgb(255, 0, 0)',
-        showLine: true
+        showLine: true,
+        lineTension: 0.2,
       },
       {
         label: 'Data used over network',
         data: bytesNetworkObjectForm,
         borderColor: 'rgb(0, 255, 0)',
         showLine: true,
-        lineTension: 0.4,
-        fill: {
-          target: 'origin',
-          above: 'rgba(0, 255, 0, 0.1)',
-          below: 'rgba(0, 255, 0, 0.1)'
-        }
+        lineTension: 0.2
       }
     ]
   };
