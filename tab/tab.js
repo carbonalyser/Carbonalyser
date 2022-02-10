@@ -21,13 +21,31 @@ createSumOfData = (dataObject, tsInterval=60*10) => {
   return rv;
 }
 
+// create 0 data point when time ellapsed is too high
+// assuming sod sorted
+// ts in seconds
+fillSODGaps = (sod, tsInterval=60) => {
+  tsInterval *= 1000;
+  let previous = undefined;
+  const keys = Object.keys(sod).sort((a,b) => a > b);
+  for(let ts of keys) {
+    if (previous !== undefined) {
+      const pratInterv = (ts - previous);
+      if ( pratInterv > tsInterval ) {
+        const newTs = parseInt(previous) + parseInt(Math.round(pratInterv/2));
+        sod[newTs] = 0;
+      }
+    }
+    previous = ts;
+  }
+}
+
 // used to merge two sod (respecting interval constraint)
-// warning sod1 is destructed
 // ts in seconds
 mergeTwoSOD = (sod1,sod2, tsInterval=60*10) => {
   tsInterval *= 1000;
   const keys = Object.keys(sod1);
-  const result = sod1;
+  const result = Object.assign({}, sod1);
   for(let ts in sod2) {
     const tsOrigin = ts;
     const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
@@ -106,9 +124,10 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 60 * 5);
-  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 60 * 5);
-  bytesNetworkUnordered = mergeTwoSOD(bytesNetworkUnordered, bytesDataCenterUnordered);
+  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 30);
+  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 30);
+  bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
+  fillSODGaps(bytesNetworkUnordered);
   const bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
   const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
 
@@ -124,7 +143,13 @@ init = () => {
         label: 'Data used over network',
         data: bytesNetworkObjectForm,
         borderColor: 'rgb(0, 255, 0)',
-        showLine: true
+        showLine: true,
+        lineTension: 0.4,
+        fill: {
+          target: 'origin',
+          above: 'rgba(0, 255, 0, 0.1)',
+          below: 'rgba(0, 255, 0, 0.1)'
+        }
       }
     ]
   };
