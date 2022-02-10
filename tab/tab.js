@@ -197,7 +197,6 @@ init = () => {
               text: translate('historyChartYAxis')
             },
             ticks: {
-                // Include a dollar sign in the ticks
                 callback: function(value, index, ticks) {
                     return toMegaByteNoRound(value);
                 }
@@ -210,6 +209,91 @@ init = () => {
   const myChart = new Chart(
     document.getElementById('historyDivCanvas'),
     config
+  );
+
+  const electricityDataCenterObjectForm = [], electricityNetworkObjectForm = [];
+  for(let o of bytesDataCenterObjectForm) {
+    electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
+  }
+  for(let o of bytesNetworkObjectForm) {
+    electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+  }
+
+
+  const dataElectrity = {
+    datasets: [
+      {
+        label: 'Electricity consummed in datacenter',
+        data: electricityDataCenterObjectForm,
+        borderColor: 'rgb(255, 0, 0)',
+        showLine: true,
+        lineTension: 0.2,
+      },
+      {
+        label: 'Electricity consummed routing infra',
+        data: electricityNetworkObjectForm,
+        borderColor: 'rgb(0, 255, 0)',
+        showLine: true,
+        lineTension: 0.2,
+      }
+    ]
+  };
+
+  const configElectricity = {
+    type: 'line',
+    data: dataElectrity,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: "Comsumption of electricity linked to your online activity (not only your computer)"
+        },
+        decimation: {
+          enabled: true,
+          algorithm: 'lttb',
+          //samples: 5,
+          threshold: 10
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            drag: {
+              enabled: true
+            },
+            mode: 'x',
+          }
+        }
+        
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: translate('historyChartXAxis')
+          }, 
+          type: 'time'
+        },
+        y: {
+            title: {
+              display: true,
+              text: "electricity consumption KWh"
+            }
+        }
+      }
+    },
+  };
+
+  // create electricty graph
+  //
+  const electricityChart = new Chart(
+    document.getElementById('historyElectricityDivCanvas'),
+    configElectricity
   );
 
   // create the pie chart
