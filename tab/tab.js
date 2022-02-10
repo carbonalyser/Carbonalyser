@@ -1,16 +1,45 @@
 // Create a sum of data for all websites
-createSumOfData = (dataObject) => {
+// tsInterval in s
+createSumOfData = (dataObject, tsInterval=60*10) => {
+  tsInterval *= 1000;
   const rv = {};
   for(let origin in dataObject) {
+    const keys = Object.keys(dataObject[origin].dots);
     for(let tso in dataObject[origin].dots ) {
-      const ts = parseInt(tso);
+      const originalTS = parseInt(tso);
+      let ts = originalTS;
+      const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
+      if ( newTs !== undefined ) {
+        ts = newTs;
+      }
       if ( rv[ts] === undefined ) {
         rv[ts] = 0;
       }
-      rv[ts] += dataObject[origin].dots[ts];
+      rv[ts] += dataObject[origin].dots[originalTS];
     }
   }
   return rv;
+}
+
+// used to merge two sod (respecting interval constraint)
+// warning sod1 is destructed
+// ts in seconds
+mergeTwoSOD = (sod1,sod2, tsInterval=60*10) => {
+  tsInterval *= 1000;
+  const keys = Object.keys(sod1);
+  const result = sod1;
+  for(let ts in sod2) {
+    const tsOrigin = ts;
+    const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
+    if ( newTs !== undefined ) {
+      ts = newTs;
+    }
+    if ( result[ts] === undefined ) {
+      result[ts] = 0;
+    } 
+    result[ts] += sod2[tsOrigin];
+  }
+  return result;
 }
 
 // create an object containing sum of data
@@ -77,20 +106,11 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter);
-  const bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork);
-  for(let ts in bytesDataCenterUnordered) {
-    if ( bytesNetworkUnordered[ts] === undefined ) {
-      bytesNetworkUnordered[ts] = bytesDataCenterUnordered[ts];
-    } else {
-      bytesNetworkUnordered[ts] += bytesDataCenterUnordered[ts];
-    }
-  }
-  let bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered);
-  const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered);
-  bytesDataCenterObjectForm = bytesDataCenterObjectForm.sort((a, b) => {
-      return a.x < a.y;
-  });
+  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 60 * 5);
+  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 60 * 5);
+  bytesNetworkUnordered = mergeTwoSOD(bytesNetworkUnordered, bytesDataCenterUnordered);
+  const bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
+  const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
 
   const data = {
     datasets: [
@@ -98,13 +118,13 @@ init = () => {
         label: 'Data used from datacenter',
         data: bytesDataCenterObjectForm,
         borderColor: 'rgb(255, 0, 0)',
-        showLine: false
+        showLine: true
       },
       {
         label: 'Data used over network',
         data: bytesNetworkObjectForm,
         borderColor: 'rgb(0, 255, 0)',
-        showLine: false
+        showLine: true
       }
     ]
   };
