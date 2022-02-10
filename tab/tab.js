@@ -169,7 +169,17 @@ init = () => {
           algorithm: 'lttb',
           //samples: 5,
           threshold: 10
+        },
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            drag: true,
+            mode: 'x',
+          }
         }
+        
       },
       scales: {
         x: {
