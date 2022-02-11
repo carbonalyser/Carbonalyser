@@ -52,6 +52,7 @@ localStorage = storageMock();
 // calling the tested code
 require('../script.js');
 require('../lib/carbonalyser/lib.js');
+require('../lib/carbonalyser/libEquivalence.js');
 require('../lib/carbonalyser/libStats.js');
 
 describe('extractHostName', function () {
@@ -81,7 +82,7 @@ describe('incBytesDataCenter', function () {
     it('should put url in local storage with entered byte length', function (done) {
         const origin = "www.youtube.fr", value = 50;
         incBytesDataCenter(origin, value);
-        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
+        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
 
         result.should.have.property(origin);
         result[origin].should.have.property("total").with.equal(value);
@@ -93,7 +94,7 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin, 64);
 
-        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
+        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
 
         result.should.have.property(origin);
         result[origin].should.have.property("total").with.equal(192);
@@ -105,7 +106,7 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin2, 64);
 
-        var result = JSON.parse(localStorage.getItem("stats"))["bytesDataCenter"];
+        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
         result.should.have.property(origin);
         result[origin].should.have.property("total").with.equal(128);
         result.should.have.property(origin2);
@@ -114,7 +115,7 @@ describe('incBytesDataCenter', function () {
     });
 });
 
-describe('getOrCreateStats', function() {
+describe('getOrCreateRawData', function() {
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
         localStorage = storageMock();
@@ -123,8 +124,8 @@ describe('getOrCreateStats', function() {
 
     it('should retrieve or create a stats object', function(done) {
         var expected = {bytesDataCenter: {}, bytesNetwork: {}};
-        var storage = getOrCreateStats();
-        var storage2 = getOrCreateStats();
+        var storage = getOrCreateRawData();
+        var storage2 = getOrCreateRawData();
         expect(expected).to.deep.equal(storage);
         expect(expected).to.deep.equal(storage2);
         done();

@@ -97,7 +97,7 @@ init = () => {
     selectRegion.value = userLocation;
   }
   
-  const statsStorage = getOrCreateStats();
+  const rawData = getOrCreateRawData();
   const topResults = document.getElementById("topResults");
   const stats = getStats();
   const computedEquivalence = computeEquivalenceFromStatsItem(stats);
@@ -112,8 +112,8 @@ init = () => {
       tr.className = "oneResult";
       percent.textContent = stat.percent;
       site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(statsStorage.bytesDataCenter[stat.origin].total);
-      network.textContent = toMegaByteNoRound(statsStorage.bytesNetwork[stat.origin].total + statsStorage.bytesDataCenter[stat.origin].total);
+      data.textContent = toMegaByteNoRound(rawData.bytesDataCenter[stat.origin].total);
+      network.textContent = toMegaByteNoRound(rawData.bytesNetwork[stat.origin].total + rawData.bytesDataCenter[stat.origin].total);
       tr.appendChild(percent);
       tr.appendChild(site);
       tr.appendChild(data);
@@ -124,8 +124,8 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(statsStorage.bytesDataCenter, 60);
-  let bytesNetworkUnordered = createSumOfData(statsStorage.bytesNetwork, 60);
+  const bytesDataCenterUnordered = createSumOfData(rawData.bytesDataCenter, 60);
+  let bytesNetworkUnordered = createSumOfData(rawData.bytesNetwork, 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
   fillSODGaps(bytesNetworkUnordered);
   fillSODGaps(bytesDataCenterUnordered);

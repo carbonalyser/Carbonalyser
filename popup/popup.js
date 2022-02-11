@@ -77,7 +77,7 @@ reset = () => {
     return;
   }
 
-  localStorage.removeItem('stats');
+  localStorage.removeItem('rawData');
   localStorage.removeItem('duration');
   hide(statsElement);
   showStats();
@@ -90,7 +90,7 @@ init = () => {
     selectRegion.value = userLocation;
   }
 
-  if (null === localStorage.getItem('stats')) {
+  if (null === localStorage.getItem('rawData')) {
     hide(resetButton);
   } else {
     show(resetButton);
