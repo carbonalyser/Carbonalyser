@@ -51,7 +51,8 @@ localStorage = storageMock();
 
 // calling the tested code
 require('../script.js');
-require('../lib/lib.js');
+require('../lib/carbonalyser/lib.js');
+require('../lib/carbonalyser/libStats.js');
 
 describe('extractHostName', function () {
     it('should return the hostname when url contains //', function (done) {

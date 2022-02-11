@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="/lib/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/lib/common.css"/>
+        <link rel="stylesheet" href="/lib/carbonalyser/equivalence.css"/>
         <link rel="stylesheet" href="tab.css"/>
         <link rel="stylesheet" href="/lib/chartist/chartist.css"/>
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
@@ -106,7 +106,7 @@
                                 <h4 style="width: 100%; text-align: center;" translate="tabHistoryPieTitle"></h4>
                             </div>
                             <div class="row  ct-chart ct-golden-section">
-                                <canvas id="historyPieCanvas" width="200"></canvas>
+                                <canvas id="historyPieCanvas"></canvas>
                             </div>
                         </div>
                     </div>
@@ -134,16 +134,17 @@
                 </div>
             </div>
         </div>
-        <script src="/lib/chart.js"></script>
+        <script src="/lib/chartjs/chart.js"></script>
         <script src="/lib/hammerjs@2.0.8.js"></script>
-        <script src="/lib/chartjs-plugin-zoom.1_2_0.min.js"></script>
-        <script src="/lib/chartjs-plugin-labels.js"></script>
+        <script src="/lib/chartjs/chartjs-plugin-zoom.1_2_0.min.js"></script>
+        <script src="/lib/chartjs/chartjs-plugin-labels.js"></script>
         <script src="/lib/luxon@^2.js"></script>
-        <script src="/lib/chartjs-adapter-luxon@^1.js"></script>
+        <script src="/lib/chartjs/chartjs-adapter-luxon@^1.js"></script>
         <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
         <script src="/lib/popper.min.js" ></script>
         <script src="/lib/bootstrap.min.js" ></script>
-        <script src="/lib/lib.js"></script>
+        <script src="/lib/carbonalyser/lib.js"></script>
+        <script src="/lib/carbonalyser/libStats.js"></script>
         <script src="tab.js"></script>
     </body>
 </html>

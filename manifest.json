@@ -15,7 +15,8 @@
   ],
   "background": {
     "scripts": [
-      "lib/lib.js",
+      "lib/carbonalyser/lib.js",
+      "lib/carbonalyser/libStats.js",
       "script.js"
     ]
   },
