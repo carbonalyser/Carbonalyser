@@ -55,6 +55,8 @@ require('../lib/carbonalyser/libEquivalence.js');
 require('../lib/carbonalyser/libStats.js');
 require('../script.js');
 
+translate = (translationKey) => "Others";
+
 describe('extractHostname', function () {
     it('should return the hostname when url contains //', function (done) {
         const complexUrl = 'https://audio-ak-spotify-com.akamaized.net/audio/25cdff43133ca';
@@ -130,6 +132,27 @@ describe('getOrCreateRawData', function() {
         var storage2 = getOrCreateRawData();
         expect(expected).to.deep.equal(storage);
         expect(expected).to.deep.equal(storage2);
+        done();
+    });
+});
+
+describe('getStats', function() {
+    this.beforeEach(function (done) {
+        //reset local storage before each test to make independant tests
+        localStorage = storageMock();
+        done();
+    });
+
+    it('should retrieve or create a stats object', function(done) {
+        const d = "example.org", d1 = "1.example.org", d2 = "2.example.org";
+        incBytesDataCenter(d, 1);
+        incBytesDataCenter(d1, 2);
+        incBytesDataCenter(d2, 3);
+        const storage = getOrCreateRawData();
+        const stats = getStats(1);
+        stats.totalDataCenter.should.equals(6);
+        stats.total.should.equals(stats.totalDataCenter);
+        stats.highestStats.length.should.equals(2);
         done();
     });
 });
