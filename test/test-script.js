@@ -50,12 +50,12 @@ global.handleMessage = {};
 localStorage = storageMock();
 
 // calling the tested code
-require('../script.js');
 require('../lib/carbonalyser/lib.js');
 require('../lib/carbonalyser/libEquivalence.js');
 require('../lib/carbonalyser/libStats.js');
+require('../script.js');
 
-describe('extractHostName', function () {
+describe('extractHostname', function () {
     it('should return the hostname when url contains //', function (done) {
         const complexUrl = 'https://audio-ak-spotify-com.akamaized.net/audio/25cdff43133ca';
 
@@ -82,7 +82,7 @@ describe('incBytesDataCenter', function () {
     it('should put url in local storage with entered byte length', function (done) {
         const origin = "www.youtube.fr", value = 50;
         incBytesDataCenter(origin, value);
-        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
+        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
 
         result.should.have.property('datacenter');
         result.datacenter.should.have.property('total').with.equal(value);
@@ -94,10 +94,10 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
+        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
 
         result.should.have.property('datacenter');
-        result['datacenter'].should.have.property('total').with.equal(192);
+        result.datacenter.should.have.property('total').with.equal(192);
         done();
     });
 
@@ -106,8 +106,8 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin2, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
-        var result2 = JSON.parse(localStorage.getItem('rawData'))[origin2];
+        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
+        var result2 = JSON.parse(localStorage.getItem('rawdata'))[origin2];
         result.should.have.property('datacenter');
         result2.should.have.property('datacenter');
 
@@ -128,25 +128,6 @@ describe('getOrCreateRawData', function() {
         var expected = {};
         var storage = getOrCreateRawData();
         var storage2 = getOrCreateRawData();
-        expect(expected).to.deep.equal(storage);
-        expect(expected).to.deep.equal(storage2);
-        done();
-    });
-});
-
-describe('getOrCreateRawDataOrigin', function() {
-    this.beforeEach(function (done) {
-        //reset local storage before each test to make independant tests
-        localStorage = storageMock();
-        done();
-    });
-
-    it('should create raw data', function(done) {
-        const o1 = 'www.youtube.com', o2 = 'www.google.com';
-        const rd = getOrCreateRawData();
-        var expected = {datacenter: {total: 0, dots: {}}, network: {total: 0, dots: {}}};
-        const storage = getOrCreateRawDataOrigin(rd, o1);
-        const storage2 = getOrCreateRawDataOrigin(rd, o2);
         expect(expected).to.deep.equal(storage);
         expect(expected).to.deep.equal(storage2);
         done();
@@ -285,7 +266,7 @@ describe('headersReceivedListener', function () {
             webRequest: {}
         };
         InstallTrigger = {};
-        extractHostname = chai.spy();
+        extractHostname = chai.spy(extractHostname);
 
         requestDetails.originUrl = DOMAIN_NAME;
 
@@ -296,7 +277,7 @@ describe('headersReceivedListener', function () {
     });
 
     it('should call extractHostname with Initiator when it is provided from parameter (Chrome Browser behavior)', function (done) {
-        extractHostname = chai.spy();
+        extractHostname = chai.spy(extractHostname);
 
         requestDetails.initiator = DOMAIN_NAME;
 
@@ -307,7 +288,7 @@ describe('headersReceivedListener', function () {
     });
 
     it('should call extractHostname with url when neither Initiator nor originUrl is not provided from from parameter', function (done) {
-        extractHostname = chai.spy();
+        extractHostname = chai.spy(extractHostname);
 
         requestDetails.initiator = undefined;
 

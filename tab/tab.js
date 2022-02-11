@@ -1,11 +1,11 @@
 // Create a sum of data for all websites
 // tsInterval in s
-createSumOfData = (dataObject, tsInterval=60*10) => {
+createSumOfData = (dataObject, type, tsInterval=60*10) => {
   tsInterval *= 1000;
   const rv = {};
   for(let origin in dataObject) {
-    const keys = Object.keys(dataObject[origin].dots);
-    for(let tso in dataObject[origin].dots ) {
+    const keys = Object.keys(dataObject[origin][type].dots);
+    for(let tso in dataObject[origin][type].dots ) {
       const originalTS = parseInt(tso);
       let ts = originalTS;
       const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
@@ -15,7 +15,7 @@ createSumOfData = (dataObject, tsInterval=60*10) => {
       if ( rv[ts] === undefined ) {
         rv[ts] = 0;
       }
-      rv[ts] += dataObject[origin].dots[originalTS];
+      rv[ts] += dataObject[origin][type].dots[originalTS];
     }
   }
   return rv;
@@ -97,7 +97,7 @@ init = () => {
     selectRegion.value = userLocation;
   }
   
-  const rawData = getOrCreateRawData();
+  const rawdata = getOrCreateRawData();
   const topResults = document.getElementById("topResults");
   const stats = getStats();
   const computedEquivalence = computeEquivalenceFromStatsItem(stats);
@@ -112,8 +112,8 @@ init = () => {
       tr.className = "oneResult";
       percent.textContent = stat.percent;
       site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(rawData[stat.origin].datacenter.total);
-      network.textContent = toMegaByteNoRound(rawData[stat.origin].network.total + rawData[stat.origin].datacenter.total);
+      data.textContent = toMegaByteNoRound(rawdata[stat.origin].datacenter.total);
+      network.textContent = toMegaByteNoRound(rawdata[stat.origin].network.total + rawdata[stat.origin].datacenter.total);
       tr.appendChild(percent);
       tr.appendChild(site);
       tr.appendChild(data);
@@ -124,8 +124,8 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(rawData.datacenter, 60);
-  let bytesNetworkUnordered = createSumOfData(rawData.network, 60);
+  const bytesDataCenterUnordered = createSumOfData(rawdata, 'datacenter', 60);
+  let bytesNetworkUnordered = createSumOfData(rawdata, 'network', 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
   fillSODGaps(bytesNetworkUnordered);
   fillSODGaps(bytesDataCenterUnordered);

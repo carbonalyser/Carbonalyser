@@ -18,15 +18,18 @@ const BYTES_IP_HEADER  = 20;
 // Headers line are always terminated by CRLF cf https://stackoverflow.com/questions/5757290/http-header-line-break-style
 const BYTES_HTTP_END   = 2;
 
-// Get origin from request details
+/**
+ * Get origin from request details.
+ * Or null if browser is un supported.
+ */
 getOriginFromRequestDetail = (requestDetails) => {
+  let result = null;
   if ( isFirefox() ) {
-    return extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
+    result = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
   } else if (isChrome()) {
-    return extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
+    result = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
   }
-  console.error("Your browser is not supported sorry ...");
-  return null;
+  return result;
 }
 
 // Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
@@ -42,7 +45,6 @@ getBytesFromHeaders = (headers) => {
 // This is triggered when some headers are received.
 headersReceivedListener = (requestDetails) => {
   const origin = getOriginFromRequestDetail(requestDetails);
-
   // Extract bytes from datacenters
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
