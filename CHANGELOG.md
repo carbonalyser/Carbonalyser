@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 1.0.4
 ### Fixed
-- Fix kWhPerByte for dataCenter and kWhPerByte for network inputs. Thanks @brain-in-the-universe
+- Fix kWhPerByte for datacenter and kWhPerByte for network inputs. Thanks @brain-in-the-universe
 
 ## 1.0.3
 ### Added

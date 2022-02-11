@@ -82,10 +82,10 @@ describe('incBytesDataCenter', function () {
     it('should put url in local storage with entered byte length', function (done) {
         const origin = "www.youtube.fr", value = 50;
         incBytesDataCenter(origin, value);
-        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
+        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
 
-        result.should.have.property(origin);
-        result[origin].should.have.property("total").with.equal(value);
+        result.should.have.property('datacenter');
+        result.datacenter.should.have.property('total').with.equal(value);
         done();
     })
 
@@ -94,10 +94,10 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
+        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
 
-        result.should.have.property(origin);
-        result[origin].should.have.property("total").with.equal(192);
+        result.should.have.property('datacenter');
+        result['datacenter'].should.have.property('total').with.equal(192);
         done();
     });
 
@@ -106,11 +106,13 @@ describe('incBytesDataCenter', function () {
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin2, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawData'))["bytesDataCenter"];
-        result.should.have.property(origin);
-        result[origin].should.have.property("total").with.equal(128);
-        result.should.have.property(origin2);
-        result[origin2].should.have.property("total").with.equal(64);
+        var result = JSON.parse(localStorage.getItem('rawData'))[origin];
+        var result2 = JSON.parse(localStorage.getItem('rawData'))[origin2];
+        result.should.have.property('datacenter');
+        result2.should.have.property('datacenter');
+
+        result.datacenter.should.have.property('total').with.equal(128);
+        result2.datacenter.should.have.property('total').with.equal(64);
         done();
     });
 });
@@ -123,9 +125,28 @@ describe('getOrCreateRawData', function() {
     });
 
     it('should retrieve or create a stats object', function(done) {
-        var expected = {bytesDataCenter: {}, bytesNetwork: {}};
+        var expected = {};
         var storage = getOrCreateRawData();
         var storage2 = getOrCreateRawData();
+        expect(expected).to.deep.equal(storage);
+        expect(expected).to.deep.equal(storage2);
+        done();
+    });
+});
+
+describe('getOrCreateRawDataOrigin', function() {
+    this.beforeEach(function (done) {
+        //reset local storage before each test to make independant tests
+        localStorage = storageMock();
+        done();
+    });
+
+    it('should create raw data', function(done) {
+        const o1 = 'www.youtube.com', o2 = 'www.google.com';
+        const rd = getOrCreateRawData();
+        var expected = {datacenter: {total: 0, dots: {}}, network: {total: 0, dots: {}}};
+        const storage = getOrCreateRawDataOrigin(rd, o1);
+        const storage2 = getOrCreateRawDataOrigin(rd, o2);
         expect(expected).to.deep.equal(storage);
         expect(expected).to.deep.equal(storage2);
         done();

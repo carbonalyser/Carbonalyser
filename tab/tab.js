@@ -112,8 +112,8 @@ init = () => {
       tr.className = "oneResult";
       percent.textContent = stat.percent;
       site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(rawData.bytesDataCenter[stat.origin].total);
-      network.textContent = toMegaByteNoRound(rawData.bytesNetwork[stat.origin].total + rawData.bytesDataCenter[stat.origin].total);
+      data.textContent = toMegaByteNoRound(rawData[stat.origin].datacenter.total);
+      network.textContent = toMegaByteNoRound(rawData[stat.origin].network.total + rawData[stat.origin].datacenter.total);
       tr.appendChild(percent);
       tr.appendChild(site);
       tr.appendChild(data);
@@ -124,8 +124,8 @@ init = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(rawData.bytesDataCenter, 60);
-  let bytesNetworkUnordered = createSumOfData(rawData.bytesNetwork, 60);
+  const bytesDataCenterUnordered = createSumOfData(rawData.datacenter, 60);
+  let bytesNetworkUnordered = createSumOfData(rawData.network, 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
   fillSODGaps(bytesNetworkUnordered);
   fillSODGaps(bytesDataCenterUnordered);
