@@ -1,17 +1,16 @@
 name: 'WebExtBuild'
-description: 'Build the web extension'
 
 on: [push]
 
 
 
 
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+      
 jobs:
   build:
-
-    runs:
-      using: 'docker'
-      image: 'Dockerfile'
 
     steps:
     - name: Build the web extension
