@@ -38,6 +38,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: web-ext-artifacts/carbonalyser-${{ github.ref }}.zip
-          asset_name: carbonalyser-${{ github.ref }}.zip
+          asset_path: web-ext-artifacts/carbonalyser-${GITHUB_REF##*/}.zip
+          asset_name: carbonalyser-${GITHUB_REF##*/}.zip
           asset_content_type: application/zip
