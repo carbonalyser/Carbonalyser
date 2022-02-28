@@ -1,5 +1,8 @@
 name: 'WebExtBuild'
 description: 'Build the web extension'
+
+on: [push]
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
