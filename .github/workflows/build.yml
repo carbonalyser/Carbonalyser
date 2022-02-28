@@ -1,5 +1,8 @@
 name: build-web-ext
-on: [push]
+on:
+  push:
+    tags:
+      - '*'
 jobs:
   build-extension:
     runs-on: ubuntu-latest
