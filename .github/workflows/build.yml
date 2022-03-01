@@ -19,9 +19,11 @@ jobs:
           name: carbonalyser
           path: web-ext-artifacts
       - name: Extract release version from ref
-        run: export VERSION=$(echo ${{ github.ref }} | sed 's/*\///')
+        run: | 
+            echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/*\///')\n"
+        id: set_version
       - name: test
-        run: echo "$VERSION"
+        run: echo ${{steps.set_version.outputs.version}}
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
