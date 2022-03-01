@@ -1,4 +1,4 @@
-# <img src="https://theshiftproject.org/wp-content/uploads/2019/07/IconePlugin.png" width="100px" /> <p align="center">Carbonalyser</p>
+# <p align="center">Carbonalyser</p>
 
 Carbonalyser allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
 
