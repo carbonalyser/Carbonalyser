@@ -11,7 +11,7 @@ The add-on "Carbonalyser" allows to visualize the electricity consumption and gr
 
 Visualizing it will get you to understand that impacts of digital technologies on climate change and natural resources are not virtual, although they are hidden behind our screens.
 
-To evaluate these impacts, the add-on:
+To evaluate these impacts, the add-on:  
 
 1. Measures the quantity of data travelling through your Internet browser,
 2. Calculates the electricity consumption this traffic leads to (with the "1byte" model, developed by The Shift Project),
