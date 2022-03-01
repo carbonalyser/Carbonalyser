@@ -6,8 +6,11 @@ Visualizing it will get you to understand that impacts of digital technologies o
 <br />
 
 #### Avaliable for:<br />
+ [for firefox via github]()
 
-[<img alt="firefox" width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Firefox_logo.png/636px-Firefox_logo.png" />](https://addons.mozilla.org/fr/firefox/addon/carbonalyser/)
+| firefox  | firefox via github |
+|:----------:|:------------------------:|
+| [<img alt="firefox" width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Firefox_logo.png/636px-Firefox_logo.png" />](https://addons.mozilla.org/fr/firefox/addon/carbonalyser/)     | [<img alt="firefox via github" width="40px" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />](https://github.com/AAABBBCCCAAAA/Carbonalyser/releases) |
 
 ## Privacy
 
