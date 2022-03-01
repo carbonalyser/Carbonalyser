@@ -17,11 +17,13 @@ The source code of this program is available in open access, to ensure transpare
 
 ## Support & source code
 
-Questions, bug reports and feature requests are to be addressed to communication@theshiftproject.org
+Questions, bug reports and feature requests are to be addressed to communication@theshiftproject.org.
+
+More information on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).
 
 Source code is available in open access: https://github.com/supertanuki/Carbonalyser
  
-## Contributors
+#### Contributors
 
 Developer: [Richard Hanna](https://twitter.com/richardhanna).
 
