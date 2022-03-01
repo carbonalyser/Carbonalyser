@@ -20,7 +20,7 @@ jobs:
           path: web-ext-artifacts
       - name: Extract release version from ref
         run: | 
-            echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/*\///')\n"
+            echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/.*\\///')"
         id: set_version
       - name: test
         run: echo ${{steps.set_version.outputs.version}}
