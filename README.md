@@ -1,15 +1,13 @@
-# Carbonalyser
+# <img src="https://theshiftproject.org/wp-content/uploads/2019/07/IconePlugin.png" width="100px" /> <p align="center">Carbonalyser</p>
 
-## Installation
-
-* Firefox: https://addons.mozilla.org/fr/firefox/addon/carbonalyser/
-* Chrome and Edge: [see this issue](https://github.com/carbonalyser/Carbonalyser/issues/42) 
-
-## Overview
-
-The add-on "Carbonalyser" allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
+Carbonalyser allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
 
 Visualizing it will get you to understand that impacts of digital technologies on climate change and natural resources are not virtual, although they are hidden behind our screens.
+<br />
+
+#### Avaliable for:<br />
+
+[<img alt="firefox" width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Firefox_logo.png/636px-Firefox_logo.png" />](https://addons.mozilla.org/fr/firefox/addon/carbonalyser/)
 
 ## Privacy
 
