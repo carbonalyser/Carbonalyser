@@ -31,10 +31,8 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: true
+            Automated release ${{steps.set_version.outputs.version}}.
+          draft: false
           prerelease: false
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
