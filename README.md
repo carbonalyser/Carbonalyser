@@ -1,12 +1,14 @@
 # <p align="center">Carbonalyser</p>
 
+
+|     <img src="https://user-images.githubusercontent.com/97546053/156412348-c4f6eafc-626b-4f62-8f33-c496f4d767d2.png" width="500px" />         |        <img src="https://user-images.githubusercontent.com/97546053/156412354-92ae4c36-8b3a-4744-82c9-8b73fbfa0a6a.png" width="500px" />         |
+|--------------|-----------------|
+
+
 Carbonalyser allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
 
 Visualizing it will get you to understand that impacts of digital technologies on climate change and natural resources are not virtual, although they are hidden behind our screens.
 <br />
-
-#### Avaliable for:<br />
- [for firefox via github]()
 
 | firefox  | firefox via github | chrome via github                 |
 |:----------:|:------------------------:|:-------------------------:|
