@@ -17,8 +17,8 @@ jobs:
         id: set_version
       - name: Update version in the manifest
         run: |
-          sed "s/\"version\":.*/\"version\": \"${{steps.set_version.outputs.version}}\", /" manifest.json > a
-          cat a
+          sed "s/\"version\":.*/\"version\": \"${{steps.set_version.outputs.version}}\", /" manifest.json > .aaa
+          mv .aaa manifest.json
       - run: npm install -g web-ext
       - run: web-ext build
       - name: Step 3 - Upload Artifact GitHub Action
