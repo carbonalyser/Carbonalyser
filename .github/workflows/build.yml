@@ -12,16 +12,20 @@ jobs:
         with:
           node-version: '14'
       - run: npm install -g web-ext
-      - run: web-ext build
-      - name: Step 3 - Use the Upload Artifact GitHub Action
-        uses: actions/upload-artifact@v2
-        with: 
-          name: carbonalyser
-          path: web-ext-artifacts
       - name: Extract release version from ref
         run: | 
             echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/.*\///')"
         id: set_version
+      - name: Update version in the manifest
+        run: |
+          sed "s/\"version\":.*/\"version\": \"${{steps.set_version.outputs.version}}\", /" manifest.json > a
+          cat a
+      - run: web-ext build
+      - name: Step 3 - Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: carbonalyser
+          path: web-ext-artifacts
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
