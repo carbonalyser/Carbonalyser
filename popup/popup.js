@@ -119,7 +119,7 @@ init = () => {
 }
 
 selectRegionHandler = (event) => {
-  const selectedRegion = event.target.value;
+  const selectedRegion = lowerFirstLetter(event.target.value);
 
   if ('' === selectedRegion) {
     return;
