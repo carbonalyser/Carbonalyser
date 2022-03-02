@@ -11,7 +11,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install -g web-ext
       - name: Extract release version from ref
         run: | 
             echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/.*\///')"
@@ -20,6 +19,7 @@ jobs:
         run: |
           sed "s/\"version\":.*/\"version\": \"${{steps.set_version.outputs.version}}\", /" manifest.json > a
           cat a
+      - run: npm install -g web-ext
       - run: web-ext build
       - name: Step 3 - Upload Artifact GitHub Action
         uses: actions/upload-artifact@v2
