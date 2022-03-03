@@ -117,6 +117,9 @@
                     </div>
                 </div>
             </div>
+    
+
+
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
                 <div class="container">
                     <div class="row">
@@ -128,11 +131,17 @@
                             <p class="selectRegionHelp" translate="selectRegionHelp"></p>
                         </div>
                         <div id="settingsRefresh" class="column">
-                            <p id="carbonIntensityLastRefreshIP"></p>
+                            <div class="container">
+                                <p id="carbonIntensityLastRefreshIP" class="row"></p>
+                                <div class="row" style="justify-content: center;">
+                                    <button id="carbonIntensityLastRefreshForceRefresh" class="button" translate="settingsLastRefreshButtonReset"></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>  
             </div>
+
         </div>
         <script src="/lib/chartjs/chart.js"></script>
         <script src="/lib/hammerjs@2.0.8.js"></script>

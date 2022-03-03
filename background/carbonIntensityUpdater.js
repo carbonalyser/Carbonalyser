@@ -84,4 +84,8 @@ chrome.runtime.onMessage.addListener(function(request){
         stop();
         init();
     }
+
+    if ( request.action == "forceCIUpdater" ) {
+        insertUpdatedCarbonIntensity();
+    }
 });

@@ -146,5 +146,8 @@
         "example" : "03/03/2022, 19:16:03"
       }
     }
+  },
+  "settingsLastRefreshButtonReset": {
+    "message": "Force update"
   }
 }

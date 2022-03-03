@@ -356,6 +356,11 @@ init = () => {
   );
 
   injectLatestRefershCarbonIntensity();
+
+  document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", function(){
+    chrome.runtime.sendMessage({action: "forceCIUpdater"});
+    injectLatestRefershCarbonIntensity();
+  });
 }
 
 selectRegionHandler = (event) => {
