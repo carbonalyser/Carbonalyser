@@ -78,6 +78,9 @@
   "regionOther": {
     "message": "Autre"
   },
+  "regionUnitedKingdom": {
+    "message": "Royaume-Uni"
+  },
   "selectRegionHelp": {
     "message": "Ce n'est pas obligatoire mais cela rendra le résultat plus pertinent."
   },

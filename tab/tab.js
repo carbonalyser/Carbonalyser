@@ -366,7 +366,11 @@ init = () => {
   for(const name in regions) {
     const row = document.createElement("tr");
     const country = document.createElement("td");
-    country.textContent = name;
+    let region = translate("region" + capitalizeFirstLetter(name));
+    if ( region === "" || region === null ) {
+      region = name;
+    }
+    country.textContent = region;
     const ci = document.createElement("td");
     ci.textContent = regions[name].carbonIntensity;
     row.append(country);
