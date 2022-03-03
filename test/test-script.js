@@ -75,19 +75,6 @@ describe('extractHostname', function () {
 
 });
 
-describe('setCarbonIntensityRegion', function () {
-    it('Set carbon intensity region', function () {
-
-        setCarbonIntensityRegion('abc', 1234);
-        expect(getCarbonIntensityRegion('abc')).to.equal(1234);
-    });
-    it('Test exception on wrong value', function () {
-        assert.throws(
-            () => setCarbonIntensityRegion('abc', -1)
-        );
-    });
-});
-
 describe('incBytesDataCenter', function () {
 
     this.beforeEach(function (done) {
