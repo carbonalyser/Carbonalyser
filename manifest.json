@@ -17,7 +17,8 @@
     "scripts": [
       "lib/carbonalyser/lib.js",
       "lib/carbonalyser/libStats.js",
-      "script.js"
+      "background/carbonIntensityUpdater.js",
+      "background/trafficAnalyzer.js"
     ]
   },
   "browser_action": {

@@ -49,26 +49,27 @@ global.chrome = chrome;
 global.handleMessage = {};
 localStorage = storageMock();
 
+
 // calling the tested code
 require('../lib/carbonalyser/lib.js');
 require('../lib/carbonalyser/libEquivalence.js');
 require('../lib/carbonalyser/libStats.js');
-require('../script.js');
+require('../background/trafficAnalyzer.js');
 
 translate = (translationKey) => "Others";
 
 describe('extractHostname', function () {
     it('should return the hostname when url contains //', function (done) {
-        const complexUrl = 'https://audio-ak-spotify-com.akamaized.net/audio/25cdff43133ca';
+        const complexUrl = 'https://www.example.org/audio/25cdff43133ca';
 
-        expect(extractHostname(complexUrl)).to.equal('audio-ak-spotify-com.akamaized.net');
+        expect(extractHostname(complexUrl)).to.equal('www.example.org');
         done();
     });
 
     it('should return the hostname when url does not contains //', function (done) {
-        const simpleUrl = 'www.youtube.fr';
+        const simpleUrl = 'www.example.org';
 
-        expect(extractHostname(simpleUrl)).to.equal('www.youtube.fr');
+        expect(extractHostname(simpleUrl)).to.equal('www.example.org');
         done();
     });
 
@@ -96,7 +97,7 @@ describe('incBytesDataCenter', function () {
     });
 
     it('should put url in local storage with entered byte length', function (done) {
-        const origin = "www.youtube.fr", value = 50;
+        const origin = "www.example.org", value = 50;
         incBytesDataCenter(origin, value);
         var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
 
@@ -106,7 +107,7 @@ describe('incBytesDataCenter', function () {
     })
 
     it('should increase in the local storage existing byte length for the same url', function (done) {
-        const origin = "www.youtube.fr";
+        const origin = "www.example.org";
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin, 64);
 
@@ -118,7 +119,7 @@ describe('incBytesDataCenter', function () {
     });
 
     it('should increase in the local storage existing byte length for different url', function (done) {
-        const origin = "www.youtube.fr", origin2 = "www.spotify.com";
+        const origin = "www.example.org", origin2 = "www1.example.org";
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin2, 64);
 
@@ -259,13 +260,13 @@ describe('isFirefox', function () {
 describe('headersReceivedListener', function () {
     let requestDetails = {};
     // backup for spied methods
-    const DOMAIN_NAME = 'http://www.spotify.com';
+    const DOMAIN_NAME = 'http://www.example.org';
     const extractHostNameBackup = extractHostname;
     const incBytesDataCenterBackup = incBytesDataCenter;
 
     this.beforeEach(function (done) {
         requestDetails = {
-            url: 'https://audio-ak-spotify-com.akamaized.net/audio/25cdff43133cae53f93fc8ad58af83c080792f03?__token__=exp=1574937651~hmac=2b46cc453c414848d67825d49db7943d7b35ac760d11aebd702659b250b1c9cf',
+            url: 'https://www.example.org/audio/25cdff43133cae53f93fc8ad58af83c080792f03?__token__=exp=1574937651~hmac=2b46cc453c414848d67825d49db7943d7b35ac760d11aebd702659b250b1c9cf',
             responseHeaders: [
                 {name: 'Last-Modified', value: 'Thu, 18 Apr 2019 18:16:43 GMT'},
                 {name: 'Accept-Ranges', 'value': 'bytes'},
@@ -342,7 +343,7 @@ describe('headersReceivedListener', function () {
 
         headersReceivedListener(requestDetails);
 
-        expect(incBytesDataCenter).to.have.been.called.with('www.spotify.com', 165377);
+        expect(incBytesDataCenter).to.have.been.called.with('www.example.org', 165377);
         done();
     });
 
@@ -353,7 +354,7 @@ describe('headersReceivedListener', function () {
         requestDetails.responseHeaders = [];
         headersReceivedListener(requestDetails);
 
-        expect(incBytesDataCenter).to.have.been.called.with('www.spotify.com', 0);
+        expect(incBytesDataCenter).to.have.been.called.with('www.example.org', 0);
         done();
     });
 });
