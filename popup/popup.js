@@ -72,13 +72,12 @@ openMoreResults = async () => {
   window.close();
 }
 
-reset = () => {
+reset = async () => {
   if (!confirm(translate('resetConfirmation'))) {
     return;
   }
 
-  localStorage.removeItem('rawdata');
-  localStorage.removeItem('duration');
+  await localStorage.clear();
   hide(statsElement);
   showStats();
   hide(resetButton);

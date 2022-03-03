@@ -28,7 +28,6 @@ let intervalID = null;
  * This class fetch carbon intensity from the remote.
  */
  insertUpdatedCarbonIntensity = () => {
-     console.warn("insertUpdatedCarbonIntensity=");
     for(const name in updateList) {
         const region = updateList[name];
         const xhr = new XMLHttpRequest();
@@ -58,8 +57,11 @@ let intervalID = null;
  * Init the script.
  */
  init = () => {
+    
     insertDefaultCarbonIntensity();
-    intervalID = setInterval(insertUpdatedCarbonIntensity, getRefreshInterval());
+    const interval = getRefreshInterval();
+    insertUpdatedCarbonIntensity();
+    intervalID = setInterval(insertUpdatedCarbonIntensity, interval);
 }
 
 init();
