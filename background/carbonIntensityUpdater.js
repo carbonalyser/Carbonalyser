@@ -8,6 +8,26 @@
         extractor: function (text) {
             return JSON.parse(text).data[0].intensity.actual;
         }
+    },
+    // at 2022 this represents 90% of people
+    france: {
+        url: "https://opendata.edf.fr/api/records/1.0/search/?dataset=indicateurs-de-performance-extra-financiere&q=&facet=annee&facet=engagements_rse&facet=csr_goals&facet=indicateurs_cles_de_performance&facet=performance_indicators&refine.indicateurs_cles_de_performance=Intensit%C3%A9+carbone%C2%A0%3A+%C3%A9missions+sp%C3%A9cifiques+de+CO2+dues+%C3%A0+la+production+d%E2%80%99%C3%A9lectricit%C3%A9+%E2%88%9A+(gCO2%2FkWh)",
+        extractor: function (text) {
+            const records = JSON.parse(text).records;
+            let max = null, fieldMax = null;
+            
+            for(let a = 0; a < records.length; a = a + 1) {
+                const field = records[a].fields;
+                if ( max == null || field.annee > max ) {
+                    max = field.annee;
+                    fieldMax = field;
+                }
+            }
+            if ( fieldMax != null ) {
+                return fieldMax.valeur;
+            }
+            return null;
+        }
     }
 };
 
