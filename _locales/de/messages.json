@@ -149,5 +149,11 @@
   },
   "settingsLastRefreshButtonReset": {
     "message": "Update erzwingen"
+  },
+  "settingsCIcountry": {
+    "message": "Land"
+  },
+  "settingsCICI": {
+    "message": "Kohlenstoffintensitäts faktor"
   }
 }

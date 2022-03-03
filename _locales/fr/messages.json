@@ -149,5 +149,11 @@
   },
   "settingsLastRefreshButtonReset": {
     "message": "Forcer la mise à jour"
+  },
+  "settingsCIcountry": {
+    "message": "Pays"
+  },
+  "settingsCICI": {
+    "message": "Facteur d'intensité carbone"
   }
 }

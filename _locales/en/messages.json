@@ -149,5 +149,11 @@
   },
   "settingsLastRefreshButtonReset": {
     "message": "Force update"
+  },
+  "settingsCIcountry": {
+    "message": "Country"
+  },
+  "settingsCICI": {
+    "message": "Carbone intensity factor"
   }
 }

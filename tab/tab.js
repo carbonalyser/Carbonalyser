@@ -361,6 +361,20 @@ init = () => {
     chrome.runtime.sendMessage({action: "forceCIUpdater"});
     injectLatestRefershCarbonIntensity();
   });
+
+  const settingsCICIS = document.getElementById("settingsCICIS");
+  for(const name in regions) {
+    const row = document.createElement("tr");
+    const country = document.createElement("td");
+    country.textContent = name;
+    const ci = document.createElement("td");
+    ci.textContent = regions[name].carbonIntensity;
+    row.append(country);
+    row.append(ci);
+    row.style.textAlign = "center";
+    row.style.verticalAlign = "middle";
+    settingsCICIS.append(row);
+  }
 }
 
 selectRegionHandler = (event) => {
