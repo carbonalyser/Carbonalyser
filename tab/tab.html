@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/lib/carbonalyser/equivalence.css"/>
         <link rel="stylesheet" href="tab.css"/>
         <link rel="stylesheet" href="/lib/chartist/chartist.css"/>
+        <link rel="stylesheet" href="/lib/datatables/jquery.dataTables.min.css" />
         <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
     </head>
 
@@ -80,7 +81,7 @@
                             </div>
                         </div>
                         <div id="resultsRightColumn" class="col-7">
-                            <table class="table table-striped">
+                            <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th scope="col" translate="topResultsPercent"></th>
@@ -95,6 +96,7 @@
                     </div>
                 </div>
             </div>
+
             <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
                 <div class="container-fluid">
                     <div class="row">
@@ -140,7 +142,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <table class="table table-striped">
+                        <table class="table table-striped table-bordered" id="settingsCItable" style="width: 100%;">
                             <thead>
                                 <tr style="text-align: center;vertical-align: middle;">
                                     <th scope="col" translate="settingsCIcountry"></th>
@@ -162,6 +164,7 @@
         <script src="/lib/chartjs/chartjs-adapter-luxon@^1.js"></script>
         <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
         <script src="/lib/popper.min.js" ></script>
+        <script src="/lib/datatables/jquery.dataTables.min.js"></script>
         <script src="/lib/bootstrap/bootstrap.min.js" ></script>
         <script src="/lib/carbonalyser/lib.js"></script>
         <script src="/lib/carbonalyser/libEquivalence.js"></script>

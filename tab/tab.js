@@ -379,6 +379,11 @@ init = () => {
     row.style.verticalAlign = "middle";
     settingsCICIS.append(row);
   }
+  $(document).ready(function() {
+    const table = $('#settingsCItable');
+    table.DataTable();
+    document.getElementById("settingsCItable_wrapper").style.width = "100%";
+  });
 }
 
 selectRegionHandler = (event) => {
