@@ -64,11 +64,24 @@ let intervalID = null;
     intervalID = setInterval(insertUpdatedCarbonIntensity, interval);
 }
 
+/**
+ * Stop the script.
+ */
+stop = () => {
+    clearInterval(intervalID);
+    intervalID = null;
+}
+
 init();
 
 chrome.runtime.onMessage.addListener(function(request){
     if (request.action == "restartCIUpdater") {
-        clearInterval(intervalID);
+        stop();
         intervalID = setInterval(insertUpdatedCarbonIntensity, getRefreshInterval());
+    }
+
+    if (request.action == "reinitCIUpdater") {
+        stop();
+        init();
     }
 });

@@ -137,5 +137,14 @@
   },
   "historyChartYAxis": {
     "message": "Data consumption (MB)"
+  },
+  "settingsLastRefresh": {
+    "message": "Last carbon intensity factors refresh at $TIME$.",
+    "placeholders": {
+      "time" : {
+        "content" : "$1",
+        "example" : "03/03/2022, 19:16:03"
+      }
+    }
   }
 }

@@ -137,5 +137,14 @@
   },
   "historyChartYAxis": {
     "message": "Consommation de données (mo)"
+  },
+  "settingsLastRefresh": {
+    "message": "Dernière mise à jour des facteurs d'intensité carbone le $TIME$.",
+    "placeholders": {
+      "time" : {
+        "content" : "$1",
+        "example" : "03/03/2022, 19:16:03"
+      }
+    }
   }
 }

@@ -60,6 +60,12 @@ mergeTwoSOD = (sod1,sod2, tsInterval=60*10) => {
   return result;
 }
 
+// Inject latest refresh in html
+injectLatestRefershCarbonIntensity = () => {
+  const div = document.getElementById("carbonIntensityLastRefreshIP");
+  div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(getParameters().lastRefresh).toLocaleString()]);
+}
+
 // create an object containing sum of data
 createObjectFromSumOfData = (sod) => {
   const rv = [];
@@ -349,7 +355,7 @@ init = () => {
     pieConfig
   );
 
-
+  injectLatestRefershCarbonIntensity();
 }
 
 selectRegionHandler = (event) => {

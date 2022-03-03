@@ -78,6 +78,7 @@ reset = async () => {
   }
 
   await localStorage.clear();
+  chrome.runtime.sendMessage({action: "reinitCIUpdater"});
   hide(statsElement);
   showStats();
   hide(resetButton);

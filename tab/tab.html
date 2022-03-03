@@ -118,13 +118,20 @@
                 </div>
             </div>
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
-                <div id="selectRegionForm">
-                    <p class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
-                    <p>
-                        <select id="selectRegion"></select>
-                    </p>
-                    <p class="selectRegionHelp" translate="selectRegionHelp"></p>
-                </div>
+                <div class="container">
+                    <div class="row">
+                        <div id="selectRegionForm" class="column">
+                            <p class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
+                            <p>
+                                <select id="selectRegion"></select>
+                            </p>
+                            <p class="selectRegionHelp" translate="selectRegionHelp"></p>
+                        </div>
+                        <div id="settingsRefresh" class="column">
+                            <p id="carbonIntensityLastRefreshIP"></p>
+                        </div>
+                    </div>
+                </div>  
             </div>
         </div>
         <script src="/lib/chartjs/chart.js"></script>
