@@ -102,6 +102,16 @@ createMovingAverage = (sod, tsInterval=10) => {
  * on the fly compute data.
  */
 const tab = {
+  initView: () => {
+    tab.results.initView();
+    tab.settings.initView();
+    tab.history.initView();
+  },
+  updateView: () => {
+    tab.results.updateView();
+    tab.settings.updateView();
+    tab.history.updateView();
+  },
   stats: null,
   parameters: null,
   rawdata: null,
@@ -110,6 +120,10 @@ const tab = {
    * Show same results as the popup.
    */
   results: {
+    initView: () => {
+      tab.results.equivalence.initView();
+      tab.results.detailledView.initView();
+    }, 
     updateView: () => {
       tab.results.equivalence.updateView();
       tab.results.detailledView.updateView();
@@ -118,6 +132,9 @@ const tab = {
      * Equivalence in smartphone charged, kilometers by car.
      */
     equivalence: {
+      initView: () => {
+        tab.results.equivalence.updateView();
+      },
       updateView: () => {
         updateEquivalence(tab.stats);
       }
@@ -126,10 +143,40 @@ const tab = {
      * Detailled view of electricity consumption during browsing.
      */
     detailledView: {
+      initView: () => {
+        const topResults = document.getElementById("topResults");
+        for(let i = 0; i < tab.stats.highestStats.length; i ++) {
+          tab.results.detailledView.createEntry(tab.stats.highestStats[i], topResults, true);
+        }
+
+        // Add some sorters
+        $(document).ready(function() {
+          const table = $('#topResultsTable');
+          table.DataTable();
+          document.getElementById("topResultsTable_wrapper").style.width = "100%";
+        });
+      }, 
       updateView: () => {
         const topResults = document.getElementById("topResults");
         for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-          const stat = tab.stats.highestStats[i];
+          tab.results.detailledView.createEntry(tab.stats.highestStats[i], topResults, false);
+        }
+      },
+      createEntry: (stat, topResults, init) => {
+
+        let foundValue = false;
+        if ( ! init ) {
+          for(const row of topResults.children) {
+            if ( row.children[1].textContent == stat.origin ) {
+              foundValue = true;
+              row.children[0] = stat.percent;
+              row.children[2] = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
+              row.children[3] = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+            }
+          }
+        }
+
+        if ( init || ! foundValue) {
           const tr = document.createElement("tr");
           const percent = document.createElement("td");
           const site = document.createElement("td");
@@ -146,13 +193,6 @@ const tab = {
           tr.appendChild(network);
           topResults.appendChild(tr);
         }
-
-        // Add some sorters
-        $(document).ready(function() {
-          const table = $('#topResultsTable');
-          table.DataTable();
-          document.getElementById("topResultsTable_wrapper").style.width = "100%";
-        });
       }
     }
   },
@@ -161,6 +201,9 @@ const tab = {
    * Parametrize the system.
    */
   settings: {
+    initView: () => {
+      tab.settings.updateView();
+    },
     updateView: () => {
       tab.settings.selectRegion.updateView();
       tab.settings.updateCarbonIntensity.updateView();
@@ -184,6 +227,9 @@ const tab = {
    * View history of results.
    */
   history: {
+    initView: () => {
+
+    }, 
     updateView: () => {
 
     }
@@ -196,8 +242,7 @@ init = () => {
   tab.rawdata = getOrCreateRawData();
   tab.stats = getStats();
 
-  tab.results.updateView();
-  tab.settings.updateView();
+  tab.initView();
 
   // Compute sum of datas
   const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
