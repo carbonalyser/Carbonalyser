@@ -104,15 +104,7 @@ init = () => {
 
   // Load regions from the storage.
   const regions = getRegions();
-  const choice = document.getElementById("selectRegion");
-  for(let name in regions) {
-    const display = capitalizeFirstLetter(name);
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.text = display;
-    opt.setAttribute("translate", "region" + display);
-    choice.add(opt);
-  }
+  injectRegionIntoHTML(regions);
 
   start();
   statsInterval = setInterval(showStats, 2000);

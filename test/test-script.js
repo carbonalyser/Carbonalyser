@@ -53,6 +53,7 @@ localStorage = storageMock();
 // calling the tested code
 require('../lib/carbonalyser/lib.js');
 require('../lib/carbonalyser/libEquivalence.js');
+require('../lib/carbonalyser/libRegionSelect.js');
 require('../lib/carbonalyser/libStats.js');
 require('../background/trafficAnalyzer.js');
 

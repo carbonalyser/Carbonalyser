@@ -130,20 +130,6 @@ const tab = {
   }
 }
 
-/**
- * Inject regions in the select region chooser.
- */
-injectRegionInSelect = (regions) => {
-  const choice = document.getElementById("selectRegion");
-  for(const name in regions) {
-    const opt = document.createElement("option");
-    opt.value = name;
-    const translated = translate("region" + capitalizeFirstLetter(name));
-    opt.text = (translated === '') ? name : translated;
-    choice.add(opt);
-  }
-}
-
 init = () => {
 
   if ( getSelectedRegion() !== null ) {
@@ -153,7 +139,7 @@ init = () => {
   // Load regions from the storage.
   tab.parameters = getParameters();
   tab.rawdata = getOrCreateRawData();
-  injectRegionInSelect(tab.parameters.regions);
+  injectRegionIntoHTML(tab.parameters.regions);
 
   const topResults = document.getElementById("topResults");
   const stats = getStats();
