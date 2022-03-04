@@ -102,6 +102,11 @@ createMovingAverage = (sod, tsInterval=10) => {
  * on the fly compute data.
  */
 const tab = {
+  initModel: () => {
+    tab.results.initModel();
+    tab.settings.initModel();
+    tab.history.initModel();
+  },
   initView: () => {
     tab.results.initView();
     tab.settings.initView();
@@ -120,6 +125,10 @@ const tab = {
    * Show same results as the popup.
    */
   results: {
+    initModel: () => {
+      tab.results.equivalence.initModel();
+      tab.results.detailledView.initModel();
+    },
     initView: () => {
       tab.results.equivalence.initView();
       tab.results.detailledView.initView();
@@ -132,6 +141,11 @@ const tab = {
      * Equivalence in smartphone charged, kilometers by car.
      */
     equivalence: {
+      initModel: () => {
+        if ( tab.stats === null ) {
+          tab.stats = getStats();
+        }
+      },
       initView: () => {
         tab.results.equivalence.updateView();
       },
@@ -143,6 +157,14 @@ const tab = {
      * Detailled view of electricity consumption during browsing.
      */
     detailledView: {
+      initModel: () => {
+        if ( tab.stats === null ) {
+          tab.stats = getStats();
+        }
+        if ( tab.rawdata === null ) {
+          tab.rawdata = getOrCreateRawData();
+        }
+      },
       initView: () => {
         const topResults = document.getElementById("topResults");
         for(let i = 0; i < tab.stats.highestStats.length; i ++) {
@@ -162,6 +184,12 @@ const tab = {
           tab.results.detailledView.createEntry(tab.stats.highestStats[i], topResults, false);
         }
       },
+      /**
+       * Create or update an entry in the detailled view.
+       * @param {*} stat stat to insert / update.
+       * @param {*} topResults tbody to insert in.
+       * @param {*} init force creation.
+       */
       createEntry: (stat, topResults, init) => {
 
         let foundValue = false;
@@ -201,6 +229,11 @@ const tab = {
    * Parametrize the system.
    */
   settings: {
+    initModel: () => {
+      tab.settings.selectRegion.initModel();
+      tab.settings.updateCarbonIntensity.initModel();
+      tab.settings.carbonIntensityView.initModel();
+    },
     initView: () => {
       tab.settings.updateView();
     },
@@ -210,14 +243,23 @@ const tab = {
       tab.settings.carbonIntensityView.updateView();
     },
     selectRegion: {
+      initModel: () => {
+
+      },
       updateView: () => {
         injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
       }
     }, updateCarbonIntensity: {
+      initModel: () => {
+        
+      },
       updateView: () => {
 
       }
     }, carbonIntensityView: {
+      initModel: () => {
+        
+      },
       updateView: () => {
 
       }
@@ -227,6 +269,9 @@ const tab = {
    * View history of results.
    */
   history: {
+    initModel: () => {
+        
+    },
     initView: () => {
 
     }, 
@@ -242,6 +287,7 @@ init = () => {
   tab.rawdata = getOrCreateRawData();
   tab.stats = getStats();
 
+  tab.initModel();
   tab.initView();
 
   // Compute sum of datas
