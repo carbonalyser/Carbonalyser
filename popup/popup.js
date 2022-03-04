@@ -86,10 +86,6 @@ reset = async () => {
 
 init = () => {
 
-  if ( getSelectedRegion() !== null ) {
-    selectRegion.value = userLocation;
-  }
-
   if (null === localStorage.getItem('rawdata')) {
     hide(resetButton);
   } else {
@@ -104,7 +100,7 @@ init = () => {
 
   // Load regions from the storage.
   const regions = getRegions();
-  injectRegionIntoHTML(regions);
+  injectRegionIntoHTML(regions, getSelectedRegion());
 
   start();
   statsInterval = setInterval(showStats, 2000);

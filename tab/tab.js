@@ -132,14 +132,10 @@ const tab = {
 
 init = () => {
 
-  if ( getSelectedRegion() !== null ) {
-    selectRegion.value = userLocation;
-  }
-
   // Load regions from the storage.
   tab.parameters = getParameters();
   tab.rawdata = getOrCreateRawData();
-  injectRegionIntoHTML(tab.parameters.regions);
+  injectRegionIntoHTML(tab.parameters.regions, getSelectedRegion());
 
   const topResults = document.getElementById("topResults");
   const stats = getStats();
