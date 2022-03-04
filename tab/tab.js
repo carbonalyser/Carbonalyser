@@ -249,14 +249,16 @@ const tab = {
       updateView: () => {
         injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
       }
-    }, updateCarbonIntensity: {
+    }, 
+    updateCarbonIntensity: {
       initModel: () => {
         
       },
       updateView: () => {
 
       }
-    }, carbonIntensityView: {
+    }, 
+    carbonIntensityView: {
       initModel: () => {
         
       },
@@ -270,13 +272,45 @@ const tab = {
    */
   history: {
     initModel: () => {
-        
+      tab.history.data.consumptionOverTime.initModel();
+      tab.history.data.consumptionShareAmongSites.initModel();
+      tab.history.electricityConsumptionOverTime.initModel();
     },
     initView: () => {
-
+      tab.history.updateView();
     }, 
     updateView: () => {
+      tab.history.data.consumptionOverTime.updateView();
+      tab.history.data.consumptionShareAmongSites.updateView();
+      tab.history.electricityConsumptionOverTime.updateView();
+    },
+    data: {
+      bytesDataCenterObjectForm: null,
+      bytesNetworkObjectForm: null,
+      consumptionOverTime: {
+        initModel: () => {
+          
+        },
+        updateView: () => {
+  
+        }
+      },
+      consumptionShareAmongSites: {
+        initModel: () => {
+          
+        },
+        updateView: () => {
+  
+        }
+      }, 
+    },
+    electricityConsumptionOverTime: {
+      initModel: () => {
+        
+      },
+      updateView: () => {
 
+      }
     }
   }
 }
