@@ -99,23 +99,11 @@ init = () => {
   }
 
   // Load regions from the storage.
-  const regions = getRegions();
-  injectRegionIntoHTML(regions, getSelectedRegion());
+  const parameters = getParameters();
+  injectRegionIntoHTML(parameters.regions, parameters.selectedRegion);
 
   start();
   statsInterval = setInterval(showStats, 2000);
-}
-
-selectRegionHandler = (event) => {
-  const selectedRegion = lowerFirstLetter(event.target.value);
-
-  if ('' === selectedRegion) {
-    return;
-  }
-
-  userLocation = selectedRegion;
-  setSelectedRegion(selectedRegion);
-  showStats();
 }
 
 hide = element => element.classList.add('hidden');
@@ -137,9 +125,7 @@ stopButton.addEventListener('click', stop);
 const resetButton = document.getElementById('resetButton');
 resetButton.addEventListener('click', reset);
 
-const selectRegion = document.getElementById('selectRegion');
-selectRegion.addEventListener('change', selectRegionHandler);
-
+attachHandlerToSelectRegion();
 loadTranslations();
 
 init();

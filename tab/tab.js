@@ -135,7 +135,7 @@ init = () => {
   // Load regions from the storage.
   tab.parameters = getParameters();
   tab.rawdata = getOrCreateRawData();
-  injectRegionIntoHTML(tab.parameters.regions, getSelectedRegion());
+  injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
 
   const topResults = document.getElementById("topResults");
   const stats = getStats();
@@ -414,19 +414,7 @@ init = () => {
   });
 }
 
-selectRegionHandler = (event) => {
-    const selectedRegion = lowerFirstLetter(event.target.value);
-  
-    if ('' === selectedRegion) {
-      return;
-    }
-  
-    setSelectedRegion(selectRegion);
-}
-
-const selectRegion = document.getElementById('selectRegion');
-selectRegion.addEventListener('change', selectRegionHandler);
-
+attachHandlerToSelectRegion();
 loadTranslations();
 
 window.addEventListener("load", function(event) {
