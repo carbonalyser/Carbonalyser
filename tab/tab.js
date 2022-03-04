@@ -110,15 +110,23 @@ const tab = {
    * Show same results as the popup.
    */
   results: {
-    update: () => {
-      tab.results.equivalence.update();
-      tab.results.detailledView.update();
-    }, equivalence: {
-      update: () => {
+    updateView: () => {
+      tab.results.equivalence.updateView();
+      tab.results.detailledView.updateView();
+    }, 
+    /**
+     * Equivalence in smartphone charged, kilometers by car.
+     */
+    equivalence: {
+      updateView: () => {
         updateEquivalence(tab.stats);
       }
-    }, detailledView: {
-      update: () => {
+    }, 
+    /**
+     * Detailled view of electricity consumption during browsing.
+     */
+    detailledView: {
+      updateView: () => {
         const topResults = document.getElementById("topResults");
         for(let i = 0; i < tab.stats.highestStats.length; i ++) {
           const stat = tab.stats.highestStats[i];
@@ -138,6 +146,13 @@ const tab = {
           tr.appendChild(network);
           topResults.appendChild(tr);
         }
+
+        // Add some sorters
+        $(document).ready(function() {
+          const table = $('#topResultsTable');
+          table.DataTable();
+          document.getElementById("topResultsTable_wrapper").style.width = "100%";
+        });
       }
     }
   },
@@ -146,34 +161,43 @@ const tab = {
    * Parametrize the system.
    */
   settings: {
+    updateView: () => {
+      tab.settings.selectRegion.updateView();
+      tab.settings.updateCarbonIntensity.updateView();
+      tab.settings.carbonIntensityView.updateView();
+    },
+    selectRegion: {
+      updateView: () => {
+        injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+      }
+    }, updateCarbonIntensity: {
+      updateView: () => {
 
+      }
+    }, carbonIntensityView: {
+      updateView: () => {
+
+      }
+    }
   }, 
   /**
    * View history of results.
    */
   history: {
+    updateView: () => {
 
+    }
   }
 }
 
 init = () => {
 
-  // Load regions from the storage.
   tab.parameters = getParameters();
   tab.rawdata = getOrCreateRawData();
-  injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
-
-  const topResults = document.getElementById("topResults");
   tab.stats = getStats();
-  tab.results.update();
 
-
-  // Add some sorters
-  $(document).ready(function() {
-    const table = $('#topResultsTable');
-    table.DataTable();
-    document.getElementById("topResultsTable_wrapper").style.width = "100%";
-  });
+  tab.results.updateView();
+  tab.settings.updateView();
 
   // Compute sum of datas
   const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
