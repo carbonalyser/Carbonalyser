@@ -97,25 +97,51 @@ createMovingAverage = (sod, tsInterval=10) => {
   return dots;
 }
 
-
 /**
  * This holds all the data from the storage
  * on the fly compute data.
  */
 const tab = {
+  stats: null,
   parameters: null,
   rawdata: null,
+
   /**
    * Show same results as the popup.
    */
   results: {
-    equivalence: {
-
-    },
-    detailledView: {
-
+    update: () => {
+      tab.results.equivalence.update();
+      tab.results.detailledView.update();
+    }, equivalence: {
+      update: () => {
+        updateEquivalence(tab.stats);
+      }
+    }, detailledView: {
+      update: () => {
+        const topResults = document.getElementById("topResults");
+        for(let i = 0; i < tab.stats.highestStats.length; i ++) {
+          const stat = tab.stats.highestStats[i];
+          const tr = document.createElement("tr");
+          const percent = document.createElement("td");
+          const site = document.createElement("td");
+          const data = document.createElement("td");
+          const network = document.createElement("td");
+          tr.className = "oneResult";
+          percent.textContent = stat.percent;
+          site.textContent = stat.origin;
+          data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
+          network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+          tr.appendChild(percent);
+          tr.appendChild(site);
+          tr.appendChild(data);
+          tr.appendChild(network);
+          topResults.appendChild(tr);
+        }
+      }
     }
-  }, 
+  },
+
   /**
    * Parametrize the system.
    */
@@ -138,27 +164,9 @@ init = () => {
   injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
 
   const topResults = document.getElementById("topResults");
-  const stats = getStats();
-  tab.results.equivalence = computeEquivalenceFromStatsItem(stats);
+  tab.stats = getStats();
+  tab.results.update();
 
-  for(let i = 0; i < stats.highestStats.length; i ++) {
-      const stat = stats.highestStats[i];
-      const tr = document.createElement("tr");
-      const percent = document.createElement("td");
-      const site = document.createElement("td");
-      const data = document.createElement("td");
-      const network = document.createElement("td");
-      tr.className = "oneResult";
-      percent.textContent = stat.percent;
-      site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
-      network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
-      tr.appendChild(percent);
-      tr.appendChild(site);
-      tr.appendChild(data);
-      tr.appendChild(network);
-      topResults.appendChild(tr);
-  }
 
   // Add some sorters
   $(document).ready(function() {
@@ -166,8 +174,6 @@ init = () => {
     table.DataTable();
     document.getElementById("topResultsTable_wrapper").style.width = "100%";
   });
-
-  injectEquivalentIntoHTML(stats, tab.results.equivalence);
 
   // Compute sum of datas
   const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
