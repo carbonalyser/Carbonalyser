@@ -139,6 +139,13 @@ init = () => {
       topResults.appendChild(tr);
   }
 
+  // Add some sorters
+  $(document).ready(function() {
+    const table = $('#topResultsTable');
+    table.DataTable();
+    document.getElementById("topResultsTable_wrapper").style.width = "100%";
+  });
+
   injectEquivalentIntoHTML(stats, computedEquivalence);
 
   // Compute sum of datas
