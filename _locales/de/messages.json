@@ -75,7 +75,7 @@
   "regionChina": {
     "message": "China"
   },
-  "regionOther": {
+  "regionDefault": {
     "message": "Andere"
   },
   "regionUnitedKingdom": {

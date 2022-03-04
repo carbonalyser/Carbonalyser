@@ -97,6 +97,53 @@ createMovingAverage = (sod, tsInterval=10) => {
   return dots;
 }
 
+
+/**
+ * This holds all the data from the storage
+ * on the fly compute data.
+ */
+const tab = {
+  parameters: null,
+  rawdata: null,
+  /**
+   * Show same results as the popup.
+   */
+  results: {
+    equivalence: {
+
+    },
+    detailledView: {
+
+    }
+  }, 
+  /**
+   * Parametrize the system.
+   */
+  settings: {
+
+  }, 
+  /**
+   * View history of results.
+   */
+  history: {
+
+  }
+}
+
+/**
+ * Inject regions in the select region chooser.
+ */
+injectRegionInSelect = (regions) => {
+  const choice = document.getElementById("selectRegion");
+  for(const name in regions) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    const translated = translate("region" + capitalizeFirstLetter(name));
+    opt.text = (translated === '') ? name : translated;
+    choice.add(opt);
+  }
+}
+
 init = () => {
 
   if ( getSelectedRegion() !== null ) {
@@ -104,21 +151,13 @@ init = () => {
   }
 
   // Load regions from the storage.
-  const regions = getRegions();
-  const choice = document.getElementById("selectRegion");
-  for(let name in regions) {
-    const display = capitalizeFirstLetter(name);
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.text = display;
-    opt.setAttribute("translate", "region" + display);
-    choice.add(opt);
-  }
+  tab.parameters = getParameters();
+  tab.rawdata = getOrCreateRawData();
+  injectRegionInSelect(tab.parameters.regions);
 
-  const rawdata = getOrCreateRawData();
   const topResults = document.getElementById("topResults");
   const stats = getStats();
-  const computedEquivalence = computeEquivalenceFromStatsItem(stats);
+  tab.results.equivalence = computeEquivalenceFromStatsItem(stats);
 
   for(let i = 0; i < stats.highestStats.length; i ++) {
       const stat = stats.highestStats[i];
@@ -130,8 +169,8 @@ init = () => {
       tr.className = "oneResult";
       percent.textContent = stat.percent;
       site.textContent = stat.origin;
-      data.textContent = toMegaByteNoRound(rawdata[stat.origin].datacenter.total);
-      network.textContent = toMegaByteNoRound(rawdata[stat.origin].network.total + rawdata[stat.origin].datacenter.total);
+      data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
+      network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
       tr.appendChild(percent);
       tr.appendChild(site);
       tr.appendChild(data);
@@ -146,11 +185,11 @@ init = () => {
     document.getElementById("topResultsTable_wrapper").style.width = "100%";
   });
 
-  injectEquivalentIntoHTML(stats, computedEquivalence);
+  injectEquivalentIntoHTML(stats, tab.results.equivalence);
 
   // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(rawdata, 'datacenter', 60);
-  let bytesNetworkUnordered = createSumOfData(rawdata, 'network', 60);
+  const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
+  let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
   fillSODGaps(bytesNetworkUnordered);
   fillSODGaps(bytesDataCenterUnordered);
@@ -370,7 +409,7 @@ init = () => {
   });
 
   const settingsCICIS = document.getElementById("settingsCICIS");
-  for(const name in regions) {
+  for(const name in tab.parameters.regions) {
     const row = document.createElement("tr");
     const country = document.createElement("td");
     let region = translate("region" + capitalizeFirstLetter(name));
@@ -379,7 +418,7 @@ init = () => {
     }
     country.textContent = region;
     const ci = document.createElement("td");
-    ci.textContent = regions[name].carbonIntensity;
+    ci.textContent = tab.parameters.regions[name].carbonIntensity;
     row.append(country);
     row.append(ci);
     row.style.textAlign = "center";
