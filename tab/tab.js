@@ -102,20 +102,29 @@ createMovingAverage = (sod, tsInterval=10) => {
  * on the fly compute data.
  */
 const tab = {
-  initModel: () => {
-    tab.results.initModel();
-    tab.settings.initModel();
-    tab.history.initModel();
+  model: {
+    init: () => {
+      tab.results.model.init();
+      tab.settings.model.init();
+      tab.history.model.init();
+    },
+    update: () => {
+      tab.results.model.update();
+      tab.settings.model.update();
+      tab.history.model.update();
+    }
   },
-  initView: () => {
-    tab.results.initView();
-    tab.settings.initView();
-    tab.history.initView();
-  },
-  updateView: () => {
-    tab.results.updateView();
-    tab.settings.updateView();
-    tab.history.updateView();
+  view: {
+    init: () => {
+      tab.results.view.init();
+      tab.settings.view.init();
+      tab.history.view.init();
+    },
+    update: () => {
+      tab.results.view.update();
+      tab.settings.view.update();
+      tab.history.view.update();
+    }
   },
   stats: null,
   parameters: null,
@@ -125,101 +134,124 @@ const tab = {
    * Show same results as the popup.
    */
   results: {
-    initModel: () => {
-      tab.results.equivalence.initModel();
-      tab.results.detailledView.initModel();
+    model: {
+      init: () => {
+        tab.results.equivalence.model.init();
+        tab.results.detailledView.model.init();
+      },
+      update: () => {
+        tab.results.equivalence.model.update();
+        tab.results.detailledView.model.update();
+      }
     },
-    initView: () => {
-      tab.results.equivalence.initView();
-      tab.results.detailledView.initView();
-    }, 
-    updateView: () => {
-      tab.results.equivalence.updateView();
-      tab.results.detailledView.updateView();
-    }, 
+    view: {
+      init: () => {
+        tab.results.equivalence.view.init();
+        tab.results.detailledView.view.init();
+      },
+      update: () => {
+        tab.results.equivalence.view.update();
+        tab.results.detailledView.view.update();
+      }
+    },
     /**
      * Equivalence in smartphone charged, kilometers by car.
      */
     equivalence: {
-      initModel: () => {
-        if ( tab.stats === null ) {
+      model: {
+        init: () => {
+          if ( tab.stats === null ) {
+            tab.stats = getStats();
+          }
+        },
+        update: () => {
           tab.stats = getStats();
         }
       },
-      initView: () => {
-        tab.results.equivalence.updateView();
-      },
-      updateView: () => {
-        updateEquivalence(tab.stats);
+      view: {
+        init: () => {
+          updateEquivalence(tab.stats);
+        },
+        update: () => {
+          tab.results.equivalence.model.update();
+        }
       }
     }, 
     /**
      * Detailled view of electricity consumption during browsing.
      */
     detailledView: {
-      initModel: () => {
-        if ( tab.stats === null ) {
+      model: {
+        init: () => {
+          if ( tab.stats === null ) {
+            tab.stats = getStats();
+          }
+          if ( tab.rawdata === null ) {
+            tab.rawdata = getOrCreateRawData();
+          }
+        },
+        update: () => {
           tab.stats = getStats();
-        }
-        if ( tab.rawdata === null ) {
           tab.rawdata = getOrCreateRawData();
         }
       },
-      initView: () => {
-        const topResults = document.getElementById("topResults");
-        for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-          tab.results.detailledView.createEntry(tab.stats.highestStats[i], topResults, true);
-        }
+      view: {
+        /**
+         * Create or update an entry in the detailled view.
+         * @param {*} stat stat to insert / update.
+         * @param {*} topResults tbody to insert in.
+         * @param {*} init force creation.
+         */
+        createEntry: (stat, topResults, init) => {
 
-        // Add some sorters
-        $(document).ready(function() {
-          const table = $('#topResultsTable');
-          table.DataTable();
-          document.getElementById("topResultsTable_wrapper").style.width = "100%";
-        });
-      }, 
-      updateView: () => {
-        const topResults = document.getElementById("topResults");
-        for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-          tab.results.detailledView.createEntry(tab.stats.highestStats[i], topResults, false);
-        }
-      },
-      /**
-       * Create or update an entry in the detailled view.
-       * @param {*} stat stat to insert / update.
-       * @param {*} topResults tbody to insert in.
-       * @param {*} init force creation.
-       */
-      createEntry: (stat, topResults, init) => {
-
-        let foundValue = false;
-        if ( ! init ) {
-          for(const row of topResults.children) {
-            if ( row.children[1].textContent == stat.origin ) {
-              foundValue = true;
-              row.children[0] = stat.percent;
-              row.children[2] = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
-              row.children[3] = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+          let foundValue = false;
+          if ( ! init ) {
+            for(const row of topResults.children) {
+              if ( row.children[1].textContent == stat.origin ) {
+                foundValue = true;
+                row.children[0] = stat.percent;
+                row.children[2] = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
+                row.children[3] = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+              }
             }
           }
-        }
 
-        if ( init || ! foundValue) {
-          const tr = document.createElement("tr");
-          const percent = document.createElement("td");
-          const site = document.createElement("td");
-          const data = document.createElement("td");
-          const network = document.createElement("td");
-          tr.className = "oneResult";
-          percent.textContent = stat.percent;
-          site.textContent = stat.origin;
-          data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
-          network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
-          tr.appendChild(percent);
-          tr.appendChild(site);
-          tr.appendChild(data);
-          tr.appendChild(network);
-          topResults.appendChild(tr);
+          if ( init || ! foundValue) {
+            const tr = document.createElement("tr");
+            const percent = document.createElement("td");
+            const site = document.createElement("td");
+            const data = document.createElement("td");
+            const network = document.createElement("td");
+            tr.className = "oneResult";
+            percent.textContent = stat.percent;
+            site.textContent = stat.origin;
+            data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
+            network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+            tr.appendChild(percent);
+            tr.appendChild(site);
+            tr.appendChild(data);
+            tr.appendChild(network);
+            topResults.appendChild(tr);
+          }
+        },
+        init: () => {
+          const topResults = document.getElementById("topResults");
+          for(let i = 0; i < tab.stats.highestStats.length; i ++) {
+            tab.results.detailledView.view.createEntry(tab.stats.highestStats[i], topResults, true);
+          }
+  
+          // Add some sorters
+          $(document).ready(function() {
+            const table = $('#topResultsTable');
+            table.DataTable();
+            document.getElementById("topResultsTable_wrapper").style.width = "100%";
+          });
+        },
+        update: () => {
+          const topResults = document.getElementById("topResults");
+          for(let i = 0; i < tab.stats.highestStats.length; i ++) {
+            tab.results.detailledView.view.createEntry(tab.stats.highestStats[i], topResults, false);
+          }
         }
       }
     }
@@ -229,41 +261,82 @@ const tab = {
    * Parametrize the system.
    */
   settings: {
-    initModel: () => {
-      tab.settings.selectRegion.initModel();
-      tab.settings.updateCarbonIntensity.initModel();
-      tab.settings.carbonIntensityView.initModel();
+    model: {
+      init: () => {
+        tab.settings.selectRegion.model.init();
+        tab.settings.updateCarbonIntensity.model.init();
+        tab.settings.carbonIntensityView.model.init();
+      },
+      update: () => {
+        tab.settings.selectRegion.model.update();
+        tab.settings.updateCarbonIntensity.model.update();
+        tab.settings.carbonIntensityView.model.update();
+      }
     },
-    initView: () => {
-      tab.settings.updateView();
-    },
-    updateView: () => {
-      tab.settings.selectRegion.updateView();
-      tab.settings.updateCarbonIntensity.updateView();
-      tab.settings.carbonIntensityView.updateView();
+    view: {
+      init: () => {
+        tab.settings.selectRegion.view.init();
+        tab.settings.updateCarbonIntensity.view.init();
+        tab.settings.carbonIntensityView.view.init();
+      },
+      update: () => {
+        tab.settings.selectRegion.view.update();
+        tab.settings.updateCarbonIntensity.view.update();
+        tab.settings.carbonIntensityView.view.update();
+      }
     },
     selectRegion: {
-      initModel: () => {
+      model: {
+        init: () => {
 
+        },
+        update: () => {
+
+        }
       },
-      updateView: () => {
-        injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+      view: {
+        init: () => {
+
+        },
+        update: () => {
+          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+        }
       }
-    }, 
+    },
     updateCarbonIntensity: {
-      initModel: () => {
-        
-      },
-      updateView: () => {
+      model: {
+        init: () => {
 
+        },
+        update: () => {
+
+        }
+      },
+      view: {
+        init: () => {
+
+        },
+        update: () => {
+
+        }
       }
     }, 
     carbonIntensityView: {
-      initModel: () => {
-        
-      },
-      updateView: () => {
+      model: {
+        init: () => {
 
+        },
+        update: () => {
+
+        }
+      },
+      view: {
+        init: () => {
+
+        },
+        update: () => {
+
+        }
       }
     }
   }, 
@@ -271,45 +344,102 @@ const tab = {
    * View history of results.
    */
   history: {
-    initModel: () => {
-      tab.history.data.consumptionOverTime.initModel();
-      tab.history.data.consumptionShareAmongSites.initModel();
-      tab.history.electricityConsumptionOverTime.initModel();
+    model: {
+      init: () => {
+        tab.history.data.model.init();
+        tab.history.electricityConsumptionOverTime.model.init();
+      },
+      update: () => {
+        tab.history.data.model.update();
+        tab.history.electricityConsumptionOverTime.model.update();
+      }
     },
-    initView: () => {
-      tab.history.updateView();
-    }, 
-    updateView: () => {
-      tab.history.data.consumptionOverTime.updateView();
-      tab.history.data.consumptionShareAmongSites.updateView();
-      tab.history.electricityConsumptionOverTime.updateView();
+    view: {
+      init: () => {
+        tab.history.data.view.init();
+        tab.history.electricityConsumptionOverTime.view.init();
+      },
+      update: () => {
+        tab.history.data.view.update();
+        tab.history.electricityConsumptionOverTime.view.update();
+      }
     },
     data: {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
       consumptionOverTime: {
-        initModel: () => {
-          
-        },
-        updateView: () => {
+        model: {
+          init: () => {
   
+          },
+          update: () => {
+  
+          }
+        },
+        view: {
+          init: () => {
+  
+          },
+          update: () => {
+  
+          }
         }
       },
       consumptionShareAmongSites: {
-        initModel: () => {
-          
-        },
-        updateView: () => {
+        model: {
+          init: () => {
   
+          },
+          update: () => {
+  
+          }
+        },
+        view: {
+          init: () => {
+  
+          },
+          update: () => {
+  
+          }
         }
-      }, 
+      },
+      model: {
+        init: () => {
+          tab.history.data.consumptionShareAmongSites.model.init();
+          tab.history.data.consumptionOverTime.model.init();
+        },
+        update: () => {
+          tab.history.data.consumptionShareAmongSites.model.update();
+          tab.history.data.consumptionOverTime.model.update();
+        }
+      },
+      view: {
+        init: () => {
+          tab.history.data.consumptionShareAmongSites.view.init();
+          tab.history.data.consumptionOverTime.view.init();
+        },
+        update: () => {
+          tab.history.data.consumptionShareAmongSites.model.update();
+          tab.history.data.consumptionOverTime.model.update();
+        }
+      }
     },
     electricityConsumptionOverTime: {
-      initModel: () => {
-        
-      },
-      updateView: () => {
+      model: {
+        init: () => {
 
+        },
+        update: () => {
+
+        }
+      },
+      view: {
+        init: () => {
+
+        },
+        update: () => {
+
+        }
       }
     }
   }
@@ -321,8 +451,8 @@ init = () => {
   tab.rawdata = getOrCreateRawData();
   tab.stats = getStats();
 
-  tab.initModel();
-  tab.initView();
+  tab.model.init();
+  tab.view.init();
 
   // Compute sum of datas
   const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
