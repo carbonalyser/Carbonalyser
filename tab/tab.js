@@ -288,15 +288,15 @@ const tab = {
     selectRegion: {
       model: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       },
       view: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
           injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
@@ -306,36 +306,36 @@ const tab = {
     updateCarbonIntensity: {
       model: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       },
       view: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       }
     }, 
     carbonIntensityView: {
       model: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       },
       view: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       }
     }
@@ -345,7 +345,16 @@ const tab = {
    */
   history: {
     model: {
+      bytesDataCenterObjectForm: null,
+      bytesNetworkObjectForm: null,
       init: () => {
+        const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
+        let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
+        bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
+        fillSODGaps(bytesNetworkUnordered);
+        fillSODGaps(bytesDataCenterUnordered);
+        tab.history.model.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
+        tab.history.model.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
         tab.history.data.model.init();
         tab.history.electricityConsumptionOverTime.model.init();
       },
@@ -364,42 +373,132 @@ const tab = {
         tab.history.electricityConsumptionOverTime.view.update();
       }
     },
+    /**
+     * Data usage view.
+     */
     data: {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
+      /**
+       * Data consumption over time.
+       */
       consumptionOverTime: {
         model: {
           init: () => {
-  
+            console.warn("call history.model.init instead");
           },
           update: () => {
-  
+            console.warn("call history.model.update instead");
           }
         },
         view: {
+          data: null,
+          config: null,
+          myChart: null,
           init: () => {
-  
+
+            tab.history.data.consumptionOverTime.view.data = {
+              datasets: [
+                {
+                  label: 'Data used from datacenter',
+                  data: tab.history.model.bytesDataCenterObjectForm,
+                  borderColor: 'rgb(255, 0, 0)',
+                  showLine: true,
+                  lineTension: 0.2,
+                },
+                {
+                  label: 'Data used over network',
+                  data: tab.history.model.bytesNetworkObjectForm,
+                  borderColor: 'rgb(0, 255, 0)',
+                  showLine: true,
+                  lineTension: 0.2
+                }
+              ]
+            };
+
+            tab.history.data.consumptionOverTime.view.config = {
+              type: 'line',
+              data: tab.history.data.consumptionOverTime.view.data,
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: translate('historyChartTitle')
+                  },
+                  decimation: {
+                    enabled: true,
+                    algorithm: 'lttb',
+                    //samples: 5,
+                    threshold: 10
+                  },
+                  zoom: {
+                    zoom: {
+                      wheel: {
+                        enabled: true,
+                      },
+                      drag: {
+                        enabled: true
+                      },
+                      mode: 'x',
+                    }
+                  }
+                  
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: translate('historyChartXAxis')
+                    }, 
+                    type: 'time'
+                  },
+                  y: {
+                      title: {
+                        display: true,
+                        text: translate('historyChartYAxis')
+                      },
+                      ticks: {
+                          callback: function(value, index, ticks) {
+                              return toMegaByteNoRound(value);
+                          }
+                      }
+                  }
+                }
+              },
+            };
+          
+            tab.history.data.consumptionOverTime.view.myChart = new Chart(
+              document.getElementById('historyDivCanvas'),
+              tab.history.data.consumptionOverTime.view.config
+            );
           },
           update: () => {
-  
+            console.error("not implemented");
           }
         }
       },
+      /**
+       * Data consumption among sites.
+       */
       consumptionShareAmongSites: {
         model: {
           init: () => {
-  
+            console.error("not implemented");
           },
           update: () => {
-  
+            console.error("not implemented");
           }
         },
         view: {
           init: () => {
-  
+            console.error("not implemented");
           },
           update: () => {
-  
+            console.error("not implemented");
           }
         }
       },
@@ -427,18 +526,18 @@ const tab = {
     electricityConsumptionOverTime: {
       model: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       },
       view: {
         init: () => {
-
+          console.error("not implemented");
         },
         update: () => {
-
+          console.error("not implemented");
         }
       }
     }
@@ -447,100 +546,17 @@ const tab = {
 
 init = () => {
 
+  // trashcan
   tab.parameters = getParameters();
   tab.rawdata = getOrCreateRawData();
   tab.stats = getStats();
+  //
 
   tab.model.init();
   tab.view.init();
 
-  // Compute sum of datas
-  const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
-  let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
-  bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
-  fillSODGaps(bytesNetworkUnordered);
-  fillSODGaps(bytesDataCenterUnordered);
-  const bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
-  const bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
-
-  const data = {
-    datasets: [
-      {
-        label: 'Data used from datacenter',
-        data: bytesDataCenterObjectForm,
-        borderColor: 'rgb(255, 0, 0)',
-        showLine: true,
-        lineTension: 0.2,
-      },
-      {
-        label: 'Data used over network',
-        data: bytesNetworkObjectForm,
-        borderColor: 'rgb(0, 255, 0)',
-        showLine: true,
-        lineTension: 0.2
-      }
-    ]
-  };
-
-  const config = {
-    type: 'line',
-    data: data,
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: translate('historyChartTitle')
-        },
-        decimation: {
-          enabled: true,
-          algorithm: 'lttb',
-          //samples: 5,
-          threshold: 10
-        },
-        zoom: {
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            drag: {
-              enabled: true
-            },
-            mode: 'x',
-          }
-        }
-        
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: translate('historyChartXAxis')
-          }, 
-          type: 'time'
-        },
-        y: {
-            title: {
-              display: true,
-              text: translate('historyChartYAxis')
-            },
-            ticks: {
-                callback: function(value, index, ticks) {
-                    return toMegaByteNoRound(value);
-                }
-            }
-        }
-      }
-    },
-  };
-
-  const myChart = new Chart(
-    document.getElementById('historyDivCanvas'),
-    config
-  );
+  const bytesDataCenterObjectForm = tab.history.model.bytesDataCenterObjectForm;
+  const bytesNetworkObjectForm = tab.history.model.bytesNetworkObjectForm;
 
   const electricityDataCenterObjectForm = [], electricityNetworkObjectForm = [];
   for(let o of bytesDataCenterObjectForm) {
