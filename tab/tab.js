@@ -377,8 +377,6 @@ const tab = {
      * Data usage view.
      */
     data: {
-      bytesDataCenterObjectForm: null,
-      bytesNetworkObjectForm: null,
       /**
        * Data consumption over time.
        */
@@ -486,16 +484,58 @@ const tab = {
        */
       consumptionShareAmongSites: {
         model: {
+          topStats: null,
+          labels: null,
+          series: null,
           init: () => {
-            console.error("not implemented");
+            tab.history.data.consumptionShareAmongSites.model.topStats = getStats(100);
+            tab.history.data.consumptionShareAmongSites.model.labels = [];
+            tab.history.data.consumptionShareAmongSites.model.series = [];
+            for (const index in tab.history.data.consumptionShareAmongSites.model.topStats.highestStats) {
+              if (tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].percent < 1) {
+                continue;
+              }
+
+              tab.history.data.consumptionShareAmongSites.model.labels.push(tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].origin);
+              tab.history.data.consumptionShareAmongSites.model.series.push(tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].percent);
+            }
           },
           update: () => {
             console.error("not implemented");
           }
         },
         view: {
+          CHART_COLORS: {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+          },
+          pieData: null,
+          pieConfig: null,
+          chart: null,
           init: () => {
-            console.error("not implemented");
+            tab.history.data.consumptionShareAmongSites.view.pieData = {
+              labels: tab.history.data.consumptionShareAmongSites.model.labels,
+              datasets: [{
+                label: 'Share of websites',
+                data: tab.history.data.consumptionShareAmongSites.model.series,
+                backgroundColor: Object.values(tab.history.data.consumptionShareAmongSites.view.CHART_COLORS)
+              }]
+            };
+            
+            tab.history.data.consumptionShareAmongSites.view.pieConfig = {
+              type: 'pie',
+              data: tab.history.data.consumptionShareAmongSites.view.pieData
+            };
+          
+            tab.history.data.consumptionShareAmongSites.view.chart = new Chart(
+              document.getElementById('historyPieCanvas'),
+              tab.history.data.consumptionShareAmongSites.view.pieConfig
+            );
           },
           update: () => {
             console.error("not implemented");
@@ -637,48 +677,6 @@ init = () => {
 
   tab.model.init();
   tab.view.init();
-
-
-  // create the pie chart
-  const topStats = getStats(100);
-  const labels = [], series = [];
-  for (let index in topStats.highestStats) {
-    if (topStats.highestStats[index].percent < 1) {
-      continue;
-    }
-
-    labels.push(topStats.highestStats[index].origin);
-    series.push(topStats.highestStats[index].percent);
-  }
-
-  const CHART_COLORS = {
-    red: 'rgb(255, 99, 132)',
-    orange: 'rgb(255, 159, 64)',
-    yellow: 'rgb(255, 205, 86)',
-    green: 'rgb(75, 192, 192)',
-    blue: 'rgb(54, 162, 235)',
-    purple: 'rgb(153, 102, 255)',
-    grey: 'rgb(201, 203, 207)'
-  };
-
-  const pieData = {
-    labels: labels,
-    datasets: [{
-      label: 'Share of websites',
-      data: series,
-      backgroundColor: Object.values(CHART_COLORS)
-    }]
-  };
-  
-  const pieConfig = {
-    type: 'pie',
-    data: pieData
-  };
-
-  new Chart(
-    document.getElementById('historyPieCanvas'),
-    pieConfig
-  );
 
   injectLatestRefershCarbonIntensity();
 
