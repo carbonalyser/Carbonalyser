@@ -92,32 +92,54 @@ createMovingAverage = (sod, tsInterval=10) => {
 }
 
 /**
+ * Add possibility to access a parent object from anty object.
+ * @param {*} o 
+ */
+attachParent = (o) => {
+	attachParentRecurse(null, o);
+}
+const attachPoint = "parent";
+attachParentRecurse = (parent, o) => {
+  if ( "object" != typeof(o) || o == null ) {
+      return ;
+  }
+	if ( parent != null && parent != undefined ) {
+		o[attachPoint] = parent;
+	}
+  for(const k of Object.keys(o)) {
+    if ( k != attachPoint ) {
+      attachParentRecurse(o, o[k]);
+    }
+  }
+}
+
+/**
  * This holds all the data from the storage
  * on the fly compute data.
  */
 const tab = {
   model: {
-    init: () => {
-      tab.results.model.init();
-      tab.settings.model.init();
-      tab.history.model.init();
+    init: function () {
+      this.parent.settings.model.init();
+      this.parent.results.model.init();
+      this.parent.history.model.init();
     },
-    update: () => {
-      tab.results.model.update();
-      tab.settings.model.update();
-      tab.history.model.update();
+    update: function () {
+      this.parent.results.model.update();
+      this.parent.settings.model.update();
+      this.parent.history.model.update();
     }
   },
   view: {
-    init: () => {
-      tab.results.view.init();
-      tab.settings.view.init();
-      tab.history.view.init();
+    init: function () {
+      this.parent.results.view.init();
+      this.parent.settings.view.init();
+      this.parent.history.view.init();
     },
-    update: () => {
-      tab.results.view.update();
-      tab.settings.view.update();
-      tab.history.view.update();
+    update: function () {
+      this.parent.results.view.update();
+      this.parent.settings.view.update();
+      this.parent.history.view.update();
     }
   },
   stats: null,
@@ -129,23 +151,23 @@ const tab = {
    */
   results: {
     model: {
-      init: () => {
-        tab.results.equivalence.model.init();
-        tab.results.detailledView.model.init();
+      init: function () {
+        this.parent.equivalence.model.init();
+        this.parent.detailledView.model.init();
       },
-      update: () => {
-        tab.results.equivalence.model.update();
-        tab.results.detailledView.model.update();
+      update: function () {
+        this.parent.equivalence.model.update();
+        this.parent.detailledView.model.update();
       }
     },
     view: {
-      init: () => {
-        tab.results.equivalence.view.init();
-        tab.results.detailledView.view.init();
+      init: function () {
+        this.parent.equivalence.view.init();
+        this.parent.detailledView.view.init();
       },
-      update: () => {
-        tab.results.equivalence.view.update();
-        tab.results.detailledView.view.update();
+      update: function () {
+        this.parent.equivalence.view.update();
+        this.parent.detailledView.view.update();
       }
     },
     /**
@@ -153,21 +175,21 @@ const tab = {
      */
     equivalence: {
       model: {
-        init: () => {
+        init: function () {
           if ( tab.stats === null ) {
             tab.stats = getStats();
           }
         },
-        update: () => {
+        update: function () {
           tab.stats = getStats();
         }
       },
       view: {
-        init: () => {
+        init: function () {
           updateEquivalence(tab.stats);
         },
-        update: () => {
-          tab.results.equivalence.model.update();
+        update: function () {
+          this.parent.model.update();
         }
       }
     }, 
@@ -176,7 +198,7 @@ const tab = {
      */
     detailledView: {
       model: {
-        init: () => {
+        init: function () {
           if ( tab.stats === null ) {
             tab.stats = getStats();
           }
@@ -184,7 +206,7 @@ const tab = {
             tab.rawdata = getOrCreateRawData();
           }
         },
-        update: () => {
+        update: function () {
           tab.stats = getStats();
           tab.rawdata = getOrCreateRawData();
         }
@@ -196,7 +218,7 @@ const tab = {
          * @param {*} topResults tbody to insert in.
          * @param {*} init force creation.
          */
-        createEntry: (stat, topResults, init) => {
+        createEntry: function (stat, topResults, init) {
 
           let foundValue = false;
           if ( ! init ) {
@@ -228,10 +250,10 @@ const tab = {
             topResults.appendChild(tr);
           }
         },
-        init: () => {
+        init: function () {
           const topResults = document.getElementById("topResults");
           for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-            tab.results.detailledView.view.createEntry(tab.stats.highestStats[i], topResults, true);
+            this.createEntry(tab.stats.highestStats[i], topResults, true);
           }
   
           // Add some sorters
@@ -241,10 +263,10 @@ const tab = {
             document.getElementById("topResultsTable_wrapper").style.width = "100%";
           });
         },
-        update: () => {
+        update: function () {
           const topResults = document.getElementById("topResults");
           for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-            tab.results.detailledView.view.createEntry(tab.stats.highestStats[i], topResults, false);
+            this.createEntry(tab.stats.highestStats[i], topResults, false);
           }
         }
       }
@@ -256,40 +278,40 @@ const tab = {
    */
   settings: {
     model: {
-      init: () => {
-        tab.settings.selectRegion.model.init();
-        tab.settings.updateCarbonIntensity.model.init();
-        tab.settings.carbonIntensityView.model.init();
+      init: function () {
+        this.parent.selectRegion.model.init();
+        this.parent.updateCarbonIntensity.model.init();
+        this.parent.carbonIntensityView.model.init();
       },
-      update: () => {
-        tab.settings.selectRegion.model.update();
-        tab.settings.updateCarbonIntensity.model.update();
-        tab.settings.carbonIntensityView.model.update();
+      update: function () {
+        this.parent.selectRegion.model.update();
+        this.parent.updateCarbonIntensity.model.update();
+        this.parent.carbonIntensityView.model.update();
       }
     },
     view: {
-      init: () => {
-        tab.settings.selectRegion.view.init();
-        tab.settings.updateCarbonIntensity.view.init();
-        tab.settings.carbonIntensityView.view.init();
+      init: function () {
+        this.parent.selectRegion.view.init();
+        this.parent.updateCarbonIntensity.view.init();
+        this.parent.carbonIntensityView.view.init();
       },
-      update: () => {
-        tab.settings.selectRegion.view.update();
-        tab.settings.updateCarbonIntensity.view.update();
-        tab.settings.carbonIntensityView.view.update();
+      update: function () {
+        this.parent.selectRegion.view.update();
+        this.parent.updateCarbonIntensity.view.update();
+        this.parent.carbonIntensityView.view.update();
       }
     },
     selectRegion: {
       model: {
-        init: () => {
+        init: function () {
           console.error("not implemented");
         },
-        update: () => {
+        update: function () {
           console.error("not implemented");
         }
       },
       view: {
-        init: () => {
+        init: function () {
           // part of the refresh system
           document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
             chrome.runtime.sendMessage({action: "forceCIUpdater"});
@@ -298,46 +320,46 @@ const tab = {
           });
           injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
         },
-        update: () => {
-          console.error("not implemented");
+        update: function () {
+          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
         }
       }
     },
     updateCarbonIntensity: {
       model: {
-        init: () => {
+        init: function () {
           if ( tab.parameters == null ) {
             tab.parameters = getParameters();
           }
         },
-        update: () => {
+        update: function () {
           tab.parameters = getParameters();
         }
       },
       view: {
         div: null,
-        init: () => {
-          tab.settings.updateCarbonIntensity.view.div = document.getElementById("carbonIntensityLastRefreshIP");
-          tab.settings.updateCarbonIntensity.view.update();
+        init: function () {
+          div = document.getElementById("carbonIntensityLastRefreshIP");
+          this.update();
         },
-        update: () => {
-          tab.settings.updateCarbonIntensity.view.div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(tab.parameters.lastRefresh).toLocaleString()]);
+        update: function () {
+          div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(tab.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
     carbonIntensityView: {
       model: {
-        init: () => {
+        init: function () {
           tab.parameters.regions = getRegions();
         },
-        update: () => {
+        update: function () {
           tab.parameters.regions = getRegions();
         }
       },
       view: {
         settingsCICIS: null,
-        init: () => {
-          tab.settings.carbonIntensityView.view.settingsCICIS = document.getElementById("settingsCICIS");
+        init: function () {
+          settingsCICIS = document.getElementById("settingsCICIS");
           for(const name in tab.parameters.regions) {
             const row = document.createElement("tr");
             const country = document.createElement("td");
@@ -352,7 +374,7 @@ const tab = {
             row.append(ci);
             row.style.textAlign = "center";
             row.style.verticalAlign = "middle";
-            tab.settings.carbonIntensityView.view.settingsCICIS.append(row);
+            settingsCICIS.append(row);
           }
           $(document).ready(function() {
             const table = $('#settingsCItable');
@@ -360,7 +382,7 @@ const tab = {
             document.getElementById("settingsCItable_wrapper").style.width = "100%";
           });
         },
-        update: () => {
+        update: function () {
           console.error("not implemented");
         }
       }
@@ -373,30 +395,32 @@ const tab = {
     model: {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
-      init: () => {
+      init: function () {
+        tab.rawdata = getOrCreateRawData();
         const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
         let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
         bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
         fillSODGaps(bytesNetworkUnordered);
         fillSODGaps(bytesDataCenterUnordered);
-        tab.history.model.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
-        tab.history.model.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
-        tab.history.data.model.init();
-        tab.history.electricityConsumptionOverTime.model.init();
+        this.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
+        this.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+        console.info(this.bytesDataCenterObjectForm);
+        this.parent.data.model.init();
+        this.parent.electricityConsumptionOverTime.model.init();
       },
-      update: () => {
-        tab.history.data.model.update();
-        tab.history.electricityConsumptionOverTime.model.update();
+      update: function () {
+        this.parent.data.model.update();
+        this.parent.electricityConsumptionOverTime.model.update();
       }
     },
     view: {
-      init: () => {
-        tab.history.data.view.init();
-        tab.history.electricityConsumptionOverTime.view.init();
+      init: function () {
+        this.parent.data.view.init();
+        this.parent.electricityConsumptionOverTime.view.init();
       },
-      update: () => {
-        tab.history.data.view.update();
-        tab.history.electricityConsumptionOverTime.view.update();
+      update: function () {
+        this.parent.data.view.update();
+        this.parent.electricityConsumptionOverTime.view.update();
       }
     },
     /**
@@ -408,10 +432,10 @@ const tab = {
        */
       consumptionOverTime: {
         model: {
-          init: () => {
+          init: function () {
             console.warn("call history.model.init instead");
           },
-          update: () => {
+          update: function () {
             console.warn("call history.model.update instead");
           }
         },
@@ -419,20 +443,20 @@ const tab = {
           data: null,
           config: null,
           myChart: null,
-          init: () => {
-
-            tab.history.data.consumptionOverTime.view.data = {
+          init: function () {
+            const parent = this.parent;
+            this.data = {
               datasets: [
                 {
                   label: 'Data used from datacenter',
-                  data: tab.history.model.bytesDataCenterObjectForm,
+                  data: parent.parent.model.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: 'Data used over network',
-                  data: tab.history.model.bytesNetworkObjectForm,
+                  data: parent.parent.model.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2
@@ -440,9 +464,10 @@ const tab = {
               ]
             };
 
-            tab.history.data.consumptionOverTime.view.config = {
+            const data = this.data;
+            this.config = {
               type: 'line',
-              data: tab.history.data.consumptionOverTime.view.data,
+              data: data,
               options: {
                 responsive: true,
                 plugins: {
@@ -495,12 +520,12 @@ const tab = {
               },
             };
           
-            tab.history.data.consumptionOverTime.view.myChart = new Chart(
+            this.myChart = new Chart(
               document.getElementById('historyDivCanvas'),
-              tab.history.data.consumptionOverTime.view.config
+              this.config
             );
           },
-          update: () => {
+          update: function () {
             console.error("not implemented");
           }
         }
@@ -513,20 +538,20 @@ const tab = {
           topStats: null,
           labels: null,
           series: null,
-          init: () => {
-            tab.history.data.consumptionShareAmongSites.model.topStats = getStats(100);
-            tab.history.data.consumptionShareAmongSites.model.labels = [];
-            tab.history.data.consumptionShareAmongSites.model.series = [];
-            for (const index in tab.history.data.consumptionShareAmongSites.model.topStats.highestStats) {
-              if (tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].percent < 1) {
+          init: function () {
+            this.topStats = getStats(100);
+            this.labels = [];
+            this.series = [];
+            for (const index in this.topStats.highestStats) {
+              if (this.topStats.highestStats[index].percent < 1) {
                 continue;
               }
 
-              tab.history.data.consumptionShareAmongSites.model.labels.push(tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].origin);
-              tab.history.data.consumptionShareAmongSites.model.series.push(tab.history.data.consumptionShareAmongSites.model.topStats.highestStats[index].percent);
+              this.labels.push(this.topStats.highestStats[index].origin);
+              this.series.push(this.topStats.highestStats[index].percent);
             }
           },
-          update: () => {
+          update: function () {
             console.error("not implemented");
           }
         },
@@ -543,49 +568,50 @@ const tab = {
           pieData: null,
           pieConfig: null,
           chart: null,
-          init: () => {
-            tab.history.data.consumptionShareAmongSites.view.pieData = {
-              labels: tab.history.data.consumptionShareAmongSites.model.labels,
+          init: function () {
+            const parent = this.parent;
+            this.pieData = {
+              labels: parent.model.labels,
               datasets: [{
                 label: 'Share of websites',
-                data: tab.history.data.consumptionShareAmongSites.model.series,
-                backgroundColor: Object.values(tab.history.data.consumptionShareAmongSites.view.CHART_COLORS)
+                data: parent.model.series,
+                backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
             
-            tab.history.data.consumptionShareAmongSites.view.pieConfig = {
+            this.pieConfig = {
               type: 'pie',
-              data: tab.history.data.consumptionShareAmongSites.view.pieData
+              data: this.pieData
             };
           
-            tab.history.data.consumptionShareAmongSites.view.chart = new Chart(
+            this.chart = new Chart(
               document.getElementById('historyPieCanvas'),
-              tab.history.data.consumptionShareAmongSites.view.pieConfig
+              this.pieConfig
             );
           },
-          update: () => {
+          update: function () {
             console.error("not implemented");
           }
         }
       },
       model: {
-        init: () => {
-          tab.history.data.consumptionShareAmongSites.model.init();
-          tab.history.data.consumptionOverTime.model.init();
+        init: function () {
+          this.parent.consumptionShareAmongSites.model.init();
+          this.parent.consumptionOverTime.model.init();
         },
-        update: () => {
-          tab.history.data.consumptionShareAmongSites.model.update();
-          tab.history.data.consumptionOverTime.model.update();
+        update: function () {
+          this.parent.consumptionShareAmongSites.model.update();
+          this.parent.consumptionOverTime.model.update();
         }
       },
       view: {
-        init: () => {
-          tab.history.data.consumptionShareAmongSites.view.init();
-          tab.history.data.consumptionOverTime.view.init();
+        init: function () {
+          this.parent.consumptionShareAmongSites.view.init();
+          this.parent.consumptionOverTime.view.init();
         },
-        update: () => {
-          tab.history.data.consumptionShareAmongSites.model.update();
-          tab.history.data.consumptionOverTime.model.update();
+        update: function () {
+          this.parent.consumptionShareAmongSites.model.update();
+          this.parent.consumptionOverTime.model.update();
         }
       }
     },
@@ -593,45 +619,49 @@ const tab = {
       model: {
         electricityDataCenterObjectForm: null,
         electricityNetworkObjectForm: null,
-        init: () => {
-          tab.history.electricityConsumptionOverTime.model.electricityDataCenterObjectForm = [];
-          tab.history.electricityConsumptionOverTime.model.electricityNetworkObjectForm = [];
+        init: function () {
+          this.electricityDataCenterObjectForm = [];
+          this.electricityNetworkObjectForm = [];
           for(let o of tab.history.model.bytesDataCenterObjectForm) {
-            tab.history.electricityConsumptionOverTime.model.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
+            this.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
           }
           for(let o of tab.history.model.bytesNetworkObjectForm) {
-            tab.history.electricityConsumptionOverTime.model.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+            this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
           }
         },
-        update: () => {
+        update: function () {
           console.error("not implemented");
         }
       },
       view: {
         data: null,
-        init: () => {
-          tab.history.electricityConsumptionOverTime.view.data = {
+        config: null,
+        chart: null,
+        init: function () {
+          const parent = this.parent;
+          this.data = {
             datasets: [
               {
                 label: 'Electricity consummed in datacenter',
-                data: tab.history.electricityConsumptionOverTime.model.electricityDataCenterObjectForm,
+                data: parent.model.electricityDataCenterObjectForm,
                 borderColor: 'rgb(255, 0, 0)',
                 showLine: true,
                 lineTension: 0.2,
               },
               {
                 label: 'Electricity consummed routing infra',
-                data: tab.history.electricityConsumptionOverTime.model.electricityNetworkObjectForm,
+                data: parent.model.electricityNetworkObjectForm,
                 borderColor: 'rgb(0, 255, 0)',
                 showLine: true,
                 lineTension: 0.2,
               }
             ]
           };
-        
-          tab.history.electricityConsumptionOverTime.view.config = {
+
+          const data = this.data;
+          this.config = {
             type: 'line',
-            data: tab.history.electricityConsumptionOverTime.view.data,
+            data: data,
             options: {
               responsive: true,
               plugins: {
@@ -678,20 +708,22 @@ const tab = {
               }
             },
           };
-          
+
           // Create electricity graph
-          tab.history.electricityConsumptionOverTime.view.chart = new Chart(
+          this.chart = new Chart(
             document.getElementById('historyElectricityDivCanvas'),
-            tab.history.electricityConsumptionOverTime.view.config
+            this.config
           );
         },
-        update: () => {
+        update: function () {
           console.error("not implemented");
         }
       }
     }
   }
 }
+
+attachParent(tab);
 
 init = () => {
 
