@@ -290,6 +290,12 @@ const tab = {
       },
       view: {
         init: () => {
+          // part of the refresh system
+          document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
+            chrome.runtime.sendMessage({action: "forceCIUpdater"});
+            tab.settings.updateCarbonIntensity.model.update();
+            tab.settings.updateCarbonIntensity.view.update();
+          });
           injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
         },
         update: () => {
@@ -692,11 +698,6 @@ init = () => {
   tab.model.init();
   tab.view.init();
 
-  document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
-    await chrome.runtime.sendMessage({action: "forceCIUpdater"});
-    tab.settings.updateCarbonIntensity.model.update();
-    tab.settings.updateCarbonIntensity.view.update();
-  });
 }
 
 attachHandlerToSelectRegion();
