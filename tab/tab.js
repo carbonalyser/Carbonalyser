@@ -290,10 +290,10 @@ const tab = {
       },
       view: {
         init: () => {
-          console.error("not implemented");
+          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
         },
         update: () => {
-          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+          console.error("not implemented");
         }
       }
     },
