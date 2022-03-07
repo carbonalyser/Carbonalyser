@@ -60,12 +60,6 @@ mergeTwoSOD = (sod1,sod2, tsInterval=60*10) => {
   return result;
 }
 
-// Inject latest refresh in html
-injectLatestRefershCarbonIntensity = () => {
-  const div = document.getElementById("carbonIntensityLastRefreshIP");
-  div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(getParameters().lastRefresh).toLocaleString()]);
-}
-
 // create an object containing sum of data
 createObjectFromSumOfData = (sod) => {
   const rv = [];
@@ -306,18 +300,22 @@ const tab = {
     updateCarbonIntensity: {
       model: {
         init: () => {
-          console.error("not implemented");
+          if ( tab.parameters == null ) {
+            tab.parameters = getParameters();
+          }
         },
         update: () => {
-          console.error("not implemented");
+          tab.parameters = getParameters();
         }
       },
       view: {
+        div: null,
         init: () => {
-          console.error("not implemented");
+          tab.settings.updateCarbonIntensity.view.div = document.getElementById("carbonIntensityLastRefreshIP");
+          tab.settings.updateCarbonIntensity.view.update();
         },
         update: () => {
-          console.error("not implemented");
+          tab.settings.updateCarbonIntensity.view.div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(tab.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
@@ -678,11 +676,10 @@ init = () => {
   tab.model.init();
   tab.view.init();
 
-  injectLatestRefershCarbonIntensity();
-
   document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", function(){
     chrome.runtime.sendMessage({action: "forceCIUpdater"});
-    injectLatestRefershCarbonIntensity();
+    tab.settings.updateCarbonIntensity.model.update();
+    tab.settings.updateCarbonIntensity.view.update();
   });
 
   const settingsCICIS = document.getElementById("settingsCICIS");
