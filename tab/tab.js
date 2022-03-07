@@ -322,15 +322,37 @@ const tab = {
     carbonIntensityView: {
       model: {
         init: () => {
-          console.error("not implemented");
+          tab.parameters.regions = getRegions();
         },
         update: () => {
-          console.error("not implemented");
+          tab.parameters.regions = getRegions();
         }
       },
       view: {
+        settingsCICIS: null,
         init: () => {
-          console.error("not implemented");
+          tab.settings.carbonIntensityView.view.settingsCICIS = document.getElementById("settingsCICIS");
+          for(const name in tab.parameters.regions) {
+            const row = document.createElement("tr");
+            const country = document.createElement("td");
+            let region = translate("region" + capitalizeFirstLetter(name));
+            if ( region === "" || region === null ) {
+              region = name;
+            }
+            country.textContent = region;
+            const ci = document.createElement("td");
+            ci.textContent = tab.parameters.regions[name].carbonIntensity;
+            row.append(country);
+            row.append(ci);
+            row.style.textAlign = "center";
+            row.style.verticalAlign = "middle";
+            tab.settings.carbonIntensityView.view.settingsCICIS.append(row);
+          }
+          $(document).ready(function() {
+            const table = $('#settingsCItable');
+            table.DataTable();
+            document.getElementById("settingsCItable_wrapper").style.width = "100%";
+          });
         },
         update: () => {
           console.error("not implemented");
@@ -667,42 +689,13 @@ const tab = {
 
 init = () => {
 
-  // trashcan
-  tab.parameters = getParameters();
-  tab.rawdata = getOrCreateRawData();
-  tab.stats = getStats();
-  //
-
   tab.model.init();
   tab.view.init();
 
-  document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", function(){
-    chrome.runtime.sendMessage({action: "forceCIUpdater"});
+  document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
+    await chrome.runtime.sendMessage({action: "forceCIUpdater"});
     tab.settings.updateCarbonIntensity.model.update();
     tab.settings.updateCarbonIntensity.view.update();
-  });
-
-  const settingsCICIS = document.getElementById("settingsCICIS");
-  for(const name in tab.parameters.regions) {
-    const row = document.createElement("tr");
-    const country = document.createElement("td");
-    let region = translate("region" + capitalizeFirstLetter(name));
-    if ( region === "" || region === null ) {
-      region = name;
-    }
-    country.textContent = region;
-    const ci = document.createElement("td");
-    ci.textContent = tab.parameters.regions[name].carbonIntensity;
-    row.append(country);
-    row.append(ci);
-    row.style.textAlign = "center";
-    row.style.verticalAlign = "middle";
-    settingsCICIS.append(row);
-  }
-  $(document).ready(function() {
-    const table = $('#settingsCItable');
-    table.DataTable();
-    document.getElementById("settingsCItable_wrapper").style.width = "100%";
   });
 }
 
