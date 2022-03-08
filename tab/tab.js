@@ -96,30 +96,6 @@ createMovingAverage = (sod, tsInterval=10) => {
  * on the fly compute data.
  */
 const tab = {
-  model: {
-    init: function () {
-      this.parent.settings.model.init();
-      this.parent.results.model.init();
-      this.parent.history.model.init();
-    },
-    update: function () {
-      this.parent.results.model.update();
-      this.parent.settings.model.update();
-      this.parent.history.model.update();
-    }
-  },
-  view: {
-    init: function () {
-      this.parent.results.view.init();
-      this.parent.settings.view.init();
-      this.parent.history.view.init();
-    },
-    update: function () {
-      this.parent.results.view.update();
-      this.parent.settings.view.update();
-      this.parent.history.view.update();
-    }
-  },
   stats: null,
   parameters: null,
   rawdata: null,
@@ -128,26 +104,6 @@ const tab = {
    * Show same results as the popup.
    */
   results: {
-    model: {
-      init: function () {
-        this.parent.equivalence.model.init();
-        this.parent.detailledView.model.init();
-      },
-      update: function () {
-        this.parent.equivalence.model.update();
-        this.parent.detailledView.model.update();
-      }
-    },
-    view: {
-      init: function () {
-        this.parent.equivalence.view.init();
-        this.parent.detailledView.view.init();
-      },
-      update: function () {
-        this.parent.equivalence.view.update();
-        this.parent.detailledView.view.update();
-      }
-    },
     /**
      * Equivalence in smartphone charged, kilometers by car.
      */
@@ -255,30 +211,6 @@ const tab = {
    * Parametrize the system.
    */
   settings: {
-    model: {
-      init: function () {
-        this.parent.selectRegion.model.init();
-        this.parent.updateCarbonIntensity.model.init();
-        this.parent.carbonIntensityView.model.init();
-      },
-      update: function () {
-        this.parent.selectRegion.model.update();
-        this.parent.updateCarbonIntensity.model.update();
-        this.parent.carbonIntensityView.model.update();
-      }
-    },
-    view: {
-      init: function () {
-        this.parent.selectRegion.view.init();
-        this.parent.updateCarbonIntensity.view.init();
-        this.parent.carbonIntensityView.view.init();
-      },
-      update: function () {
-        this.parent.selectRegion.view.update();
-        this.parent.updateCarbonIntensity.view.update();
-        this.parent.carbonIntensityView.view.update();
-      }
-    },
     selectRegion: {
       model: {
         init: function () {
@@ -387,16 +319,6 @@ const tab = {
       },
       update: function () {
         this.init();
-      }
-    },
-    view: {
-      init: function () {
-        this.parent.data.view.init();
-        this.parent.electricityConsumptionOverTime.view.init();
-      },
-      update: function () {
-        this.parent.data.view.update();
-        this.parent.electricityConsumptionOverTime.view.update();
       }
     },
     /**
