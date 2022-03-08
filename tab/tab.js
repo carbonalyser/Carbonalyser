@@ -149,11 +149,11 @@ const tab = {
     if ( this.parameters == null ) {
       return updateParameters();
     } else {
-      if ( tab.parameters.regions == null 
-        || (Date.now() - tab.parameters.regions[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      if ( this.parameters.regions == null 
+        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
         ) {
-          tab.parameters.regions = getRegions();
-          tab.parameters.regions[LAST_UPDATE_DATA] = Date.now();
+          this.parameters.regions = getRegions();
+          this.parameters.regions[LAST_UPDATE_DATA] = Date.now();
       }
     }
   },
@@ -179,7 +179,7 @@ const tab = {
           updateEquivalence(this.parent.parent.parent.stats);
         },
         update: function () {
-          this.parent.model.update();
+          updateEquivalence(this.parent.parent.parent.stats);
         }
       }
     }, 
@@ -207,6 +207,7 @@ const tab = {
          * @param {*} init force creation.
          */
         createEntry: function (stat, topResults, init) {
+          const root = this.parent.parent.parent;
 
           let foundValue = false;
           if ( ! init ) {
@@ -214,8 +215,8 @@ const tab = {
               if ( row.children[1].textContent == stat.origin ) {
                 foundValue = true;
                 row.children[0] = stat.percent;
-                row.children[2] = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
-                row.children[3] = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+                row.children[2] = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
+                row.children[3] = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
               }
             }
           }
@@ -229,8 +230,8 @@ const tab = {
             tr.className = "oneResult";
             percent.textContent = stat.percent;
             site.textContent = stat.origin;
-            data.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].datacenter.total);
-            network.textContent = toMegaByteNoRound(tab.rawdata[stat.origin].network.total + tab.rawdata[stat.origin].datacenter.total);
+            data.textContent = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
+            network.textContent = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
             tr.appendChild(percent);
             tr.appendChild(site);
             tr.appendChild(data);
@@ -239,9 +240,10 @@ const tab = {
           }
         },
         init: function () {
+          const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
-          for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-            this.createEntry(tab.stats.highestStats[i], topResults, true);
+          for(let i = 0; i < root.stats.highestStats.length; i ++) {
+            this.createEntry(root.stats.highestStats[i], topResults, true);
           }
   
           // Add some sorters
@@ -252,9 +254,10 @@ const tab = {
           });
         },
         update: function () {
+          const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
-          for(let i = 0; i < tab.stats.highestStats.length; i ++) {
-            this.createEntry(tab.stats.highestStats[i], topResults, false);
+          for(let i = 0; i < root.stats.highestStats.length; i ++) {
+            this.createEntry(root.stats.highestStats[i], topResults, false);
           }
         }
       }
@@ -276,26 +279,31 @@ const tab = {
       },
       view: {
         init: function () {
+          const settings = this.parent.parent;
           // part of the refresh system
           document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
             chrome.runtime.sendMessage({action: "forceCIUpdater"});
-            tab.settings.updateCarbonIntensity.model.update();
-            tab.settings.updateCarbonIntensity.view.update();
+            settings.updateCarbonIntensity.model.update();
+            settings.updateCarbonIntensity.view.update();
           });
-          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+          const root = this.parent.parent.parent;
+          injectRegionIntoHTML(root.parameters.regions, root.parameters.selectedRegion);
         },
         update: function () {
-          injectRegionIntoHTML(tab.parameters.regions, tab.parameters.selectedRegion);
+          const root = this.parent.parent.parent;
+          injectRegionIntoHTML(root.parameters.regions, root.parameters.selectedRegion);
         }
       }
     },
     updateCarbonIntensity: {
       model: {
         init: function () {
-          tab.updateParameters();
+          const root = this.parent.parent.parent;
+          root.updateParameters();
         },
         update: function () {
-          tab.updateParameters();
+          const root = this.parent.parent.parent;
+          root.updateParameters();
         }
       },
       view: {
@@ -305,7 +313,8 @@ const tab = {
           this.update();
         },
         update: function () {
-          div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(tab.parameters.lastRefresh).toLocaleString()]);
+          const root = this.parent.parent.parent;
+          div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
@@ -321,8 +330,9 @@ const tab = {
       view: {
         settingsCICIS: null,
         init: function () {
+          const root = this.parent.parent.parent;
           settingsCICIS = document.getElementById("settingsCICIS");
-          for(const name in tab.parameters.regions) {
+          for(const name in root.parameters.regions) {
             const row = document.createElement("tr");
             const country = document.createElement("td");
             let region = translate("region" + capitalizeFirstLetter(name));
@@ -331,7 +341,7 @@ const tab = {
             }
             country.textContent = region;
             const ci = document.createElement("td");
-            ci.textContent = tab.parameters.regions[name].carbonIntensity;
+            ci.textContent = root.parameters.regions[name].carbonIntensity;
             row.append(country);
             row.append(ci);
             row.style.textAlign = "center";
@@ -358,9 +368,10 @@ const tab = {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
       init: function () {
-        tab.updateRawData();
-        const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
-        let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
+        const root = this.parent.parent;
+        root.updateRawData();
+        const bytesDataCenterUnordered = createSumOfData(root.rawdata, 'datacenter', 60);
+        let bytesNetworkUnordered = createSumOfData(root.rawdata, 'network', 60);
         bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
         fillSODGaps(bytesNetworkUnordered);
         fillSODGaps(bytesDataCenterUnordered);
@@ -381,14 +392,6 @@ const tab = {
        * Data consumption over time.
        */
       consumptionOverTime: {
-        model: {
-          init: function () {
-            console.warn("call history.model.init instead");
-          },
-          update: function () {
-            console.warn("call history.model.update instead");
-          }
-        },
         view: {
           data: null,
           config: null,
@@ -569,13 +572,14 @@ const tab = {
         electricityDataCenterObjectForm: null,
         electricityNetworkObjectForm: null,
         init: function () {
-          tab.history.model.init();
+          const history = this.parent.parent;
+          console.warn("bytes per origin is not updated at the time (only electricity)...");
           this.electricityDataCenterObjectForm = [];
           this.electricityNetworkObjectForm = [];
-          for(let o of tab.history.model.bytesDataCenterObjectForm) {
+          for(let o of history.model.bytesDataCenterObjectForm) {
             this.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
           }
-          for(let o of tab.history.model.bytesNetworkObjectForm) {
+          for(let o of history.model.bytesNetworkObjectForm) {
             this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
           }
         },
