@@ -271,10 +271,10 @@ const tab = {
     selectRegion: {
       model: {
         init: function () {
-          console.error("not implemented");
+          this.parent.parent.parent.updateParameters();
         },
         update: function () {
-          console.error("not implemented");
+          this.parent.parent.parent.updateParameters();
         }
       },
       view: {
@@ -329,16 +329,33 @@ const tab = {
       },
       view: {
         settingsCICIS: null,
-        init: function () {
+        /**
+         * Create a new entry in region table.
+         * @param {*} root root for creation of entry.
+         * @param {*} settingsCICIS HTML div for settings.
+         * @param {*} name key in object array.
+         * @param {*} init true if in initial creation.
+         */
+        createEntry: function (settingsCICIS, name, init, newIntensity) {
           const root = this.parent.parent.parent;
-          settingsCICIS = document.getElementById("settingsCICIS");
-          for(const name in root.parameters.regions) {
+          let region = translate("region" + capitalizeFirstLetter(name));
+          if ( region === "" || region === null ) {
+            region = name;
+          }
+          let foundValue = false;
+
+          if ( ! init ) {
+            for(const row of settingsCICIS.children) {
+              if ( row.children[0].textContent == region ) {
+                foundValue = true;
+                row.children[1].textContent = newIntensity;
+              }
+            }
+          }
+
+          if ( init || ! foundValue) {
             const row = document.createElement("tr");
             const country = document.createElement("td");
-            let region = translate("region" + capitalizeFirstLetter(name));
-            if ( region === "" || region === null ) {
-              region = name;
-            }
             country.textContent = region;
             const ci = document.createElement("td");
             ci.textContent = root.parameters.regions[name].carbonIntensity;
@@ -348,6 +365,13 @@ const tab = {
             row.style.verticalAlign = "middle";
             settingsCICIS.append(row);
           }
+        },
+        init: function () {
+          const root = this.parent.parent.parent;
+          this.settingsCICIS = document.getElementById("settingsCICIS");
+          for(const name in root.parameters.regions) {
+            this.createEntry(this.settingsCICIS, name, true, null);
+          }
           $(document).ready(function() {
             const table = $('#settingsCItable');
             table.DataTable();
@@ -355,7 +379,10 @@ const tab = {
           });
         },
         update: function () {
-          console.error("not implemented");
+          const root = this.parent.parent.parent;
+          for(const name in root.parameters.regions) {
+            this.createEntry(this.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
+          }
         }
       }
     }
