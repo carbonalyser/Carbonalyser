@@ -3,9 +3,13 @@
 createSumOfData = (dataObject, type, tsInterval=60*10) => {
   tsInterval *= 1000;
   const rv = {};
-  for(let origin in dataObject) {
+  for(const origin in dataObject) {
+    if ( dataObject[origin][type] === undefined ) {
+      console.warn("Found undefined at dataObject[" + origin + "][" + type + "]")
+      continue;
+    }
     const keys = Object.keys(dataObject[origin][type].dots);
-    for(let tso in dataObject[origin][type].dots ) {
+    for(const tso in dataObject[origin][type].dots ) {
       const originalTS = parseInt(tso);
       let ts = originalTS;
       const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
@@ -91,6 +95,8 @@ createMovingAverage = (sod, tsInterval=10) => {
   return dots;
 }
 
+const LAST_UPDATE_DATA = "lastDataUpdate";
+const LAST_UPDATE_THRESHOLD_MS = 1000;
 /**
  * This holds all the data from the storage
  * on the fly compute data.
@@ -99,6 +105,42 @@ const tab = {
   stats: null,
   parameters: null,
   rawdata: null,
+
+  /**
+   * Responsible from update stats object.
+   */
+  updateStats: function () {
+    if ( this.stats == null 
+      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      ) {
+      this.stats = getStats();
+      this.stats[LAST_UPDATE_DATA] = Date.now();
+    }
+  },
+
+  /**
+   * Responsible from update stats object.
+   */
+  updateParameters: function () {
+    if ( this.parameters == null 
+      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      ) {
+      this.parameters = getParameters();
+      this.parameters[LAST_UPDATE_DATA] = Date.now();
+    }
+  },
+
+  /**
+   * Responsible from update stats object.
+   */
+  updateRawData: function () {
+    if ( this.rawdata == null 
+      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      ) {
+      this.rawdata = getOrCreateRawData();
+      this.rawdata[LAST_UPDATE_DATA] = Date.now();
+    }
+  },
 
   /**
    * Show same results as the popup.
@@ -110,17 +152,15 @@ const tab = {
     equivalence: {
       model: {
         init: function () {
-          if ( tab.stats === null ) {
-            tab.stats = getStats();
-          }
+          this.parent.parent.parent.updateStats();
         },
         update: function () {
-          tab.stats = getStats();
+          this.parent.parent.parent.updateStats();
         }
       },
       view: {
         init: function () {
-          updateEquivalence(tab.stats);
+          updateEquivalence(this.parent.parent.parent.stats);
         },
         update: function () {
           this.parent.model.update();
@@ -133,16 +173,14 @@ const tab = {
     detailledView: {
       model: {
         init: function () {
-          if ( tab.stats === null ) {
-            tab.stats = getStats();
-          }
-          if ( tab.rawdata === null ) {
-            tab.rawdata = getOrCreateRawData();
-          }
+          const root = this.parent.parent.parent;
+          root.updateStats();
+          root.updateRawData();
         },
         update: function () {
-          tab.stats = getStats();
-          tab.rawdata = getOrCreateRawData();
+          const root = this.parent.parent.parent;
+          root.updateStats();
+          root.updateRawData();
         }
       },
       view: {
@@ -238,12 +276,10 @@ const tab = {
     updateCarbonIntensity: {
       model: {
         init: function () {
-          if ( tab.parameters == null ) {
-            tab.parameters = getParameters();
-          }
+          tab.updateParameters();
         },
         update: function () {
-          tab.parameters = getParameters();
+          tab.updateParameters();
         }
       },
       view: {
@@ -306,7 +342,7 @@ const tab = {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
       init: function () {
-        tab.rawdata = getOrCreateRawData();
+        tab.updateRawData();
         const bytesDataCenterUnordered = createSumOfData(tab.rawdata, 'datacenter', 60);
         let bytesNetworkUnordered = createSumOfData(tab.rawdata, 'network', 60);
         bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
