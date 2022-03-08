@@ -214,9 +214,9 @@ const tab = {
             for(const row of topResults.children) {
               if ( row.children[1].textContent == stat.origin ) {
                 foundValue = true;
-                row.children[0] = stat.percent;
-                row.children[2] = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
-                row.children[3] = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
+                row.children[0].textContent = stat.percent;
+                row.children[2].textContent = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
+                row.children[3].textContent = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
               }
             }
           }
