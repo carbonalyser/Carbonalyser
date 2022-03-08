@@ -143,6 +143,22 @@ const tab = {
   },
 
   /**
+   * Update regions data.
+   */
+  updateRegions: function () {
+    if ( this.parameters == null ) {
+      return updateParameters();
+    } else {
+      if ( tab.parameters.regions == null 
+        || (Date.now() - tab.parameters.regions[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+        ) {
+          tab.parameters.regions = getRegions();
+          tab.parameters.regions[LAST_UPDATE_DATA] = Date.now();
+      }
+    }
+  },
+
+  /**
    * Show same results as the popup.
    */
   results: {
@@ -296,10 +312,10 @@ const tab = {
     carbonIntensityView: {
       model: {
         init: function () {
-          tab.parameters.regions = getRegions();
+          this.parent.parent.parent.updateRegions();
         },
         update: function () {
-          tab.parameters.regions = getRegions();
+          this.parent.parent.parent.updateRegions();
         }
       },
       view: {
@@ -553,6 +569,7 @@ const tab = {
         electricityDataCenterObjectForm: null,
         electricityNetworkObjectForm: null,
         init: function () {
+          tab.history.model.init();
           this.electricityDataCenterObjectForm = [];
           this.electricityNetworkObjectForm = [];
           for(let o of tab.history.model.bytesDataCenterObjectForm) {
