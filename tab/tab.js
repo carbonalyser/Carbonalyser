@@ -92,28 +92,6 @@ createMovingAverage = (sod, tsInterval=10) => {
 }
 
 /**
- * Add possibility to access a parent object from anty object.
- * @param {*} o 
- */
-attachParent = (o) => {
-	attachParentRecurse(null, o);
-}
-const attachPoint = "parent";
-attachParentRecurse = (parent, o) => {
-  if ( "object" != typeof(o) || o == null ) {
-      return ;
-  }
-	if ( parent != null && parent != undefined ) {
-		o[attachPoint] = parent;
-	}
-  for(const k of Object.keys(o)) {
-    if ( k != attachPoint ) {
-      attachParentRecurse(o, o[k]);
-    }
-  }
-}
-
-/**
  * This holds all the data from the storage
  * on the fly compute data.
  */
@@ -404,13 +382,11 @@ const tab = {
         fillSODGaps(bytesDataCenterUnordered);
         this.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
         this.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
-        console.info(this.bytesDataCenterObjectForm);
         this.parent.data.model.init();
         this.parent.electricityConsumptionOverTime.model.init();
       },
       update: function () {
-        this.parent.data.model.update();
-        this.parent.electricityConsumptionOverTime.model.update();
+        this.init();
       }
     },
     view: {
@@ -444,19 +420,19 @@ const tab = {
           config: null,
           myChart: null,
           init: function () {
-            const parent = this.parent;
+            const parent = this.parent.parent.parent;
             this.data = {
               datasets: [
                 {
                   label: 'Data used from datacenter',
-                  data: parent.parent.model.bytesDataCenterObjectForm,
+                  data: parent.model.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: 'Data used over network',
-                  data: parent.parent.model.bytesNetworkObjectForm,
+                  data: parent.model.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2
@@ -526,7 +502,26 @@ const tab = {
             );
           },
           update: function () {
-            console.error("not implemented");
+            const parent = this.parent.parent.parent;
+            this.myChart.data = {
+              datasets: [
+                {
+                  label: 'Data used from datacenter',
+                  data: parent.model.bytesDataCenterObjectForm,
+                  borderColor: 'rgb(255, 0, 0)',
+                  showLine: true,
+                  lineTension: 0.2,
+                },
+                {
+                  label: 'Data used over network',
+                  data: parent.model.bytesNetworkObjectForm,
+                  borderColor: 'rgb(0, 255, 0)',
+                  showLine: true,
+                  lineTension: 0.2
+                }
+              ]
+            };
+            this.myChart.update();
           }
         }
       },
