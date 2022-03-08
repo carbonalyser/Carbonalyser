@@ -589,26 +589,6 @@ const tab = {
           }
         }
       },
-      model: {
-        init: function () {
-          this.parent.consumptionShareAmongSites.model.init();
-          this.parent.consumptionOverTime.model.init();
-        },
-        update: function () {
-          this.parent.consumptionShareAmongSites.model.update();
-          this.parent.consumptionOverTime.model.update();
-        }
-      },
-      view: {
-        init: function () {
-          this.parent.consumptionShareAmongSites.view.init();
-          this.parent.consumptionOverTime.view.init();
-        },
-        update: function () {
-          this.parent.consumptionShareAmongSites.model.update();
-          this.parent.consumptionOverTime.model.update();
-        }
-      }
     },
     electricityConsumptionOverTime: {
       model: {
@@ -718,6 +698,7 @@ const tab = {
   }
 }
 
+createMVC(tab);
 attachParent(tab);
 
 init = () => {
