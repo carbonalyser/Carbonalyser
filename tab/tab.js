@@ -244,11 +244,10 @@ const tab = {
           for(let i = 0; i < root.stats.highestStats.length; i ++) {
             this.createEntry(root.stats.highestStats[i], topResults, true);
           }
-  
+
           // Add some sorters
           $(document).ready(function() {
-            const table = $('#topResultsTable');
-            table.DataTable();
+            $('#topResultsTable').DataTable();
             document.getElementById("topResultsTable_wrapper").style.width = "100%";
           });
         },
@@ -712,7 +711,7 @@ attachParent(tab);
 
 // Animation button of refresh
 let currentDeg = 0;
-const minimalNoticeableMs = 90;
+const minimalNoticeableMs = 40;
 const animDurationMs = 500;
 const steps = Math.round(animDurationMs/minimalNoticeableMs);
 const degPerStep = 360 / steps;
