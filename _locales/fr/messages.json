@@ -158,5 +158,29 @@
   },
   "settingsCICI": {
     "message": "Facteur d'intensité carbone"
+  },
+  "tab.history.data.consumptionOverTime.datacenterLabel": {
+    "message": "Données utilisées depuis le centre de données"
+  },
+  "tab.history.data.consumptionOverTime.networkLabel": {
+    "message": "Données utilisées sur le réseau"
+  },
+  "tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel": {
+    "message": "Répartition de la donnée entre les sites"
+  },
+  "tab.history.electricityConsumptionOverTime.datasetDataCenter": {
+    "message": "Electricitée consommée par le centre de données"
+  },
+  "tab.history.electricityConsumptionOverTime.datasetNetwork": {
+    "message": "Electricitée consommée par l'infrastructure réseau"
+  },
+  "tab.history.electricityConsumptionOverTime.graphTitle": {
+    "message": "Consommation d'électricitée liée à votre surf (pas seulement votre ordinateur)"
+  },
+  "tab.history.electricityConsumptionOverTime.graphXAxis": {
+    "message": "Temps"
+  },
+  "tab.history.electricityConsumptionOverTime.graphYAxis": {
+    "message": "Consommation d'éléctricitée KWh"
   }
 }

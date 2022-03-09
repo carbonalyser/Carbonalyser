@@ -430,14 +430,14 @@ const tab = {
             return {
               datasets: [
                 {
-                  label: 'Data used from datacenter',
+                  label: translate("tab.history.data.consumptionOverTime.datacenterLabel"),
                   data: parent.model.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
-                  label: 'Data used over network',
+                  label: translate("tab.history.data.consumptionOverTime.networkLabel"),
                   data: parent.model.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
@@ -563,7 +563,7 @@ const tab = {
             return {
               labels: parent.model.labels,
               datasets: [{
-                label: 'Share of websites',
+                label: translate("tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel"),
                 data: parent.model.series,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
@@ -620,14 +620,14 @@ const tab = {
           return {
             datasets: [
               {
-                label: 'Electricity consummed in datacenter',
+                label: translate("tab.history.electricityConsumptionOverTime.datasetDataCenter"),
                 data: parent.model.electricityDataCenterObjectForm,
                 borderColor: 'rgb(255, 0, 0)',
                 showLine: true,
                 lineTension: 0.2,
               },
               {
-                label: 'Electricity consummed routing infra',
+                label: translate("tab.history.electricityConsumptionOverTime.datasetNetwork"),
                 data: parent.model.electricityNetworkObjectForm,
                 borderColor: 'rgb(0, 255, 0)',
                 showLine: true,
@@ -651,7 +651,7 @@ const tab = {
                 },
                 title: {
                   display: true,
-                  text: "Comsumption of electricity linked to your online activity (not only your computer)"
+                  text: translate("tab.history.electricityConsumptionOverTime.graphTitle")
                 },
                 decimation: {
                   enabled: true,
@@ -676,14 +676,14 @@ const tab = {
                 x: {
                   title: {
                     display: true,
-                    text: translate('historyChartXAxis')
+                    text: translate("tab.history.electricityConsumptionOverTime.graphXAxis")
                   }, 
                   type: 'time'
                 },
                 y: {
                     title: {
                       display: true,
-                      text: "electricity consumption KWh"
+                      text: translate("tab.history.electricityConsumptionOverTime.graphYAxis")
                     }
                 }
               }

@@ -158,5 +158,29 @@
   },
   "settingsCICI": {
     "message": "Kohlenstoffintensitäts faktor"
+  },
+  "tab.history.data.consumptionOverTime.datacenterLabel": {
+    "message": "Verwendete Daten aus dem Rechenzentrum"
+  },
+  "tab.history.data.consumptionOverTime.networkLabel": {
+    "message": "Im Netzwerk verwendete Daten"
+  },
+  "tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel": {
+    "message": "Anteil von Websites"
+  },
+  "tab.history.electricityConsumptionOverTime.datasetDataCenter": {
+    "message": "Stromverbrauch im Rechenzentrum"
+  },
+  "tab.history.electricityConsumptionOverTime.datasetNetwork": {
+    "message": "Stromverbrauch Routing Infra"
+  },
+  "tab.history.electricityConsumptionOverTime.graphTitle": {
+    "message": "Stromverbrauch im Zusammenhang mit Ihrer Online-Aktivität (nicht nur Ihr Computer)"
+  },
+  "tab.history.electricityConsumptionOverTime.graphXAxis": {
+    "message": "Temp"
+  },
+  "tab.history.electricityConsumptionOverTime.graphYAxis": {
+    "message": "Stromverbrauch KWh"
   }
 }
