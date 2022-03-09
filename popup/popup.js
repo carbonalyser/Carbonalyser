@@ -1,6 +1,68 @@
 let statsInterval;
 let pieChart;
 
+const popup = {
+  /**
+   * Header with project title and more information.
+   */
+  header: {
+
+  },
+  /**
+   * Some buttons to control analysis.
+   */
+  analysisCtrl: {
+    start: () => {
+      chrome.runtime.sendMessage({ action: 'start' });
+    
+      hide(startButton);
+      show(stopButton);
+      show(analysisInProgressMessage);
+      localStorage.setItem('analysisStarted', '1');
+    }
+  },
+  /**
+   * Part responsible from stats show.
+   */
+  stats: {
+    view: {
+      init: function () {
+        const statsMoreResults = document.getElementById('statsMoreResults');
+        statsMoreResults.addEventListener('click', this.parent.openMoreResults);
+      },
+      update: function () {
+
+      }
+    },
+    openMoreResults: async () => {
+      const url = chrome.runtime.getURL("/tab/tab.html");
+      browser.tabs.create({url: url, active: true});
+      window.close();
+    }
+  },
+  /**
+   * Select the region in popup
+   */
+  region: {
+
+  },
+  /**
+   * Show equivalence (more human understandable)
+   */
+  equivalence: {
+
+  },
+  /**
+   * Footer with legal notice
+   */
+  footer: {
+
+  }
+};
+
+createMVC(popup);
+attachParent(popup);
+
 showStats = () => {
   const stats = getStats(5);
 
@@ -47,15 +109,6 @@ showStats = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 }
 
-start = () => {
-  chrome.runtime.sendMessage({ action: 'start' });
-
-  hide(startButton);
-  show(stopButton);
-  show(analysisInProgressMessage);
-  localStorage.setItem('analysisStarted', '1');
-}
-
 stop = () => {
   chrome.runtime.sendMessage({ action: 'stop' });
 
@@ -64,12 +117,6 @@ stop = () => {
   hide(analysisInProgressMessage);
   clearInterval(statsInterval);
   localStorage.removeItem('analysisStarted');
-}
-
-openMoreResults = async () => {
-  const url = chrome.runtime.getURL("/tab/tab.html");
-  browser.tabs.create({url: url, active: true});
-  window.close();
 }
 
 reset = async () => {
@@ -85,6 +132,9 @@ reset = async () => {
 }
 
 init = () => {
+
+  popup.model.init();
+  popup.view.init();
 
   if (null === localStorage.getItem('rawdata')) {
     hide(resetButton);
@@ -102,7 +152,7 @@ init = () => {
   const parameters = getParameters();
   injectRegionIntoHTML(parameters.regions, parameters.selectedRegion);
 
-  start();
+  popup.analysisCtrl.start();
   statsInterval = setInterval(showStats, 2000);
 }
 
@@ -113,11 +163,8 @@ const analysisInProgressMessage = document.getElementById('analysisInProgressMes
 
 const statsElement = document.getElementById('stats');
 
-const statsMoreResults = document.getElementById('statsMoreResults');
-statsMoreResults.addEventListener('click', openMoreResults);
-
 const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', start);
+startButton.addEventListener('click', popup.analysisCtrl.start);
 
 const stopButton = document.getElementById('stopButton');
 stopButton.addEventListener('click', stop);
