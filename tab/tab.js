@@ -616,9 +616,9 @@ const tab = {
         data: null,
         config: null,
         chart: null,
-        init: function () {
+        createData: function () {
           const parent = this.parent;
-          this.data = {
+          return {
             datasets: [
               {
                 label: 'Electricity consummed in datacenter',
@@ -636,6 +636,9 @@ const tab = {
               }
             ]
           };
+        },
+        init: function () {
+          this.data = this.createData();
 
           const data = this.data;
           this.config = {
@@ -695,7 +698,9 @@ const tab = {
           );
         },
         update: function () {
-          console.error("not implemented");
+          this.data = this.createData();
+          this.config.data = this.data;
+          this.chart.data = this.data;
         }
       }
     }
