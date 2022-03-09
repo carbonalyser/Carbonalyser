@@ -157,7 +157,6 @@ const tab = {
       }
     }
   },
-
   /**
    * Show same results as the popup.
    */
@@ -263,7 +262,6 @@ const tab = {
       }
     }
   },
-
   /**
    * Parametrize the system.
    */
@@ -394,7 +392,7 @@ const tab = {
     model: {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
-      init: function () {
+      createObject: function () {
         const root = this.parent.parent;
         root.updateRawData();
         const bytesDataCenterUnordered = createSumOfData(root.rawdata, 'datacenter', 60);
@@ -404,11 +402,16 @@ const tab = {
         fillSODGaps(bytesDataCenterUnordered);
         this.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
         this.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+      },
+      init: function () {
+        this.createObject();
         this.parent.data.model.init();
         this.parent.electricityConsumptionOverTime.model.init();
       },
       update: function () {
-        this.init();
+        this.createObject();
+        this.parent.data.model.init();
+        this.parent.electricityConsumptionOverTime.model.init();
       }
     },
     /**
@@ -525,6 +528,8 @@ const tab = {
                 }
               ]
             };
+            this.data = this.myChart.data;
+            this.config.data = this.myChart.data;
             this.myChart.update();
           }
         }
@@ -541,17 +546,17 @@ const tab = {
             this.topStats = getStats(100);
             this.labels = [];
             this.series = [];
-            for (const index in this.topStats.highestStats) {
-              if (this.topStats.highestStats[index].percent < 1) {
+            for (const stat of this.topStats.highestStats) {
+              if (stat.percent < 1) {
                 continue;
               }
 
-              this.labels.push(this.topStats.highestStats[index].origin);
-              this.series.push(this.topStats.highestStats[index].percent);
+              this.labels.push(stat.origin);
+              this.series.push(stat.percent);
             }
           },
           update: function () {
-            console.error("not implemented");
+            this.init();
           }
         },
         view: {
@@ -589,7 +594,18 @@ const tab = {
             );
           },
           update: function () {
-            console.error("not implemented");
+            const parent = this.parent;
+            this.chart.data = {
+              labels: parent.model.labels,
+              datasets: [{
+                label: 'Share of websites',
+                data: parent.model.series,
+                backgroundColor: Object.values(this.CHART_COLORS)
+              }]
+            };
+            this.pieData = this.chart.data;
+            this.pieConfig.data = this.chart.data;
+            this.chart.update();
           }
         }
       },
