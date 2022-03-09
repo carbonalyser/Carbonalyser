@@ -559,9 +559,9 @@ const tab = {
           pieData: null,
           pieConfig: null,
           chart: null,
-          init: function () {
+          createData: function () {
             const parent = this.parent;
-            this.pieData = {
+            return {
               labels: parent.model.labels,
               datasets: [{
                 label: 'Share of websites',
@@ -569,6 +569,9 @@ const tab = {
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
+          },
+          init: function () {
+            this.pieData = this.createData();
             
             this.pieConfig = {
               type: 'pie',
@@ -581,15 +584,7 @@ const tab = {
             );
           },
           update: function () {
-            const parent = this.parent;
-            this.chart.data = {
-              labels: parent.model.labels,
-              datasets: [{
-                label: 'Share of websites',
-                data: parent.model.series,
-                backgroundColor: Object.values(this.CHART_COLORS)
-              }]
-            };
+            this.chart.data = this.createData();
             this.pieData = this.chart.data;
             this.pieConfig.data = this.chart.data;
             this.chart.update();
@@ -614,7 +609,7 @@ const tab = {
           }
         },
         update: function () {
-          console.error("not implemented");
+          this.init();
         }
       },
       view: {
