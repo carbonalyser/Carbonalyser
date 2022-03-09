@@ -278,7 +278,7 @@ const tab = {
         init: function () {
           const settings = this.parent.parent;
           // part of the refresh system
-          document.getElementById("carbonIntensityLastRefreshForceRefresh").addEventListener("click", async function(){
+          $("#carbonIntensityLastRefreshForceRefresh").click(function() {
             chrome.runtime.sendMessage({action: "forceCIUpdater"});
             settings.updateCarbonIntensity.model.update();
             settings.updateCarbonIntensity.view.update();
@@ -288,6 +288,7 @@ const tab = {
         },
         update: function () {
           const root = this.parent.parent.parent;
+          $("#" + regionSelectID).empty();
           injectRegionIntoHTML(root.parameters.regions, root.parameters.selectedRegion);
         }
       }
