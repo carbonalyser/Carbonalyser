@@ -35,3 +35,6 @@ Developer: [Richard Hanna](https://twitter.com/richardhanna).
 Designer: [Gauthier Roussilhe](http://gauthierroussilhe.com).
 
 In partnership with Maxime Efoui-Hess for [The Shift Project](https://theshiftproject.org/en/home/).
+
+### Material
+Refresh icons created by Dave Gandy - Flaticon
