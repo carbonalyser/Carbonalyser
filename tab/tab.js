@@ -426,9 +426,9 @@ const tab = {
           data: null,
           config: null,
           myChart: null,
-          init: function () {
+          createData: function () {
             const parent = this.parent.parent.parent;
-            this.data = {
+            return {
               datasets: [
                 {
                   label: 'Data used from datacenter',
@@ -446,6 +446,10 @@ const tab = {
                 }
               ]
             };
+          },
+          init: function () {
+            const parent = this.parent.parent.parent;
+            this.data = this.createData();
 
             const data = this.data;
             this.config = {
@@ -510,24 +514,7 @@ const tab = {
           },
           update: function () {
             const parent = this.parent.parent.parent;
-            this.myChart.data = {
-              datasets: [
-                {
-                  label: 'Data used from datacenter',
-                  data: parent.model.bytesDataCenterObjectForm,
-                  borderColor: 'rgb(255, 0, 0)',
-                  showLine: true,
-                  lineTension: 0.2,
-                },
-                {
-                  label: 'Data used over network',
-                  data: parent.model.bytesNetworkObjectForm,
-                  borderColor: 'rgb(0, 255, 0)',
-                  showLine: true,
-                  lineTension: 0.2
-                }
-              ]
-            };
+            this.myChart.data = this.createData();
             this.data = this.myChart.data;
             this.config.data = this.myChart.data;
             this.myChart.update();
