@@ -710,11 +710,39 @@ const tab = {
 createMVC(tab);
 attachParent(tab);
 
+// Animation button of refresh
+let currentDeg = 0;
+const minimalNoticeableMs = 90;
+const animDurationMs = 500;
+const steps = Math.round(animDurationMs/minimalNoticeableMs);
+const degPerStep = 360 / steps;
+const animateButton = $("#refreshButton > img");
+animateRotationButton = (done) => {
+  currentDeg += degPerStep;
+  if (currentDeg >= 360 ) {
+    currentDeg = 0;
+
+  } 
+  animateButton.rotate(currentDeg);
+  if ( currentDeg > 0 ) {
+    setTimeout(animateRotationButton, minimalNoticeableMs, done);
+  } else {
+    done();
+  }
+}
+
 init = () => {
 
   tab.model.init();
   tab.view.init();
 
+  // Animation button of refresh
+  $("#refreshButton").click(function() {
+    animateRotationButton(function() {
+      tab.model.update();
+      tab.view.update();
+    });
+  });
 }
 
 attachHandlerToSelectRegion();

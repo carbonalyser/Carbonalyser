@@ -12,6 +12,11 @@
 
     <body>
         <ul class="nav nav-tabs" role="tablist" style="max-height: 20%;">
+            <li class="nav-item disabled">
+                <button id="refreshButton" class="button" style="padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+                    <img src="/img/refresh.png" width="20px" height="20px" />
+                </button>
+            </li>
             <li class="nav-item" style="cursor: pointer;">
                 <div href="#topResultsDiv" id="tab-topResults" class="nav-link active" role="tab" data-toggle="tab" aria-controls="topResultsDiv" aria-selected="true" translate="topResultsTabTitle"></div>
             </li>
@@ -162,7 +167,8 @@
         <script src="/lib/chartjs/chartjs-plugin-labels.js"></script>
         <script src="/lib/luxon@^2.js"></script>
         <script src="/lib/chartjs/chartjs-adapter-luxon@^1.js"></script>
-        <script src="/lib/jquery-3.3.1.slim.min.js" ></script>
+        <script src="/lib/jquery/jquery-3.3.1.slim.min.js" ></script>
+        <script src="/lib/jquery/userTweak.js" ></script>
         <script src="/lib/popper.min.js" ></script>
         <script src="/lib/datatables/script/jquery.dataTables.min.js"></script>
         <script src="/lib/bootstrap/bootstrap.min.js" ></script>
