@@ -13,13 +13,11 @@ const popup = {
    */
   analysisCtrl: {
     view: { 
-      statsElement: null,
       analysisInProgressMessage: null,
       init: function () {
         this.parent.start.view.init();
         this.parent.stop.view.init();
         this.parent.reset.view.init();
-        this.statsElement = document.getElementById('stats');
         this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
       },
       update: function () {
@@ -116,7 +114,7 @@ const popup = {
       view: {
         button: null,
         run: function () {
-          hide(this.parent.parent.view.statsElement);
+          hide(this.parent.parent.parent.stats.view.element);
           showStats();
           hide(this.button);
         },
@@ -140,9 +138,11 @@ const popup = {
    */
   stats: {
     view: {
+      element: null,
       init: function () {
         const statsMoreResults = document.getElementById('statsMoreResults');
         statsMoreResults.addEventListener('click', this.parent.openMoreResults);
+        this.element = document.getElementById('stats');
       },
       update: function () {
 
@@ -158,7 +158,26 @@ const popup = {
    * Select the region in popup
    */
   region: {
-
+    model: {
+      parameters: null,
+      init: function () {
+        this.parameters = getParameters();
+      },
+      update: function () {
+        this.parameters = getParameters();
+      }
+    },
+    view: {
+      init: function () {
+        injectRegionIntoHTML(this.parent.model.parameters.regions, this.parent.model.parameters.selectedRegion);
+      }, 
+      update: function () {
+        while (parent.firstChild) {
+          parent.removeChild(parent.firstChild);
+        }
+        injectRegionIntoHTML(this.parent.model.parameters.regions, this.parent.model.parameters.selectedRegion);
+      }
+    }
   },
   /**
    * Show equivalence (more human understandable)
@@ -184,7 +203,7 @@ showStats = () => {
     return;
   }
 
-  show(popup.analysisCtrl.view.statsElement);
+  show(popup.stats.view.element);
   const labels = [];
   const series = [];
 
@@ -233,10 +252,6 @@ init = () => {
   if (null === localStorage.getItem('analysisStarted')) {
     return;
   }
-
-  // Load regions from the storage.
-  const parameters = getParameters();
-  injectRegionIntoHTML(parameters.regions, parameters.selectedRegion);
 
   statsInterval = setInterval(showStats, 2000);
 }
