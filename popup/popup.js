@@ -1,5 +1,31 @@
 
 const popup = {
+  view: {
+    init: function () {
+      this.parent.header.view.init();
+      this.parent.analysisCtrl.view.init();
+      this.parent.stats.view.init();
+      this.parent.region.view.init();
+      this.parent.equivalence.view.init();
+      this.parent.footer.view.init();
+    },
+    update: function () {
+      this.parent.header.view.update();
+      this.parent.analysisCtrl.view.update();
+      this.parent.stats.view.update();
+      this.parent.region.view.update();
+      this.parent.equivalence.view.update();
+      this.parent.footer.view.update();
+    }
+  },
+  /**
+   * 
+   * @returns true is there is else false.
+   */
+  didAnalysisDataAvaliable: () => {
+    return !(localStorage.getItem('rawdata') === null);
+  },
+
   /**
    * Header with project title and more information.
    */
@@ -97,6 +123,7 @@ const popup = {
         }
         this.model.run();
         this.view.run();
+        this.parent.parent.view.update();
       },
       model: {
         run: async () => {
@@ -113,21 +140,19 @@ const popup = {
       view: {
         button: null,
         run: function () {
-          hide(this.parent.parent.parent.stats.view.element);
           showStats();
-          hide(this.button);
         },
         init: function () {
           this.button = document.getElementById('resetButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if (null === localStorage.getItem('rawdata')) {
-            hide(this.button);
-          } else {
-            show(this.button);
-          }
+          this.update();
         },
         update: function () {
-
+          if (this.parent.parent.parent.didAnalysisDataAvaliable()) {
+            show(this.button);
+          } else {
+            hide(this.button);
+          }
         }
       }
     },
@@ -144,9 +169,14 @@ const popup = {
         const statsMoreResults = document.getElementById('statsMoreResults');
         statsMoreResults.addEventListener('click', this.parent.openMoreResults);
         this.element = document.getElementById('stats');
+        this.update();
       },
       update: function () {
-
+        if ( this.parent.parent.didAnalysisDataAvaliable() ) {
+          hide(this.element);
+        } else {
+          show(this.element);
+        }
       }
     },
     openMoreResults: async () => {
