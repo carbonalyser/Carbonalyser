@@ -12,14 +12,54 @@ const popup = {
    * Some buttons to control analysis.
    */
   analysisCtrl: {
-    start: () => {
-      chrome.runtime.sendMessage({ action: 'start' });
-    
-      hide(startButton);
-      show(stopButton);
-      show(analysisInProgressMessage);
-      localStorage.setItem('analysisStarted', '1');
-    }
+    view: {
+      startButton: null, 
+      stopButton: null,
+      resetButton: null,
+      statsElement: null,
+      analysisInProgressMessage: null,
+      init: function () {
+        this.startButton = document.getElementById('startButton');
+        this.startButton.addEventListener('click', this.start.bind(this));
+        this.stopButton = document.getElementById('stopButton');
+        this.stopButton.addEventListener('click', this.stop.bind(this));
+        this.resetButton = document.getElementById('resetButton');
+        this.resetButton.addEventListener('click', this.reset.bind(this));
+        this.statsElement = document.getElementById('stats');
+        this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
+      },
+      update: function () {
+
+      },
+      start: function () {
+        chrome.runtime.sendMessage({ action: 'start' });
+        localStorage.setItem('analysisStarted', '1');
+  
+        hide(this.startButton);
+        show(this.stopButton);
+        show(this.analysisInProgressMessage);
+      },
+      stop: function () {
+        chrome.runtime.sendMessage({ action: 'stop' });
+        localStorage.removeItem('analysisStarted');
+  
+        hide(this.stopButton);
+        show(this.startButton);
+        hide(this.analysisInProgressMessage);
+        clearInterval(statsInterval);
+      },
+      reset: async function () {
+        if (!confirm(translate('resetConfirmation'))) {
+          return;
+        }
+      
+        await localStorage.clear();
+        chrome.runtime.sendMessage({action: "reinitCIUpdater"});
+        hide(this.statsElement);
+        showStats();
+        hide(this.resetButton);
+      }
+    },
   },
   /**
    * Part responsible from stats show.
@@ -70,7 +110,7 @@ showStats = () => {
     return;
   }
 
-  show(statsElement);
+  show(popup.analysisCtrl.view.statsElement);
   const labels = [];
   const series = [];
 
@@ -109,28 +149,6 @@ showStats = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 }
 
-stop = () => {
-  chrome.runtime.sendMessage({ action: 'stop' });
-
-  hide(stopButton);
-  show(startButton);
-  hide(analysisInProgressMessage);
-  clearInterval(statsInterval);
-  localStorage.removeItem('analysisStarted');
-}
-
-reset = async () => {
-  if (!confirm(translate('resetConfirmation'))) {
-    return;
-  }
-
-  await localStorage.clear();
-  chrome.runtime.sendMessage({action: "reinitCIUpdater"});
-  hide(statsElement);
-  showStats();
-  hide(resetButton);
-}
-
 init = () => {
 
   popup.model.init();
@@ -152,25 +170,12 @@ init = () => {
   const parameters = getParameters();
   injectRegionIntoHTML(parameters.regions, parameters.selectedRegion);
 
-  popup.analysisCtrl.start();
+  popup.analysisCtrl.view.start();
   statsInterval = setInterval(showStats, 2000);
 }
 
 hide = element => element.classList.add('hidden');
 show = element => element.classList.remove('hidden');
-
-const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
-
-const statsElement = document.getElementById('stats');
-
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', popup.analysisCtrl.start);
-
-const stopButton = document.getElementById('stopButton');
-stopButton.addEventListener('click', stop);
-
-const resetButton = document.getElementById('resetButton');
-resetButton.addEventListener('click', reset);
 
 attachHandlerToSelectRegion();
 loadTranslations();
