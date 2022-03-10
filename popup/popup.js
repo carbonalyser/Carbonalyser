@@ -1,23 +1,5 @@
 
 const popup = {
-  view: {
-    init: function () {
-      this.parent.header.view.init();
-      this.parent.analysisCtrl.view.init();
-      this.parent.stats.view.init();
-      this.parent.region.view.init();
-      this.parent.equivalence.view.init();
-      this.parent.footer.view.init();
-    },
-    update: function () {
-      this.parent.header.view.update();
-      this.parent.analysisCtrl.view.update();
-      this.parent.stats.view.update();
-      this.parent.region.view.update();
-      this.parent.equivalence.view.update();
-      this.parent.footer.view.update();
-    }
-  },
 
   /**
    * Header with project title and more information.
