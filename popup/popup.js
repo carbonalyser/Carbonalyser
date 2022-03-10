@@ -53,7 +53,7 @@ const popup = {
       model: {
         run: () => {
           chrome.runtime.sendMessage({ action: 'stop' });
-          localStorage.removeItem('analysisStarted');
+          localStorage.removeItem('analysisRunning');
         },
         init: function () {
 
@@ -67,7 +67,7 @@ const popup = {
         init: function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( localStorage.getItem("analysisStarted") == 1 ) {
+          if ( localStorage.getItem("analysisRunning") == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
@@ -86,7 +86,7 @@ const popup = {
       model: {
         run: () => {
           chrome.runtime.sendMessage({ action: 'start' });
-          localStorage.setItem('analysisStarted', '1');
+          localStorage.setItem('analysisRunning', '1');
         },
         init: function () {
 
@@ -100,7 +100,7 @@ const popup = {
         init: function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( localStorage.getItem("analysisStarted") == 1 ) {
+          if ( localStorage.getItem("analysisRunning") == 1 ) {
             hide(this.button);
           } else {
             show(this.button);
@@ -276,7 +276,7 @@ init = () => {
 
   showStats();
 
-  if (null === localStorage.getItem('analysisStarted')) {
+  if (null === localStorage.getItem('analysisRunning')) {
     return;
   }
 
