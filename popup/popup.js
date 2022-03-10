@@ -43,11 +43,6 @@ const popup = {
         this.parent.stop.view.init();
         this.parent.reset.view.init();
         this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
-      },
-      update: function () {
-        this.parent.start.view.update();
-        this.parent.stop.view.update();
-        this.parent.reset.view.update();
       }
     },
     stop: {
