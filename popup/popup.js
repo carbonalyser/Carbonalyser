@@ -1,5 +1,3 @@
-let statsInterval;
-let pieChart;
 
 const popup = {
   /**
@@ -21,16 +19,18 @@ const popup = {
         this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
       },
       update: function () {
-
-      },
+        this.parent.start.view.update();
+        this.parent.stop.view.update();
+        this.parent.reset.view.update();
+      }
     },
     stop: {
       run: function () {
         this.model.run();
-        this.view.run();
+        this.parent.view.update();
       },
       model: {
-        run: function () {
+        run: () => {
           chrome.runtime.sendMessage({ action: 'stop' });
           localStorage.removeItem('analysisStarted');
         },
@@ -43,28 +43,27 @@ const popup = {
       },
       view: {
         button: null,
-        run: function () {
-          hide(this.button);
-          show(this.parent.parent.start.view.button);
-          hide(this.parent.parent.view.analysisInProgressMessage);
-          clearInterval(statsInterval);
-        },
         init: function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          if ( localStorage.getItem("analysisStarted") == 1 ) {
+            show(this.button);
+          } else {
+            hide(this.button);
+          }
         },
         update: function () {
-
+          this.init();
         }
       }
     },
     start: {
       run: function () {
         this.model.run();
-        this.view.run();
+        this.parent.view.update();
       },
       model: {
-        run: function () {
+        run: () => {
           chrome.runtime.sendMessage({ action: 'start' });
           localStorage.setItem('analysisStarted', '1');
         },
@@ -77,17 +76,17 @@ const popup = {
       },
       view: {
         button: null,
-        run: function () {
-          hide(this.button);
-          show(this.parent.parent.stop.view.button);
-          show(this.parent.parent.view.analysisInProgressMessage);
-        },
         init: function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          if ( localStorage.getItem("analysisStarted") == 1 ) {
+            hide(this.button);
+          } else {
+            show(this.button);
+          }
         },
         update: function () {
-
+          this.init();
         }
       }
     },
@@ -100,7 +99,7 @@ const popup = {
         this.view.run();
       },
       model: {
-        run: async function () {
+        run: async () => {
           await localStorage.clear();
           chrome.runtime.sendMessage({action: "reinitCIUpdater"});
         },
@@ -138,6 +137,8 @@ const popup = {
    */
   stats: {
     view: {
+      statsInterval: null,
+      pieChart: null,
       element: null,
       init: function () {
         const statsMoreResults = document.getElementById('statsMoreResults');
@@ -169,6 +170,7 @@ const popup = {
     },
     view: {
       init: function () {
+        attachHandlerToSelectRegion();
         injectRegionIntoHTML(this.parent.model.parameters.regions, this.parent.model.parameters.selectedRegion);
       }, 
       update: function () {
@@ -227,8 +229,8 @@ showStats = () => {
 
   const computedEquivalence = computeEquivalenceFromStatsItem(stats);
 
-  if (!pieChart) {
-    pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
+  if (!popup.stats.view.pieChart) {
+    popup.stats.view.pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
       donut: true,
       donutWidth: 60,
       donutSolid: true,
@@ -236,7 +238,7 @@ showStats = () => {
       showLabel: true
     });
   } else {
-    pieChart.update({labels, series});
+    popup.stats.view.pieChart.update({labels, series});
   }
 
   injectEquivalentIntoHTML(stats, computedEquivalence);
@@ -253,13 +255,9 @@ init = () => {
     return;
   }
 
-  statsInterval = setInterval(showStats, 2000);
+  popup.stats.view.statsInterval = setInterval(showStats, 2000);
 }
 
-hide = element => element.classList.add('hidden');
-show = element => element.classList.remove('hidden');
-
-attachHandlerToSelectRegion();
 loadTranslations();
 
 init();
