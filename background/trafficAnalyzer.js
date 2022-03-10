@@ -1,4 +1,4 @@
-
+const DEBUG = true;
 // This is trigger when a download start.
 // Since the we can grab only the download start, we have to check manually for its completion.
 downloadCompletedCheckLoop = async function (object) {
@@ -78,11 +78,17 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = (request) => {
-  if ('start' === request.action) {
-    if ( currentState === request.action ) {
-      return;
+  if ( DEBUG ) {
+    console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
+  }
+  if ( request.action === currentState ) {
+    // event duplicate emission
+    if ( DEBUG ) {
+      console.warn("event duplicate");
     }
-    currentState = request.action;
+    return;
+  }
+  if ('start' === request.action) {
     setBrowserIcon('on');
 
     chrome.webRequest.onHeadersReceived.addListener(
@@ -103,20 +109,17 @@ handleMessage = (request) => {
       addOneMinuteInterval = setInterval(addOneMinute, 60000);
     }
 
-    return;
   } else if ('stop' === request.action) {
-    if ( currentState === request.action ) {
-      return;
-    }
-    currentState = request.action;
     setBrowserIcon('off');
     chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+    chrome.webRequest.onSendHeaders.removeListener(sendHeadersListener);
     chrome.downloads.onCreated.removeListener(downloadCompletedCheckLoop);
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
       addOneMinuteInterval = null;
     }
   }
+  currentState = request.action;
 };
 
 chrome.runtime.onMessage.addListener(handleMessage);
