@@ -12,52 +12,126 @@ const popup = {
    * Some buttons to control analysis.
    */
   analysisCtrl: {
-    view: {
-      startButton: null, 
-      stopButton: null,
-      resetButton: null,
+    view: { 
       statsElement: null,
       analysisInProgressMessage: null,
       init: function () {
-        this.startButton = document.getElementById('startButton');
-        this.startButton.addEventListener('click', this.start.bind(this));
-        this.stopButton = document.getElementById('stopButton');
-        this.stopButton.addEventListener('click', this.stop.bind(this));
-        this.resetButton = document.getElementById('resetButton');
-        this.resetButton.addEventListener('click', this.reset.bind(this));
+        this.parent.start.view.init();
+        this.parent.stop.view.init();
+        this.parent.reset.view.init();
         this.statsElement = document.getElementById('stats');
         this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
       },
       update: function () {
 
       },
-      start: function () {
-        chrome.runtime.sendMessage({ action: 'start' });
-        localStorage.setItem('analysisStarted', '1');
-  
-        hide(this.startButton);
-        show(this.stopButton);
-        show(this.analysisInProgressMessage);
+    },
+    stop: {
+      run: function () {
+        this.model.run();
+        this.view.run();
       },
-      stop: function () {
-        chrome.runtime.sendMessage({ action: 'stop' });
-        localStorage.removeItem('analysisStarted');
-  
-        hide(this.stopButton);
-        show(this.startButton);
-        hide(this.analysisInProgressMessage);
-        clearInterval(statsInterval);
+      model: {
+        run: function () {
+          chrome.runtime.sendMessage({ action: 'stop' });
+          localStorage.removeItem('analysisStarted');
+        },
+        init: function () {
+
+        },
+        update: function () {
+
+        }
       },
-      reset: async function () {
+      view: {
+        button: null,
+        run: function () {
+          hide(this.button);
+          show(this.parent.parent.start.view.button);
+          hide(this.parent.parent.view.analysisInProgressMessage);
+          clearInterval(statsInterval);
+        },
+        init: function () {
+          this.button = document.getElementById('stopButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+        },
+        update: function () {
+
+        }
+      }
+    },
+    start: {
+      run: function () {
+        this.model.run();
+        this.view.run();
+      },
+      model: {
+        run: function () {
+          chrome.runtime.sendMessage({ action: 'start' });
+          localStorage.setItem('analysisStarted', '1');
+        },
+        init: function () {
+
+        },
+        update: function () {
+
+        }
+      },
+      view: {
+        button: null,
+        run: function () {
+          hide(this.button);
+          show(this.parent.parent.stop.view.button);
+          show(this.parent.parent.view.analysisInProgressMessage);
+        },
+        init: function () {
+          this.button = document.getElementById('startButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+        },
+        update: function () {
+
+        }
+      }
+    },
+    reset: {
+      run: async function () {
         if (!confirm(translate('resetConfirmation'))) {
           return;
         }
-      
-        await localStorage.clear();
-        chrome.runtime.sendMessage({action: "reinitCIUpdater"});
-        hide(this.statsElement);
-        showStats();
-        hide(this.resetButton);
+        this.model.run();
+        this.view.run();
+      },
+      model: {
+        run: async function () {
+          await localStorage.clear();
+          chrome.runtime.sendMessage({action: "reinitCIUpdater"});
+        },
+        init: function () {
+
+        },
+        update: function () {
+
+        }
+      },
+      view: {
+        button: null,
+        run: function () {
+          hide(this.parent.parent.view.statsElement);
+          showStats();
+          hide(this.button);
+        },
+        init: function () {
+          this.button = document.getElementById('resetButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          if (null === localStorage.getItem('rawdata')) {
+            hide(this.button);
+          } else {
+            show(this.button);
+          }
+        },
+        update: function () {
+
+        }
       }
     },
   },
@@ -154,12 +228,6 @@ init = () => {
   popup.model.init();
   popup.view.init();
 
-  if (null === localStorage.getItem('rawdata')) {
-    hide(resetButton);
-  } else {
-    show(resetButton);
-  }
-
   showStats();
 
   if (null === localStorage.getItem('analysisStarted')) {
@@ -170,7 +238,6 @@ init = () => {
   const parameters = getParameters();
   injectRegionIntoHTML(parameters.regions, parameters.selectedRegion);
 
-  popup.analysisCtrl.view.start();
   statsInterval = setInterval(showStats, 2000);
 }
 
