@@ -18,13 +18,6 @@ const popup = {
       this.parent.footer.view.update();
     }
   },
-  /**
-   * 
-   * @returns true is there is else false.
-   */
-  didAnalysisDataAvaliable: () => {
-    return !(localStorage.getItem('rawdata') === null);
-  },
 
   /**
    * Header with project title and more information.
@@ -123,6 +116,7 @@ const popup = {
       model: {
         run: async () => {
           await localStorage.clear();
+          chrome.runtime.sendMessage({action: "stop"});
           chrome.runtime.sendMessage({action: "reinitCIUpdater"});
         },
         init: function () {
@@ -143,10 +137,10 @@ const popup = {
           this.update();
         },
         update: function () {
-          if (this.parent.parent.parent.didAnalysisDataAvaliable()) {
-            show(this.button);
-          } else {
+          if (localStorage.getItem("rawdata") === null) {
             hide(this.button);
+          } else {
+            show(this.button);
           }
         }
       }
@@ -167,7 +161,7 @@ const popup = {
         this.update();
       },
       update: function () {
-        if ( this.parent.parent.didAnalysisDataAvaliable() ) {
+        if ( localStorage.getItem("rawdata") === null ) {
           hide(this.element);
         } else {
           show(this.element);
