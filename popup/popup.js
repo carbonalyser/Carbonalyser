@@ -176,8 +176,9 @@ const popup = {
         injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
       }, 
       update: function () {
-        while (parent.firstChild) {
-          parent.removeChild(parent.firstChild);
+        const select = document.getElementById(regionSelectID);
+        while (select.firstChild) {
+          select.removeChild(select.firstChild);
         }
         injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
       }
