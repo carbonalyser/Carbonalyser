@@ -19,7 +19,6 @@ getMsCheckRefresh = () => {
 /**
  * This is trigger when a download start.
  * Since the we can grab only the download start, we have to check manually for its completion.
- * TODO: daemon.download.loopMs
  */
 downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
@@ -31,7 +30,7 @@ downloadCompletedCheckLoop = async (object) => {
       return;
     }
   }
-  setTimeout(downloadCompletedCheckLoop, 1000, object);
+  setTimeout(downloadCompletedCheckLoop, getPref("daemon.download.loopMs"), object);
 }
 
 const BYTES_TCP_HEADER = 20;
@@ -148,7 +147,7 @@ handleMessage = (request) => {
 chrome.runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
-setInterval(() => {
+synchronizeGui = () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
     if ( DEBUG ) {
@@ -170,4 +169,18 @@ setInterval(() => {
       }
     }
   }
-}, getMsCheckRefresh());
+}
+let synchronizeThread = setInterval(synchronizeGui, getMsCheckRefresh());
+
+browser.storage.onChanged.addListener((changes, areaName) => {
+  if ( areaName == "local" ) {
+    if ( changes["pref"] !== undefined ) {
+      clearInterval(synchronizeThread);
+      synchronizeGui = setInterval(synchronizeGui, getMsCheckRefresh());
+    } else {
+      // no changes to preferences
+    }
+  } else {
+    // no used
+  }
+});
