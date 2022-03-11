@@ -88,9 +88,9 @@ setBrowserIcon = (type) => {
 };
 
 addOneMinute = () => {
-  let duration = localStorage.getItem('duration');
+  let duration = chrome.storage.local.get('duration');
   duration = null === duration ? 1 : 1 * duration + 1;
-  localStorage.setItem('duration', duration);
+  chrome.storage.local.set({duration: duration});
 };
 
 let addOneMinuteInterval;
@@ -169,7 +169,7 @@ synchronizeGui = () => {
 }
 let synchronizeThread = setInterval(synchronizeGui, getMsCheckRefresh());
 
-browser.storage.onChanged.addListener((changes, areaName) => {
+chrome.storage.onChanged.addListener((changes, areaName) => {
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
       clearInterval(synchronizeThread);
@@ -177,6 +177,7 @@ browser.storage.onChanged.addListener((changes, areaName) => {
       if ( auto_refresh ) {
         synchronizeGui = setInterval(synchronizeGui, getMsCheckRefresh());
       }
+      chrome.runtime.sendMessage({ action: 'view-refresh' });
     } else {
       // no changes to preferences
     }

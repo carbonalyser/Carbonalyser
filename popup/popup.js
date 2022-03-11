@@ -27,7 +27,7 @@ const popup = {
       model: {
         run: () => {
           chrome.runtime.sendMessage({ action: 'stop' });
-          localStorage.removeItem('analysisRunning');
+          chrome.storage.local.remove('analysisRunning');
         },
         init: function () {
 
@@ -41,7 +41,7 @@ const popup = {
         init: function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( localStorage.getItem("analysisRunning") == 1 ) {
+          if ( chrome.storage.local.get("analysisRunning") == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
@@ -60,7 +60,7 @@ const popup = {
       model: {
         run: () => {
           chrome.runtime.sendMessage({ action: 'start' });
-          localStorage.setItem('analysisRunning', '1');
+          chrome.storage.local.set({analysisRunning: 1});
         },
         init: function () {
 
@@ -74,7 +74,7 @@ const popup = {
         init: function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( localStorage.getItem("analysisRunning") == 1 ) {
+          if ( chrome.storage.local.get("analysisRunning") == 1 ) {
             hide(this.button);
           } else {
             show(this.button);
@@ -96,7 +96,7 @@ const popup = {
       },
       model: {
         run: async () => {
-          await localStorage.clear();
+          await chrome.storage.local.clear();
           chrome.runtime.sendMessage({action: "stop"});
           chrome.runtime.sendMessage({action: "reinitCIUpdater"});
         },
@@ -118,7 +118,7 @@ const popup = {
           this.update();
         },
         update: function () {
-          if (localStorage.getItem("rawdata") === null) {
+          if (chrome.storage.local.get("rawdata") === null) {
             hide(this.button);
           } else {
             show(this.button);
@@ -142,7 +142,7 @@ const popup = {
         this.update();
       },
       update: function () {
-        if ( localStorage.getItem("rawdata") === null ) {
+        if ( chrome.storage.local.get("rawdata") === null ) {
           hide(this.element);
         } else {
           show(this.element);
@@ -254,7 +254,7 @@ init = () => {
 
   showStats();
 
-  if (null === localStorage.getItem('analysisRunning')) {
+  if (null === chrome.storage.local.get('analysisRunning')) {
     return;
   }
 
