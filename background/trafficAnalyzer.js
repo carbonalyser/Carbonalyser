@@ -1,7 +1,25 @@
+
 const DEBUG = true;
+
+// last time we got traffic on the wire
+let lastTimeTrafficSeen = null;
+/**
+ * Holds the delay between modification and gui update (set to 0 if you want instant modification).
+ */
+getMsRefreshGui = () => {
+  return 500;
+}
+/**
+ * At which ms we make the test on the background thread.
+ */
+getMsCheckRefresh = () => {
+  return 200;
+}
+
 // This is trigger when a download start.
 // Since the we can grab only the download start, we have to check manually for its completion.
-downloadCompletedCheckLoop = async function (object) {
+downloadCompletedCheckLoop = async (object) => {
+  lastTimeTrafficSeen = Date.now();
   for(downloadItem of (await browser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
@@ -44,6 +62,7 @@ getBytesFromHeaders = (headers) => {
 
 // This is triggered when some headers are received.
 headersReceivedListener = (requestDetails) => {
+  lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
   // Extract bytes from datacenters
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
@@ -60,8 +79,9 @@ headersReceivedListener = (requestDetails) => {
 
 // Take amount of data sent by the client in headers
 sendHeadersListener = (requestDetails) => {
-    const origin = getOriginFromRequestDetail(requestDetails);
-    incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
+  lastTimeTrafficSeen = Date.now();
+  const origin = getOriginFromRequestDetail(requestDetails);
+  incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
 }
 
 setBrowserIcon = (type) => {
@@ -123,3 +143,28 @@ handleMessage = (request) => {
 };
 
 chrome.runtime.onMessage.addListener(handleMessage);
+
+// Synchronize guis with reality
+setInterval(() => {
+  if ( lastTimeTrafficSeen == null ) {
+    // no traffic before
+    if ( DEBUG ) {
+      console.warn("no traffic before");
+    }
+  } else {
+    const now = Date.now();
+    if ( getMsRefreshGui() < (now - lastTimeTrafficSeen) ) {
+      // need to do gui refresh
+      chrome.runtime.sendMessage({ action: 'view-refresh' });
+      lastTimeTrafficSeen = null;
+      if ( DEBUG ) {
+        console.warn("need to do gui refresh");
+      }
+    } else {
+      // nothing to do
+      if ( DEBUG ) {
+        console.warn("nothing to do");
+      }
+    }
+  }
+}, getMsCheckRefresh());

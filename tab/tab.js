@@ -1,3 +1,5 @@
+const DEBUG = false;
+
 // Create a sum of data for all websites
 // tsInterval in s
 createSumOfData = (dataObject, type, tsInterval=60*10) => {
@@ -750,4 +752,14 @@ loadTranslations();
 
 window.addEventListener("load", function(event) {
   init();
+});
+
+chrome.runtime.onMessage.addListener(function (o) {
+  if (o.action == "view-refresh") {
+    if ( DEBUG ) { 
+      console.warn("Refresh data in the tab");
+    }
+    tab.model.update();
+    tab.view.update();
+  }
 });

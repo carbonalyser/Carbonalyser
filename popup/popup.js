@@ -1,3 +1,4 @@
+const DEBUG = false;
 
 const popup = {
 
@@ -256,9 +257,20 @@ init = () => {
     return;
   }
 
-  popup.stats.view.statsInterval = setInterval(showStats, 2000);
 }
 
 loadTranslations();
 
 init();
+
+
+chrome.runtime.onMessage.addListener(function (o) {
+  if (o.action == "view-refresh") {
+    if ( DEBUG ) { 
+      console.warn("Refresh data in the popup");
+    }
+    popup.model.update();
+    popup.view.update();
+    showStats(); // should be removed
+  }
+});
