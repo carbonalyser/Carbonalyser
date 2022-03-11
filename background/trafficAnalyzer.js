@@ -176,7 +176,10 @@ browser.storage.onChanged.addListener((changes, areaName) => {
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
       clearInterval(synchronizeThread);
-      synchronizeGui = setInterval(synchronizeGui, getMsCheckRefresh());
+      const auto_refresh = getPref("daemon.changes.auto_refresh");
+      if ( auto_refresh ) {
+        synchronizeGui = setInterval(synchronizeGui, getMsCheckRefresh());
+      }
     } else {
       // no changes to preferences
     }

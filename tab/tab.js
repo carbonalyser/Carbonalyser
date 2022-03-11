@@ -98,7 +98,6 @@ createMovingAverage = (sod, tsInterval=10) => {
 }
 
 const LAST_UPDATE_DATA = "lastDataUpdate";
-const LAST_UPDATE_THRESHOLD_MS = 1000; // TODO tab.data.update.minMs
 /**
  * This holds all the data from the storage
  * on the fly compute data.
@@ -113,7 +112,7 @@ const tab = {
    */
   updateStats: function () {
     if ( this.stats == null 
-      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
       ) {
       this.stats = getStats();
       this.stats[LAST_UPDATE_DATA] = Date.now();
@@ -125,7 +124,7 @@ const tab = {
    */
   updateParameters: function () {
     if ( this.parameters == null 
-      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
       ) {
       this.parameters = getParameters();
       this.parameters[LAST_UPDATE_DATA] = Date.now();
@@ -137,7 +136,7 @@ const tab = {
    */
   updateRawData: function () {
     if ( this.rawdata == null 
-      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
       ) {
       this.rawdata = getOrCreateRawData();
       this.rawdata[LAST_UPDATE_DATA] = Date.now();
@@ -152,7 +151,7 @@ const tab = {
       return updateParameters();
     } else {
       if ( this.parameters.regions == null 
-        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > LAST_UPDATE_THRESHOLD_MS 
+        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
         ) {
           this.parameters.regions = getRegions();
           this.parameters.regions[LAST_UPDATE_DATA] = Date.now();
@@ -722,6 +721,10 @@ const steps = Math.round(animDurationMs/minimalNoticeableMs);
 const degPerStep = 360 / steps;
 const animateButton = $("#refreshButton > img");
 animateRotationButton = (done) => {
+  if ( ! getPref("tab.animate") ) {
+    done();
+    return;
+  }
   currentDeg += degPerStep;
   if (currentDeg >= 360 ) {
     currentDeg = 0;
