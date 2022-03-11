@@ -94,10 +94,6 @@ stop = () => {
 
 init();
 
-preferenceListener = () => {
-
-}
-
 browser.storage.onChanged.addListener((changes, areaName) => {
     if ( areaName == "local" ) {
         if ( changes["pref"] !== undefined ) {
