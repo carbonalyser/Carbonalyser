@@ -94,11 +94,25 @@ stop = () => {
 
 init();
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    if (request.action == "restartCIUpdater") {
-        stop();
-        intervalID = setInterval(insertUpdatedCarbonIntensity, getRefreshInterval());
+preferenceListener = () => {
+
+}
+
+browser.storage.onChanged.addListener((changes, areaName) => {
+    if ( areaName == "local" ) {
+        if ( changes["pref"] !== undefined ) {
+            stop();
+            intervalID = setInterval(insertUpdatedCarbonIntensity, getRefreshInterval());
+        } else {
+            // no changes to preferences
+        }
+    } else {
+        // no used
     }
+});
+
+  
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
     if (request.action == "reinitCIUpdater") {
         stop();
