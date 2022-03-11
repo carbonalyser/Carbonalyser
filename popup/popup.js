@@ -162,24 +162,26 @@ const popup = {
    */
   region: {
     model: {
-      parameters: null,
+      selectedRegion: null,
+      regions: null,
       init: function () {
-        this.parameters = getParameters();
+        this.update();
       },
       update: function () {
-        this.parameters = getParameters();
+        this.selectedRegion = getSelectedRegion();
+        this.regions = getRegions();
       }
     },
     view: {
       init: function () {
         attachHandlerToSelectRegion();
-        injectRegionIntoHTML(this.parent.model.parameters.regions, this.parent.model.parameters.selectedRegion);
+        injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
       }, 
       update: function () {
         while (parent.firstChild) {
           parent.removeChild(parent.firstChild);
         }
-        injectRegionIntoHTML(this.parent.model.parameters.regions, this.parent.model.parameters.selectedRegion);
+        injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
       }
     }
   },

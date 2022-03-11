@@ -269,11 +269,13 @@ const tab = {
   settings: {
     selectRegion: {
       model: {
+        selectedRegion: null,
         init: function () {
-          this.parent.parent.parent.updateParameters();
+          this.update();
         },
         update: function () {
           this.parent.parent.parent.updateParameters();
+          this.selectedRegion = getSelectedRegion();
         }
       },
       view: {
@@ -286,12 +288,12 @@ const tab = {
             settings.updateCarbonIntensity.view.update();
           });
           const root = this.parent.parent.parent;
-          injectRegionIntoHTML(root.parameters.regions, root.parameters.selectedRegion);
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
         },
         update: function () {
           const root = this.parent.parent.parent;
           $("#" + regionSelectID).empty();
-          injectRegionIntoHTML(root.parameters.regions, root.parameters.selectedRegion);
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
         }
       }
     },
