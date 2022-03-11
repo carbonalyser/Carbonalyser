@@ -98,7 +98,7 @@ createMovingAverage = (sod, tsInterval=10) => {
 }
 
 const LAST_UPDATE_DATA = "lastDataUpdate";
-const LAST_UPDATE_THRESHOLD_MS = 1000;
+const LAST_UPDATE_THRESHOLD_MS = 1000; // TODO tab.data.update.minMs
 /**
  * This holds all the data from the storage
  * on the fly compute data.

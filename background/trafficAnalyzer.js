@@ -7,17 +7,20 @@ let lastTimeTrafficSeen = null;
  * Holds the delay between modification and gui update (set to 0 if you want instant modification).
  */
 getMsRefreshGui = () => {
-  return 500;
+  return getPref("daemon.changes.msBetweenChanges");
 }
 /**
  * At which ms we make the test on the background thread.
  */
 getMsCheckRefresh = () => {
-  return 200;
+  return getPref("daemon.changes.loopMs");
 }
 
-// This is trigger when a download start.
-// Since the we can grab only the download start, we have to check manually for its completion.
+/**
+ * This is trigger when a download start.
+ * Since the we can grab only the download start, we have to check manually for its completion.
+ * TODO: daemon.download.loopMs
+ */
 downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
   for(downloadItem of (await browser.downloads.search({id: object.id}))) {
