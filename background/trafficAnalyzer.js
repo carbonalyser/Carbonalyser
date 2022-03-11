@@ -1,6 +1,3 @@
-
-const DEBUG = true;
-
 // last time we got traffic on the wire
 let lastTimeTrafficSeen = null;
 /**
@@ -100,12 +97,12 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = (request) => {
-  if ( DEBUG ) {
+  if ( getPref("debug") ) {
     console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
   }
   if ( request.action === currentState ) {
     // event duplicate emission
-    if ( DEBUG ) {
+    if ( getPref("debug") ) {
       console.warn("event duplicate");
     }
     return;
@@ -150,7 +147,7 @@ chrome.runtime.onMessage.addListener(handleMessage);
 synchronizeGui = () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
-    if ( DEBUG ) {
+    if ( getPref("debug") ) {
       console.warn("no traffic before");
     }
   } else {
@@ -159,12 +156,12 @@ synchronizeGui = () => {
       // need to do gui refresh
       chrome.runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      if ( DEBUG ) {
+      if ( getPref("debug") ) {
         console.warn("need to do gui refresh");
       }
     } else {
       // nothing to do
-      if ( DEBUG ) {
+      if ( getPref("debug") ) {
         console.warn("nothing to do");
       }
     }

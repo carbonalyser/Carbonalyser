@@ -1,5 +1,3 @@
-const DEBUG = false;
-
 const popup = {
 
   /**
@@ -268,7 +266,7 @@ init();
 
 chrome.runtime.onMessage.addListener(function (o) {
   if (o.action == "view-refresh") {
-    if ( DEBUG ) { 
+    if ( getPref("debug") ) { 
       console.warn("Refresh data in the popup");
     }
     popup.model.update();

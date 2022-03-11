@@ -1,5 +1,3 @@
-const DEBUG = false;
-
 // Create a sum of data for all websites
 // tsInterval in s
 createSumOfData = (dataObject, type, tsInterval=60*10) => {
@@ -761,7 +759,7 @@ window.addEventListener("load", function(event) {
 
 chrome.runtime.onMessage.addListener(function (o) {
   if (o.action == "view-refresh") {
-    if ( DEBUG ) { 
+    if ( getPref("debug") ) { 
       console.warn("Refresh data in the tab");
     }
     tab.model.update();
