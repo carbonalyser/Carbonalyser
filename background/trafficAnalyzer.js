@@ -185,14 +185,12 @@ getBrowser().storage.onChanged.addListener(async (changes, areaName) => {
   //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
-      /*
       clearInterval(synchronizeThread);
       const auto_refresh = await getPref("daemon.changes.auto_refresh");
       if ( auto_refresh ) {
         synchronizeThread = setInterval(synchronizeGui, await getMsCheckRefresh());
       }
       getBrowser().runtime.sendMessage({ action: 'view-refresh' });
-      */
     } else {
       // no changes to preferences
     }
