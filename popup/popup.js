@@ -60,7 +60,6 @@ const popup = {
       model: {
         run: async () => {
           getBrowser().runtime.sendMessage({ action: 'start' });
-          console.trace();
           await getBrowser().storage.local.set({analysisRunning: 1});
         },
         init: async function () {
@@ -268,7 +267,7 @@ init();
 
 getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( await getPref("debug") ) { 
+    if ( await isInDebug() ) { 
       console.warn("Refresh data in the popup");
     }
     await popup.model.update();

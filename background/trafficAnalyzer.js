@@ -97,12 +97,12 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = async (request) => {
-  if ( await getPref("debug") ) {
+  if ( await isInDebug() ) {
     console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
   }
   if ( request.action === currentState ) {
     // event duplicate emission
-    if ( await getPref("debug") ) {
+    if ( await isInDebug() ) {
       console.warn("event duplicate");
     }
     return;
@@ -149,7 +149,7 @@ getBrowser().runtime.onMessage.addListener(handleMessage);
 synchronizeGui = async () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
-    if ( await getPref("debug") ) {
+    if ( await isInDebug() ) {
       console.warn("no traffic before");
     }
   } else {
@@ -158,12 +158,12 @@ synchronizeGui = async () => {
       // need to do gui refresh
       getBrowser().runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      if ( await getPref("debug") ) {
+      if ( await isInDebug() ) {
         console.warn("need to do gui refresh");
       }
     } else {
       // nothing to do
-      if ( await getPref("debug") ) {
+      if ( await isInDebug() ) {
         console.warn("nothing to do");
       }
     }

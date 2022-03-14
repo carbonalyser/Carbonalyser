@@ -279,7 +279,7 @@ const tab = {
         init: async function () {
           const settings = this.parent.parent;
           // part of the refresh system
-          $("#carbonIntensityLastRefreshForceRefresh").click(function() {
+          $("#carbonIntensityLastRefreshForceRefresh").click(async function() {
             getBrowser().runtime.sendMessage({action: "forceCIUpdater"});
             await settings.updateCarbonIntensity.model.update();
             await settings.updateCarbonIntensity.view.update();
@@ -759,7 +759,7 @@ window.addEventListener("load", function(event) {
 
 getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( await getPref("debug") ) { 
+    if ( await isInDebug() ) { 
       console.warn("Refresh data in the tab");
     }
     await tab.model.update();
