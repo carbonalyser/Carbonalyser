@@ -36,51 +36,51 @@ let intervalID = null;
 /**
  * Insert the default carbon intensities.
  */
- insertDefaultCarbonIntensity = () => {
-    setCarbonIntensityRegion('france', 34.8);    
-    setCarbonIntensityRegion('europeanUnion', 276);
-    setCarbonIntensityRegion('unitedStates', 493);
-    setCarbonIntensityRegion('china', 681);
-    setCarbonIntensityRegion('default', 519);
+ insertDefaultCarbonIntensity = async () => {
+    await setCarbonIntensityRegion('france', 34.8);    
+    await setCarbonIntensityRegion('europeanUnion', 276);
+    await setCarbonIntensityRegion('unitedStates', 493);
+    await setCarbonIntensityRegion('china', 681);
+    await setCarbonIntensityRegion('default', 519);
 }
 
 /**
  * This class fetch carbon intensity from the remote.
  */
- insertUpdatedCarbonIntensity = () => {
+ insertUpdatedCarbonIntensity = async () => {
     for(const name in updateList) {
         const region = updateList[name];
         const xhr = new XMLHttpRequest();
         xhr.open("GET", region.url, false);
         xhr.send();
         const v = region.extractor(xhr.responseText);
-        setCarbonIntensityRegion(name, v);
+        await setCarbonIntensityRegion(name, v);
     }
-    const parameters = getParameters();
+    const parameters = await getParameters();
     parameters.lastRefresh = Date.now();
-    setParameters(parameters);
+    await setParameters(parameters);
 }
 
 /**
  * Set carbon intensity for a given region with name.
  */
- setCarbonIntensityRegion = (name, carbonIntensity) => {
+ setCarbonIntensityRegion = async (name, carbonIntensity) => {
     if ( carbonIntensity < 0 ) {
         throw "carbonIntensity(" + carbonIntensity + ") cannot be negative";
     }
     const region = {carbonIntensity: carbonIntensity};
-    setRegion(name, region);
+    await setRegion(name, region);
 }
 
 
 /**
  * Init the script.
  */
- init = () => {
+ init = async () => {
     
-    insertDefaultCarbonIntensity();
-    const interval = getRefreshInterval();
-    insertUpdatedCarbonIntensity();
+    await insertDefaultCarbonIntensity();
+    const interval = await getRefreshInterval();
+    await insertUpdatedCarbonIntensity();
     intervalID = setInterval(insertUpdatedCarbonIntensity, interval);
 }
 
@@ -94,11 +94,11 @@ stop = () => {
 
 init();
 
-browser.storage.onChanged.addListener((changes, areaName) => {
+browser().storage.onChanged.addListener(async (changes, areaName) => {
     if ( areaName == "local" ) {
         if ( changes["pref"] !== undefined ) {
             stop();
-            intervalID = setInterval(insertUpdatedCarbonIntensity, getRefreshInterval());
+            intervalID = setInterval(insertUpdatedCarbonIntensity, await getRefreshInterval());
         } else {
             // no changes to preferences
         }
@@ -108,14 +108,14 @@ browser.storage.onChanged.addListener((changes, areaName) => {
 });
 
   
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+browser().runtime.onMessage.addListener(async function(request, sender, sendResponse){
 
     if (request.action == "reinitCIUpdater") {
         stop();
-        init();
+        await init();
     }
 
     if ( request.action == "forceCIUpdater" ) {
-        insertUpdatedCarbonIntensity();
+        await insertUpdatedCarbonIntensity();
     }
 });

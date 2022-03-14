@@ -15,8 +15,8 @@
   ],
   "background": {
     "scripts": [
-      "lib/carbonalyser/libPreferences.js",
       "lib/carbonalyser/lib.js",
+      "lib/carbonalyser/libPreferences.js",
       "lib/carbonalyser/libStats.js",
       "background/carbonIntensityUpdater.js",
       "background/trafficAnalyzer.js"

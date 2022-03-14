@@ -3,14 +3,14 @@ let lastTimeTrafficSeen = null;
 /**
  * Holds the delay between modification and gui update (set to 0 if you want instant modification).
  */
-getMsRefreshGui = () => {
-  return getPref("daemon.changes.msBetweenChanges");
+getMsRefreshGui = async () => {
+  return await getPref("daemon.changes.msBetweenChanges");
 }
 /**
  * At which ms we make the test on the background thread.
  */
-getMsCheckRefresh = () => {
-  return getPref("daemon.changes.loopMs");
+getMsCheckRefresh = async () => {
+  return await getPref("daemon.changes.loopMs");
 }
 
 /**
@@ -19,15 +19,15 @@ getMsCheckRefresh = () => {
  */
 downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
-  for(downloadItem of (await browser.downloads.search({id: object.id}))) {
+  for(downloadItem of (await browser().downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
-      incBytesDataCenter(origin, downloadItem.bytesReceived);
-      incBytesNetwork(origin, BYTES_TCP_HEADER + BYTES_IP_HEADER);
+      await incBytesDataCenter(origin, downloadItem.bytesReceived);
+      await incBytesNetwork(origin, BYTES_TCP_HEADER + BYTES_IP_HEADER);
       return;
     }
   }
-  setTimeout(downloadCompletedCheckLoop, getPref("daemon.download.loopMs"), object);
+  setTimeout(downloadCompletedCheckLoop, await getPref("daemon.download.loopMs"), object);
 }
 
 const BYTES_TCP_HEADER = 20;
@@ -60,7 +60,7 @@ getBytesFromHeaders = (headers) => {
 }
 
 // This is triggered when some headers are received.
-headersReceivedListener = (requestDetails) => {
+headersReceivedListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
   // Extract bytes from datacenters
@@ -68,41 +68,42 @@ headersReceivedListener = (requestDetails) => {
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
    : responseHeadersContentLength;
   const requestSize = parseInt(contentLength.value, 10);
-  incBytesDataCenter(origin, requestSize);
+  await incBytesDataCenter(origin, requestSize);
 
   // Extract bytes from the network
-  incBytesNetwork(origin, getBytesFromHeaders(requestDetails.responseHeaders));
+  await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.responseHeaders));
 
   return {};
 };
 
 // Take amount of data sent by the client in headers
-sendHeadersListener = (requestDetails) => {
+sendHeadersListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
-  incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
+  await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
 }
 
 setBrowserIcon = (type) => {
-  chrome.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+  browser().browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 };
 
-addOneMinute = () => {
-  let duration = chrome.storage.local.get('duration');
-  duration = null === duration ? 1 : 1 * duration + 1;
-  chrome.storage.local.set({duration: duration});
+addOneMinute = async () => {
+  let duration = await browser().storage.local.get('duration');
+  duration = undefined === duration ? 1 : 1 * duration + 1;
+  console.trace();
+  await browser().storage.local.set({duration: duration});
 };
 
 let addOneMinuteInterval;
 let currentState = '';
 
-handleMessage = (request) => {
-  if ( getPref("debug") ) {
+handleMessage = async (request) => {
+  if ( await getPref("debug") ) {
     console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
   }
   if ( request.action === currentState ) {
     // event duplicate emission
-    if ( getPref("debug") ) {
+    if ( await getPref("debug") ) {
       console.warn("event duplicate");
     }
     return;
@@ -110,19 +111,19 @@ handleMessage = (request) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
-    chrome.webRequest.onHeadersReceived.addListener(
+    browser().webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
       {urls: ['<all_urls>']},
       ['responseHeaders']
     );
 
-    chrome.webRequest.onSendHeaders.addListener(
+    browser().webRequest.onSendHeaders.addListener(
       sendHeadersListener,
       {urls: ['<all_urls>']},
       ['requestHeaders']
     );
 
-    chrome.downloads.onCreated.addListener(downloadCompletedCheckLoop);
+    await browser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
 
     if (!addOneMinuteInterval) {
       addOneMinuteInterval = setInterval(addOneMinute, 60000);
@@ -130,54 +131,63 @@ handleMessage = (request) => {
 
   } else if ('stop' === request.action) {
     setBrowserIcon('off');
-    chrome.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-    chrome.webRequest.onSendHeaders.removeListener(sendHeadersListener);
-    chrome.downloads.onCreated.removeListener(downloadCompletedCheckLoop);
+    browser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+    browser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
+    browser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
       addOneMinuteInterval = null;
     }
+  } else {
+    console.error("Unknow order :", request);
   }
   currentState = request.action;
 };
 
-chrome.runtime.onMessage.addListener(handleMessage);
+browser().runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
-synchronizeGui = () => {
+synchronizeGui = async () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
-    if ( getPref("debug") ) {
+    if ( await getPref("debug") ) {
       console.warn("no traffic before");
     }
   } else {
     const now = Date.now();
-    if ( getMsRefreshGui() < (now - lastTimeTrafficSeen) ) {
+    if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
       // need to do gui refresh
-      chrome.runtime.sendMessage({ action: 'view-refresh' });
+      browser().runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      if ( getPref("debug") ) {
+      if ( await getPref("debug") ) {
         console.warn("need to do gui refresh");
       }
     } else {
       // nothing to do
-      if ( getPref("debug") ) {
+      if ( await getPref("debug") ) {
         console.warn("nothing to do");
       }
     }
   }
 }
-let synchronizeThread = setInterval(synchronizeGui, getMsCheckRefresh());
 
-chrome.storage.onChanged.addListener((changes, areaName) => {
+let synchronizeThread = null;
+getMsCheckRefresh().then((value) => {
+  synchronizeThread = setInterval(synchronizeGui,value);
+});
+
+browser().storage.onChanged.addListener(async (changes, areaName) => {
+  //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
+      /*
       clearInterval(synchronizeThread);
-      const auto_refresh = getPref("daemon.changes.auto_refresh");
+      const auto_refresh = await getPref("daemon.changes.auto_refresh");
       if ( auto_refresh ) {
-        synchronizeGui = setInterval(synchronizeGui, getMsCheckRefresh());
+        synchronizeThread = setInterval(synchronizeGui, await getMsCheckRefresh());
       }
-      chrome.runtime.sendMessage({ action: 'view-refresh' });
+      browser().runtime.sendMessage({ action: 'view-refresh' });
+      */
     } else {
       // no changes to preferences
     }

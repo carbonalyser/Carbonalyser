@@ -12,76 +12,77 @@ const popup = {
   analysisCtrl: {
     view: { 
       analysisInProgressMessage: null,
-      init: function () {
-        this.parent.start.view.init();
-        this.parent.stop.view.init();
-        this.parent.reset.view.init();
+      init: async function () {
+        await this.parent.start.view.init();
+        await this.parent.stop.view.init();
+        await this.parent.reset.view.init();
         this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
       }
     },
     stop: {
-      run: function () {
-        this.model.run();
-        this.parent.view.update();
+      run: async function () {
+        await this.model.run();
+        await this.parent.view.update();
       },
       model: {
-        run: () => {
-          chrome.runtime.sendMessage({ action: 'stop' });
-          chrome.storage.local.remove('analysisRunning');
+        run: async () => {
+          browser().runtime.sendMessage({ action: 'stop' });
+          await browser().storage.local.remove('analysisRunning');
         },
-        init: function () {
+        init: async function () {
 
         },
-        update: function () {
+        update: async function () {
 
         }
       },
       view: {
         button: null,
-        init: function () {
+        init: async function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( chrome.storage.local.get("analysisRunning") == 1 ) {
+          if ( (await browser().storage.local.get("analysisRunning")) == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
           }
         },
-        update: function () {
-          this.init();
+        update: async function () {
+          await this.init();
         }
       }
     },
     start: {
-      run: function () {
-        this.model.run();
-        this.parent.view.update();
+      run: async function () {
+        await this.model.run();
+        await this.parent.view.update();
       },
       model: {
-        run: () => {
-          chrome.runtime.sendMessage({ action: 'start' });
-          chrome.storage.local.set({analysisRunning: 1});
+        run: async () => {
+          browser().runtime.sendMessage({ action: 'start' });
+          console.trace();
+          await browser().storage.local.set({analysisRunning: 1});
         },
-        init: function () {
+        init: async function () {
 
         },
-        update: function () {
+        update: async function () {
 
         }
       },
       view: {
         button: null,
-        init: function () {
+        init: async function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( chrome.storage.local.get("analysisRunning") == 1 ) {
+          if ( (await browser().storage.local.get("analysisRunning")) == 1 ) {
             hide(this.button);
           } else {
             show(this.button);
           }
         },
-        update: function () {
-          this.init();
+        update: async function () {
+          await this.init();
         }
       }
     },
@@ -90,35 +91,35 @@ const popup = {
         if (!confirm(translate('resetConfirmation'))) {
           return;
         }
-        this.model.run();
-        this.view.run();
-        this.parent.parent.view.update();
+        await this.model.run();
+        await this.view.run();
+        await this.parent.parent.view.update();
       },
       model: {
         run: async () => {
-          await chrome.storage.local.clear();
-          chrome.runtime.sendMessage({action: "stop"});
-          chrome.runtime.sendMessage({action: "reinitCIUpdater"});
+          await browser().storage.local.clear();
+          browser().runtime.sendMessage({action: "stop"});
+          browser().runtime.sendMessage({action: "reinitCIUpdater"});
         },
-        init: function () {
+        init: async function () {
 
         },
-        update: function () {
+        update: async function () {
 
         }
       },
       view: {
         button: null,
-        run: function () {
-          showStats();
+        run: async () => {
+          await showStats();
         },
-        init: function () {
+        init: async function () {
           this.button = document.getElementById('resetButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          this.update();
+          await this.update();
         },
-        update: function () {
-          if (chrome.storage.local.get("rawdata") === null) {
+        update: async function () {
+          if ((await browser().storage.local.get("rawdata")) === undefined) {
             hide(this.button);
           } else {
             show(this.button);
@@ -135,14 +136,14 @@ const popup = {
       statsInterval: null,
       pieChart: null,
       element: null,
-      init: function () {
+      init: async function () {
         const statsMoreResults = document.getElementById('statsMoreResults');
         statsMoreResults.addEventListener('click', this.parent.openMoreResults);
         this.element = document.getElementById('stats');
-        this.update();
+        await this.update();
       },
-      update: function () {
-        if ( chrome.storage.local.get("rawdata") === null ) {
+      update: async function () {
+        if ( (await browser().storage.local.get("rawdata")) === undefined ) {
           hide(this.element);
         } else {
           show(this.element);
@@ -150,8 +151,8 @@ const popup = {
       }
     },
     openMoreResults: async () => {
-      const url = chrome.runtime.getURL("/tab/tab.html");
-      browser.tabs.create({url: url, active: true});
+      const url = browser().runtime.getURL("/tab/tab.html");
+      browser().tabs.create({url: url, active: true});
       window.close();
     }
   },
@@ -162,20 +163,20 @@ const popup = {
     model: {
       selectedRegion: null,
       regions: null,
-      init: function () {
-        this.update();
+      init: async function () {
+        await this.update();
       },
-      update: function () {
-        this.selectedRegion = getSelectedRegion();
-        this.regions = getRegions();
+      update: async function () {
+        this.selectedRegion = await getSelectedRegion();
+        this.regions = await getRegions();
       }
     },
     view: {
-      init: function () {
+      init: async function () {
         attachHandlerToSelectRegion();
         injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
       }, 
-      update: function () {
+      update: async function () {
         const select = document.getElementById(regionSelectID);
         while (select.firstChild) {
           select.removeChild(select.firstChild);
@@ -201,8 +202,8 @@ const popup = {
 createMVC(popup);
 attachParent(popup);
 
-showStats = () => {
-  const stats = getStats(5);
+showStats = async () => {
+  const stats = await getStats(5);
 
   if (stats.total === 0) {
     return;
@@ -230,7 +231,7 @@ showStats = () => {
     statsListItemsElement.appendChild(li);
   }
 
-  const computedEquivalence = computeEquivalenceFromStatsItem(stats);
+  const computedEquivalence = await computeEquivalenceFromStatsItem(stats);
 
   if (!popup.stats.view.pieChart) {
     popup.stats.view.pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
@@ -247,14 +248,14 @@ showStats = () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 }
 
-init = () => {
+init = async () => {
 
-  popup.model.init();
-  popup.view.init();
+  await popup.model.init();
+  await popup.view.init();
 
-  showStats();
+  await showStats();
 
-  if (null === chrome.storage.local.get('analysisRunning')) {
+  if (undefined === (await browser().storage.local.get('analysisRunning'))) {
     return;
   }
 
@@ -265,13 +266,13 @@ loadTranslations();
 init();
 
 
-chrome.runtime.onMessage.addListener(function (o) {
+browser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( getPref("debug") ) { 
+    if ( await getPref("debug") ) { 
       console.warn("Refresh data in the popup");
     }
-    popup.model.update();
-    popup.view.update();
-    showStats(); // should be removed
+    await popup.model.update();
+    await popup.view.update();
+    await showStats(); // should be removed
   }
 });

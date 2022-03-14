@@ -108,11 +108,11 @@ const tab = {
   /**
    * Responsible from update stats object.
    */
-  updateStats: function () {
+  updateStats: async function () {
     if ( this.stats == null 
-      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
+      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
       ) {
-      this.stats = getStats();
+      this.stats = await getStats();
       this.stats[LAST_UPDATE_DATA] = Date.now();
     }
   },
@@ -120,11 +120,11 @@ const tab = {
   /**
    * Responsible from update stats object.
    */
-  updateParameters: function () {
+  updateParameters: async function () {
     if ( this.parameters == null 
-      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
+      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
       ) {
-      this.parameters = getParameters();
+      this.parameters = await getParameters();
       this.parameters[LAST_UPDATE_DATA] = Date.now();
     }
   },
@@ -132,11 +132,11 @@ const tab = {
   /**
    * Responsible from update stats object.
    */
-  updateRawData: function () {
+  updateRawData: async function () {
     if ( this.rawdata == null 
-      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
+      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
       ) {
-      this.rawdata = getOrCreateRawData();
+      this.rawdata = await getOrCreateRawData();
       this.rawdata[LAST_UPDATE_DATA] = Date.now();
     }
   },
@@ -144,14 +144,14 @@ const tab = {
   /**
    * Update regions data.
    */
-  updateRegions: function () {
+  updateRegions: async function () {
     if ( this.parameters == null ) {
-      return updateParameters();
+      return await updateParameters();
     } else {
       if ( this.parameters.regions == null 
-        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > getPref("tab.update.minMs") 
+        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
         ) {
-          this.parameters.regions = getRegions();
+          this.parameters.regions = await getRegions();
           this.parameters.regions[LAST_UPDATE_DATA] = Date.now();
       }
     }
@@ -165,19 +165,19 @@ const tab = {
      */
     equivalence: {
       model: {
-        init: function () {
-          this.parent.parent.parent.updateStats();
+        init: async function () {
+          await this.parent.parent.parent.updateStats();
         },
-        update: function () {
-          this.parent.parent.parent.updateStats();
+        update: async function () {
+          await this.parent.parent.parent.updateStats();
         }
       },
       view: {
-        init: function () {
-          updateEquivalence(this.parent.parent.parent.stats);
+        init: async function () {
+          await updateEquivalence(this.parent.parent.parent.stats);
         },
-        update: function () {
-          updateEquivalence(this.parent.parent.parent.stats);
+        update: async function () {
+          await updateEquivalence(this.parent.parent.parent.stats);
         }
       }
     }, 
@@ -186,15 +186,15 @@ const tab = {
      */
     detailledView: {
       model: {
-        init: function () {
+        init: async function () {
           const root = this.parent.parent.parent;
-          root.updateStats();
-          root.updateRawData();
+          await root.updateStats();
+          await root.updateRawData();
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
-          root.updateStats();
-          root.updateRawData();
+          await root.updateStats();
+          await root.updateRawData();
         }
       },
       view: {
@@ -237,7 +237,7 @@ const tab = {
             topResults.appendChild(tr);
           }
         },
-        init: function () {
+        init: async function () {
           const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
           for(let i = 0; i < root.stats.highestStats.length; i ++) {
@@ -250,7 +250,7 @@ const tab = {
             document.getElementById("topResultsTable_wrapper").style.width = "100%";
           });
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
           for(let i = 0; i < root.stats.highestStats.length; i ++) {
@@ -267,27 +267,27 @@ const tab = {
     selectRegion: {
       model: {
         selectedRegion: null,
-        init: function () {
-          this.update();
+        init: async function () {
+          await this.update();
         },
-        update: function () {
-          this.parent.parent.parent.updateParameters();
-          this.selectedRegion = getSelectedRegion();
+        update: async function () {
+          await this.parent.parent.parent.updateParameters();
+          this.selectedRegion = await getSelectedRegion();
         }
       },
       view: {
-        init: function () {
+        init: async function () {
           const settings = this.parent.parent;
           // part of the refresh system
           $("#carbonIntensityLastRefreshForceRefresh").click(function() {
-            chrome.runtime.sendMessage({action: "forceCIUpdater"});
-            settings.updateCarbonIntensity.model.update();
-            settings.updateCarbonIntensity.view.update();
+            browser().runtime.sendMessage({action: "forceCIUpdater"});
+            await settings.updateCarbonIntensity.model.update();
+            await settings.updateCarbonIntensity.view.update();
           });
           const root = this.parent.parent.parent;
           injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
           $("#" + regionSelectID).empty();
           injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
@@ -296,34 +296,34 @@ const tab = {
     },
     updateCarbonIntensity: {
       model: {
-        init: function () {
+        init: async function () {
           const root = this.parent.parent.parent;
-          root.updateParameters();
+          await root.updateParameters();
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
-          root.updateParameters();
+          await root.updateParameters();
         }
       },
       view: {
         div: null,
-        init: function () {
+        init: async function () {
           div = document.getElementById("carbonIntensityLastRefreshIP");
-          this.update();
+          await this.update();
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
-          div.textContent = chrome.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
+          div.textContent = browser().i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
     carbonIntensityView: {
       model: {
-        init: function () {
-          this.parent.parent.parent.updateRegions();
+        init: async function () {
+          await this.parent.parent.parent.updateRegions();
         },
-        update: function () {
-          this.parent.parent.parent.updateRegions();
+        update: async function () {
+          await this.parent.parent.parent.updateRegions();
         }
       },
       view: {
@@ -365,7 +365,7 @@ const tab = {
             settingsCICIS.append(row);
           }
         },
-        init: function () {
+        init: async function () {
           const root = this.parent.parent.parent;
           this.settingsCICIS = document.getElementById("settingsCICIS");
           for(const name in root.parameters.regions) {
@@ -377,7 +377,7 @@ const tab = {
             document.getElementById("settingsCItable_wrapper").style.width = "100%";
           });
         },
-        update: function () {
+        update: async function () {
           const root = this.parent.parent.parent;
           for(const name in root.parameters.regions) {
             this.createEntry(this.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
@@ -393,9 +393,9 @@ const tab = {
     model: {
       bytesDataCenterObjectForm: null,
       bytesNetworkObjectForm: null,
-      createObject: function () {
+      createObject: async function () {
         const root = this.parent.parent;
-        root.updateRawData();
+        await root.updateRawData();
         const bytesDataCenterUnordered = createSumOfData(root.rawdata, 'datacenter', 60);
         let bytesNetworkUnordered = createSumOfData(root.rawdata, 'network', 60);
         bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
@@ -404,15 +404,15 @@ const tab = {
         this.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
         this.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
       },
-      init: function () {
+      init: async function () {
         this.createObject();
-        this.parent.data.model.init();
-        this.parent.electricityConsumptionOverTime.model.init();
+        await this.parent.data.model.init();
+        await this.parent.electricityConsumptionOverTime.model.init();
       },
-      update: function () {
+      update: async function () {
         this.createObject();
-        this.parent.data.model.init();
-        this.parent.electricityConsumptionOverTime.model.init();
+        await this.parent.data.model.init();
+        await this.parent.electricityConsumptionOverTime.model.init();
       }
     },
     /**
@@ -427,7 +427,7 @@ const tab = {
           data: null,
           config: null,
           myChart: null,
-          createData: function () {
+          createData: async function () {
             const parent = this.parent.parent.parent;
             return {
               datasets: [
@@ -448,7 +448,7 @@ const tab = {
               ]
             };
           },
-          init: function () {
+          init: async function () {
             const parent = this.parent.parent.parent;
             this.data = this.createData();
 
@@ -513,7 +513,7 @@ const tab = {
               this.config
             );
           },
-          update: function () {
+          update: async function () {
             const parent = this.parent.parent.parent;
             this.myChart.data = this.createData();
             this.data = this.myChart.data;
@@ -530,8 +530,8 @@ const tab = {
           topStats: null,
           labels: null,
           series: null,
-          init: function () {
-            this.topStats = getStats(100);
+          init: async function () {
+            this.topStats = await getStats(100);
             this.labels = [];
             this.series = [];
             for (const stat of this.topStats.highestStats) {
@@ -543,8 +543,8 @@ const tab = {
               this.series.push(stat.percent);
             }
           },
-          update: function () {
-            this.init();
+          update: async function () {
+            await this.init();
           }
         },
         view: {
@@ -560,7 +560,7 @@ const tab = {
           pieData: null,
           pieConfig: null,
           chart: null,
-          createData: function () {
+          createData: async function () {
             const parent = this.parent;
             return {
               labels: parent.model.labels,
@@ -571,7 +571,7 @@ const tab = {
               }]
             };
           },
-          init: function () {
+          init: async function () {
             this.pieData = this.createData();
             
             this.pieConfig = {
@@ -584,7 +584,7 @@ const tab = {
               this.pieConfig
             );
           },
-          update: function () {
+          update: async function () {
             this.chart.data = this.createData();
             this.pieData = this.chart.data;
             this.pieConfig.data = this.chart.data;
@@ -597,7 +597,7 @@ const tab = {
       model: {
         electricityDataCenterObjectForm: null,
         electricityNetworkObjectForm: null,
-        init: function () {
+        init: async function () {
           const history = this.parent.parent;
           console.warn("bytes per origin is not updated at the time (only electricity)...");
           this.electricityDataCenterObjectForm = [];
@@ -609,15 +609,15 @@ const tab = {
             this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
           }
         },
-        update: function () {
-          this.init();
+        update: async function () {
+          await this.init();
         }
       },
       view: {
         data: null,
         config: null,
         chart: null,
-        createData: function () {
+        createData: async function () {
           const parent = this.parent;
           return {
             datasets: [
@@ -638,7 +638,7 @@ const tab = {
             ]
           };
         },
-        init: function () {
+        init: async function () {
           this.data = this.createData();
 
           const data = this.data;
@@ -698,7 +698,7 @@ const tab = {
             this.config
           );
         },
-        update: function () {
+        update: async function () {
           this.data = this.createData();
           this.config.data = this.data;
           this.chart.data = this.data;
@@ -718,8 +718,8 @@ const animDurationMs = 500;
 const steps = Math.round(animDurationMs/minimalNoticeableMs);
 const degPerStep = 360 / steps;
 const animateButton = $("#refreshButton > img");
-animateRotationButton = (done) => {
-  if ( ! getPref("tab.animate") ) {
+animateRotationButton = async (done) => {
+  if ( ! await getPref("tab.animate") ) {
     done();
     return;
   }
@@ -736,16 +736,16 @@ animateRotationButton = (done) => {
   }
 }
 
-init = () => {
+init = async () => {
 
-  tab.model.init();
-  tab.view.init();
+  await tab.model.init();
+  await tab.view.init();
 
   // Animation button of refresh
   $("#refreshButton").click(function() {
-    animateRotationButton(function() {
-      tab.model.update();
-      tab.view.update();
+    animateRotationButton(async function() {
+      await tab.model.update();
+      await tab.view.update();
     });
   });
 }
@@ -757,12 +757,12 @@ window.addEventListener("load", function(event) {
   init();
 });
 
-chrome.runtime.onMessage.addListener(function (o) {
+browser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( getPref("debug") ) { 
+    if ( await getPref("debug") ) { 
       console.warn("Refresh data in the tab");
     }
-    tab.model.update();
-    tab.view.update();
+    await tab.model.update();
+    await tab.view.update();
   }
 });
