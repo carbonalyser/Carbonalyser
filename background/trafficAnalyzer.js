@@ -97,48 +97,54 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = async (request) => {
-  if ( await isInDebug() ) {
+  if ( isInDebug() ) {
     console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
   }
   if ( request.action === currentState ) {
     // event duplicate emission
-    if ( await isInDebug() ) {
+    if ( isInDebug() ) {
       console.warn("event duplicate");
     }
     return;
   }
-  if ('start' === request.action) {
-    setBrowserIcon('on');
+  switch(request.action) {
+    case 'start':
+      setBrowserIcon('on');
 
-    getBrowser().webRequest.onHeadersReceived.addListener(
-      headersReceivedListener,
-      {urls: ['<all_urls>']},
-      ['responseHeaders']
-    );
+      getBrowser().webRequest.onHeadersReceived.addListener(
+        headersReceivedListener,
+        {urls: ['<all_urls>']},
+        ['responseHeaders']
+      );
 
-    getBrowser().webRequest.onSendHeaders.addListener(
-      sendHeadersListener,
-      {urls: ['<all_urls>']},
-      ['requestHeaders']
-    );
+      getBrowser().webRequest.onSendHeaders.addListener(
+        sendHeadersListener,
+        {urls: ['<all_urls>']},
+        ['requestHeaders']
+      );
 
-    await getBrowser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
+      await getBrowser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
 
-    if (!addOneMinuteInterval) {
-      addOneMinuteInterval = setInterval(addOneMinute, 60000);
-    }
-
-  } else if ('stop' === request.action) {
-    setBrowserIcon('off');
-    getBrowser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-    getBrowser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
-    getBrowser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
-    if (addOneMinuteInterval) {
-      clearInterval(addOneMinuteInterval);
-      addOneMinuteInterval = null;
-    }
-  } else {
-    console.error("Unknow order :", request);
+      if (!addOneMinuteInterval) {
+        addOneMinuteInterval = setInterval(addOneMinute, 60000);
+      }
+      break;
+    case 'stop':
+      setBrowserIcon('off');
+      getBrowser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+      getBrowser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
+      getBrowser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
+      if (addOneMinuteInterval) {
+        clearInterval(addOneMinuteInterval);
+        addOneMinuteInterval = null;
+      }
+      break;
+    case 'reinitCIUpdater':
+    case 'forceCIUpdater':
+      // orders coming for other scripts.
+      break;
+    default:
+      console.error("Unknow order :", request);
   }
   currentState = request.action;
 };
@@ -149,7 +155,7 @@ getBrowser().runtime.onMessage.addListener(handleMessage);
 synchronizeGui = async () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
-    if ( await isInDebug() ) {
+    if ( isInDebug() ) {
       console.warn("no traffic before");
     }
   } else {
@@ -158,12 +164,12 @@ synchronizeGui = async () => {
       // need to do gui refresh
       getBrowser().runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      if ( await isInDebug() ) {
+      if ( isInDebug() ) {
         console.warn("need to do gui refresh");
       }
     } else {
       // nothing to do
-      if ( await isInDebug() ) {
+      if ( isInDebug() ) {
         console.warn("nothing to do");
       }
     }

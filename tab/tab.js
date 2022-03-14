@@ -759,7 +759,7 @@ window.addEventListener("load", function(event) {
 
 getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( await isInDebug() ) { 
+    if ( isInDebug() ) { 
       console.warn("Refresh data in the tab");
     }
     await tab.model.update();

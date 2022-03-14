@@ -267,7 +267,7 @@ init();
 
 getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
-    if ( await isInDebug() ) { 
+    if ( isInDebug() ) { 
       console.warn("Refresh data in the popup");
     }
     await popup.model.update();
