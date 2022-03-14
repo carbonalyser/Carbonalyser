@@ -94,7 +94,7 @@ stop = () => {
 
 init();
 
-browser().storage.onChanged.addListener(async (changes, areaName) => {
+getBrowser().storage.onChanged.addListener(async (changes, areaName) => {
     if ( areaName == "local" ) {
         if ( changes["pref"] !== undefined ) {
             stop();
@@ -108,7 +108,7 @@ browser().storage.onChanged.addListener(async (changes, areaName) => {
 });
 
   
-browser().runtime.onMessage.addListener(async function(request, sender, sendResponse){
+getBrowser().runtime.onMessage.addListener(async function(request, sender, sendResponse){
 
     if (request.action == "reinitCIUpdater") {
         stop();

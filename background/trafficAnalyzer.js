@@ -19,7 +19,7 @@ getMsCheckRefresh = async () => {
  */
 downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
-  for(downloadItem of (await browser().downloads.search({id: object.id}))) {
+  for(downloadItem of (await getBrowser().downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
       await incBytesDataCenter(origin, downloadItem.bytesReceived);
@@ -84,14 +84,13 @@ sendHeadersListener = async (requestDetails) => {
 }
 
 setBrowserIcon = (type) => {
-  browser().browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+  getBrowser().browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 };
 
 addOneMinute = async () => {
-  let duration = await browser().storage.local.get('duration');
-  duration = undefined === duration ? 1 : 1 * duration + 1;
-  console.trace();
-  await browser().storage.local.set({duration: duration});
+  let o = await getBrowser().storage.local.get('duration');
+  let duration = undefined === o ? 1 : 1 * o.duration + 1;
+  await getBrowser().storage.local.set({duration: duration});
 };
 
 let addOneMinuteInterval;
@@ -111,19 +110,19 @@ handleMessage = async (request) => {
   if ('start' === request.action) {
     setBrowserIcon('on');
 
-    browser().webRequest.onHeadersReceived.addListener(
+    getBrowser().webRequest.onHeadersReceived.addListener(
       headersReceivedListener,
       {urls: ['<all_urls>']},
       ['responseHeaders']
     );
 
-    browser().webRequest.onSendHeaders.addListener(
+    getBrowser().webRequest.onSendHeaders.addListener(
       sendHeadersListener,
       {urls: ['<all_urls>']},
       ['requestHeaders']
     );
 
-    await browser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
+    await getBrowser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
 
     if (!addOneMinuteInterval) {
       addOneMinuteInterval = setInterval(addOneMinute, 60000);
@@ -131,9 +130,9 @@ handleMessage = async (request) => {
 
   } else if ('stop' === request.action) {
     setBrowserIcon('off');
-    browser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-    browser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
-    browser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
+    getBrowser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+    getBrowser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
+    getBrowser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
     if (addOneMinuteInterval) {
       clearInterval(addOneMinuteInterval);
       addOneMinuteInterval = null;
@@ -144,7 +143,7 @@ handleMessage = async (request) => {
   currentState = request.action;
 };
 
-browser().runtime.onMessage.addListener(handleMessage);
+getBrowser().runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
 synchronizeGui = async () => {
@@ -157,7 +156,7 @@ synchronizeGui = async () => {
     const now = Date.now();
     if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
       // need to do gui refresh
-      browser().runtime.sendMessage({ action: 'view-refresh' });
+      getBrowser().runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
       if ( await getPref("debug") ) {
         console.warn("need to do gui refresh");
@@ -176,7 +175,7 @@ getMsCheckRefresh().then((value) => {
   synchronizeThread = setInterval(synchronizeGui,value);
 });
 
-browser().storage.onChanged.addListener(async (changes, areaName) => {
+getBrowser().storage.onChanged.addListener(async (changes, areaName) => {
   //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
@@ -186,7 +185,7 @@ browser().storage.onChanged.addListener(async (changes, areaName) => {
       if ( auto_refresh ) {
         synchronizeThread = setInterval(synchronizeGui, await getMsCheckRefresh());
       }
-      browser().runtime.sendMessage({ action: 'view-refresh' });
+      getBrowser().runtime.sendMessage({ action: 'view-refresh' });
       */
     } else {
       // no changes to preferences

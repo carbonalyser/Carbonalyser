@@ -26,8 +26,8 @@ const popup = {
       },
       model: {
         run: async () => {
-          browser().runtime.sendMessage({ action: 'stop' });
-          await browser().storage.local.remove('analysisRunning');
+          getBrowser().runtime.sendMessage({ action: 'stop' });
+          await getBrowser().storage.local.remove('analysisRunning');
         },
         init: async function () {
 
@@ -41,7 +41,7 @@ const popup = {
         init: async function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await browser().storage.local.get("analysisRunning")) == 1 ) {
+          if ( (await getBrowser().storage.local.get("analysisRunning")).analysisRunning == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
@@ -59,9 +59,9 @@ const popup = {
       },
       model: {
         run: async () => {
-          browser().runtime.sendMessage({ action: 'start' });
+          getBrowser().runtime.sendMessage({ action: 'start' });
           console.trace();
-          await browser().storage.local.set({analysisRunning: 1});
+          await getBrowser().storage.local.set({analysisRunning: 1});
         },
         init: async function () {
 
@@ -75,7 +75,7 @@ const popup = {
         init: async function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await browser().storage.local.get("analysisRunning")) == 1 ) {
+          if ( (await getBrowser().storage.local.get("analysisRunning")).analysisRunning == 1 ) {
             hide(this.button);
           } else {
             show(this.button);
@@ -97,9 +97,9 @@ const popup = {
       },
       model: {
         run: async () => {
-          await browser().storage.local.clear();
-          browser().runtime.sendMessage({action: "stop"});
-          browser().runtime.sendMessage({action: "reinitCIUpdater"});
+          await getBrowser().storage.local.clear();
+          getBrowser().runtime.sendMessage({action: "stop"});
+          getBrowser().runtime.sendMessage({action: "reinitCIUpdater"});
         },
         init: async function () {
 
@@ -119,7 +119,7 @@ const popup = {
           await this.update();
         },
         update: async function () {
-          if ((await browser().storage.local.get("rawdata")) === undefined) {
+          if ((await getBrowser().storage.local.get("rawdata")) === undefined) {
             hide(this.button);
           } else {
             show(this.button);
@@ -143,7 +143,7 @@ const popup = {
         await this.update();
       },
       update: async function () {
-        if ( (await browser().storage.local.get("rawdata")) === undefined ) {
+        if ( (await getBrowser().storage.local.get("rawdata")) === undefined ) {
           hide(this.element);
         } else {
           show(this.element);
@@ -151,8 +151,8 @@ const popup = {
       }
     },
     openMoreResults: async () => {
-      const url = browser().runtime.getURL("/tab/tab.html");
-      browser().tabs.create({url: url, active: true});
+      const url = getBrowser().runtime.getURL("/tab/tab.html");
+      getBrowser().tabs.create({url: url, active: true});
       window.close();
     }
   },
@@ -255,7 +255,7 @@ init = async () => {
 
   await showStats();
 
-  if (undefined === (await browser().storage.local.get('analysisRunning'))) {
+  if (undefined === (await getBrowser().storage.local.get('analysisRunning'))) {
     return;
   }
 
@@ -266,7 +266,7 @@ loadTranslations();
 init();
 
 
-browser().runtime.onMessage.addListener(async function (o) {
+getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
     if ( await getPref("debug") ) { 
       console.warn("Refresh data in the popup");

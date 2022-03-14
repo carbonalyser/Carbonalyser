@@ -280,7 +280,7 @@ const tab = {
           const settings = this.parent.parent;
           // part of the refresh system
           $("#carbonIntensityLastRefreshForceRefresh").click(function() {
-            browser().runtime.sendMessage({action: "forceCIUpdater"});
+            getBrowser().runtime.sendMessage({action: "forceCIUpdater"});
             await settings.updateCarbonIntensity.model.update();
             await settings.updateCarbonIntensity.view.update();
           });
@@ -313,7 +313,7 @@ const tab = {
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          div.textContent = browser().i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
+          div.textContent = getBrowser().i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
@@ -757,7 +757,7 @@ window.addEventListener("load", function(event) {
   init();
 });
 
-browser().runtime.onMessage.addListener(async function (o) {
+getBrowser().runtime.onMessage.addListener(async function (o) {
   if (o.action == "view-refresh") {
     if ( await getPref("debug") ) { 
       console.warn("Refresh data in the tab");
