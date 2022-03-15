@@ -89,7 +89,7 @@ setBrowserIcon = (type) => {
 
 addOneMinute = async () => {
   let o = await getBrowser().storage.local.get('duration');
-  let duration = undefined === o ? 1 : 1 * o.duration + 1;
+  let duration = undefined === o.duration ? 1 : 1 * o.duration + 1;
   await getBrowser().storage.local.set({duration: duration});
 };
 

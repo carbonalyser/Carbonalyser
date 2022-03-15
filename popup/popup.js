@@ -118,7 +118,7 @@ const popup = {
           await this.update();
         },
         update: async function () {
-          if ((await getBrowser().storage.local.get("rawdata")) === undefined) {
+          if ((await getBrowser().storage.local.get("rawdata")).rawdata === undefined) {
             hide(this.button);
           } else {
             show(this.button);
@@ -142,7 +142,7 @@ const popup = {
         await this.update();
       },
       update: async function () {
-        if ( (await getBrowser().storage.local.get("rawdata")) === undefined ) {
+        if ( (await getBrowser().storage.local.get("rawdata")).rawdata === undefined ) {
           hide(this.element);
         } else {
           show(this.element);
@@ -254,7 +254,7 @@ init = async () => {
 
   await showStats();
 
-  if (undefined === (await getBrowser().storage.local.get('analysisRunning'))) {
+  if (undefined === (await getBrowser().storage.local.get('analysisRunning')).analysisRunning) {
     return;
   }
 
