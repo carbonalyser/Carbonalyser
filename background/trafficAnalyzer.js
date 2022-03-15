@@ -19,7 +19,7 @@ getMsCheckRefresh = async () => {
  */
 downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
-  for(downloadItem of (await getBrowser().downloads.search({id: object.id}))) {
+  for(downloadItem of (await obrowser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
       await incBytesDataCenter(origin, downloadItem.bytesReceived);
@@ -84,13 +84,13 @@ sendHeadersListener = async (requestDetails) => {
 }
 
 setBrowserIcon = (type) => {
-  getBrowser().browserAction.setIcon({path: `icons/icon-${type}-48.png`});
+  obrowser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 };
 
 addOneMinute = async () => {
-  let o = await getBrowser().storage.local.get('duration');
+  let o = await obrowser.storage.local.get('duration');
   let duration = undefined === o.duration ? 1 : 1 * o.duration + 1;
-  await getBrowser().storage.local.set({duration: duration});
+  await obrowser.storage.local.set({duration: duration});
 };
 
 let addOneMinuteInterval;
@@ -111,19 +111,19 @@ handleMessage = async (request) => {
     case 'start':
       setBrowserIcon('on');
 
-      getBrowser().webRequest.onHeadersReceived.addListener(
+      obrowser.webRequest.onHeadersReceived.addListener(
         headersReceivedListener,
         {urls: ['<all_urls>']},
         ['responseHeaders']
       );
 
-      getBrowser().webRequest.onSendHeaders.addListener(
+      obrowser.webRequest.onSendHeaders.addListener(
         sendHeadersListener,
         {urls: ['<all_urls>']},
         ['requestHeaders']
       );
 
-      await getBrowser().downloads.onCreated.addListener(downloadCompletedCheckLoop);
+      await obrowser.downloads.onCreated.addListener(downloadCompletedCheckLoop);
 
       if (!addOneMinuteInterval) {
         addOneMinuteInterval = setInterval(addOneMinute, 60000);
@@ -131,9 +131,9 @@ handleMessage = async (request) => {
       break;
     case 'stop':
       setBrowserIcon('off');
-      getBrowser().webRequest.onHeadersReceived.removeListener(headersReceivedListener);
-      getBrowser().webRequest.onSendHeaders.removeListener(sendHeadersListener);
-      getBrowser().downloads.onCreated.removeListener(downloadCompletedCheckLoop);
+      obrowser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
+      obrowser.webRequest.onSendHeaders.removeListener(sendHeadersListener);
+      obrowser.downloads.onCreated.removeListener(downloadCompletedCheckLoop);
       if (addOneMinuteInterval) {
         clearInterval(addOneMinuteInterval);
         addOneMinuteInterval = null;
@@ -149,7 +149,7 @@ handleMessage = async (request) => {
   currentState = request.action;
 };
 
-getBrowser().runtime.onMessage.addListener(handleMessage);
+obrowser.runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
 synchronizeGui = async () => {
@@ -162,7 +162,7 @@ synchronizeGui = async () => {
     const now = Date.now();
     if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
       // need to do gui refresh
-      getBrowser().runtime.sendMessage({ action: 'view-refresh' });
+      obrowser.runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
       if ( await isInDebug() ) {
         console.warn("need to do gui refresh");
@@ -181,7 +181,7 @@ getMsCheckRefresh().then((value) => {
   synchronizeThread = setInterval(synchronizeGui,value);
 });
 
-getBrowser().storage.onChanged.addListener(async (changes, areaName) => {
+obrowser.storage.onChanged.addListener(async (changes, areaName) => {
   //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
@@ -190,7 +190,7 @@ getBrowser().storage.onChanged.addListener(async (changes, areaName) => {
       if ( auto_refresh ) {
         synchronizeThread = setInterval(synchronizeGui, await getMsCheckRefresh());
       }
-      getBrowser().runtime.sendMessage({ action: 'view-refresh' });
+      obrowser.runtime.sendMessage({ action: 'view-refresh' });
     } else {
       // no changes to preferences
     }

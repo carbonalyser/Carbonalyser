@@ -1,4 +1,3 @@
-const obrowser = getBrowser();
 const popup = {
 
   /**
