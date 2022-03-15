@@ -281,8 +281,6 @@ const tab = {
           // part of the refresh system
           $("#carbonIntensityLastRefreshForceRefresh").click(async function() {
             obrowser.runtime.sendMessage({action: "forceCIUpdater"});
-            await settings.updateCarbonIntensity.model.update();
-            await settings.updateCarbonIntensity.view.update();
           });
           const root = this.parent.parent.parent;
           injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
