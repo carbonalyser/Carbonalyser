@@ -103,7 +103,7 @@ handleMessage = async (request) => {
   if ( request.action === currentState ) {
     // event duplicate emission
     if ( await isInDebug() ) {
-      console.warn("event duplicate");
+      console.warn("event duplicate request=", request);
     }
     return;
   }

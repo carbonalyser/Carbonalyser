@@ -450,7 +450,7 @@ const tab = {
           },
           init: async function () {
             const parent = this.parent.parent.parent;
-            this.data = this.createData();
+            this.data = await this.createData();
 
             const data = this.data;
             this.config = {
@@ -515,7 +515,7 @@ const tab = {
           },
           update: async function () {
             const parent = this.parent.parent.parent;
-            this.myChart.data = this.createData();
+            this.myChart.data = await this.createData();
             this.data = this.myChart.data;
             this.config.data = this.myChart.data;
             this.myChart.update();
@@ -572,7 +572,7 @@ const tab = {
             };
           },
           init: async function () {
-            this.pieData = this.createData();
+            this.pieData = await this.createData();
             
             this.pieConfig = {
               type: 'pie',
@@ -585,7 +585,7 @@ const tab = {
             );
           },
           update: async function () {
-            this.chart.data = this.createData();
+            this.chart.data = await this.createData();
             this.pieData = this.chart.data;
             this.pieConfig.data = this.chart.data;
             this.chart.update();
@@ -639,7 +639,7 @@ const tab = {
           };
         },
         init: async function () {
-          this.data = this.createData();
+          this.data = await this.createData();
 
           const data = this.data;
           this.config = {
@@ -699,7 +699,7 @@ const tab = {
           );
         },
         update: async function () {
-          this.data = this.createData();
+          this.data = await this.createData();
           this.config.data = this.data;
           this.chart.data = this.data;
         }
@@ -736,7 +736,23 @@ animateRotationButton = async (done) => {
   }
 }
 
+/**
+ * decide what to do with input orders.
+ */
+async function handleMessage(o) {
+  if (o.action == "view-refresh") {
+    if ( await isInDebug() ) { 
+      console.warn("Refresh data in the tab");
+    }
+    await tab.model.update();
+    await tab.view.update();
+  }
+}
+
 init = async () => {
+
+  attachHandlerToSelectRegion();
+  loadTranslations();
 
   await tab.model.init();
   await tab.view.init();
@@ -748,21 +764,13 @@ init = async () => {
       await tab.view.update();
     });
   });
+
+  obrowser.runtime.onMessage.addListener(handleMessage);
 }
 
-attachHandlerToSelectRegion();
-loadTranslations();
+end = () => {
+  obrowser.runtime.onMessage.removeListener(handleMessage);
+}
 
-window.addEventListener("load", function(event) {
-  init();
-});
-
-obrowser.runtime.onMessage.addListener(async function (o) {
-  if (o.action == "view-refresh") {
-    if ( await isInDebug() ) { 
-      console.warn("Refresh data in the tab");
-    }
-    await tab.model.update();
-    await tab.view.update();
-  }
-});
+window.addEventListener("load", init);
+window.addEventListener("unload", end);

@@ -265,6 +265,8 @@ init = async () => {
 
   obrowser.runtime.onMessage.addListener(handleMessage);
 
+  loadTranslations();
+  
   await popup.model.init();
   await popup.view.init();
 
@@ -275,8 +277,5 @@ end = () => {
   browser.runtime.onMessage.removeListener(handleMessage);
 }
 
-loadTranslations();
-
-init();
-
+window.addEventListener("load", init);
 window.addEventListener("unload", end, { once: true });
