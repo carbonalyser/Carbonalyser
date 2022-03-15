@@ -19,5 +19,10 @@
     "coverage": "nyc mocha"
   },
   "author": "TheShiftProject",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "flatted": "^3.2.5",
+    "jest-chrome": "^0.7.2",
+    "rewire": "^6.0.0"
+  }
 }

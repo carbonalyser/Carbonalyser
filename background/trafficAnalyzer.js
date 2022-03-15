@@ -3,13 +3,13 @@ let lastTimeTrafficSeen = null;
 /**
  * Holds the delay between modification and gui update (set to 0 if you want instant modification).
  */
-getMsRefreshGui = async () => {
+const getMsRefreshGui = async () => {
   return await getPref("daemon.changes.msBetweenChanges");
 }
 /**
  * At which ms we make the test on the background thread.
  */
-getMsCheckRefresh = async () => {
+const getMsCheckRefresh = async () => {
   return await getPref("daemon.changes.loopMs");
 }
 
@@ -17,7 +17,7 @@ getMsCheckRefresh = async () => {
  * This is trigger when a download start.
  * Since the we can grab only the download start, we have to check manually for its completion.
  */
-downloadCompletedCheckLoop = async (object) => {
+const downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
   for(downloadItem of (await obrowser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
@@ -39,7 +39,7 @@ const BYTES_HTTP_END   = 2;
  * Get origin from request details.
  * Or null if browser is un supported.
  */
-getOriginFromRequestDetail = (requestDetails) => {
+const getOriginFromRequestDetail = (requestDetails) => {
   let result = null;
   if ( isFirefox() ) {
     result = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
@@ -50,7 +50,7 @@ getOriginFromRequestDetail = (requestDetails) => {
 }
 
 // Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
-getBytesFromHeaders = (headers) => {
+const getBytesFromHeaders = (headers) => {
   let lengthNetwork = BYTES_TCP_HEADER + BYTES_IP_HEADER;
   for(let a = 0; a < headers.length; a ++) {
     const h = headers[a];
@@ -60,7 +60,7 @@ getBytesFromHeaders = (headers) => {
 }
 
 // This is triggered when some headers are received.
-headersReceivedListener = async (requestDetails) => {
+const headersReceivedListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
   // Extract bytes from datacenters
@@ -77,17 +77,17 @@ headersReceivedListener = async (requestDetails) => {
 };
 
 // Take amount of data sent by the client in headers
-sendHeadersListener = async (requestDetails) => {
+const sendHeadersListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
   await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
 }
 
-setBrowserIcon = (type) => {
+const setBrowserIcon = (type) => {
   obrowser.browserAction.setIcon({path: `icons/icon-${type}-48.png`});
 };
 
-addOneMinute = async () => {
+const addOneMinute = async () => {
   let o = await obrowser.storage.local.get('duration');
   let duration = undefined === o.duration ? 1 : 1 * o.duration + 1;
   await obrowser.storage.local.set({duration: duration});
@@ -96,7 +96,7 @@ addOneMinute = async () => {
 let addOneMinuteInterval;
 let currentState = '';
 
-handleMessage = async (request) => {
+const handleMessage = async (request) => {
   if ( await isInDebug() ) {
     console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
   }
@@ -152,7 +152,7 @@ handleMessage = async (request) => {
 obrowser.runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
-synchronizeGui = async () => {
+const synchronizeGui = async () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
     if ( await isInDebug() ) {

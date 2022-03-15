@@ -1,9 +1,9 @@
 const chai = require('chai'),
     spies = require('chai-spies');
+
 expect = chai.expect,
     assert = chai.assert,
     should = chai.should();
-
 const Mocha = require('mocha');
 const mocha = new Mocha();
 const runner = mocha.run(function(failures){
@@ -43,21 +43,29 @@ function storageMock() {
     };
 }
 
+const fs = require('fs'),
+       vm = require('vm');
+function simplerRequire(filename) {
+    if ( ! require('path').isAbsolute(filename) ) {
+        filename = require('path').join(__dirname, filename);
+    }
+    const data = fs.readFileSync(filename, 'utf8');
+    const script = new vm.Script(data);
+    script.runInThisContext();
+}
+
 // MOCK CHROME before calling the tested code
-const chrome = require('chrome-mock');
+// WARNING: chrome-mock is old : in es module jest-chrome seem right.
+const chrome = require('chrome-mock'); 
 global.chrome = chrome;
 global.handleMessage = {};
 localStorage = storageMock();
 
-
-// calling the tested code
-require('../lib/carbonalyser/lib.js');
-require('../lib/carbonalyser/libEquivalence.js');
-require('../lib/carbonalyser/libRegionSelect.js');
-require('../lib/carbonalyser/libStats.js');
-require('../background/trafficAnalyzer.js');
-
-translate = (translationKey) => "Others";
+simplerRequire('../lib/carbonalyser/lib.js');
+simplerRequire('../lib/carbonalyser/libEquivalence.js');
+simplerRequire('../lib/carbonalyser/libRegionSelect.js');
+simplerRequire('../lib/carbonalyser/libStats.js');
+simplerRequire('../background/trafficAnalyzer.js');
 
 describe('extractHostname', function () {
     it('should return the hostname when url contains //', function (done) {
