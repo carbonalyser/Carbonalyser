@@ -264,9 +264,10 @@ showStats = async () => {
 init = async () => {
 
   obrowser.runtime.onMessage.addListener(handleMessage);
-
-  loadTranslations();
+  window.addEventListener("unload", end, { once: true });
   
+  loadTranslations();
+
   await popup.model.init();
   await popup.view.init();
 
@@ -278,4 +279,3 @@ end = () => {
 }
 
 window.addEventListener("load", init);
-window.addEventListener("unload", end, { once: true });

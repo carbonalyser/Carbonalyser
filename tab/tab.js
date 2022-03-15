@@ -751,6 +751,9 @@ async function handleMessage(o) {
 
 init = async () => {
 
+  obrowser.runtime.onMessage.addListener(handleMessage);
+  window.addEventListener("unload", end);
+  
   attachHandlerToSelectRegion();
   loadTranslations();
 
@@ -765,12 +768,12 @@ init = async () => {
     });
   });
 
-  obrowser.runtime.onMessage.addListener(handleMessage);
 }
 
 end = () => {
   obrowser.runtime.onMessage.removeListener(handleMessage);
+  window.removeEventListener("load", init);
+  window.removeEventListener("unload", end);
 }
 
 window.addEventListener("load", init);
-window.addEventListener("unload", end);
