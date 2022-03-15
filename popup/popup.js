@@ -1,3 +1,4 @@
+const obrowser = getBrowser();
 const popup = {
 
   /**
@@ -26,8 +27,8 @@ const popup = {
       },
       model: {
         run: async () => {
-          getBrowser().runtime.sendMessage({ action: 'stop' });
-          await getBrowser().storage.local.remove('analysisRunning');
+          obrowser.runtime.sendMessage({ action: 'stop' });
+          await obrowser.storage.local.remove('analysisRunning');
         },
         init: async function () {
 
@@ -41,7 +42,7 @@ const popup = {
         init: async function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await getBrowser().storage.local.get("analysisRunning")).analysisRunning == 1 ) {
+          if ( (await obrowser.storage.local.get("analysisRunning")).analysisRunning == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
@@ -59,8 +60,8 @@ const popup = {
       },
       model: {
         run: async () => {
-          getBrowser().runtime.sendMessage({ action: 'start' });
-          await getBrowser().storage.local.set({analysisRunning: 1});
+          obrowser.runtime.sendMessage({ action: 'start' });
+          await obrowser.storage.local.set({analysisRunning: 1});
         },
         init: async function () {
 
@@ -74,7 +75,7 @@ const popup = {
         init: async function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await getBrowser().storage.local.get("analysisRunning")).analysisRunning == 1 ) {
+          if ( (await obrowser.storage.local.get("analysisRunning")).analysisRunning == 1 ) {
             hide(this.button);
           } else {
             show(this.button);
@@ -96,9 +97,9 @@ const popup = {
       },
       model: {
         run: async () => {
-          await getBrowser().storage.local.clear();
-          getBrowser().runtime.sendMessage({action: "stop"});
-          getBrowser().runtime.sendMessage({action: "reinitCIUpdater"});
+          await obrowser.storage.local.clear();
+          obrowser.runtime.sendMessage({action: "stop"});
+          obrowser.runtime.sendMessage({action: "reinitCIUpdater"});
         },
         init: async function () {
 
@@ -118,7 +119,7 @@ const popup = {
           await this.update();
         },
         update: async function () {
-          if ((await getBrowser().storage.local.get("rawdata")).rawdata === undefined) {
+          if ((await obrowser.storage.local.get("rawdata")).rawdata === undefined) {
             hide(this.button);
           } else {
             show(this.button);
@@ -142,7 +143,7 @@ const popup = {
         await this.update();
       },
       update: async function () {
-        if ( (await getBrowser().storage.local.get("rawdata")).rawdata === undefined ) {
+        if ( (await obrowser.storage.local.get("rawdata")).rawdata === undefined ) {
           hide(this.element);
         } else {
           show(this.element);
@@ -150,8 +151,8 @@ const popup = {
       }
     },
     openMoreResults: async () => {
-      const url = getBrowser().runtime.getURL("/tab/tab.html");
-      getBrowser().tabs.create({url: url, active: true});
+      const url = obrowser.runtime.getURL("/tab/tab.html");
+      obrowser.tabs.create({url: url, active: true});
       window.close();
     }
   },
@@ -247,25 +248,10 @@ showStats = async () => {
   injectEquivalentIntoHTML(stats, computedEquivalence);
 }
 
-init = async () => {
-
-  await popup.model.init();
-  await popup.view.init();
-
-  await showStats();
-
-  if (undefined === (await getBrowser().storage.local.get('analysisRunning')).analysisRunning) {
-    return;
-  }
-
-}
-
-loadTranslations();
-
-init();
-
-
-getBrowser().runtime.onMessage.addListener(async function (o) {
+/**
+ * Listen for comunication from background pages.
+ */
+ async function handleMessage(o) {
   if (o.action == "view-refresh") {
     if ( await isInDebug() ) { 
       console.warn("Refresh data in the popup");
@@ -274,4 +260,24 @@ getBrowser().runtime.onMessage.addListener(async function (o) {
     await popup.view.update();
     await showStats(); // should be removed
   }
-});
+};
+
+init = async () => {
+
+  obrowser.runtime.onMessage.addListener(handleMessage);
+
+  await popup.model.init();
+  await popup.view.init();
+
+  await showStats();
+}
+
+end = () => {
+  browser.runtime.onMessage.removeListener(handleMessage);
+}
+
+loadTranslations();
+
+init();
+
+window.addEventListener("unload", end, { once: true });
