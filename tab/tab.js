@@ -702,6 +702,7 @@ const tab = {
           this.data = await this.createData();
           this.config.data = this.data;
           this.chart.data = this.data;
+          this.chart.update();
         }
       }
     }
@@ -753,7 +754,7 @@ init = async () => {
 
   obrowser.runtime.onMessage.addListener(handleMessage);
   window.addEventListener("unload", end);
-  
+
   attachHandlerToSelectRegion();
   loadTranslations();
 
