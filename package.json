@@ -20,6 +20,7 @@
   },
   "author": "TheShiftProject",
   "license": "MIT",
+  "type":"module",
   "dependencies": {
     "flatted": "^3.2.5",
     "jest-chrome": "^0.7.2",

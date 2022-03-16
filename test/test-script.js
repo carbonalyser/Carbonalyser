@@ -1,10 +1,10 @@
-const chai = require('chai'),
-    spies = require('chai-spies');
+import chai from 'chai';
+import spies from 'chai-spies';
 
-expect = chai.expect,
+const expect = chai.expect,
     assert = chai.assert,
     should = chai.should();
-const Mocha = require('mocha');
+import Mocha from 'mocha';
 const mocha = new Mocha();
 const runner = mocha.run(function(failures){
     process.on('exit', function () {
@@ -43,11 +43,16 @@ function storageMock() {
     };
 }
 
-const fs = require('fs'),
-       vm = require('vm');
+import fs from 'fs';
+import vm from 'vm';
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 function simplerRequire(filename) {
-    if ( ! require('path').isAbsolute(filename) ) {
-        filename = require('path').join(__dirname, filename);
+    if ( ! path.isAbsolute(filename) ) {
+        filename = path.join(__dirname, filename);
     }
     const data = fs.readFileSync(filename, 'utf8');
     const script = new vm.Script(data);
@@ -56,10 +61,10 @@ function simplerRequire(filename) {
 
 // MOCK CHROME before calling the tested code
 // WARNING: chrome-mock is old : in es module jest-chrome seem right.
-const chrome = require('chrome-mock'); 
+import chrome from 'jest-chrome';
 global.chrome = chrome;
 global.handleMessage = {};
-localStorage = storageMock();
+var localStorage = storageMock();
 
 simplerRequire('../lib/carbonalyser/lib.js');
 simplerRequire('../lib/carbonalyser/libEquivalence.js');
