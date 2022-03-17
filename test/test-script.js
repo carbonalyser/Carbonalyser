@@ -1,10 +1,16 @@
 import chai from 'chai';
 import spies from 'chai-spies';
+import fs from 'fs';
+import vm from 'vm';
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import chrome from 'sinon-chrome';
+import Mocha from 'mocha';
 
 const expect = chai.expect,
     assert = chai.assert,
     should = chai.should();
-import Mocha from 'mocha';
 const mocha = new Mocha();
 const runner = mocha.run(function(failures){
     process.on('exit', function () {
@@ -18,58 +24,56 @@ runner.on('fail', function(test, err){
 });
 
 chai.use(spies);
-
-//MOCK GLOBAL STORAGE
-function storageMock() {
-    var storage = {};
-
-    return {
-        setItem: function (key, value) {
-            storage[key] = value || '';
-        },
-        getItem: function (key) {
-            return key in storage ? storage[key] : null;
-        },
-        removeItem: function (key) {
-            delete storage[key];
-        },
-        get length() {
-            return Object.keys(storage).length;
-        },
-        key: function (i) {
-            var keys = Object.keys(storage);
-            return keys[i] || null;
+// fix value not kept by chrome storage
+const chromeStorage = {};
+chrome.storage.local.get = async function (keys) {  
+    if ( typeof(keys) === 'object' ) {
+        if ( Array.isArray(keys) ) {
+            throw 'not impl. see https://developer.mozilla.org/fr/docs/Mozilla/Add-ons/WebExtensions/API/storage/StorageArea/get'
+        } else {
+            throw 'not impl.';
         }
-    };
+    } else {
+        return new Promise((resolve, reject) => {resolve(chromeStorage[keys]);})
+    }
 }
-
-import fs from 'fs';
-import vm from 'vm';
-import path from 'path';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+chrome.storage.local.set.set = function (obj) {
+    console.info(called);
+    if ( typeof(obj) !== 'object' || Array.isArray(obj) ) {
+        throw "cannot set with that obj";
+    } else {
+        for(const k of Object.keys(obj)) {
+            console.info("setup");
+            chromeStorage[k] = obj[k];
+        }
+    }
+}
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function simplerRequire(filename) {
+const simplerRequire = (filename) => {
     if ( ! path.isAbsolute(filename) ) {
         filename = path.join(__dirname, filename);
     }
     const data = fs.readFileSync(filename, 'utf8');
-    const script = new vm.Script(data);
-    script.runInThisContext();
+    eval(data);
 }
 
-// MOCK CHROME before calling the tested code
-// WARNING: chrome-mock is old : in es module jest-chrome seem right.
-import chrome from 'jest-chrome';
-global.chrome = chrome;
-global.handleMessage = {};
-var localStorage = storageMock();
+console.warn(chrome.storage.local.set.set.toSource());
+chrome.storage.local.set({ok: "okkk"});
+console.info("llll");
+console.warn(await chrome.storage.local.get("ok"));
 
+// define variable in scope that need to be
+var isInDebug, getBrowser, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
+obrowser = getBrowser();
+var injectEquivalentIntoHTML, computeEquivalenceFromStatsItem, updateEquivalence;
 simplerRequire('../lib/carbonalyser/libEquivalence.js');
+var injectRegionIntoHTML, attachHandlerToSelectRegion, selectRegionHandler, getSelectedRegion, setSelectedRegion;
 simplerRequire('../lib/carbonalyser/libRegionSelect.js');
+var init, getOrCreateRawData, incBytesPerOrigin, incBytesDataCenter, incBytesNetwork, setRegion, getCarbonIntensityRegion, getParameters, setRefreshInterval, getRefreshInterval, capitalizeFirstLetter, lowerFirstLetter, getRegions, setParameters, getStats, toMegaByteNoRound, toMegaByte, toMebiByte;
 simplerRequire('../lib/carbonalyser/libStats.js');
+var getMsRefreshGui, getMsCheckRefresh, downloadCompletedCheckLoop, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
 simplerRequire('../background/trafficAnalyzer.js');
 
 describe('extractHostname', function () {
@@ -93,15 +97,16 @@ describe('incBytesDataCenter', function () {
 
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
-        localStorage = storageMock();
+        chrome.local.storage = storageMock();
         done();
     });
 
     it('should put url in local storage with entered byte length', function (done) {
         const origin = "www.example.org", value = 50;
         incBytesDataCenter(origin, value);
-        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
-
+        console.info("============");
+        console.info(obrowser);
+        //var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
         result.should.have.property('datacenter');
         result.datacenter.should.have.property('total').with.equal(value);
         done();

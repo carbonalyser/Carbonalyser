@@ -8,11 +8,14 @@
     "test": "test"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.180",
     "chai": "^4.3.4",
     "chai-spies": "^1.0.0",
     "chrome-mock": "0.0.9",
+    "jest-chrome": "^0.7.2",
     "mocha": "^6.2.3",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "sinon-chrome": "^3.0.1"
   },
   "scripts": {
     "test": "mocha test/test-script.js",
@@ -20,10 +23,11 @@
   },
   "author": "TheShiftProject",
   "license": "MIT",
-  "type":"module",
+  "type": "module",
   "dependencies": {
-    "flatted": "^3.2.5",
+    "@types/chrome": "^0.0.180",
+    "acorn": "^8.7.0",
     "jest-chrome": "^0.7.2",
-    "rewire": "^6.0.0"
+    "parse-js": "^0.7.4"
   }
 }
