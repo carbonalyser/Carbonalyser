@@ -382,6 +382,20 @@ const tab = {
           }
         }
       }
+    },
+    preferencesScreen: {
+      view: {
+        init: async function() {
+          await injectPreferencesIntoHTML("prefsTableTBODY");
+          document.getElementById("tab.settings.preferencesScreen.validateButton").addEventListener("click", function(){
+            
+          });
+        },
+        update: async function() {
+          $("#prefsTableTBODY").empty();
+          await this.init();
+        }
+      }
     }
   }, 
   /**

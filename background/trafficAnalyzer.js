@@ -72,8 +72,6 @@ headersReceivedListener = async (requestDetails) => {
 
   // Extract bytes from the network
   await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.responseHeaders));
-
-  return {};
 };
 
 // Take amount of data sent by the client in headers

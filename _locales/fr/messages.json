@@ -182,5 +182,14 @@
   },
   "tab.history.electricityConsumptionOverTime.graphYAxis": {
     "message": "Consommation d'éléctricitée KWh"
+  },
+  "tab.settings.preferencesScreen.prefsTableName": {
+    "message": "Préférence"
+  },
+  "tab.settings.preferencesScreen.prefsTableValue": {
+    "message": "valeur"
+  },
+  "tab.settings.preferencesScreen.validateButton": {
+    "message": "valider"
   }
 }

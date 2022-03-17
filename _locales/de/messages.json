@@ -182,5 +182,14 @@
   },
   "tab.history.electricityConsumptionOverTime.graphYAxis": {
     "message": "Stromverbrauch KWh"
+  },
+  "tab.settings.preferencesScreen.prefsTableName": {
+    "message": "Präferenz"
+  },
+  "tab.settings.preferencesScreen.prefsTableValue": {
+    "message": "Wert"
+  },
+  "tab.settings.preferencesScreen.validateButton": {
+    "message": "bestätigen"
   }
 }
