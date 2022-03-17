@@ -58,11 +58,6 @@ const simplerRequire = (filename) => {
     eval(data);
 }
 
-console.warn(chrome.storage.local.set.set.toSource());
-chrome.storage.local.set({ok: "okkk"});
-console.info("llll");
-console.warn(await chrome.storage.local.get("ok"));
-
 // define variable in scope that need to be
 var isInDebug, getBrowser, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
@@ -97,40 +92,38 @@ describe('incBytesDataCenter', function () {
 
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
-        chrome.local.storage = storageMock();
+        chrome.storage.local.clear();
         done();
     });
 
-    it('should put url in local storage with entered byte length', function (done) {
+    it('should put url in local storage with entered byte length', async function (done) {
         const origin = "www.example.org", value = 50;
-        incBytesDataCenter(origin, value);
-        console.info("============");
-        console.info(obrowser);
-        //var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
+        await incBytesDataCenter(origin, value);
+        var result = JSON.parse(await chrome.storage.local.get('rawdata'))[origin];
         result.should.have.property('datacenter');
         result.datacenter.should.have.property('total').with.equal(value);
         done();
     })
 
-    it('should increase in the local storage existing byte length for the same url', function (done) {
+    it('should increase in the local storage existing byte length for the same url', async function (done) {
         const origin = "www.example.org";
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
+        var result = JSON.parse(await chrome.storage.local.get('rawdata'))[origin];
 
         result.should.have.property('datacenter');
         result.datacenter.should.have.property('total').with.equal(192);
         done();
     });
 
-    it('should increase in the local storage existing byte length for different url', function (done) {
+    it('should increase in the local storage existing byte length for different url', async function (done) {
         const origin = "www.example.org", origin2 = "www1.example.org";
         incBytesDataCenter(origin, 128);
         incBytesDataCenter(origin2, 64);
 
-        var result = JSON.parse(localStorage.getItem('rawdata'))[origin];
-        var result2 = JSON.parse(localStorage.getItem('rawdata'))[origin2];
+        var result = JSON.parse(await chrome.storage.local.get('rawdata'))[origin];
+        var result2 = JSON.parse(await chrome.storage.local.get('rawdata'))[origin2];
         result.should.have.property('datacenter');
         result2.should.have.property('datacenter');
 
@@ -143,14 +136,14 @@ describe('incBytesDataCenter', function () {
 describe('getOrCreateRawData', function() {
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
-        localStorage = storageMock();
+        chrome.storage.local.clear();
         done();
     });
 
-    it('should retrieve or create a stats object', function(done) {
+    it('should retrieve or create a stats object', async function(done) {
         var expected = {};
-        var storage = getOrCreateRawData();
-        var storage2 = getOrCreateRawData();
+        var storage = await getOrCreateRawData();
+        var storage2 = await getOrCreateRawData();
         expect(expected).to.deep.equal(storage);
         expect(expected).to.deep.equal(storage2);
         done();
@@ -160,17 +153,17 @@ describe('getOrCreateRawData', function() {
 describe('getStats', function() {
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
-        localStorage = storageMock();
+        chrome.storage.local.clear();
         done();
     });
 
-    it('should retrieve or create a stats object', function(done) {
+    it('should retrieve or create a stats object', async function(done) {
         const d = "example.org", d1 = "1.example.org", d2 = "2.example.org";
-        incBytesDataCenter(d, 1);
-        incBytesDataCenter(d1, 2);
-        incBytesDataCenter(d2, 3);
-        const storage = getOrCreateRawData();
-        const stats = getStats(1);
+        await incBytesDataCenter(d, 1);
+        await incBytesDataCenter(d1, 2);
+        await incBytesDataCenter(d2, 3);
+        const storage = await getOrCreateRawData();
+        const stats = await getStats(1);
         stats.totalDataCenter.should.equals(6);
         stats.total.should.equals(stats.totalDataCenter);
         stats.highestStats.length.should.equals(2);
@@ -182,25 +175,25 @@ describe('addOneMinute', function () {
 
     this.beforeEach(function (done) {
         //reset local storage before each test to make independant tests
-        localStorage = storageMock();
+        chrome.storage.local.clear();
         done();
     });
 
-    it('should add one minute to the item duration in local storage', function (done) {
+    it('should add one minute to the item duration in local storage', async function (done) {
         addOneMinute();
 
-        var result = JSON.parse(localStorage.getItem("duration"));
+        var result = JSON.parse(await chrome.storage.local.get("duration"));
         result.should.equals(1);
         done();
     });
 
-    it('should add several minutes to the item duration in local storage', function (done) {
+    it('should add several minutes to the item duration in local storage', async function (done) {
         const nbMinutesAdded = 5;
         for (var i = 0; i < nbMinutesAdded; i++) {
             addOneMinute();
         }
 
-        var result = JSON.parse(localStorage.getItem("duration"));
+        var result = JSON.parse(await chrome.storage.local.get("duration"));
         result.should.equals(nbMinutesAdded);
         done();
     });
@@ -235,6 +228,7 @@ describe('isChrome', function () {
     });
 });
 
+var browser = {};
 describe('isFirefox', function () {
     this.afterEach(function (done) {
         browser = undefined;
@@ -300,16 +294,10 @@ describe('headersReceivedListener', function () {
         incBytesDataCenter = incBytesDataCenterBackup;
 
         //reset mock browser
-        browser = undefined;
-        InstallTrigger = undefined;
         done();
     });
 
     it('should call extractHostName with provided originUrl when it is provided from parameter (Mozilla Firefox Browser behavior)', function (done) {
-        browser = {
-            webRequest: {}
-        };
-        InstallTrigger = {};
         extractHostname = chai.spy(extractHostname);
 
         requestDetails.originUrl = DOMAIN_NAME;
