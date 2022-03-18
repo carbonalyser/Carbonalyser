@@ -293,7 +293,7 @@ init = async () => {
   await popup.model.init();
   await popup.view.init();
 
-  window.removeEventListener(init);
+  window.removeEventListener("load", init);
   window.addEventListener("unload", end, { once: true });
 }
 
