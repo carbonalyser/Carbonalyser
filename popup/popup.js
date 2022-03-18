@@ -1,4 +1,19 @@
+const LAST_UPDATE_DATA = "lastDataUpdate";
 const popup = {
+ statsData: null,
+ statsData5: null,
+  /**
+   * Responsible from update stats object.
+   */
+  updateStats: async function () {
+    if ( this.statsData == null  
+      || (Date.now() - this.statsData[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+      ) {
+        this.statsData = await getStats();
+        this.statsData5 = await getStats(5);
+        this.statsData[LAST_UPDATE_DATA] = Date.now();
+    }
+  },
 
   /**
    * Header with project title and more information.
@@ -91,7 +106,6 @@ const popup = {
           return;
         }
         await this.model.run();
-        await this.view.run();
         await this.parent.parent.view.update();
       },
       model: {
@@ -109,9 +123,6 @@ const popup = {
       },
       view: {
         button: null,
-        run: async () => {
-          await showStats();
-        },
         init: async function () {
           this.button = document.getElementById('resetButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
@@ -131,6 +142,14 @@ const popup = {
    * Part responsible from stats show.
    */
   stats: {
+    model: {
+      init: async function() {
+        await this.update();
+      },
+      update: async function() {
+        await this.parent.parent.updateStats();
+      }
+    },
     view: {
       statsInterval: null,
       pieChart: null,
@@ -139,9 +158,46 @@ const popup = {
         const statsMoreResults = document.getElementById('statsMoreResults');
         statsMoreResults.addEventListener('click', this.parent.openMoreResults);
         this.element = document.getElementById('stats');
+        const labels = [], series = [];
+        this.pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
+          donut: true,
+          donutWidth: 60,
+          donutSolid: true,
+          startAngle: 270,
+          showLabel: true
+        });
         await this.update();
       },
       update: async function () {
+        const root = this.parent.parent;
+        if (root.statsData5.total === 0) {
+          return;
+        }
+      
+        show(root.stats.view.element);
+        const labels = [];
+        const series = [];
+      
+        const statsListItemsElement = document.getElementById('statsListItems');
+        while (statsListItemsElement.firstChild) {
+          statsListItemsElement.removeChild(statsListItemsElement.firstChild);
+        }
+      
+        for (let index in root.statsData5.highestStats) {
+          if (root.statsData5.highestStats[index].percent < 1) {
+            continue;
+          }
+      
+          labels.push(root.statsData5.highestStats[index].origin);
+          series.push(root.statsData5.highestStats[index].percent);
+          const text = document.createTextNode(`${root.statsData5.highestStats[index].percent}% ${root.statsData5.highestStats[index].origin}`);
+          const li = document.createElement("LI");
+          li.appendChild(text);
+          statsListItemsElement.appendChild(li);
+        }
+
+        this.pieChart.update({labels, series});
+
         if ( (await obrowser.storage.local.get("rawdata")).rawdata === undefined ) {
           hide(this.element);
         } else {
@@ -188,7 +244,26 @@ const popup = {
    * Show equivalence (more human understandable)
    */
   equivalence: {
-
+    computedEquivalence: null,
+    model: {
+      init: async function() {
+        await this.update();
+      },
+      update: async function() {
+        const root = this.parent.parent;
+        await root.updateStats();
+        this.parent.computedEquivalence = await computeEquivalenceFromStatsItem(root.statsData);
+      }
+    },
+    view: {
+      init: async function() {
+        await this.update();
+      },
+      update: async function() {
+        const root = this.parent.parent;
+        await injectEquivalentIntoHTML(root.statsData, this.parent.computedEquivalence);
+      }
+    }
   },
   /**
    * Footer with legal notice
@@ -198,78 +273,28 @@ const popup = {
   }
 };
 
-createMVC(popup);
-attachParent(popup);
-
-showStats = async () => {
-  const stats = await getStats(5);
-
-  if (stats.total === 0) {
-    return;
-  }
-
-  show(popup.stats.view.element);
-  const labels = [];
-  const series = [];
-
-  const statsListItemsElement = document.getElementById('statsListItems');
-  while (statsListItemsElement.firstChild) {
-    statsListItemsElement.removeChild(statsListItemsElement.firstChild);
-  }
-
-  for (let index in stats.highestStats) {
-    if (stats.highestStats[index].percent < 1) {
-      continue;
-    }
-
-    labels.push(stats.highestStats[index].origin);
-    series.push(stats.highestStats[index].percent);
-    const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
-    const li = document.createElement("LI");
-    li.appendChild(text);
-    statsListItemsElement.appendChild(li);
-  }
-
-  const computedEquivalence = await computeEquivalenceFromStatsItem(stats);
-
-  if (!popup.stats.view.pieChart) {
-    popup.stats.view.pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
-      donut: true,
-      donutWidth: 60,
-      donutSolid: true,
-      startAngle: 270,
-      showLabel: true
-    });
-  } else {
-    popup.stats.view.pieChart.update({labels, series});
-  }
-
-  injectEquivalentIntoHTML(stats, computedEquivalence);
-}
-
-/**
- * Listen for comunication from background pages.
- */
- async function handleMessage(o) {
+async function handleMessage(o) {
   if (o.action == "view-refresh") {
     printDebug("Refresh data in the popup");
     await popup.model.update();
     await popup.view.update();
-    await showStats(); // should be removed
   }
 };
 
 init = async () => {
 
+  createMVC(popup);
+  attachParent(popup);
+
   obrowser.runtime.onMessage.addListener(handleMessage);
-  window.addEventListener("unload", end, { once: true });
   
   loadTranslations();
 
   await popup.model.init();
   await popup.view.init();
 
-  await showStats();
+  window.removeEventListener(init);
+  window.addEventListener("unload", end, { once: true });
 }
 
 end = () => {
