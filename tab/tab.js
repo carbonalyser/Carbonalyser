@@ -387,8 +387,25 @@ const tab = {
       view: {
         init: async function() {
           await injectPreferencesIntoHTML("prefsTableTBODY");
-          document.getElementById("tab.settings.preferencesScreen.validateButton").addEventListener("click", function(){
-            
+          document.getElementById("tab.settings.preferencesScreen.validateButton").addEventListener("click", async function(){
+            const prefs = await getOrCreatePreferences();
+            for(const row of document.getElementById("prefsTableTBODY").children) {
+              let value = row.children[1].children[0].value;
+              if ( typeof(value) === "string" ) {
+                try {
+                  const res = JSON.parse(value);
+                  if ( typeof(res) !== "string" ) {
+                    value = res;
+                  }
+                } catch(error) {
+                  // do nothing
+                }
+              }
+              IPIPrecurse(prefs, row.children[0].textContent, value);
+            }
+            console.warn(prefs);
+            console.warn(JSON.stringify(prefs));
+            await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
           });
         },
         update: async function() {
