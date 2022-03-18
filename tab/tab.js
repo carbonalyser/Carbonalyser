@@ -811,6 +811,8 @@ init = async () => {
   obrowser.storage.onChanged.addListener(async (changes, areaName) => {
     if ( areaName == "local" ) {
       if ( changes["pref"] !== undefined ) {
+        tab.settings.model.update();
+        tab.settings.view.update();
         $("#refreshButton").off("click");
         if ( await getPref("tab.animate") ) {
           $("#refreshButton").on("click", animateRotationButton);
