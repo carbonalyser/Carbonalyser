@@ -252,9 +252,7 @@ showStats = async () => {
  */
  async function handleMessage(o) {
   if (o.action == "view-refresh") {
-    if ( await isInDebug() ) { 
-      console.warn("Refresh data in the popup");
-    }
+    printDebug("Refresh data in the popup");
     await popup.model.update();
     await popup.view.update();
     await showStats(); // should be removed

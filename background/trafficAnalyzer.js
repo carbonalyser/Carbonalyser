@@ -95,14 +95,10 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = async (request) => {
-  if ( await isInDebug() ) {
-    console.info("request: {action: " + request.action + ", currentState: " + currentState + "}");
-  }
+  printDebug("request: {action: " + request.action + ", currentState: " + currentState + "}");
   if ( request.action === currentState ) {
     // event duplicate emission
-    if ( await isInDebug() ) {
-      console.warn("event duplicate request=", request);
-    }
+    printDebug("event duplicate request=", request);
     return;
   }
   switch(request.action) {
@@ -153,23 +149,17 @@ obrowser.runtime.onMessage.addListener(handleMessage);
 synchronizeGui = async () => {
   if ( lastTimeTrafficSeen == null ) {
     // no traffic before
-    if ( await isInDebug() ) {
-      console.warn("no traffic before");
-    }
+    printDebug("no traffic before");
   } else {
     const now = Date.now();
     if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
       // need to do gui refresh
       obrowser.runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      if ( await isInDebug() ) {
-        console.warn("need to do gui refresh");
-      }
+      printDebug("need to do gui refresh");
     } else {
       // nothing to do
-      if ( await isInDebug() ) {
-        console.warn("nothing to do");
-      }
+      printDebug("nothing to do");
     }
   }
 }

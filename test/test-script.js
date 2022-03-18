@@ -59,7 +59,7 @@ const simplerRequire = (filename) => {
 }
 
 // define variable in scope that need to be
-var isInDebug, getBrowser, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
+var printDebug, isInDebug, getBrowser, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
 obrowser = getBrowser();
 var injectEquivalentIntoHTML, computeEquivalenceFromStatsItem, updateEquivalence;

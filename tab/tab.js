@@ -403,14 +403,12 @@ const tab = {
               }
               IPIPrecurse(prefs, row.children[0].textContent, value);
             }
-            console.warn(prefs);
-            console.warn(JSON.stringify(prefs));
             await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
           });
         },
         update: async function() {
           $("#prefsTableTBODY").empty();
-          await this.init();
+          await injectPreferencesIntoHTML("prefsTableTBODY");
         }
       }
     }
@@ -771,9 +769,7 @@ animateRotationButton = async (done) => {
  */
 async function handleMessage(o) {
   if (o.action == "view-refresh") {
-    if ( await isInDebug() ) { 
-      console.warn("Refresh data in the tab");
-    }
+    printDebug("Refresh data in the tab");
     await tab.model.update();
     await tab.view.update();
   }
