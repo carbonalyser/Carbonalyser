@@ -218,7 +218,7 @@ const tab = {
           let foundValue = false;
           if ( ! init ) {
             for(const row of topResults.children) {
-              if ( 4 == row.children.length ) {
+              if ( 1 < row.children.length ) {
                 if ( row.children[1].textContent == stat.origin ) {
                   foundValue = true;
                   row.children[0].textContent = stat.percent;
@@ -353,7 +353,7 @@ const tab = {
 
           if ( ! init ) {
             for(const row of settingsCICIS.children) {
-              if( 2 == row.children.length ) {
+              if( 1 < row.children.length ) {
                 if ( row.children[0].textContent == region ) {
                   foundValue = true;
                   row.children[1].textContent = newIntensity;
@@ -773,14 +773,21 @@ animateRotationButton = async (done) => {
   }
 }
 
+let lastUpdate = null;
+let lock = false;
 /**
  * decide what to do with input orders.
  */
 async function handleMessage(o) {
+  if ( lock ) {
+    return;
+  }
+  lock = true;
   if (o.action == "view-refresh") {
     printDebug("Refresh data in the tab");
     await tab.update();
   }
+  lock = false;
 }
 
 init = async () => {
