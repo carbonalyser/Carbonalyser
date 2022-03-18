@@ -105,6 +105,14 @@ const tab = {
   parameters: null,
   rawdata: null,
 
+  init: async function () {
+    await this.model.init();
+    await this.view.init();
+  },
+  update: async function () {
+    await this.model.update();
+    await this.view.update();
+  },
   /**
    * Responsible from update stats object.
    */
@@ -746,11 +754,8 @@ const animDurationMs = 500;
 const steps = Math.round(animDurationMs/minimalNoticeableMs);
 const degPerStep = 360 / steps;
 const animateButton = $("#refreshButton > img");
+
 animateRotationButton = async (done) => {
-  if ( ! await getPref("tab.animate") ) {
-    done();
-    return;
-  }
   currentDeg += degPerStep;
   if (currentDeg >= 360 ) {
     currentDeg = 0;
@@ -760,7 +765,7 @@ animateRotationButton = async (done) => {
   if ( currentDeg > 0 ) {
     setTimeout(animateRotationButton, minimalNoticeableMs, done);
   } else {
-    done();
+    await tab.update();
   }
 }
 
@@ -770,8 +775,7 @@ animateRotationButton = async (done) => {
 async function handleMessage(o) {
   if (o.action == "view-refresh") {
     printDebug("Refresh data in the tab");
-    await tab.model.update();
-    await tab.view.update();
+    await tab.update();
   }
 }
 
@@ -783,17 +787,30 @@ init = async () => {
   attachHandlerToSelectRegion();
   loadTranslations();
 
-  await tab.model.init();
-  await tab.view.init();
+  await tab.init();
 
   // Animation button of refresh
-  $("#refreshButton").click(function() {
-    animateRotationButton(async function() {
-      await tab.model.update();
-      await tab.view.update();
-    });
-  });
-
+  if ( await getPref("tab.animate") ) {
+    $("#refreshButton").on("click", animateRotationButton);
+  } else {
+    $("#refreshButton").on("click", async () => {{
+      await tab.update();
+    }});
+  }
+  obrowser.storage.onChanged.addListener(async (changes, areaName) => {
+    if ( areaName == "local" ) {
+      if ( changes["pref"] !== undefined ) {
+        $("#refreshButton").off("click");
+        if ( await getPref("tab.animate") ) {
+          $("#refreshButton").on("click", animateRotationButton);
+        } else {
+          $("#refreshButton").on("click", async () => {{
+            await tab.update();
+          }});
+        }
+      }
+    }
+  })
 }
 
 end = () => {
