@@ -298,7 +298,7 @@ init = async () => {
 }
 
 end = () => {
-  browser.runtime.onMessage.removeListener(handleMessage);
+  obrowser.runtime.onMessage.removeListener(handleMessage);
 }
 
 window.addEventListener("load", init);

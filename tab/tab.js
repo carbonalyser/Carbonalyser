@@ -794,6 +794,23 @@ async function handleMessage(o) {
   lock = false;
 }
 
+handlePreferencesChanged = async (changes, areaName) => {
+  if ( areaName == "local" ) {
+    if ( changes["pref"] !== undefined ) {
+      tab.settings.model.update();
+      tab.settings.view.update();
+      $("#refreshButton").off("click");
+      if ( await getPref("tab.animate") ) {
+        $("#refreshButton").on("click", animateRotationButton);
+      } else {
+        $("#refreshButton").on("click", async () => {{
+          await tab.update();
+        }});
+      }
+    }
+  }
+}
+
 init = async () => {
 
   obrowser.runtime.onMessage.addListener(handleMessage);
@@ -812,26 +829,12 @@ init = async () => {
       await tab.update();
     }});
   }
-  obrowser.storage.onChanged.addListener(async (changes, areaName) => {
-    if ( areaName == "local" ) {
-      if ( changes["pref"] !== undefined ) {
-        tab.settings.model.update();
-        tab.settings.view.update();
-        $("#refreshButton").off("click");
-        if ( await getPref("tab.animate") ) {
-          $("#refreshButton").on("click", animateRotationButton);
-        } else {
-          $("#refreshButton").on("click", async () => {{
-            await tab.update();
-          }});
-        }
-      }
-    }
-  })
+  obrowser.storage.onChanged.addListener(handlePreferencesChanged);
 }
 
 end = () => {
   obrowser.runtime.onMessage.removeListener(handleMessage);
+  obrowser.storage.onChanged.removeListener(handlePreferencesChanged);
   window.removeEventListener("load", init);
   window.removeEventListener("unload", end);
 }
