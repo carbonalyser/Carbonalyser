@@ -140,7 +140,7 @@ handleMessage = async (request) => {
       // orders coming for other scripts.
       break;
     default:
-      console.error("Unknow order :", request);
+      printDebug("Unknow order :", request);
   }
   currentState = request.action;
 };
