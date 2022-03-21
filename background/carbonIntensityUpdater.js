@@ -73,14 +73,13 @@ let intervalID = null;
     await setRegion(name, region);
 }
 
-
 /**
  * Init the script.
  */
  init = async () => {
     
     await insertDefaultCarbonIntensity();
-    const interval = await getRefreshInterval();
+    const interval = await getPref("analysis.carbonIntensity.refreshMs");
     await insertUpdatedCarbonIntensity();
     intervalID = setInterval(insertUpdatedCarbonIntensity, interval);
 }
@@ -99,7 +98,8 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
     if ( areaName == "local" ) {
         if ( changes["pref"] !== undefined ) {
             stop();
-            intervalID = setInterval(insertUpdatedCarbonIntensity, await getRefreshInterval());
+            const ri = await getPref("analysis.carbonIntensity.refreshMs");
+            intervalID = setInterval(insertUpdatedCarbonIntensity, ri);
         } else {
             // no changes to preferences
         }
@@ -109,7 +109,7 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
 });
 
   
-obrowser.runtime.onMessage.addListener(async function(request, sender, sendResponse){
+obrowser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
     if (request.action == "reinitCIUpdater") {
         stop();
