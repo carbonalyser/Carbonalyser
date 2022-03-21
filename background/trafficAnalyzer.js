@@ -103,6 +103,7 @@ handleMessage = async (request) => {
   }
   switch(request.action) {
     case 'start':
+      printDebug("trafficAnalyzer: start");
       setBrowserIcon('on');
 
       obrowser.webRequest.onHeadersReceived.addListener(
@@ -124,6 +125,7 @@ handleMessage = async (request) => {
       }
       break;
     case 'stop':
+      printDebug("trafficAnalyzer: stop");
       setBrowserIcon('off');
       obrowser.webRequest.onHeadersReceived.removeListener(headersReceivedListener);
       obrowser.webRequest.onSendHeaders.removeListener(sendHeadersListener);
@@ -147,19 +149,18 @@ obrowser.runtime.onMessage.addListener(handleMessage);
 
 // Synchronize guis with reality
 synchronizeGui = async () => {
-  if ( lastTimeTrafficSeen == null ) {
-    // no traffic before
-    printDebug("no traffic before");
+  if ( lastTimeTrafficSeen === null ) {
+    // no traffic seen before, waiting
   } else {
     const now = Date.now();
     if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
       // need to do gui refresh
       obrowser.runtime.sendMessage({ action: 'view-refresh' });
       lastTimeTrafficSeen = null;
-      printDebug("need to do gui refresh");
+      printDebug("trafficAnalyzer: need to do gui refresh");
     } else {
       // nothing to do
-      printDebug("nothing to do");
+      printDebug("trafficAnalyzer: nothing to do");
     }
   }
 }
