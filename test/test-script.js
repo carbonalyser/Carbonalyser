@@ -8,6 +8,10 @@ import { fileURLToPath } from 'url';
 import chrome from 'sinon-chrome';
 import Mocha from 'mocha';
 
+var window = {
+    addEventListener: function (name, callback) {},
+    removeEventListener: function (name, callback) {}
+};
 const expect = chai.expect,
     assert = chai.assert,
     should = chai.should();
@@ -58,8 +62,9 @@ const simplerRequire = (filename) => {
     eval(data);
 }
 
+
 // define variable in scope that need to be
-var printDebug, isInDebug, getBrowser, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
+var printDebug, isInDebug, getBrowser, end, preferencesChange, emulateFirefox, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
 obrowser = getBrowser();
 var injectEquivalentIntoHTML, computeEquivalenceFromStatsItem, updateEquivalence;
@@ -68,7 +73,7 @@ var injectRegionIntoHTML, attachHandlerToSelectRegion, selectRegionHandler, getS
 simplerRequire('../lib/carbonalyser/libRegionSelect.js');
 var init, getOrCreateRawData, incBytesPerOrigin, incBytesDataCenter, incBytesNetwork, setRegion, getCarbonIntensityRegion, getParameters, capitalizeFirstLetter, lowerFirstLetter, getRegions, setParameters, getStats, toMegaByteNoRound, toMegaByte, toMebiByte;
 simplerRequire('../lib/carbonalyser/libStats.js');
-var getOrCreatePreferences, getPref, setPref, injectPreferencesIntoHTML, createEntry, IPIrecurse, IPIPrecurse;
+var getOrCreatePreferences, getPref, setPref, listenerStorage, injectPreferencesIntoHTML, createEntry, IPIrecurse, IPIPrecurse;
 simplerRequire('../lib/carbonalyser/libPreferences.js');
 var getMsRefreshGui, getMsCheckRefresh, downloadCompletedCheckLoop, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
 simplerRequire('../background/trafficAnalyzer.js');

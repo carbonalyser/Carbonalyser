@@ -15,7 +15,8 @@
     "jest-chrome": "^0.7.2",
     "mocha": "^6.2.3",
     "nyc": "^14.1.1",
-    "sinon-chrome": "^3.0.1"
+    "sinon-chrome": "^3.0.1",
+    "window-mock": "^0.1.0"
   },
   "scripts": {
     "test": "mocha test/test-script.js",
