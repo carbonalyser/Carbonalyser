@@ -14,7 +14,14 @@ const popup = {
         this.statsData[LAST_UPDATE_DATA] = Date.now();
     }
   },
-
+  init: async function () {
+    await this.model.init();
+    await this.view.init();
+  },
+  update: async function () {
+    await this.model.update();
+    await this.view.update();
+  },
   /**
    * Header with project title and more information.
    */
@@ -276,8 +283,7 @@ const popup = {
 async function handleMessage(o) {
   if (o.action == "view-refresh") {
     printDebug("Refresh data in the popup");
-    await popup.model.update();
-    await popup.view.update();
+    popup.update();
   }
 };
 
@@ -285,16 +291,14 @@ init = async () => {
 
   createMVC(popup);
   attachParent(popup);
-
-  obrowser.runtime.onMessage.addListener(handleMessage);
   
   loadTranslations();
 
-  await popup.model.init();
-  await popup.view.init();
-
   window.removeEventListener("load", init);
   window.addEventListener("unload", end, { once: true });
+
+  popup.init();
+  obrowser.runtime.onMessage.addListener(handleMessage);
 }
 
 end = () => {

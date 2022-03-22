@@ -9,7 +9,7 @@ createSumOfData = (dataObject, type, tsInterval=60*10) => {
   const rv = {};
   for(const origin in dataObject) {
     if ( dataObject[origin][type] === undefined ) {
-      console.warn("Found undefined at dataObject[" + origin + "][" + type + "]")
+      printDebug("Found undefined at dataObject[" + origin + "][" + type + "]")
       continue;
     }
     const keys = Object.keys(dataObject[origin][type].dots);
@@ -642,7 +642,7 @@ const tab = {
         electricityNetworkObjectForm: null,
         init: async function () {
           const history = this.parent.parent;
-          console.warn("bytes per origin is not updated at the time (only electricity)...");
+          printDebug("bytes per origin is not updated at the time (only electricity)...");
           this.electricityDataCenterObjectForm = [];
           this.electricityNetworkObjectForm = [];
           for(let o of history.model.bytesDataCenterObjectForm) {
@@ -813,7 +813,7 @@ handlePreferencesChanged = async (changes, areaName) => {
 
 init = async () => {
 
-  obrowser.runtime.onMessage.addListener(handleMessage);
+  window.removeEventListener("load", init);
   window.addEventListener("unload", end);
 
   attachHandlerToSelectRegion();
@@ -829,14 +829,14 @@ init = async () => {
       await tab.update();
     }});
   }
+
   obrowser.storage.onChanged.addListener(handlePreferencesChanged);
+  obrowser.runtime.onMessage.addListener(handleMessage);
 }
 
 end = () => {
   obrowser.runtime.onMessage.removeListener(handleMessage);
   obrowser.storage.onChanged.removeListener(handlePreferencesChanged);
-  window.removeEventListener("load", init);
   window.removeEventListener("unload", end);
 }
-
 window.addEventListener("load", init);
