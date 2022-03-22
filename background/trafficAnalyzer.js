@@ -59,6 +59,34 @@ getBytesFromHeaders = (headers) => {
   return lengthNetwork;
 }
 
+/**
+ * a copy of storage that is writted periodically.
+ * warning it holds diff not real values.
+ */
+buffer = {rawdata: {}};
+bufferWritter = async () => {
+  const rawdata = await getOrCreateRawData();
+  for(const origin in buffer.rawdata) {
+    printDebug("inc origin=" + origin);
+    const originStorage = await getOrCreateRawData(origin);
+    const data = buffer.rawdata[origin];
+    for(let classType of ["network", "datacenter"]) {
+      const ts = Date.now();
+      const originClassTypeStorage = originStorage[classType];
+      originClassTypeStorage.total += data[classType].total;
+      if ( originClassTypeStorage.dots[ts] === undefined ) {
+          originClassTypeStorage.dots[ts] = 0;
+      }
+      originClassTypeStorage.dots[ts] += data[classType].total;
+    }
+    rawdata[origin] = originStorage;
+  }
+  const rawDataStr = JSON.stringify(rawdata);
+  await obrowser.storage.local.set({rawdata: rawDataStr});
+  buffer.rawdata = {};
+}
+setInterval(bufferWritter, 1000);
+
 // This is triggered when some headers are received.
 headersReceivedListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
@@ -68,17 +96,27 @@ headersReceivedListener = async (requestDetails) => {
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
    : responseHeadersContentLength;
   const requestSize = parseInt(contentLength.value, 10);
-  await incBytesDataCenter(origin, requestSize);
 
   // Extract bytes from the network
-  await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.responseHeaders));
+  const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
+  if ( buffer.rawdata[origin] === undefined ) {
+    buffer.rawdata[origin] = {datacenter: {total: requestSize}, network: {total: bnet, dots: {}}};
+  } else {
+    buffer.rawdata[origin].datacenter.total += requestSize;
+    buffer.rawdata[origin].network.total += bnet;
+  }
 };
 
 // Take amount of data sent by the client in headers
 sendHeadersListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
-  await incBytesNetwork(origin, getBytesFromHeaders(requestDetails.requestHeaders));
+  const bnet = getBytesFromHeaders(requestDetails.requestHeaders);
+  if ( buffer.rawdata[origin] === undefined ) {
+    buffer.rawdata[origin] = {datacenter: {total: 0}, network: {total: bnet, dots: {}}};
+  } else {
+    buffer.rawdata[origin].network.total += bnet;
+  }
 }
 
 setBrowserIcon = (type) => {
