@@ -159,37 +159,37 @@
   "settingsCICI": {
     "message": "Facteur d'intensité carbone"
   },
-  "tab.history.data.consumptionOverTime.datacenterLabel": {
+  "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Données utilisées depuis le centre de données"
   },
-  "tab.history.data.consumptionOverTime.networkLabel": {
+  "tab_history_data_consumptionOverTime_networkLabel": {
     "message": "Données utilisées sur le réseau"
   },
-  "tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel": {
+  "tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel": {
     "message": "Répartition de la donnée entre les sites"
   },
-  "tab.history.electricityConsumptionOverTime.datasetDataCenter": {
+  "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
     "message": "Electricitée consommée par le centre de données"
   },
-  "tab.history.electricityConsumptionOverTime.datasetNetwork": {
+  "tab_history_electricityConsumptionOverTime_datasetNetwork": {
     "message": "Electricitée consommée par l'infrastructure réseau"
   },
-  "tab.history.electricityConsumptionOverTime.graphTitle": {
+  "tab_history_electricityConsumptionOverTime_graphTitle": {
     "message": "Consommation d'électricitée liée à votre surf (pas seulement votre ordinateur)"
   },
-  "tab.history.electricityConsumptionOverTime.graphXAxis": {
+  "tab_history_electricityConsumptionOverTime_graphXAxis": {
     "message": "Temps"
   },
-  "tab.history.electricityConsumptionOverTime.graphYAxis": {
+  "tab_history_electricityConsumptionOverTime_graphYAxis": {
     "message": "Consommation d'éléctricitée KWh"
   },
-  "tab.settings.preferencesScreen.prefsTableName": {
+  "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Préférence"
   },
-  "tab.settings.preferencesScreen.prefsTableValue": {
+  "tab_settings_preferencesScreen_prefsTableValue": {
     "message": "valeur"
   },
-  "tab.settings.preferencesScreen.validateButton": {
+  "tab_settings_preferencesScreen_validateButton": {
     "message": "valider"
   }
 }

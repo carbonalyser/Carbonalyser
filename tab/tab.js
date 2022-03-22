@@ -403,7 +403,7 @@ const tab = {
       view: {
         init: async function() {
           await injectPreferencesIntoHTML("prefsTableTBODY");
-          document.getElementById("tab.settings.preferencesScreen.validateButton").addEventListener("click", async function(){
+          document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
             const prefs = await getOrCreatePreferences();
             for(const row of document.getElementById("prefsTableTBODY").children) {
               let value = row.children[1].children[0].value;
@@ -475,14 +475,14 @@ const tab = {
             return {
               datasets: [
                 {
-                  label: translate("tab.history.data.consumptionOverTime.datacenterLabel"),
+                  label: translate("tab_history_data_consumptionOverTime_datacenterLabel"),
                   data: parent.model.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
-                  label: translate("tab.history.data.consumptionOverTime.networkLabel"),
+                  label: translate("tab_history_data_consumptionOverTime_networkLabel"),
                   data: parent.model.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
@@ -608,7 +608,7 @@ const tab = {
             return {
               labels: parent.model.labels,
               datasets: [{
-                label: translate("tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel"),
+                label: translate("tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel"),
                 data: parent.model.series,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
@@ -665,14 +665,14 @@ const tab = {
           return {
             datasets: [
               {
-                label: translate("tab.history.electricityConsumptionOverTime.datasetDataCenter"),
+                label: translate("tab_history_electricityConsumptionOverTime_datasetDataCenter"),
                 data: parent.model.electricityDataCenterObjectForm,
                 borderColor: 'rgb(255, 0, 0)',
                 showLine: true,
                 lineTension: 0.2,
               },
               {
-                label: translate("tab.history.electricityConsumptionOverTime.datasetNetwork"),
+                label: translate("tab_history_electricityConsumptionOverTime_datasetNetwork"),
                 data: parent.model.electricityNetworkObjectForm,
                 borderColor: 'rgb(0, 255, 0)',
                 showLine: true,
@@ -696,7 +696,7 @@ const tab = {
                 },
                 title: {
                   display: true,
-                  text: translate("tab.history.electricityConsumptionOverTime.graphTitle")
+                  text: translate("tab_history_electricityConsumptionOverTime_graphTitle")
                 },
                 decimation: {
                   enabled: true,
@@ -721,14 +721,14 @@ const tab = {
                 x: {
                   title: {
                     display: true,
-                    text: translate("tab.history.electricityConsumptionOverTime.graphXAxis")
+                    text: translate("tab_history_electricityConsumptionOverTime_graphXAxis")
                   }, 
                   type: 'time'
                 },
                 y: {
                     title: {
                       display: true,
-                      text: translate("tab.history.electricityConsumptionOverTime.graphYAxis")
+                      text: translate("tab_history_electricityConsumptionOverTime_graphYAxis")
                     }
                 }
               }

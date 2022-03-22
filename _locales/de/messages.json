@@ -159,37 +159,37 @@
   "settingsCICI": {
     "message": "Kohlenstoffintensitäts faktor"
   },
-  "tab.history.data.consumptionOverTime.datacenterLabel": {
+  "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Verwendete Daten aus dem Rechenzentrum"
   },
-  "tab.history.data.consumptionOverTime.networkLabel": {
+  "tab_history_data_consumptionOverTime_networkLabel": {
     "message": "Im Netzwerk verwendete Daten"
   },
-  "tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel": {
+  "tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel": {
     "message": "Anteil von Websites"
   },
-  "tab.history.electricityConsumptionOverTime.datasetDataCenter": {
+  "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
     "message": "Stromverbrauch im Rechenzentrum"
   },
-  "tab.history.electricityConsumptionOverTime.datasetNetwork": {
+  "tab_history_electricityConsumptionOverTime_datasetNetwork": {
     "message": "Stromverbrauch Routing Infra"
   },
-  "tab.history.electricityConsumptionOverTime.graphTitle": {
+  "tab_history_electricityConsumptionOverTime_graphTitle": {
     "message": "Stromverbrauch im Zusammenhang mit Ihrer Online-Aktivität (nicht nur Ihr Computer)"
   },
-  "tab.history.electricityConsumptionOverTime.graphXAxis": {
+  "tab_history_electricityConsumptionOverTime_graphXAxis": {
     "message": "Temp"
   },
-  "tab.history.electricityConsumptionOverTime.graphYAxis": {
+  "tab_history_electricityConsumptionOverTime_graphYAxis": {
     "message": "Stromverbrauch KWh"
   },
-  "tab.settings.preferencesScreen.prefsTableName": {
+  "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
   },
-  "tab.settings.preferencesScreen.prefsTableValue": {
+  "tab_settings_preferencesScreen_prefsTableValue": {
     "message": "Wert"
   },
-  "tab.settings.preferencesScreen.validateButton": {
+  "tab_settings_preferencesScreen_validateButton": {
     "message": "bestätigen"
   }
 }

@@ -159,37 +159,37 @@
   "settingsCICI": {
     "message": "Carbone intensity factor"
   },
-  "tab.history.data.consumptionOverTime.datacenterLabel": {
+  "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Data used from datacenter"
   },
-  "tab.history.data.consumptionOverTime.networkLabel": {
+  "tab_history_data_consumptionOverTime_networkLabel": {
     "message": "Data used over network"
   },
-  "tab.history.data.consumptionShareAmongSites.sitesShareDatasetLabel": {
+  "tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel": {
     "message": "Share of websites"
   },
-  "tab.history.electricityConsumptionOverTime.datasetDataCenter": {
+  "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
     "message": "Electricity consummed in datacenter"
   },
-  "tab.history.electricityConsumptionOverTime.datasetNetwork": {
+  "tab_history_electricityConsumptionOverTime_datasetNetwork": {
     "message": "Electricity consummed routing infra"
   },
-  "tab.history.electricityConsumptionOverTime.graphTitle": {
+  "tab_history_electricityConsumptionOverTime_graphTitle": {
     "message": "Comsumption of electricity linked to your online activity (not only your computer)"
   },
-  "tab.history.electricityConsumptionOverTime.graphXAxis": {
+  "tab_history_electricityConsumptionOverTime_graphXAxis": {
     "message": "Time"
   },
-  "tab.history.electricityConsumptionOverTime.graphYAxis": {
+  "tab_history_electricityConsumptionOverTime_graphYAxis": {
     "message": "electricity consumption KWh"
   },
-  "tab.settings.preferencesScreen.prefsTableName": {
+  "tab_settings_preferencesScreen_prefsTableName": {
     "message": "preference"
   },
-  "tab.settings.preferencesScreen.prefsTableValue": {
+  "tab_settings_preferencesScreen_prefsTableValue": {
     "message": "value"
   },
-  "tab.settings.preferencesScreen.validateButton": {
+  "tab_settings_preferencesScreen_validateButton": {
     "message": "validate"
   }
 }
