@@ -299,9 +299,12 @@ init = async () => {
 
   popup.init();
   obrowser.runtime.onMessage.addListener(handleMessage);
+  obrowser.storage.onChanged.removeListener(listenerStorage);
 }
 
 end = () => {
+  // Under firefox 98.0.1 context of popup is destructed before backend receive
+  // message of remove listener.
   obrowser.runtime.onMessage.removeListener(handleMessage);
 }
 
