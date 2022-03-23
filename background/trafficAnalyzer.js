@@ -1,8 +1,8 @@
 // last time we got traffic on the wire
 let lastTimeTrafficSeen = null;
-let originPrintDebug = printDebug;
+
 printDebug = (msg) => {
-  originPrintDebug("trafficAnalyzer " + msg);
+  printDebugOrigin("trafficAnalyzer " + msg);
 }
 
 /**
@@ -135,7 +135,7 @@ handleMessage = async (request) => {
   printDebug("request: {action: " + request.action + ", currentState: " + currentState + "}");
   if ( request.action === currentState ) {
     // event duplicate emission
-    printDebug("event duplicate request=", request);
+    printDebug("event duplicate request=" + request.action);
     return;
   }
   switch(request.action) {
@@ -177,7 +177,7 @@ handleMessage = async (request) => {
       // orders coming for other scripts.
       break;
     default:
-      printDebug("Unknow order :", request);
+      printDebug("Unknow order");
   }
   currentState = request.action;
 };

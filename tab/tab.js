@@ -1,7 +1,8 @@
-oPrintDebug = printDebug
+
 printDebug = (msg) => {
-  oPrintDebug("tab: " + msg);
+  printDebugOrigin("tab: " + msg);
 }
+
 // Create a sum of data for all websites
 // tsInterval in s
 createSumOfData = (dataObject, type, tsInterval=60*10) => {
