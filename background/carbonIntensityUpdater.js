@@ -59,7 +59,6 @@ let intervalID = null;
     const parameters = await getParameters();
     parameters.lastRefresh = Date.now();
     await setParameters(parameters);
-    obrowser.runtime.sendMessage({action: 'view-refresh'});
 }
 
 /**
@@ -114,11 +113,9 @@ obrowser.runtime.onMessage.addListener(async (request, sender, sendResponse) => 
     if (request.action == "reinitCIUpdater") {
         stop();
         await init();
-        obrowser.runtime.sendMessage({action: 'view-refresh'});
     }
 
     if ( request.action == "forceCIUpdater" ) {
         await insertUpdatedCarbonIntensity();
-        obrowser.runtime.sendMessage({action: 'view-refresh'});
     }
 });

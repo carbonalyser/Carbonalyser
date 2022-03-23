@@ -280,12 +280,14 @@ const popup = {
   }
 };
 
-async function handleMessage(o) {
-  if (o.action == "view-refresh") {
-    printDebug("Refresh data in the popup");
+/**
+ * listen for modification of storage.
+ */
+onStorageChanged = async (changes, areaName) => {
+  if ( areaName === "local" ) {
     popup.update();
   }
-};
+}
 
 init = async () => {
 
@@ -298,14 +300,11 @@ init = async () => {
   window.addEventListener("unload", end, { once: true });
 
   popup.init();
-  obrowser.runtime.onMessage.addListener(handleMessage);
-  obrowser.storage.onChanged.removeListener(listenerStorage);
+  obrowser.storage.onChanged.addListener(onStorageChanged);
 }
 
 end = () => {
-  // Under firefox 98.0.1 context of popup is destructed before backend receive
-  // message of remove listener.
-  obrowser.runtime.onMessage.removeListener(handleMessage);
+
 }
 
 window.addEventListener("load", init);

@@ -778,27 +778,12 @@ animateRotationButton = async (done) => {
 }
 
 let lastUpdate = null;
-let lock = false;
-/**
- * decide what to do with input orders.
- */
-async function handleMessage(o) {
-  if ( lock ) {
-    return;
-  }
-  lock = true;
-  if (o.action == "view-refresh") {
-    printDebug("Refresh data in the tab");
-    await tab.update();
-  }
-  lock = false;
-}
 
-handlePreferencesChanged = async (changes, areaName) => {
+handleStorageChanged = async (changes, areaName) => {
   if ( areaName == "local" ) {
+    printDebug("Refresh data in the tab");
+    tab.update();
     if ( changes["pref"] !== undefined ) {
-      tab.settings.model.update();
-      tab.settings.view.update();
       $("#refreshButton").off("click");
       if ( await getPref("tab.animate") ) {
         $("#refreshButton").on("click", animateRotationButton);
@@ -807,7 +792,7 @@ handlePreferencesChanged = async (changes, areaName) => {
           await tab.update();
         }});
       }
-    }
+    } 
   }
 }
 
@@ -830,13 +815,11 @@ init = async () => {
     }});
   }
 
-  obrowser.storage.onChanged.addListener(handlePreferencesChanged);
-  obrowser.runtime.onMessage.addListener(handleMessage);
+  obrowser.storage.onChanged.addListener(handleStorageChanged);
 }
 
 end = () => {
-  obrowser.runtime.onMessage.removeListener(handleMessage);
-  obrowser.storage.onChanged.removeListener(handlePreferencesChanged);
+  obrowser.storage.onChanged.removeListener(handleStorageChanged);
   window.removeEventListener("unload", end);
 }
 window.addEventListener("load", init);

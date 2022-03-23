@@ -84,6 +84,7 @@ bufferWritter = async () => {
   const rawDataStr = JSON.stringify(rawdata);
   await obrowser.storage.local.set({rawdata: rawDataStr});
   buffer.rawdata = {};
+  console.warn("write end");
 }
 setInterval(bufferWritter, 1000);
 
@@ -185,39 +186,19 @@ handleMessage = async (request) => {
 
 obrowser.runtime.onMessage.addListener(handleMessage);
 
-// Synchronize guis with reality
-synchronizeGui = async () => {
-  if ( lastTimeTrafficSeen === null ) {
-    // no traffic seen before, waiting
-  } else {
-    const now = Date.now();
-    if ( (await getMsRefreshGui()) < (now - lastTimeTrafficSeen) ) {
-      // need to do gui refresh
-      obrowser.runtime.sendMessage({ action: 'view-refresh' });
-      lastTimeTrafficSeen = null;
-      printDebug("trafficAnalyzer: need to do gui refresh");
-    } else {
-      // nothing to do
-      printDebug("trafficAnalyzer: nothing to do");
-    }
-  }
-}
-
-let synchronizeThread = null;
-getMsCheckRefresh().then((value) => {
-  synchronizeThread = setInterval(synchronizeGui,value);
+let storageSynchronizeThread = null;
+getPref("daemon.storage.bufferLatency").then((value) => {
+  console.warn("interval setup", value );
+  storageSynchronizeThread = setInterval(bufferWritter, value);
 });
-
 obrowser.storage.onChanged.addListener(async (changes, areaName) => {
   //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
-      clearInterval(synchronizeThread);
-      const auto_refresh = await getPref("daemon.changes.auto_refresh");
-      if ( auto_refresh ) {
-        synchronizeThread = setInterval(synchronizeGui, await getMsCheckRefresh());
-      }
-      obrowser.runtime.sendMessage({ action: 'view-refresh' });
+      clearInterval(storageSynchronizeThread);
+      const newV = await getPref("daemon.storage.bufferLatency");
+      console.warn("newV=" + newV);
+      setInterval(storageSynchronizeThread, newV);
     } else {
       // no changes to preferences
     }
