@@ -1,5 +1,9 @@
 // last time we got traffic on the wire
 let lastTimeTrafficSeen = null;
+let originPrintDebug = printDebug;
+printDebug = (msg) => {
+  originPrintDebug("trafficAnalyzer " + msg);
+}
 /**
  * Holds the delay between modification and gui update (set to 0 if you want instant modification).
  */
@@ -66,9 +70,15 @@ getBytesFromHeaders = (headers) => {
 buffer = {rawdata: {}};
 bufferWritter = async () => {
   const rawdata = await getOrCreateRawData();
+  let someData = false;
   for(const origin in buffer.rawdata) {
+    someData = true;
+    let originStorage = rawdata[origin];
+    if ( originStorage === undefined ) {
+      originStorage = {datacenter: {total: 0, dots: {}}, network: {total: 0, dots: {}}};
+      rawdata[origin] = originStorage;
+    }
     printDebug("inc origin=" + origin);
-    const originStorage = await getOrCreateRawData(origin);
     const data = buffer.rawdata[origin];
     for(let classType of ["network", "datacenter"]) {
       const ts = Date.now();
@@ -81,12 +91,12 @@ bufferWritter = async () => {
     }
     rawdata[origin] = originStorage;
   }
-  const rawDataStr = JSON.stringify(rawdata);
-  await obrowser.storage.local.set({rawdata: rawDataStr});
-  buffer.rawdata = {};
-  console.warn("write end");
+  if ( someData ) {
+    const rawDataStr = JSON.stringify(rawdata);
+    await obrowser.storage.local.set({rawdata: rawDataStr});
+    buffer.rawdata = {};
+  }
 }
-setInterval(bufferWritter, 1000);
 
 // This is triggered when some headers are received.
 headersReceivedListener = async (requestDetails) => {
@@ -188,17 +198,24 @@ obrowser.runtime.onMessage.addListener(handleMessage);
 
 let storageSynchronizeThread = null;
 getPref("daemon.storage.bufferLatency").then((value) => {
-  console.warn("interval setup", value );
   storageSynchronizeThread = setInterval(bufferWritter, value);
 });
+
+let restartStorageT = null;
+restartStorageF = async () => {
+  printDebug("Restarting storage synchronization");
+  clearInterval(storageSynchronizeThread);
+  storageSynchronizeThread = setInterval(bufferWritter, await getPref("daemon.storage.bufferLatency"));
+  restartStorageT = null;
+}
+
 obrowser.storage.onChanged.addListener(async (changes, areaName) => {
-  //console.error("storage change : " , changes, areaName);
   if ( areaName == "local" ) {
     if ( changes["pref"] !== undefined ) {
-      clearInterval(storageSynchronizeThread);
-      const newV = await getPref("daemon.storage.bufferLatency");
-      console.warn("newV=" + newV);
-      setInterval(storageSynchronizeThread, newV);
+      if ( restartStorageT != null ) {
+        clearTimeout(restartStorageT);
+      }
+      restartStorageT = setTimeout(restartStorageF, 100);
     } else {
       // no changes to preferences
     }
