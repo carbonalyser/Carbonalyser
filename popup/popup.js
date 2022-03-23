@@ -7,7 +7,7 @@ const popup = {
    */
   updateStats: async function () {
     if ( this.statsData == null  
-      || (Date.now() - this.statsData[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+      || (Date.now() - this.statsData[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
       ) {
         this.statsData = await getStats();
         this.statsData5 = await getStats(5);

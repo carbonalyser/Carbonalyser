@@ -122,7 +122,7 @@ const tab = {
    */
   updateStats: async function () {
     if ( this.stats == null 
-      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
       ) {
       this.stats = await getStats();
       this.stats[LAST_UPDATE_DATA] = Date.now();
@@ -134,7 +134,7 @@ const tab = {
    */
   updateParameters: async function () {
     if ( this.parameters == null 
-      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+      || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
       ) {
       this.parameters = await getParameters();
       this.parameters[LAST_UPDATE_DATA] = Date.now();
@@ -146,7 +146,7 @@ const tab = {
    */
   updateRawData: async function () {
     if ( this.rawdata == null 
-      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+      || (Date.now() - this.rawdata[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
       ) {
       this.rawdata = await getOrCreateRawData();
       this.rawdata[LAST_UPDATE_DATA] = Date.now();
@@ -161,7 +161,7 @@ const tab = {
       return await updateParameters();
     } else {
       if ( this.parameters.regions == null 
-        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > (await getPref("tab.update.minMs")) 
+        || (Date.now() - this.parameters.regions[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
         ) {
           this.parameters.regions = await getRegions();
           this.parameters.regions[LAST_UPDATE_DATA] = Date.now();
