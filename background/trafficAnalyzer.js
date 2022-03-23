@@ -4,18 +4,6 @@ let originPrintDebug = printDebug;
 printDebug = (msg) => {
   originPrintDebug("trafficAnalyzer " + msg);
 }
-/**
- * Holds the delay between modification and gui update (set to 0 if you want instant modification).
- */
-getMsRefreshGui = async () => {
-  return await getPref("daemon.changes.msBetweenChanges");
-}
-/**
- * At which ms we make the test on the background thread.
- */
-getMsCheckRefresh = async () => {
-  return await getPref("daemon.changes.loopMs");
-}
 
 /**
  * This is trigger when a download start.
@@ -197,7 +185,7 @@ handleMessage = async (request) => {
 obrowser.runtime.onMessage.addListener(handleMessage);
 
 let storageSynchronizeThread = null;
-getPref("daemon.storage.bufferLatency").then((value) => {
+getPref("daemon.storage.flushingIntervalMs").then((value) => {
   storageSynchronizeThread = setInterval(bufferWritter, value);
 });
 
@@ -205,7 +193,7 @@ let restartStorageT = null;
 restartStorageF = async () => {
   printDebug("Restarting storage synchronization");
   clearInterval(storageSynchronizeThread);
-  storageSynchronizeThread = setInterval(bufferWritter, await getPref("daemon.storage.bufferLatency"));
+  storageSynchronizeThread = setInterval(bufferWritter, await getPref("daemon.storage.flushingIntervalMs"));
   restartStorageT = null;
 }
 
@@ -215,7 +203,7 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
       if ( restartStorageT != null ) {
         clearTimeout(restartStorageT);
       }
-      restartStorageT = setTimeout(restartStorageF, 100);
+      restartStorageT = setTimeout(restartStorageF, await getPref("daemon.storage.restartCheckerMsLatency"));
     } else {
       // no changes to preferences
     }

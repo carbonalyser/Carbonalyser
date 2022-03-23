@@ -75,7 +75,7 @@ var init, getOrCreateRawData, incBytesPerOrigin, incBytesDataCenter, incBytesNet
 simplerRequire('../lib/carbonalyser/libStats.js');
 var getOrCreatePreferences, getPref, setPref, listenerStorage, injectPreferencesIntoHTML, createEntry, IPIrecurse, IPIPrecurse;
 simplerRequire('../lib/carbonalyser/libPreferences.js');
-var getMsRefreshGui, getMsCheckRefresh, downloadCompletedCheckLoop, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
+var downloadCompletedCheckLoop, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
 simplerRequire('../background/trafficAnalyzer.js');
 
 describe('extractHostname', function () {
