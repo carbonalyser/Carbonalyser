@@ -192,6 +192,36 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"
   },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
+    "message": "Interval (en ms) avec lequel on écrit dans le vrai stockage"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
+    "message": "Latence qui s'applique entre l'écriture dans le stockage et le redémarrage du flusheur"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
+    "message": "Fréquence (en ms) de surveillance après qu'un téléchargement ai commencé"
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
+    "message": "Region selectionnée"
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_carbonIntensity_refreshMs": {
+    "message": "Interval (en ms) de rafraichissement des facteurs d'intensité carbon."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
+    "message": "Rafraîchissement automatique."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_animate": {
+    "message": "Enlever les animations sur l'onglet d'historique."
+  },
+  "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
+    "message": "Rafraîchissement automatique."
+  },
+  "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
+    "message": "latency induced for storage fetch by guis (ms)"
+  },
+  "tab_settings_preferencesScreen_prefs_debug": {
+    "message": "enable debug log"
+  },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "valider"
   }

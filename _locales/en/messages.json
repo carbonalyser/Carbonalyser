@@ -192,6 +192,36 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"
   },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
+    "message": "interval (ms) at which we write the storage"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
+    "message": "latency that apply when preferences have been changed"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
+    "message": "interval at which we check for download end (ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
+    "message": "selected region"
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_carbonIntensity_refreshMs": {
+    "message": "refresh carbon interval"
+  },
+  "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
+    "message": "auto refresh"
+  },
+  "tab_settings_preferencesScreen_prefs_tab_animate": {
+    "message": "remove animation"
+  },
+  "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
+    "message": "auto refresh"
+  },
+  "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
+    "message": "latency induced for storage fetch by guis (ms)"
+  },
+  "tab_settings_preferencesScreen_prefs_debug": {
+    "message": "enable debug log"
+  },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "validate"
   }
