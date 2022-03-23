@@ -778,11 +778,22 @@ animateRotationButton = async (done) => {
 }
 
 let lastUpdate = null;
+let storageChangedTimeout = null;
+
+/**
+ * Prevent storage changed flood during call.
+ */
+storageChangedTimeoutCall = () => {
+  printDebug("Refresh data in the tab");
+  tab.update();
+  storageChangedTimeout = null;
+}
 
 handleStorageChanged = async (changes, areaName) => {
   if ( areaName == "local" ) {
-    printDebug("Refresh data in the tab");
-    tab.update();
+    if ( storageChangedTimeout != null ) {
+      clearTimeout(storageChangedTimeout);
+    }
     if ( changes["pref"] !== undefined ) {
       $("#refreshButton").off("click");
       if ( await getPref("tab.animate") ) {
@@ -793,6 +804,9 @@ handleStorageChanged = async (changes, areaName) => {
         }});
       }
     } 
+    if ( await getPref("tab.update.auto_refresh") ) {
+      storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+    }
   }
 }
 

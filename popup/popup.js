@@ -280,12 +280,22 @@ const popup = {
   }
 };
 
+let storageChangedTimeout = null;
+storageChangedTimeoutCall = () => {
+  popup.update();
+  storageChangedTimeout = null;
+}
 /**
  * listen for modification of storage.
  */
 onStorageChanged = async (changes, areaName) => {
   if ( areaName === "local" ) {
-    popup.update();
+    if ( storageChangedTimeout != null ) {
+      clearTimeout(storageChangedTimeout);
+    }
+    if ( await getPref("popup.update.auto_refresh") ) {
+      storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+    }
   }
 }
 
