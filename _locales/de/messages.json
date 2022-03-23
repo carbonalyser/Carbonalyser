@@ -189,6 +189,9 @@
   "tab_settings_preferencesScreen_prefsTableValue": {
     "message": "Wert"
   },
+  "tab_settings_preferencesScreen_prefsDescription": {
+    "message": "Bezeichnung"
+  },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "bestätigen"
   }
