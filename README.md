@@ -5,7 +5,7 @@
 |--------------|-----------------|
 
 
-Carbonalyser allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.
+Carbonalyser allows to visualize the electricity consumption and greenhouse gases (GHG) emissions that your Internet browsing leads to.<br />
 
 Visualizing it will get you to understand that impacts of digital technologies on climate change and natural resources are not virtual, although they are hidden behind our screens.
 <br />
@@ -27,21 +27,16 @@ None of your data are collected: all browsing data are analyzed directly on the 
 
 The source code of this program is available in open access, to ensure transparency and for any other purpose. 
 
-## Support & source code
+## Support
 
-Questions, bug reports and feature requests are to be addressed to communication@theshiftproject.org.
+Documentation is on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).
 
-More information on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).
-
-Source code is available in open access: https://github.com/supertanuki/Carbonalyser
+To report a bug, request a feature, check [here](https://github.com/AAABBBCCCAAAA/Carbonalyser/issues).
  
-#### Contributors
+## Credits
 
-Developer: [Richard Hanna](https://twitter.com/richardhanna).
-
-Designer: [Gauthier Roussilhe](http://gauthierroussilhe.com).
-
-In partnership with Maxime Efoui-Hess for [The Shift Project](https://theshiftproject.org/en/home/).
-
-### Material
-Refresh icons created by Dave Gandy - Flaticon
+Initial project:<br />
+[Richard Hanna](https://twitter.com/richardhanna)<br />
+[Gauthier Roussilhe](http://gauthierroussilhe.com)<br />
+Maxime Efoui-Hess([The Shift Project](https://theshiftproject.org/en/home/))<br />
+Refresh icons created by Dave Gandy - Flaticon<br />
