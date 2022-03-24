@@ -213,6 +213,9 @@
   "tab_settings_preferencesScreen_prefs_tab_animate": {
     "message": "Enlever les animations sur l'onglet d'historique."
   },
+  "tab_settings_preferencesScreen_prefs_tab_settings_preferencesScreen_msBeforeStopEdit": {
+    "message": "Délai (en ms) après lequel l'édition de préférence est considérée terminée."
+  },
   "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
     "message": "Rafraîchissement automatique."
   },

@@ -213,6 +213,9 @@
   "tab_settings_preferencesScreen_prefs_tab_animate": {
     "message": "Entfernen Sie Animationen auf der Registerkarte „Verlauf“."
   },
+  "tab_settings_preferencesScreen_prefs_tab_settings_preferencesScreen_msBeforeStopEdit": {
+    "message": "Verzögerung (ms), nach der wir davon ausgehen, dass der Benutzer die Bearbeitung beendet hat."
+  },
   "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
     "message": "Automatische Aktualisierung."
   },
