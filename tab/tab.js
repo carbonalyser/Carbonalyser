@@ -295,6 +295,12 @@ const tab = {
           const settings = this.parent.parent;
           // part of the refresh system
           $("#carbonIntensityLastRefreshForceRefresh").click(async function() {
+            const img = document.createElement("img");
+            img.setAttribute("width", "20px");
+            img.setAttribute("height", "20px");
+            img.setAttribute("style", "margin-left: 5px;");
+            img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
+            this.append(img);
             obrowser.runtime.sendMessage({action: "forceCIUpdater"});
           });
           const root = this.parent.parent.parent;
@@ -756,26 +762,9 @@ const tab = {
 createMVC(tab);
 attachParent(tab);
 
-// Animation button of refresh
-let currentDeg = 0;
-const minimalNoticeableMs = 40;
-const animDurationMs = 500;
-const steps = Math.round(animDurationMs/minimalNoticeableMs);
-const degPerStep = 360 / steps;
-const animateButton = $("#refreshButton > img");
-
 animateRotationButton = async (done) => {
-  currentDeg += degPerStep;
-  if (currentDeg >= 360 ) {
-    currentDeg = 0;
-
-  } 
-  animateButton.rotate(currentDeg);
-  if ( currentDeg > 0 ) {
-    setTimeout(animateRotationButton, minimalNoticeableMs, done);
-  } else {
-    await tab.update();
-  }
+  rotateAnimation.button = $("#refreshButton > img");
+  rotateAnimation.start();
 }
 
 let lastUpdate = null;

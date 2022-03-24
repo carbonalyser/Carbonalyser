@@ -29,6 +29,7 @@
         </ul>
 
         <div class="tab-content" style="height: 80%;">
+
             <div id="topResultsDiv" class="container tab-pane fade show active" role="tabpanel" aria-labelledby="tab-topResults">
                 <div class="container-fluid">
                     <div class="row flex-fill">
@@ -102,31 +103,6 @@
                 </div>
             </div>
 
-            <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm d-flex align-content-center flex-wrap">
-                            <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
-                        </div>
-                        <div class="col-sm">
-                            <div class="row">
-                                <h4 style="width: 100%; text-align: center;" translate="tabHistoryPieTitle"></h4>
-                            </div>
-                            <div class="row  ct-chart ct-golden-section">
-                                <canvas id="historyPieCanvas"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <canvas id="historyElectricityDivCanvas" style="width:100%;max-width:700px"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-
-
             <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
                 <div class="container">
                     <div class="row">
@@ -175,6 +151,29 @@
                 </div>  
             </div>
 
+            <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm d-flex align-content-center flex-wrap">
+                            <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
+                        </div>
+                        <div class="col-sm">
+                            <div class="row">
+                                <h4 style="width: 100%; text-align: center;" translate="tabHistoryPieTitle"></h4>
+                            </div>
+                            <div class="row  ct-chart ct-golden-section">
+                                <canvas id="historyPieCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <canvas id="historyElectricityDivCanvas" style="width:100%;max-width:700px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <script src="/lib/chartjs/chart.js"></script>
         <script src="/lib/hammerjs@2.0.8.js"></script>
@@ -192,6 +191,7 @@
         <script src="/lib/carbonalyser/libRegionSelect.js"></script>
         <script src="/lib/carbonalyser/libStats.js"></script>
         <script src="/lib/carbonalyser/libPreferences.js"></script>
+        <script src="/lib/carbonalyser/libTinyAnimator.js"></script>
         <script src="tab.js"></script>
     </body>
 </html>
