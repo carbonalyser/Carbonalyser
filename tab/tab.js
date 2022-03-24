@@ -462,7 +462,6 @@ const tab = {
           });
         },
         update: async function() {
-          $("#prefsTableTBODY").empty();
           await injectPreferencesIntoHTML("prefsTableTBODY");
         }
       }
