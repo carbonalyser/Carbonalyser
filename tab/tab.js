@@ -291,18 +291,50 @@ const tab = {
         }
       },
       view: {
+        img: null,
+        imgAnimation: null,
         init: async function () {
           const settings = this.parent.parent;
+          this.img = document.createElement("img");
+          this.img.setAttribute("width", "20px");
+          this.img.setAttribute("height", "20px");
+          this.img.setAttribute("style", "margin-left: 5px;");
+          this.img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
+          this.img.hidden = true;
+          this.imgAnimation = rotateAnimation.newInstance();
+          this.imgAnimation.button = $(this.img);
+          this.imgAnimation.loop = true;
+          const img = this.img;
+          const imgAnimation = this.imgAnimation;
+          this.imgAnimation.onAnimationEnd = async function () {
+            img.hidden = true;
+          };
           // part of the refresh system
-          $("#carbonIntensityLastRefreshForceRefresh").click(async function() {
-            const img = document.createElement("img");
-            img.setAttribute("width", "20px");
-            img.setAttribute("height", "20px");
-            img.setAttribute("style", "margin-left: 5px;");
-            img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
-            this.append(img);
+          const div = $("#carbonIntensityLastRefreshForceRefresh");
+          div.click(async function() {
+            const dateNow = Date.now();
             obrowser.runtime.sendMessage({action: "forceCIUpdater"});
+            if ( await getPref("tab.animate") ) {
+              img.hidden = false;
+              imgAnimation.start();
+              const interval = setInterval(async function() {
+                const parametersSTO = await obrowser.storage.local.get("parameters");
+                const parametersSTR = parametersSTO.parameters;
+                if ( parametersSTR !== undefined ) {
+                  const parameters = JSON.parse(parametersSTR);
+                  if ( parameters.lastRefresh !== undefined ) {
+                    if ( dateNow < parameters.lastRefresh ) {
+                      imgAnimation.loop = false;
+                      clearInterval(interval);
+                    } else {
+
+                    }
+                  }
+                }
+              }, 1000);
+            }
           });
+          div.append(this.img);
           const root = this.parent.parent.parent;
           injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
         },
@@ -763,8 +795,9 @@ createMVC(tab);
 attachParent(tab);
 
 animateRotationButton = async (done) => {
-  rotateAnimation.button = $("#refreshButton > img");
-  rotateAnimation.start();
+  const a = rotateAnimation.newInstance();
+  a.button = $("#refreshButton > img");
+  a.start();
 }
 
 let lastUpdate = null;
