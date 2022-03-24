@@ -192,6 +192,36 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Bezeichnung"
   },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
+    "message": "Intervall (in ms), mit dem in den realen Speicher geschrieben wird."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
+    "message": "Die Latenz, die zwischen dem Schreiben in den Speicher und dem Neustart des Flushers gilt."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
+    "message": "Häufigkeit (in ms) der Überwachung, nachdem ein Download gestartet wurde."
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
+    "message": "Region ausgewählt."
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_carbonIntensity_refreshMs": {
+    "message": "Intervall (in ms) zum Aktualisieren der Kohlenstoffintensitätsfaktoren."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
+    "message": "Automatische Aktualisierung."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_animate": {
+    "message": "Entfernen Sie Animationen auf der Registerkarte „Verlauf“."
+  },
+  "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
+    "message": "Automatische Aktualisierung."
+  },
+  "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
+    "message": "Latenz, die eine Überbelegung des Speichers verhindert (in ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_debug": {
+    "message": "Aktivieren Sie das Debuggen über Protokolle."
+  },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "bestätigen"
   }
