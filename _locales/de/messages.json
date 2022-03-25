@@ -78,6 +78,9 @@
   "regionDefault": {
     "message": "Andere"
   },
+  "regionCustom": {
+    "message": "Personalisiert"
+  },
   "regionUnitedKingdom": {
     "message": "Vereinigte Königreich"
   },
@@ -227,5 +230,14 @@
   },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "bestätigen"
+  },
+  "tab_custom_ci_factor_title": {
+    "message": "Faktor hinzufügen"
+  },
+  "tab_custom_ci_factor_description": {
+    "message": "Fügen Sie den Kohlenstoffintensitätsfaktor von Hand hinzu."
+  },
+  "tab_custom_ci_factor_button": {
+    "message": "Addieren"
   }
 }

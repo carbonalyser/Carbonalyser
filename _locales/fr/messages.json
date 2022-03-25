@@ -72,6 +72,9 @@
   "regionUnitedStates": {
     "message": "Etats-unis"
   },
+  "regionCustom": {
+    "message": "Personnalisé"
+  },
   "regionChina": {
     "message": "Chine"
   },
@@ -227,5 +230,14 @@
   },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "Valider"
+  },
+  "tab_custom_ci_factor_title": {
+    "message": "Ajouter un facteur"
+  },
+  "tab_custom_ci_factor_description": {
+    "message": "Ajouter manuellement un facteur d'intensité carbone."
+  },
+  "tab_custom_ci_factor_button": {
+    "message": "Ajouter"
   }
 }

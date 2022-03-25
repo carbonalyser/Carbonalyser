@@ -438,6 +438,23 @@ const tab = {
         }
       }
     },
+    carbonFactorManual: {
+      view: {
+        button: null,
+        input: null,
+        init: async function() {
+          this.button = $("#tab_custom_ci_factor_button");
+          this.input = $("#tab_custom_ci_factor_input");
+          const input = this.input;
+          this.button.on("click", async function() {
+            await setCarbonIntensityRegion("custom", parseInt(input.val()));
+          });
+        },
+        update: async function() {
+
+        }
+      }
+    },
     preferencesScreen: {
       view: {
         init: async function() {

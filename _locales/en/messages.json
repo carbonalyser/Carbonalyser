@@ -63,6 +63,9 @@
   "selectRegionPlaceholder": {
     "message": "Select your location"
   },
+  "regionCustom": {
+    "message": "Custom"
+  },
   "regionEuropeanUnion": {
     "message": "European Union"
   },
@@ -227,5 +230,14 @@
   },
   "tab_settings_preferencesScreen_validateButton": {
     "message": "validate"
+  },
+  "tab_custom_ci_factor_title": {
+    "message": "Add factor"
+  },
+  "tab_custom_ci_factor_description": {
+    "message": "Add carbon intensity factor by hand."
+  },
+  "tab_custom_ci_factor_button": {
+    "message": "Add"
   }
 }

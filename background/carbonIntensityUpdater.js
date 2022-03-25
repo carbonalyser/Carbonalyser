@@ -62,17 +62,6 @@ let intervalID = null;
 }
 
 /**
- * Set carbon intensity for a given region with name.
- */
- setCarbonIntensityRegion = async (name, carbonIntensity) => {
-    if ( carbonIntensity < 0 ) {
-        throw "carbonIntensity(" + carbonIntensity + ") cannot be negative";
-    }
-    const region = {carbonIntensity: carbonIntensity};
-    await setRegion(name, region);
-}
-
-/**
  * Init the script.
  */
  init = async () => {
