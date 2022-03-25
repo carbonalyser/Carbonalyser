@@ -162,6 +162,9 @@
   "settingsCICI": {
     "message": "Facteur d'intensité carbone en gCO2e/kWh"
   },
+  "tab_history_data_consumptionOverTime_description": {
+    "message": "Représente les transferts de donnée pendant votre navigation."
+  },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Données utilisées depuis le centre de données"
   },
