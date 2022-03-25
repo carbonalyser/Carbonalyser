@@ -674,7 +674,10 @@ const tab = {
             
             this.pieConfig = {
               type: 'pie',
-              data: this.pieData
+              data: this.pieData,
+              options: {
+                responsive: false
+              }
             };
           
             this.chart = new Chart(

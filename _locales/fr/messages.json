@@ -133,7 +133,7 @@
     "message": "Historique"
   },
   "tabHistoryPieTitle": {
-    "message": "Répartition de votre consommation de données entre les sites web"
+    "message": "Répartition de la donnée utilisée pendant votre navigation."
   },
   "historyChartTitle": {
     "message": "Consommation de données lissée en fonction du temps"
@@ -142,7 +142,7 @@
     "message": "Temps"
   },
   "historyChartYAxis": {
-    "message": "Consommation de données (mo)"
+    "message": "Données en Mo"
   },
   "settingsLastRefresh": {
     "message": "Dernière mise à jour des facteurs d'intensité carbone le $TIME$.",
