@@ -195,6 +195,18 @@
   "tab_history_electricityConsumptionOverTime_graphYAxis": {
     "message": "Consommation d'éléctricitée KWh"
   },
+  "tab_history_attention_chart_title": {
+    "message": "Partage de votre temps en fonction des différents sites."
+  },
+  "tab_history_attention_canvas_x_axis": {
+    "message": "Les différent sites web."
+  },
+  "tab_history_attention_canvas_y_axis": {
+    "message": "Temps passé sur le site (en ms)."
+  },
+  "tab_history_attention_description": {
+    "message": "Représente votre temps durant la navigation, des barres hautes indiquent que vous passez beaucoup de temps sur le site donné."
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Préférence"
   },

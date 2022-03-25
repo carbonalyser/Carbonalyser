@@ -6,9 +6,13 @@ let currentOrigin = null;
 let currentStart = null;
 
 updateAttentionTime = async (url) => {
-    if ( currentOrigin !== null ) {
+    if ( url === undefined ) {
+        console.warn("That case has happened");
+    } else {
+        const urlOrigin = url;
+        url = extractHostname(urlOrigin);
         const dn = Date.now();
-        if ( currentOrigin === url ) {
+        if ( currentOrigin === null || currentOrigin === undefined ) {
             // nothing to do
         } else {
             const delta = dn - currentStart;
@@ -21,25 +25,25 @@ updateAttentionTime = async (url) => {
         }
         currentOrigin = url;
         currentStart = dn;
-    } else {
-        // nothing to do
+        // prevent localhost pages.
+        for(const turl of [/^about:blank$/,/^moz-extension:.*$/]) {
+            if ( turl.test(urlOrigin) ) {
+                currentOrigin = null;
+                currentStart = null;
+                break;
+            }
+        }
     }
 }
 
 handleTabActivated = async (activeInfo) => {
     const tab = await obrowser.tabs.get(activeInfo.tabId);
-    if ( tab.url !== undefined ) {
-        updateAttentionTime(tab.url);
-    } else {
-        // we do it later
-    }
+    await updateAttentionTime(tab.url);
 }
-
+/*
 handleTabUpdated = async (tabId, changeInfo, tab) => {
-    if ( tab.url !== undefined ) {
-        updateAttentionTime(tab.url);
-    }
+    await updateAttentionTime(tab.url);
 }
-
-obrowser.tabs.onUpdated.addListener(handleTabUpdated);
+*/
+//obrowser.tabs.onUpdated.addListener(handleTabUpdated);
 obrowser.tabs.onActivated.addListener(handleTabActivated);

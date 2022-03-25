@@ -806,6 +806,84 @@ const tab = {
           this.chart.update();
         }
       }
+    },
+    attention: {
+      view: {
+        data: null,
+        config: null,
+        chart: null,
+        CHART_COLORS: {
+          red: 'rgb(255, 99, 132)',
+          orange: 'rgb(255, 159, 64)',
+          yellow: 'rgb(255, 205, 86)',
+          green: 'rgb(75, 192, 192)',
+          blue: 'rgb(54, 162, 235)',
+          purple: 'rgb(153, 102, 255)',
+          grey: 'rgb(201, 203, 207)'
+        },
+        createData: async function () {
+          const parent = this.parent;
+          const rawdata = await getOrCreateRawData();
+          const labels = [];
+          const data = [];
+          for(const origin in rawdata) {
+            labels.push(origin);
+            data.push(rawdata[origin].attentionTime);
+          }
+          return {
+            labels: labels,
+            datasets: [{
+              label: translate("tab_history_attention_chart_title"),
+              data: data,
+              backgroundColor: Object.values(this.CHART_COLORS)
+            }]
+          };
+        },
+        init: async function () {
+          const data = await this.createData();
+          this.data = data;
+          this.config = {
+            type: 'bar',
+            data: data,
+            options: {
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: translate('tab_history_attention_chart_title')
+                }
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: translate('tab_history_attention_canvas_x_axis')
+                  }
+                },
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: translate('tab_history_attention_canvas_y_axis')
+                  }
+                }
+              }
+            },
+          };
+          this.chart = new Chart(
+            document.getElementById('tab_history_attention_canvas'),
+            this.config
+          );
+        },
+        update: async function () {
+          this.chart.data = await this.createData();
+          this.data = this.chart.data;
+          this.config.data = this.chart.data;
+          this.chart.update();
+        }
+      }
     }
   }
 }
