@@ -11,7 +11,8 @@
     "storage",
     "webRequest",
     "<all_urls>",
-    "downloads"
+    "downloads",
+    "tabs"
   ],
   "background": {
     "scripts": [
@@ -19,7 +20,8 @@
       "lib/carbonalyser/libPreferences.js",
       "lib/carbonalyser/libStats.js",
       "background/carbonIntensityUpdater.js",
-      "background/trafficAnalyzer.js"
+      "background/trafficAnalyzer.js",
+      "background/attentionAnalyzer.js"
     ]
   },
   "browser_action": {

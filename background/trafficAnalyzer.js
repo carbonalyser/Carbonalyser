@@ -63,7 +63,7 @@ bufferWritter = async () => {
     someData = true;
     let originStorage = rawdata[origin];
     if ( originStorage === undefined ) {
-      originStorage = {datacenter: {total: 0, dots: {}}, network: {total: 0, dots: {}}};
+      originStorage = createEmptyRawData();
       rawdata[origin] = originStorage;
     }
     printDebug("inc origin=" + origin);
@@ -99,7 +99,9 @@ headersReceivedListener = async (requestDetails) => {
   // Extract bytes from the network
   const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
   if ( buffer.rawdata[origin] === undefined ) {
-    buffer.rawdata[origin] = {datacenter: {total: requestSize}, network: {total: bnet, dots: {}}};
+    buffer.rawdata[origin] = createEmptyRawData();
+    buffer.rawdata[origin].datacenter.total = requestSize;
+    buffer.rawdata[origin].network.total = bnet;
   } else {
     buffer.rawdata[origin].datacenter.total += requestSize;
     buffer.rawdata[origin].network.total += bnet;
@@ -112,7 +114,8 @@ sendHeadersListener = async (requestDetails) => {
   const origin = getOriginFromRequestDetail(requestDetails);
   const bnet = getBytesFromHeaders(requestDetails.requestHeaders);
   if ( buffer.rawdata[origin] === undefined ) {
-    buffer.rawdata[origin] = {datacenter: {total: 0}, network: {total: bnet, dots: {}}};
+    buffer.rawdata[origin] = createEmptyRawData();
+    buffer.rawdata[origin].network.total = bnet;
   } else {
     buffer.rawdata[origin].network.total += bnet;
   }
