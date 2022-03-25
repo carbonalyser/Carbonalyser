@@ -177,6 +177,9 @@
   "tab_history_data_consumptionShareAmongSites_description": {
     "message": "Stellt die Verteilung Ihres Datenverbrauchs nach Standorten dar. Ein großer Teil zeigt, dass Sie eine Seite häufig nutzen oder dass die betreffende Seite viele Daten benötigt."
   },
+  "tab_history_electricityConsumptionOverTime_description": {
+    "message": "Stellt den momentanen Stromverbrauch während Ihrer Navigation dar. Die Strommenge umfasst den Strom, der vom Rechenzentrum zur Wartung der Webseite verbraucht wird, aber auch den Strom, der von der Routing-Infrastruktur zwischen Ihnen und der Website verbraucht wird. Hohe Spitzen können darauf hindeuten, dass Sie eine leistungshungrige Seite verwenden (z. B. wenn sie nicht optimiert ist oder unnötige Effekte für den Benutzer verwendet)."
+  },
   "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
     "message": "Stromverbrauch im Rechenzentrum"
   },

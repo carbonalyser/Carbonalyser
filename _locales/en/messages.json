@@ -177,6 +177,9 @@
   "tab_history_data_consumptionShareAmongSites_description": {
     "message": "Represents the distribution of your data consumption according to the sites. A large part shows that you use a site frequently or that the site in question requires a lot of data."
   },
+  "tab_history_electricityConsumptionOverTime_description": {
+    "message": "Represents the instantaneous electricity consumption during your navigation. The amount of electricity includes the electricity used by the data center to maintain the web page but also the electricity consumed by the routing infrastructure between you and the site. High peaks can show that you are using a power-hungry site (for example if it is not optimized or uses unnecessary effects for the user)."
+  },
   "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
     "message": "Electricity consummed in datacenter"
   },
