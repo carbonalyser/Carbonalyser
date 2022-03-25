@@ -163,7 +163,7 @@
     "message": "Kohlenstoffintensitäts faktor in gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_description": {
-    "message": "Stellt Datenübertragungen während Ihrer Navigation dar."
+    "message": "Stellt Datenübertragungen während Ihrer Navigation dar. Mit dieser Messung können Sie abschätzen, an welcher Stelle Ihrer Navigation Sie die meisten Daten verwenden."
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Verwendete Daten aus dem Rechenzentrum"

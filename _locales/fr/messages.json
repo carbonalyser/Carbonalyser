@@ -163,7 +163,7 @@
     "message": "Facteur d'intensité carbone en gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_description": {
-    "message": "Représente les transferts de donnée pendant votre navigation."
+    "message": "Représente les transferts de donnée pendant votre navigation. Cette mesure permet d'estimer à quel moment de votre navigation vous utilisez le plus de données."
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Données utilisées depuis le centre de données"

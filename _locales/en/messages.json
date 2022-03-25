@@ -163,7 +163,7 @@
     "message": "Carbone intensity factor in gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_description": {
-    "message": "Represent data transferts during your browsing"
+    "message": "Represent data transferts during your browsing. This measurement allows you to estimate at what point in your navigation you are using the most data."
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Data used from datacenter"
