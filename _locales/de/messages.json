@@ -160,7 +160,7 @@
     "message": "Land"
   },
   "settingsCICI": {
-    "message": "Kohlenstoffintensitäts faktor"
+    "message": "Kohlenstoffintensitäts faktor in gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Verwendete Daten aus dem Rechenzentrum"

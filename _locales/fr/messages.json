@@ -160,7 +160,7 @@
     "message": "Pays"
   },
   "settingsCICI": {
-    "message": "Facteur d'intensité carbone"
+    "message": "Facteur d'intensité carbone en gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Données utilisées depuis le centre de données"
@@ -190,7 +190,7 @@
     "message": "Préférence"
   },
   "tab_settings_preferencesScreen_prefsTableValue": {
-    "message": "valeur"
+    "message": "Valeur"
   },
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"

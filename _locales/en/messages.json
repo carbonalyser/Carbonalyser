@@ -160,7 +160,7 @@
     "message": "Country"
   },
   "settingsCICI": {
-    "message": "Carbone intensity factor"
+    "message": "Carbone intensity factor in gCO2e/kWh"
   },
   "tab_history_data_consumptionOverTime_datacenterLabel": {
     "message": "Data used from datacenter"
@@ -187,10 +187,10 @@
     "message": "electricity consumption KWh"
   },
   "tab_settings_preferencesScreen_prefsTableName": {
-    "message": "preference"
+    "message": "Preference"
   },
   "tab_settings_preferencesScreen_prefsTableValue": {
-    "message": "value"
+    "message": "Value"
   },
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"
