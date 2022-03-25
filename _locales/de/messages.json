@@ -195,6 +195,18 @@
   "tab_history_electricityConsumptionOverTime_graphYAxis": {
     "message": "Stromverbrauch KWh"
   },
+  "tab_history_attention_chart_title": {
+    "message": "Teilen Sie Ihre Zeit nach den verschiedenen Standorten."
+  },
+  "tab_history_attention_canvas_x_axis": {
+    "message": "Verschiedene Webseiten."
+  },
+  "tab_history_attention_canvas_y_axis": {
+    "message": "Auf der Website verbrachte Zeit (in Minuten)."
+  },
+  "tab_history_attention_description": {
+    "message": "Stellt Ihre Zeit beim Surfen dar, hohe Balken zeigen an, dass Sie viel Zeit auf der jeweiligen Website verbringen."
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
   },

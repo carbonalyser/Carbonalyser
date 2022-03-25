@@ -867,6 +867,11 @@ const tab = {
                   title: {
                     display: true,
                     text: translate('tab_history_attention_canvas_y_axis')
+                  },
+                  ticks: {
+                    callback: function(value, index, ticks) {
+                        return ((value / 1000) / 60).toFixed(2);
+                    }
                   }
                 }
               }
