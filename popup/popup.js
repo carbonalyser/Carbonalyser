@@ -49,21 +49,15 @@ const popup = {
       model: {
         run: async () => {
           obrowser.runtime.sendMessage({ action: 'stop' });
-          await obrowser.storage.local.remove('analysisRunning');
+          await storageSetAnalysisState(0);
         },
-        init: async function () {
-
-        },
-        update: async function () {
-
-        }
       },
       view: {
         button: null,
         init: async function () {
           this.button = document.getElementById('stopButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await obrowser.storage.local.get("analysisRunning")).analysisRunning == 1 ) {
+          if ( (await storageGetAnalysisState()) == 1 ) {
             show(this.button);
           } else {
             hide(this.button);
@@ -82,7 +76,7 @@ const popup = {
       model: {
         run: async () => {
           obrowser.runtime.sendMessage({ action: 'start' });
-          await obrowser.storage.local.set({analysisRunning: 1});
+          await storageSetAnalysisState(1);
         },
         init: async function () {
 
@@ -96,7 +90,7 @@ const popup = {
         init: async function () {
           this.button = document.getElementById('startButton');
           this.button.addEventListener('click', this.parent.run.bind(this.parent));
-          if ( (await obrowser.storage.local.get("analysisRunning")).analysisRunning == 1 ) {
+          if ( (await storageGetAnalysisState()) == 1 ) {
             hide(this.button);
           } else {
             show(this.button);

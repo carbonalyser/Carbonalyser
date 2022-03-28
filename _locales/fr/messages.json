@@ -228,6 +228,9 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"
   },
+  "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
+    "message": "Démarrer l'analyse au démarrage du navigateur."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
     "message": "Interval (en ms) avec lequel on écrit dans le vrai stockage."
   },

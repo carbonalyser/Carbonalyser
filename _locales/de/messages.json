@@ -228,8 +228,11 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Bezeichnung"
   },
+  "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
+    "message": "Start analysis at browser startup."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
-    "message": "Intervall (in ms), mit dem in den realen Speicher geschrieben wird."
+    "message": "Interval (in ms), mit dem in den realen Speicher geschrieben wird."
   },
   "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
     "message": "Die Latenz, die zwischen dem Schreiben in den Speicher und dem Neustart des Flushers gilt."
