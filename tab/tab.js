@@ -510,9 +510,9 @@ const tab = {
       },
       update: async function () {
         this.createObject();
-        await this.parent.data.model.init();
-        await this.parent.electricity.model.init();
-        await this.parent.attention.model.init();
+        await this.parent.data.model.update();
+        await this.parent.electricity.model.update();
+        await this.parent.attention.model.update();
       }
     },
     /**
@@ -983,22 +983,22 @@ const tab = {
               document.getElementById('tab_history_attention_efficiency_canvas'),
               this.config
             );
+          },
+          update: async function () {
+            const parent = this.parent;
+            this.chart.data = {
+              labels: parent.model.labels,
+              datasets: [{
+                label: translate("tab_history_attention_efficiency_title"),
+                data: parent.model.data,
+                backgroundColor: Object.values(this.CHART_COLORS)
+              }]
+            };
+            this.data = this.chart.data;
+            this.config.data = this.chart.data;
+            this.chart.update();
           }
         },
-        update: async function () {
-          const parent = this.parent;
-          this.chart.data = {
-            labels: parent.model.labels,
-            datasets: [{
-              label: translate("tab_history_attention_efficiency_title"),
-              data: parent.model.data,
-              backgroundColor: Object.values(this.CHART_COLORS)
-            }]
-          };
-          this.data = this.chart.data;
-          this.config.data = this.chart.data;
-          this.chart.update();
-        }
       }
     }
   }
