@@ -132,11 +132,8 @@
   "history": {
     "message": "Historique"
   },
-  "tabHistoryPieTitle": {
+  "tab_history_data_consumptionShareAmongSites_title": {
     "message": "Répartition de la donnée utilisée pendant votre navigation."
-  },
-  "historyChartTitle": {
-    "message": "Consommation de données lissée en fonction du temps"
   },
   "historyChartXAxis": {
     "message": "Temps"
@@ -161,6 +158,9 @@
   },
   "settingsCICI": {
     "message": "Facteur d'intensité carbone en gCO2e/kWh"
+  },
+  "tab_history_data_consumptionOverTime_title": {
+    "message": "Consommation de données lissée en fonction du temps"
   },
   "tab_history_data_consumptionOverTime_description": {
     "message": "Représente les transferts de donnée pendant votre navigation. Cette mesure permet d'estimer à quel moment de votre navigation vous utilisez le plus de données."

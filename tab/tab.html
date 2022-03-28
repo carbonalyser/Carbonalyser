@@ -170,13 +170,20 @@
                     <div class="row">
                         <div class="col-sm d-flex align-content-center flex-wrap">
                             <div class="row" style="width: 100%;">
-                                <canvas id="historyDivCanvas" style="width:100%;max-width:700px"></canvas>
+                                <div class="col">
+                                    <div class="row font-weight-bold">
+                                        <p class="font-weight-bold" style="width: 100%; text-align: center;" translate="tab_history_data_consumptionOverTime_title"></p>
+                                    </div>
+                                    <div class="row">
+                                        <canvas id="tab_history_data_consumptionOverTime_canvas" style="width:100%;max-width:700px"></canvas>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row" translate="tab_history_data_consumptionOverTime_description" style="width: 100%; justify-content: center; text-align: center;"></div>
                         </div>
                         <div class="col-sm">
                             <div class="row font-weight-bold">
-                                <p class="font-weight-bold" style="width: 100%; text-align: center;" translate="tabHistoryPieTitle"></p>
+                                <p class="font-weight-bold" style="width: 100%; text-align: center;" translate="tab_history_data_consumptionShareAmongSites_title"></p>
                             </div>
                             <div class="row  ct-chart ct-golden-section d-flex justify-content-center">
                                 <canvas id="tab_history_data_consumptionShareAmongSites_canvas"></canvas>

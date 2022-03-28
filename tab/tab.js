@@ -563,8 +563,8 @@ const tab = {
                     position: 'top',
                   },
                   title: {
-                    display: true,
-                    text: translate('historyChartTitle')
+                    display: false,
+                    text: translate('tab_history_data_consumptionOverTime_title')
                   },
                   decimation: {
                     enabled: true,
@@ -609,7 +609,7 @@ const tab = {
             };
           
             this.myChart = new Chart(
-              document.getElementById('historyDivCanvas'),
+              document.getElementById('tab_history_data_consumptionOverTime_canvas'),
               this.config
             );
           },

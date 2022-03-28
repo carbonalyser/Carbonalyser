@@ -132,10 +132,10 @@
   "history": {
     "message": "Historisch"
   },
-  "tabHistoryPieTitle": {
+  "tab_history_data_consumptionShareAmongSites_title": {
     "message": "Aufschlüsselung Ihrer Datennutzung zwischen Websites"
   },
-  "historyChartTitle": {
+  "tab_history_data_consumptionOverTime_title": {
     "message": "Zeitgeglättete Datennutzung" 
   },
   "historyChartXAxis": {
