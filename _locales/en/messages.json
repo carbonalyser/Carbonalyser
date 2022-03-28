@@ -211,7 +211,7 @@
     "message": "Site efficiency in attention minute/bytes"
   },
   "tab_history_attention_efficiency_description": {
-    "message": "The more bar is high the more site is efficient. Sites that got a low value consume many bytes for few of your time (it could be a wrongly optimized, or a site that do useless things)."
+    "message": "The more bar is high the more site is efficient. Sites that got a low value consume many bytes for few of your time (it could be a wrongly optimized, or a site that do useless things for instance in background)."
   },
   "tab_history_attention_efficiency_x_axis": {
     "message": ""

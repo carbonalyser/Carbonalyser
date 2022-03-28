@@ -211,7 +211,7 @@
     "message": "Site-Effizienz in Aufmerksamkeitsminuten/Bytes"
   },
   "tab_history_attention_efficiency_description": {
-    "message": "Je höher die Messlatte ist, desto effizienter ist die Website. Seiten, die einen niedrigen Wert haben, verbrauchen viele Bytes für wenig Zeit (es könnte eine falsch optimierte Seite sein oder eine Seite, die nutzlose Dinge tut)."
+    "message": "Je höher die Messlatte ist, desto effizienter ist die Website. Seiten, die einen niedrigen Wert haben, verbrauchen viele Bytes für wenig Zeit (es könnte eine falsch optimierte Seite sein oder eine Seite, die nutzlose Dinge tut zum Beispiel im Hintergrund)."
   },
   "tab_history_attention_efficiency_x_axis": {
     "message": ""

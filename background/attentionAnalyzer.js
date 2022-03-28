@@ -48,10 +48,10 @@ handleTabActivated = async (activeInfo) => {
     const tab = await obrowser.tabs.get(activeInfo.tabId);
     await updateAttentionTime(tab.url);
 }
-/*
+
 handleTabUpdated = async (tabId, changeInfo, tab) => {
     await updateAttentionTime(tab.url);
 }
-*/
-//obrowser.tabs.onUpdated.addListener(handleTabUpdated);
+
+obrowser.tabs.onUpdated.addListener(handleTabUpdated);
 obrowser.tabs.onActivated.addListener(handleTabActivated);

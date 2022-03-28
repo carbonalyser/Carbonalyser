@@ -211,7 +211,7 @@
     "message": "Efficacité du site en minute d'attention/octets"
   },
   "tab_history_attention_efficiency_description": {
-    "message": "Plus la barre est haute plus le site est efficace. Les sites qui ont une valeur basse consomment beaucoup d'octets pour peu de votre attention (cela peut être due à un site mal optimisé, ou bien qui fait des choses inutiles)."
+    "message": "Plus la barre est haute plus le site est efficace. Les sites qui ont une valeur basse consomment beaucoup d'octets pour peu de votre attention (cela peut être due à un site mal optimisé, ou bien qui fait des choses inutiles par exemple en arrière plan)."
   },
   "tab_history_attention_efficiency_x_axis": {
     "message": ""
