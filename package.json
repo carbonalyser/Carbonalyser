@@ -28,6 +28,7 @@
   "dependencies": {
     "@types/chrome": "^0.0.180",
     "acorn": "^8.7.0",
+    "http-server": "^14.1.0",
     "jest-chrome": "^0.7.2",
     "parse-js": "^0.7.4"
   }

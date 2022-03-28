@@ -25,13 +25,21 @@ updateAttentionTime = async (url) => {
         }
         currentOrigin = url;
         currentStart = dn;
+
         // prevent localhost pages.
-        for(const turl of [/^about:blank$/,/^moz-extension:.*$/]) {
+        for(const turl of [/^about:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
             if ( turl.test(urlOrigin) ) {
                 currentOrigin = null;
                 currentStart = null;
                 break;
             }
+        }
+
+        // prevent loopback ranges
+        const hostname = extractHostname(urlOrigin);
+        if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(hostname) ) {
+            currentOrigin = null;
+            currentStart = null;
         }
     }
 }

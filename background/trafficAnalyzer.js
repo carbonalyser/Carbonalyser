@@ -97,14 +97,18 @@ headersReceivedListener = async (requestDetails) => {
   const requestSize = parseInt(contentLength.value, 10);
 
   // Extract bytes from the network
-  const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
-  if ( buffer.rawdata[origin] === undefined ) {
-    buffer.rawdata[origin] = createEmptyRawData();
-    buffer.rawdata[origin].datacenter.total = requestSize;
-    buffer.rawdata[origin].network.total = bnet;
+  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) ) {
+    // nothing todo
   } else {
-    buffer.rawdata[origin].datacenter.total += requestSize;
-    buffer.rawdata[origin].network.total += bnet;
+    const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
+    if ( buffer.rawdata[origin] === undefined ) {
+      buffer.rawdata[origin] = createEmptyRawData();
+      buffer.rawdata[origin].datacenter.total = requestSize;
+      buffer.rawdata[origin].network.total = bnet;
+    } else {
+      buffer.rawdata[origin].datacenter.total += requestSize;
+      buffer.rawdata[origin].network.total += bnet;
+    }
   }
 };
 
@@ -112,12 +116,16 @@ headersReceivedListener = async (requestDetails) => {
 sendHeadersListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
-  const bnet = getBytesFromHeaders(requestDetails.requestHeaders);
-  if ( buffer.rawdata[origin] === undefined ) {
-    buffer.rawdata[origin] = createEmptyRawData();
-    buffer.rawdata[origin].network.total = bnet;
+  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) ) {
+    // nothing todo
   } else {
-    buffer.rawdata[origin].network.total += bnet;
+    const bnet = getBytesFromHeaders(requestDetails.requestHeaders);
+    if ( buffer.rawdata[origin] === undefined ) {
+      buffer.rawdata[origin] = createEmptyRawData();
+      buffer.rawdata[origin].network.total = bnet;
+    } else {
+      buffer.rawdata[origin].network.total += bnet;
+    }
   }
 }
 
