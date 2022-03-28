@@ -505,12 +505,14 @@ const tab = {
       init: async function () {
         this.createObject();
         await this.parent.data.model.init();
-        await this.parent.electricityConsumptionOverTime.model.init();
+        await this.parent.electricity.model.init();
+        await this.parent.attention.model.init();
       },
       update: async function () {
         this.createObject();
         await this.parent.data.model.init();
-        await this.parent.electricityConsumptionOverTime.model.init();
+        await this.parent.electricity.model.init();
+        await this.parent.attention.model.init();
       }
     },
     /**
@@ -676,12 +678,17 @@ const tab = {
               type: 'pie',
               data: this.pieData,
               options: {
-                responsive: false
+                responsive: false,
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                }
               }
             };
           
             this.chart = new Chart(
-              document.getElementById('historyPieCanvas'),
+              document.getElementById('tab_history_data_consumptionShareAmongSites_canvas'),
               this.pieConfig
             );
           },
@@ -694,196 +701,300 @@ const tab = {
         }
       },
     },
-    electricityConsumptionOverTime: {
-      model: {
-        electricityDataCenterObjectForm: null,
-        electricityNetworkObjectForm: null,
-        init: async function () {
-          const history = this.parent.parent;
-          printDebug("bytes per origin is not updated at the time (only electricity)...");
-          this.electricityDataCenterObjectForm = [];
-          this.electricityNetworkObjectForm = [];
-          for(let o of history.model.bytesDataCenterObjectForm) {
-            this.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
-          }
-          for(let o of history.model.bytesNetworkObjectForm) {
-            this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+    electricity: {
+      overTime: {
+        model: {
+          electricityDataCenterObjectForm: null,
+          electricityNetworkObjectForm: null,
+          init: async function () {
+            const history = this.parent.parent.parent;
+            printDebug("bytes per origin is not updated at the time (only electricity)...");
+            this.electricityDataCenterObjectForm = [];
+            this.electricityNetworkObjectForm = [];
+            for(let o of history.model.bytesDataCenterObjectForm) {
+              this.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
+            }
+            for(let o of history.model.bytesNetworkObjectForm) {
+              this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+            }
+          },
+          update: async function () {
+            await this.init();
           }
         },
-        update: async function () {
-          await this.init();
-        }
-      },
-      view: {
-        data: null,
-        config: null,
-        chart: null,
-        createData: async function () {
-          const parent = this.parent;
-          return {
-            datasets: [
-              {
-                label: translate("tab_history_electricityConsumptionOverTime_datasetDataCenter"),
-                data: parent.model.electricityDataCenterObjectForm,
-                borderColor: 'rgb(255, 0, 0)',
-                showLine: true,
-                lineTension: 0.2,
-              },
-              {
-                label: translate("tab_history_electricityConsumptionOverTime_datasetNetwork"),
-                data: parent.model.electricityNetworkObjectForm,
-                borderColor: 'rgb(0, 255, 0)',
-                showLine: true,
-                lineTension: 0.2,
-              }
-            ]
-          };
-        },
-        init: async function () {
-          this.data = await this.createData();
-
-          const data = this.data;
-          this.config = {
-            type: 'line',
-            data: data,
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top',
+        view: {
+          data: null,
+          config: null,
+          chart: null,
+          createData: async function () {
+            const parent = this.parent;
+            return {
+              datasets: [
+                {
+                  label: translate("tab_history_electricity_overTime_datasetDataCenter"),
+                  data: parent.model.electricityDataCenterObjectForm,
+                  borderColor: 'rgb(255, 0, 0)',
+                  showLine: true,
+                  lineTension: 0.2,
                 },
-                title: {
-                  display: true,
-                  text: translate("tab_history_electricityConsumptionOverTime_graphTitle")
-                },
-                decimation: {
-                  enabled: true,
-                  algorithm: 'lttb',
-                  //samples: 5,
-                  threshold: 10
-                },
-                zoom: {
-                  zoom: {
-                    wheel: {
-                      enabled: true,
-                    },
-                    drag: {
-                      enabled: true
-                    },
-                    mode: 'x',
-                  }
+                {
+                  label: translate("tab_history_electricity_overTime_datasetNetwork"),
+                  data: parent.model.electricityNetworkObjectForm,
+                  borderColor: 'rgb(0, 255, 0)',
+                  showLine: true,
+                  lineTension: 0.2,
                 }
-                
-              },
-              scales: {
-                x: {
+              ]
+            };
+          },
+          init: async function () {
+            this.data = await this.createData();
+  
+            const data = this.data;
+            this.config = {
+              type: 'line',
+              data: data,
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
                   title: {
                     display: true,
-                    text: translate("tab_history_electricityConsumptionOverTime_graphXAxis")
-                  }, 
-                  type: 'time'
+                    text: translate("tab_history_electricity_overTime_graphTitle")
+                  },
+                  decimation: {
+                    enabled: true,
+                    algorithm: 'lttb',
+                    //samples: 5,
+                    threshold: 10
+                  },
+                  zoom: {
+                    zoom: {
+                      wheel: {
+                        enabled: true,
+                      },
+                      drag: {
+                        enabled: true
+                      },
+                      mode: 'x',
+                    }
+                  }
+                  
                 },
-                y: {
+                scales: {
+                  x: {
                     title: {
                       display: true,
-                      text: translate("tab_history_electricityConsumptionOverTime_graphYAxis")
-                    }
+                      text: translate("tab_history_electricity_overTime_graphXAxis")
+                    }, 
+                    type: 'time'
+                  },
+                  y: {
+                      title: {
+                        display: true,
+                        text: translate("tab_history_electricity_overTime_graphYAxis")
+                      }
+                  }
                 }
-              }
-            },
-          };
-
-          // Create electricity graph
-          this.chart = new Chart(
-            document.getElementById('historyElectricityDivCanvas'),
-            this.config
-          );
-        },
-        update: async function () {
-          this.data = await this.createData();
-          this.config.data = this.data;
-          this.chart.data = this.data;
-          this.chart.update();
+              },
+            };
+  
+            // Create electricity graph
+            this.chart = new Chart(
+              document.getElementById('tab_history_electricity_overTime_canvas'),
+              this.config
+            );
+          },
+          update: async function () {
+            this.data = await this.createData();
+            this.config.data = this.data;
+            this.chart.data = this.data;
+            this.chart.update();
+          }
         }
-      }
+      },
     },
     attention: {
-      view: {
-        data: null,
-        config: null,
-        chart: null,
-        CHART_COLORS: {
-          red: 'rgb(255, 99, 132)',
-          orange: 'rgb(255, 159, 64)',
-          yellow: 'rgb(255, 205, 86)',
-          green: 'rgb(75, 192, 192)',
-          blue: 'rgb(54, 162, 235)',
-          purple: 'rgb(153, 102, 255)',
-          grey: 'rgb(201, 203, 207)'
-        },
-        createData: async function () {
-          const parent = this.parent;
-          const rawdata = await getOrCreateRawData();
-          const labels = [];
-          const data = [];
-          for(const origin in rawdata) {
-            labels.push(origin);
-            data.push(rawdata[origin].attentionTime);
-          }
-          return {
-            labels: labels,
-            datasets: [{
-              label: translate("tab_history_attention_chart_title"),
+      time: {
+        view: {
+          data: null,
+          config: null,
+          chart: null,
+          CHART_COLORS: {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+          },
+          createData: async function () {
+            const rawdata = await getOrCreateRawData();
+            const labels = [];
+            const data = [];
+            for(const origin in rawdata) {
+              if ( 0 < rawdata[origin].attentionTime ) {
+                labels.push(origin);
+                data.push(rawdata[origin].attentionTime);
+              }
+            }
+            return {
+              labels: labels,
+              datasets: [{
+                label: translate("tab_history_attention_time_chart_title"),
+                data: data,
+                backgroundColor: Object.values(this.CHART_COLORS)
+              }]
+            };
+          },
+          init: async function () {
+            const data = await this.createData();
+            this.data = data;
+            this.config = {
+              type: 'bar',
               data: data,
+              options: {
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    display: false
+                  },
+                  title: {
+                    display: true,
+                    text: translate('tab_history_attention_time_chart_title')
+                  }
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: translate('tab_history_attention_time_canvas_x_axis')
+                    }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: translate('tab_history_attention_time_canvas_y_axis')
+                    },
+                    ticks: {
+                      callback: function(value, index, ticks) {
+                          return ((value / 1000) / 60).toFixed(2);
+                      }
+                    }
+                  }
+                }
+              },
+            };
+            this.chart = new Chart(
+              document.getElementById('tab_history_attention_time_canvas'),
+              this.config
+            );
+          },
+          update: async function () {
+            this.chart.data = await this.createData();
+            this.data = this.chart.data;
+            this.config.data = this.chart.data;
+            this.chart.update();
+          }
+        }
+      },
+      efficiency: {
+        model: {
+          labels: null,
+          data: null,
+          init: async function () {
+            const rawdata = await getOrCreateRawData();
+            this.labels = [];
+            this.data = [];
+            for(const origin in rawdata) {
+              const o = rawdata[origin];
+              const od = o.datacenter.total;
+              const on = o.network.total;
+              if ( rawdata[origin] !== undefined && 0 < rawdata[origin].attentionTime  ) {
+                this.labels.push(origin);
+                this.data.push(rawdata[origin].attentionTime / (od + on));
+              }
+            }
+          },
+          update: async function () {
+            await this.init();
+          }
+        },
+        view: {
+          data: null,
+          config: null,
+          chart: null,
+          CHART_COLORS: {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+          },
+          init: async function () {
+            const parent = this.parent;
+            const data = {
+              labels: parent.model.labels,
+              datasets: [{
+                label: translate("tab_history_attention_efficiency_title"),
+                data: parent.model.data,
+                backgroundColor: Object.values(this.CHART_COLORS)
+              }]
+            };
+            this.data = data;
+            this.config = {
+              type: 'bar',
+              data: data,
+              options: {
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    display: false
+                  },
+                  title: {
+                    display: true,
+                    text: translate('tab_history_attention_efficiency_title')
+                  }
+                },
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: translate('tab_history_attention_efficiency_x_axis')
+                    }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    title: {
+                      display: true,
+                      text: translate('tab_history_attention_efficiency_y_axis')
+                    }
+                  }
+                }
+              },
+            };
+            this.chart = new Chart(
+              document.getElementById('tab_history_attention_efficiency_canvas'),
+              this.config
+            );
+          }
+        },
+        update: async function () {
+          const parent = this.parent;
+          this.chart.data = {
+            labels: parent.model.labels,
+            datasets: [{
+              label: translate("tab_history_attention_efficiency_title"),
+              data: parent.model.data,
               backgroundColor: Object.values(this.CHART_COLORS)
             }]
           };
-        },
-        init: async function () {
-          const data = await this.createData();
-          this.data = data;
-          this.config = {
-            type: 'bar',
-            data: data,
-            options: {
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-                title: {
-                  display: true,
-                  text: translate('tab_history_attention_chart_title')
-                }
-              },
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: translate('tab_history_attention_canvas_x_axis')
-                  }
-                },
-                y: {
-                  beginAtZero: true,
-                  title: {
-                    display: true,
-                    text: translate('tab_history_attention_canvas_y_axis')
-                  },
-                  ticks: {
-                    callback: function(value, index, ticks) {
-                        return ((value / 1000) / 60).toFixed(2);
-                    }
-                  }
-                }
-              }
-            },
-          };
-          this.chart = new Chart(
-            document.getElementById('tab_history_attention_canvas'),
-            this.config
-          );
-        },
-        update: async function () {
-          this.chart.data = await this.createData();
           this.data = this.chart.data;
           this.config.data = this.chart.data;
           this.chart.update();

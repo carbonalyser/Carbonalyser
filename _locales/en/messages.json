@@ -177,35 +177,47 @@
   "tab_history_data_consumptionShareAmongSites_description": {
     "message": "Represents the distribution of your data consumption according to the sites. A large part shows that you use a site frequently or that the site in question requires a lot of data."
   },
-  "tab_history_electricityConsumptionOverTime_description": {
+  "tab_history_electricity_overTime_description": {
     "message": "Represents the instantaneous electricity consumption during your navigation. The amount of electricity includes the electricity used by the data center to maintain the web page but also the electricity consumed by the routing infrastructure between you and the site. High peaks can show that you are using a power-hungry site (for example if it is not optimized or uses unnecessary effects for the user)."
   },
-  "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
+  "tab_history_electricity_overTime_datasetDataCenter": {
     "message": "Electricity consummed in datacenter"
   },
-  "tab_history_electricityConsumptionOverTime_datasetNetwork": {
+  "tab_history_electricity_overTime_datasetNetwork": {
     "message": "Electricity consummed routing infra"
   },
-  "tab_history_electricityConsumptionOverTime_graphTitle": {
+  "tab_history_electricity_overTime_graphTitle": {
     "message": "Comsumption of electricity linked to your online activity (not only your computer)"
   },
-  "tab_history_electricityConsumptionOverTime_graphXAxis": {
+  "tab_history_electricity_overTime_graphXAxis": {
     "message": "Time"
   },
-  "tab_history_electricityConsumptionOverTime_graphYAxis": {
+  "tab_history_electricity_overTime_graphYAxis": {
     "message": "electricity consumption KWh"
   },
-  "tab_history_attention_chart_title": {
+  "tab_history_attention_time_chart_title": {
     "message": "Share of your time among sites."
   },
-  "tab_history_attention_canvas_x_axis": {
+  "tab_history_attention_time_canvas_x_axis": {
     "message": "Differents web sites."
   },
-  "tab_history_attention_canvas_y_axis": {
+  "tab_history_attention_time_canvas_y_axis": {
     "message": "Time spent on site (minutes)."
   },
-  "tab_history_attention_description": {
+  "tab_history_attention_time_description": {
     "message": "Represents your time while browsing, high bars indicate that you spend a lot of time on the given site."
+  },
+  "tab_history_attention_efficiency_title": {
+    "message": "Site efficiency in attention minute/bytes"
+  },
+  "tab_history_attention_efficiency_description": {
+    "message": "The more bar is high the more site is efficient. Sites that got a low value consume many bytes for few of your time (it could be a wrongly optimized, or a site that do useless things)."
+  },
+  "tab_history_attention_efficiency_x_axis": {
+    "message": ""
+  },
+  "tab_history_attention_efficiency_y_axis": {
+    "message": ""
   },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Preference"

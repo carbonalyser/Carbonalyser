@@ -177,35 +177,47 @@
   "tab_history_data_consumptionShareAmongSites_description": {
     "message": "Stellt die Verteilung Ihres Datenverbrauchs nach Standorten dar. Ein großer Teil zeigt, dass Sie eine Seite häufig nutzen oder dass die betreffende Seite viele Daten benötigt."
   },
-  "tab_history_electricityConsumptionOverTime_description": {
+  "tab_history_electricity_overTime_description": {
     "message": "Stellt den momentanen Stromverbrauch während Ihrer Navigation dar. Die Strommenge umfasst den Strom, der vom Rechenzentrum zur Wartung der Webseite verbraucht wird, aber auch den Strom, der von der Routing-Infrastruktur zwischen Ihnen und der Website verbraucht wird. Hohe Spitzen können darauf hindeuten, dass Sie eine leistungshungrige Seite verwenden (z. B. wenn sie nicht optimiert ist oder unnötige Effekte für den Benutzer verwendet)."
   },
-  "tab_history_electricityConsumptionOverTime_datasetDataCenter": {
+  "tab_history_electricity_overTime_datasetDataCenter": {
     "message": "Stromverbrauch im Rechenzentrum"
   },
-  "tab_history_electricityConsumptionOverTime_datasetNetwork": {
+  "tab_history_electricity_overTime_datasetNetwork": {
     "message": "Stromverbrauch Routing Infra"
   },
-  "tab_history_electricityConsumptionOverTime_graphTitle": {
+  "tab_history_electricity_overTime_graphTitle": {
     "message": "Stromverbrauch im Zusammenhang mit Ihrer Online-Aktivität (nicht nur Ihr Computer)"
   },
-  "tab_history_electricityConsumptionOverTime_graphXAxis": {
+  "tab_history_electricity_overTime_graphXAxis": {
     "message": "Temp"
   },
-  "tab_history_electricityConsumptionOverTime_graphYAxis": {
+  "tab_history_electricity_overTime_graphYAxis": {
     "message": "Stromverbrauch KWh"
   },
-  "tab_history_attention_chart_title": {
+  "tab_history_attention_time_chart_title": {
     "message": "Teilen Sie Ihre Zeit nach den verschiedenen Standorten."
   },
-  "tab_history_attention_canvas_x_axis": {
+  "tab_history_attention_time_canvas_x_axis": {
     "message": "Verschiedene Webseiten."
   },
-  "tab_history_attention_canvas_y_axis": {
+  "tab_history_attention_time_canvas_y_axis": {
     "message": "Auf der Website verbrachte Zeit (in Minuten)."
   },
-  "tab_history_attention_description": {
+  "tab_history_attention_time_description": {
     "message": "Stellt Ihre Zeit beim Surfen dar, hohe Balken zeigen an, dass Sie viel Zeit auf der jeweiligen Website verbringen."
+  },
+  "tab_history_attention_efficiency_title": {
+    "message": "Site-Effizienz in Aufmerksamkeitsminuten/Bytes"
+  },
+  "tab_history_attention_efficiency_description": {
+    "message": "Je höher die Messlatte ist, desto effizienter ist die Website. Seiten, die einen niedrigen Wert haben, verbrauchen viele Bytes für wenig Zeit (es könnte eine falsch optimierte Seite sein oder eine Seite, die nutzlose Dinge tut)."
+  },
+  "tab_history_attention_efficiency_x_axis": {
+    "message": ""
+  },
+  "tab_history_attention_efficiency_y_axis": {
+    "message": ""
   },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
