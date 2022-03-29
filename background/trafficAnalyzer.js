@@ -223,10 +223,10 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
   }
 });
 
-init = async () => {
+TA_init = async () => {
   if ( await getPref("daemon.runAtStart") ) {
     await handleMessage({action: 'start'});
   }
 }
 
-init();
+TA_init();

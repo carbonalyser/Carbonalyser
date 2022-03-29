@@ -112,8 +112,8 @@ const popup = {
       model: {
         run: async () => {
           await obrowser.storage.local.clear();
-          obrowser.runtime.sendMessage({action: "stop"});
-          obrowser.runtime.sendMessage({action: "reinitCIUpdater"});
+          await obrowser.runtime.sendMessage({action: "stop"});
+          await obrowser.runtime.sendMessage({action: "reinitCIUpdater"});
         },
         init: async function () {
 
@@ -293,14 +293,14 @@ onStorageChanged = async (changes, areaName) => {
   }
 }
 
-init = async () => {
+P_init = async () => {
 
   createMVC(popup);
   attachParent(popup);
   
   loadTranslations();
 
-  window.removeEventListener("load", init);
+  window.removeEventListener("load", P_init);
   window.addEventListener("unload", end, { once: true });
 
   popup.init();
@@ -311,4 +311,4 @@ end = () => {
 
 }
 
-window.addEventListener("load", init);
+window.addEventListener("load", P_init);

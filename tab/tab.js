@@ -1041,9 +1041,9 @@ handleStorageChanged = async (changes, areaName) => {
   }
 }
 
-init = async () => {
+T_init = async () => {
 
-  window.removeEventListener("load", init);
+  window.removeEventListener("load", T_init);
   window.addEventListener("unload", end);
 
   attachHandlerToSelectRegion();
@@ -1067,4 +1067,4 @@ end = () => {
   obrowser.storage.onChanged.removeListener(handleStorageChanged);
   window.removeEventListener("unload", end);
 }
-window.addEventListener("load", init);
+window.addEventListener("load", T_init);
