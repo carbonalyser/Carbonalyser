@@ -8,14 +8,15 @@ let analysisRunning = false;
 storageGetAnalysisState().then((value)=>{
     analysisRunning = value
 });
+let stack = [];
+
 updateAttentionTime = async (url) => {
-    if ( url === undefined ) {
-        console.warn("That case has happened");
+    if ( url === undefined || url === null ) {
+        // aborting
     } else {
         const urlOrigin = url;
         const newOrigin = extractHostname(urlOrigin);
         const dn = Date.now();
-        console.warn("currentOrigin=" + currentOrigin);
         if ( currentOrigin === null || currentOrigin === undefined ) {
             // nothing to do
         } else {
@@ -25,10 +26,8 @@ updateAttentionTime = async (url) => {
                 rawdata[currentOrigin] = createEmptyRawData();
             }
             rawdata[currentOrigin].attentionTime += delta;
-            console.warn("currentOrigin=" + currentOrigin, rawdata);
             await obrowser.storage.local.set({rawdata: JSON.stringify(rawdata)});
         }
-        console.warn("newOrigin="+newOrigin);
         currentOrigin = newOrigin;
         currentStart = dn;
 
@@ -50,16 +49,28 @@ updateAttentionTime = async (url) => {
     }
 }
 
+/**
+ * Update attention time in a differed way.
+ */
+loopUpdateAttentionCheck = async () => {
+    const url = stack.pop();
+    await updateAttentionTime(url);
+    stack = [];
+}
+setInterval(loopUpdateAttentionCheck, 500);
+
 handleTabActivated = async (activeInfo) => {
     if ( analysisRunning ) {
         const tab = await obrowser.tabs.get(activeInfo.tabId);
-        await updateAttentionTime(tab.url);
+        stack.push(tab.url);
     }
 }
 
 handleTabUpdated = async (tabId, changeInfo, tab) => {
     if ( analysisRunning ) {
-        await updateAttentionTime(tab.url);
+        if( tab.status === "complete" ) {
+            stack.push(tab.url);
+        }
     }
 }
 
