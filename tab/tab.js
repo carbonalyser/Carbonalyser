@@ -761,8 +761,7 @@ const tab = {
                     position: 'top',
                   },
                   title: {
-                    display: true,
-                    text: translate("tab_history_electricity_overTime_graphTitle")
+                    display: false
                   },
                   decimation: {
                     enabled: true,
@@ -844,7 +843,7 @@ const tab = {
             return {
               labels: labels,
               datasets: [{
-                label: translate("tab_history_attention_time_chart_title"),
+                label: translate("tab_history_attention_time_canvas_x_axis"),
                 data: data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
@@ -863,8 +862,7 @@ const tab = {
                     display: false
                   },
                   title: {
-                    display: true,
-                    text: translate('tab_history_attention_time_chart_title')
+                    display: false
                   }
                 },
                 scales: {
@@ -942,7 +940,6 @@ const tab = {
             const data = {
               labels: parent.model.labels,
               datasets: [{
-                label: translate("tab_history_attention_efficiency_title"),
                 data: parent.model.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
@@ -958,8 +955,7 @@ const tab = {
                     display: false
                   },
                   title: {
-                    display: true,
-                    text: translate('tab_history_attention_efficiency_title')
+                    display: false
                   }
                 },
                 scales: {
@@ -989,7 +985,6 @@ const tab = {
             this.chart.data = {
               labels: parent.model.labels,
               datasets: [{
-                label: translate("tab_history_attention_efficiency_title"),
                 data: parent.model.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
