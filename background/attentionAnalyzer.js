@@ -32,7 +32,7 @@ updateAttentionTime = async (url) => {
         currentStart = dn;
 
         // prevent localhost pages.
-        for(const turl of [/^about:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
+        for(const turl of [/^about:.*$/,/^chrome:.*$/,/^chrome-extension:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
             if ( turl.test(urlOrigin) ) {
                 currentOrigin = null;
                 currentStart = null;
