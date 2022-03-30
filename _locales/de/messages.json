@@ -249,6 +249,9 @@
   "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
     "message": "Automatische Aktualisierung."
   },
+  "tab_settings_preferencesScreen_prefs_tab_min_attention_time": {
+    "message": "Die Schwelle für die Aufmerksamkeitszeit zeigt nichts darunter (in ms)."
+  },
   "tab_settings_preferencesScreen_prefs_tab_animate": {
     "message": "Entfernen Sie Animationen auf der Registerkarte „Verlauf“."
   },

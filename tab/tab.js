@@ -859,7 +859,7 @@ const tab = {
             const labels = [];
             const data = [];
             for(const origin in rawdata) {
-              if ( 0 < rawdata[origin].attentionTime ) {
+              if ( (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime ) {
                 labels.push(origin);
                 data.push(rawdata[origin].attentionTime);
               }
@@ -938,7 +938,7 @@ const tab = {
               const o = rawdata[origin];
               const od = o.datacenter.total;
               const on = o.network.total;
-              if ( rawdata[origin] !== undefined && 0 < rawdata[origin].attentionTime  ) {
+              if ( rawdata[origin] !== undefined && (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime  ) {
                 this.data.labels.push(origin);
                 this.data.data.push(rawdata[origin].attentionTime / (od + on));
               }
@@ -968,7 +968,7 @@ const tab = {
             const data = {
               labels: parent.model.data.labels,
               datasets: [{
-                data: parent.model.data,
+                data: parent.model.data.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };

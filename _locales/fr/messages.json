@@ -249,6 +249,9 @@
   "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
     "message": "Rafraîchissement automatique."
   },
+  "tab_settings_preferencesScreen_prefs_tab_min_attention_time": {
+    "message": "Seuil minimal d'attention pour les graph d'attention (en ms)."
+  },
   "tab_settings_preferencesScreen_prefs_tab_animate": {
     "message": "Enlever les animations sur l'onglet d'historique."
   },
