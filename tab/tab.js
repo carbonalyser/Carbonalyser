@@ -281,13 +281,15 @@ const tab = {
   settings: {
     selectRegion: {
       model: {
-        selectedRegion: null,
+        data: {
+          selectedRegion: null,
+        },
         init: async function () {
           await this.update();
         },
         update: async function () {
           await this.parent.parent.parent.updateParameters();
-          this.selectedRegion = await getSelectedRegion();
+          this.data.selectedRegion = await getSelectedRegion();
         }
       },
       view: {
@@ -338,12 +340,12 @@ const tab = {
           });
           div.append(img);
           const root = this.parent.parent.parent;
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
         },
         update: async function () {
           const root = this.parent.parent.parent;
           $("#" + regionSelectID).empty();
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
         }
       }
     },
@@ -359,14 +361,16 @@ const tab = {
         }
       },
       view: {
-        div: null,
+        data: {
+          div: null,
+        },
         init: async function () {
-          div = document.getElementById("carbonIntensityLastRefreshIP");
+          this.data.div = document.getElementById("carbonIntensityLastRefreshIP");
           await this.update();
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          div.textContent = obrowser.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
+          this.data.div.textContent = obrowser.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
         }
       }
     }, 
@@ -495,8 +499,10 @@ const tab = {
    */
   history: {
     model: {
-      bytesDataCenterObjectForm: null,
-      bytesNetworkObjectForm: null,
+      data: {
+        bytesDataCenterObjectForm: null,
+        bytesNetworkObjectForm: null,
+      },
       createObject: async function () {
         const root = this.parent.parent;
         await root.updateRawData();
@@ -505,8 +511,8 @@ const tab = {
         bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
         fillSODGaps(bytesNetworkUnordered);
         fillSODGaps(bytesDataCenterUnordered);
-        this.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
-        this.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+        this.data.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
+        this.data.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
       },
       init: async function () {
         this.createObject();
@@ -541,14 +547,14 @@ const tab = {
               datasets: [
                 {
                   label: translate("tab_history_data_consumptionOverTime_datacenterLabel"),
-                  data: parent.model.bytesDataCenterObjectForm,
+                  data: parent.model.data.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: translate("tab_history_data_consumptionOverTime_networkLabel"),
-                  data: parent.model.bytesNetworkObjectForm,
+                  data: parent.model.data.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2
@@ -635,20 +641,22 @@ const tab = {
        */
       consumptionShareAmongSites: {
         model: {
-          topStats: null,
-          labels: null,
-          series: null,
+          data: {
+            topStats: null,
+            labels: null,
+            series: null,
+          },
           init: async function () {
-            this.topStats = await getStats(100);
-            this.labels = [];
-            this.series = [];
-            for (const stat of this.topStats.highestStats) {
+            this.data.topStats = await getStats(100);
+            this.data.labels = [];
+            this.data.series = [];
+            for (const stat of this.data.topStats.highestStats) {
               if (stat.percent < 1) {
                 continue;
               }
 
-              this.labels.push(stat.origin);
-              this.series.push(stat.percent);
+              this.data.labels.push(stat.origin);
+              this.data.series.push(stat.percent);
             }
           },
           update: async function () {
@@ -673,10 +681,10 @@ const tab = {
           createData: async function () {
             const parent = this.parent;
             return {
-              labels: parent.model.labels,
+              labels: parent.model.data.labels,
               datasets: [{
                 label: translate("tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel"),
-                data: parent.model.series,
+                data: parent.model.data.series,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
@@ -714,18 +722,20 @@ const tab = {
     electricity: {
       overTime: {
         model: {
-          electricityDataCenterObjectForm: null,
-          electricityNetworkObjectForm: null,
+          data: {
+            electricityDataCenterObjectForm: null,
+            electricityNetworkObjectForm: null,
+          },
           init: async function () {
             const history = this.parent.parent.parent;
             printDebug("bytes per origin is not updated at the time (only electricity)...");
-            this.electricityDataCenterObjectForm = [];
-            this.electricityNetworkObjectForm = [];
-            for(let o of history.model.bytesDataCenterObjectForm) {
-              this.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
+            this.data.electricityDataCenterObjectForm = [];
+            this.data.electricityNetworkObjectForm = [];
+            for(let o of history.model.data.bytesDataCenterObjectForm) {
+              this.data.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
             }
-            for(let o of history.model.bytesNetworkObjectForm) {
-              this.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+            for(let o of history.model.data.bytesNetworkObjectForm) {
+              this.data.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
             }
           },
           update: async function () {
@@ -744,14 +754,14 @@ const tab = {
               datasets: [
                 {
                   label: translate("tab_history_electricity_overTime_datasetDataCenter"),
-                  data: parent.model.electricityDataCenterObjectForm,
+                  data: parent.model.data.electricityDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: translate("tab_history_electricity_overTime_datasetNetwork"),
-                  data: parent.model.electricityNetworkObjectForm,
+                  data: parent.model.data.electricityNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2,
@@ -916,19 +926,21 @@ const tab = {
       },
       efficiency: {
         model: {
-          labels: null,
-          data: null,
+          data: {
+            labels: null,
+            data: null,
+          },
           init: async function () {
             const rawdata = await getOrCreateRawData();
-            this.labels = [];
-            this.data = [];
+            this.data.labels = [];
+            this.data.data = [];
             for(const origin in rawdata) {
               const o = rawdata[origin];
               const od = o.datacenter.total;
               const on = o.network.total;
               if ( rawdata[origin] !== undefined && 0 < rawdata[origin].attentionTime  ) {
-                this.labels.push(origin);
-                this.data.push(rawdata[origin].attentionTime / (od + on));
+                this.data.labels.push(origin);
+                this.data.data.push(rawdata[origin].attentionTime / (od + on));
               }
             }
           },
@@ -954,7 +966,7 @@ const tab = {
           init: async function () {
             const parent = this.parent;
             const data = {
-              labels: parent.model.labels,
+              labels: parent.model.data.labels,
               datasets: [{
                 data: parent.model.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
@@ -999,9 +1011,9 @@ const tab = {
           update: async function () {
             const parent = this.parent;
             this.data.chart.data = {
-              labels: parent.model.labels,
+              labels: parent.model.data.labels,
               datasets: [{
-                data: parent.model.data,
+                data: parent.model.data.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
