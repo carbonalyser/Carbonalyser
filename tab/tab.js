@@ -291,22 +291,24 @@ const tab = {
         }
       },
       view: {
-        img: null,
-        imgAnimation: null,
+        data: {
+          img: null,
+          imgAnimation: null,
+        },
         init: async function () {
           const settings = this.parent.parent;
-          this.img = document.createElement("img");
-          this.img.setAttribute("width", "20px");
-          this.img.setAttribute("height", "20px");
-          this.img.setAttribute("style", "margin-left: 5px;");
-          this.img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
-          this.img.hidden = true;
-          this.imgAnimation = rotateAnimation.newInstance();
-          this.imgAnimation.button = $(this.img);
-          this.imgAnimation.loop = true;
-          const img = this.img;
-          const imgAnimation = this.imgAnimation;
-          this.imgAnimation.onAnimationEnd = async function () {
+          const img = document.createElement("img");
+          this.data.img = img;
+          img.setAttribute("width", "20px");
+          img.setAttribute("height", "20px");
+          img.setAttribute("style", "margin-left: 5px;");
+          img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
+          img.hidden = true;
+          const imgAnimation = rotateAnimation.newInstance();
+          this.data.imgAnimation = imgAnimation;
+          imgAnimation.button = $(img);
+          imgAnimation.loop = true;
+          this.data.imgAnimation.onAnimationEnd = async function () {
             img.hidden = true;
           };
           // part of the refresh system
@@ -334,7 +336,7 @@ const tab = {
               }, 1000);
             }
           });
-          div.append(this.img);
+          div.append(img);
           const root = this.parent.parent.parent;
           injectRegionIntoHTML(root.parameters.regions, this.parent.model.selectedRegion);
         },
@@ -378,7 +380,9 @@ const tab = {
         }
       },
       view: {
-        settingsCICIS: null,
+        data: {
+          settingsCICIS: null,
+        },
         /**
          * Create a new entry in region table.
          * @param {*} root root for creation of entry.
@@ -420,9 +424,9 @@ const tab = {
         },
         init: async function () {
           const root = this.parent.parent.parent;
-          this.settingsCICIS = document.getElementById("settingsCICIS");
+          this.data.settingsCICIS = document.getElementById("settingsCICIS");
           for(const name in root.parameters.regions) {
-            this.createEntry(this.settingsCICIS, name, true, null);
+            this.createEntry(this.data.settingsCICIS, name, true, null);
           }
           $(document).ready(function() {
             const table = $('#settingsCItable');
@@ -433,20 +437,22 @@ const tab = {
         update: async function () {
           const root = this.parent.parent.parent;
           for(const name in root.parameters.regions) {
-            this.createEntry(this.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
+            this.createEntry(this.data.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
           }
         }
       }
     },
     carbonFactorManual: {
       view: {
-        button: null,
-        input: null,
+        data: {
+          button: null,
+          input: null,
+        },
         init: async function() {
-          this.button = $("#tab_custom_ci_factor_button");
-          this.input = $("#tab_custom_ci_factor_input");
-          const input = this.input;
-          this.button.on("click", async function() {
+          this.data.button = $("#tab_custom_ci_factor_button");
+          this.data.input = $("#tab_custom_ci_factor_input");
+          const input = this.data.input;
+          this.data.button.on("click", async function() {
             await setCarbonIntensityRegion("custom", parseInt(input.val()));
           });
         },
@@ -524,9 +530,11 @@ const tab = {
        */
       consumptionOverTime: {
         view: {
-          data: null,
-          config: null,
-          myChart: null,
+          data: {
+            data: null,
+            config: null,
+            myChart: null,
+          },
           createData: async function () {
             const parent = this.parent.parent.parent;
             return {
@@ -550,10 +558,10 @@ const tab = {
           },
           init: async function () {
             const parent = this.parent.parent.parent;
-            this.data = await this.createData();
+            this.data.data = await this.createData();
 
-            const data = this.data;
-            this.config = {
+            const data = this.data.data;
+            this.data.config = {
               type: 'line',
               data: data,
               options: {
@@ -608,17 +616,17 @@ const tab = {
               },
             };
           
-            this.myChart = new Chart(
+            this.data.myChart = new Chart(
               document.getElementById('tab_history_data_consumptionOverTime_canvas'),
-              this.config
+              this.data.config
             );
           },
           update: async function () {
             const parent = this.parent.parent.parent;
-            this.myChart.data = await this.createData();
-            this.data = this.myChart.data;
-            this.config.data = this.myChart.data;
-            this.myChart.update();
+            this.data.myChart.data = await this.createData();
+            this.data.data = this.data.myChart.data;
+            this.data.config.data = this.data.myChart.data;
+            this.data.myChart.update();
           }
         }
       },
@@ -657,9 +665,11 @@ const tab = {
             purple: 'rgb(153, 102, 255)',
             grey: 'rgb(201, 203, 207)'
           },
-          pieData: null,
-          pieConfig: null,
-          chart: null,
+          data: {
+            pieData: null,
+            pieConfig: null,
+            chart: null,
+          },
           createData: async function () {
             const parent = this.parent;
             return {
@@ -672,11 +682,11 @@ const tab = {
             };
           },
           init: async function () {
-            this.pieData = await this.createData();
+            this.data.pieData = await this.createData();
             
-            this.pieConfig = {
+            this.data.pieConfig = {
               type: 'pie',
-              data: this.pieData,
+              data: this.data.pieData,
               options: {
                 responsive: false,
                 plugins: {
@@ -687,16 +697,16 @@ const tab = {
               }
             };
           
-            this.chart = new Chart(
+            this.data.chart = new Chart(
               document.getElementById('tab_history_data_consumptionShareAmongSites_canvas'),
-              this.pieConfig
+              this.data.pieConfig
             );
           },
           update: async function () {
-            this.chart.data = await this.createData();
-            this.pieData = this.chart.data;
-            this.pieConfig.data = this.chart.data;
-            this.chart.update();
+            this.data.chart.data = await this.createData();
+            this.data.pieData = this.data.chart.data;
+            this.data.pieConfig.data = this.data.chart.data;
+            this.data.chart.update();
           }
         }
       },
@@ -723,9 +733,11 @@ const tab = {
           }
         },
         view: {
-          data: null,
-          config: null,
-          chart: null,
+          data: {
+            data: null,
+            config: null,
+            chart: null,
+          },
           createData: async function () {
             const parent = this.parent;
             return {
@@ -748,10 +760,10 @@ const tab = {
             };
           },
           init: async function () {
-            this.data = await this.createData();
+            this.data.data = await this.createData();
   
-            const data = this.data;
-            this.config = {
+            const data = this.data.data;
+            this.data.config = {
               type: 'line',
               data: data,
               options: {
@@ -801,16 +813,16 @@ const tab = {
             };
   
             // Create electricity graph
-            this.chart = new Chart(
+            this.data.chart = new Chart(
               document.getElementById('tab_history_electricity_overTime_canvas'),
-              this.config
+              this.data.config
             );
           },
           update: async function () {
-            this.data = await this.createData();
-            this.config.data = this.data;
-            this.chart.data = this.data;
-            this.chart.update();
+            this.data.data = await this.createData();
+            this.data.config.data = this.data.data;
+            this.data.chart.data = this.data.data;
+            this.data.chart.update();
           }
         }
       },
@@ -818,9 +830,11 @@ const tab = {
     attention: {
       time: {
         view: {
-          data: null,
-          config: null,
-          chart: null,
+          data: {
+            data: null,
+            config: null,
+            chart: null,
+          },
           CHART_COLORS: {
             red: 'rgb(255, 99, 132)',
             orange: 'rgb(255, 159, 64)',
@@ -851,8 +865,8 @@ const tab = {
           },
           init: async function () {
             const data = await this.createData();
-            this.data = data;
-            this.config = {
+            this.data.data = data;
+            this.data.config = {
               type: 'bar',
               data: data,
               options: {
@@ -887,16 +901,16 @@ const tab = {
                 }
               },
             };
-            this.chart = new Chart(
+            this.data.chart = new Chart(
               document.getElementById('tab_history_attention_time_canvas'),
-              this.config
+              this.data.config
             );
           },
           update: async function () {
-            this.chart.data = await this.createData();
-            this.data = this.chart.data;
-            this.config.data = this.chart.data;
-            this.chart.update();
+            this.data.chart.data = await this.createData();
+            this.data.data = this.data.chart.data;
+            this.data.config.data = this.data.chart.data;
+            this.data.chart.update();
           }
         }
       },
@@ -923,9 +937,11 @@ const tab = {
           }
         },
         view: {
-          data: null,
-          config: null,
-          chart: null,
+          data: {
+            data: null,
+            config: null,
+            chart: null,
+          },
           CHART_COLORS: {
             red: 'rgb(255, 99, 132)',
             orange: 'rgb(255, 159, 64)',
@@ -944,8 +960,8 @@ const tab = {
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
-            this.data = data;
-            this.config = {
+            this.data.data = data;
+            this.data.config = {
               type: 'bar',
               data: data,
               options: {
@@ -975,23 +991,23 @@ const tab = {
                 }
               },
             };
-            this.chart = new Chart(
+            this.data.chart = new Chart(
               document.getElementById('tab_history_attention_efficiency_canvas'),
-              this.config
+              this.data.config
             );
           },
           update: async function () {
             const parent = this.parent;
-            this.chart.data = {
+            this.data.chart.data = {
               labels: parent.model.labels,
               datasets: [{
                 data: parent.model.data,
                 backgroundColor: Object.values(this.CHART_COLORS)
               }]
             };
-            this.data = this.chart.data;
-            this.config.data = this.chart.data;
-            this.chart.update();
+            this.data.data = this.data.chart.data;
+            this.data.config.data = this.data.chart.data;
+            this.data.chart.update();
           }
         },
       }
