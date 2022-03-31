@@ -64,18 +64,18 @@ const simplerRequire = (filename) => {
 
 
 // define variable in scope that need to be
-var printDebug, isInDebug, getBrowser, end, preferencesChange, emulateFirefox, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
+var storageSetAnalysisState, L_init, L_end, storageGetAnalysisState, printDebug, printDebugOrigin, isInDebug, getBrowser, end, preferencesChange, emulateFirefox, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
 obrowser = getBrowser();
-var injectEquivalentIntoHTML, computeEquivalenceFromStatsItem, updateEquivalence;
+var injectEquivalentIntoHTML, getEmptyEquivalenceObject, computeEquivalenceFromStatsItem, updateEquivalence;
 simplerRequire('../lib/carbonalyser/libEquivalence.js');
 var injectRegionIntoHTML, attachHandlerToSelectRegion, selectRegionHandler, getSelectedRegion, setSelectedRegion;
 simplerRequire('../lib/carbonalyser/libRegionSelect.js');
-var init, getOrCreateRawData, incBytesPerOrigin, incBytesDataCenter, incBytesNetwork, setRegion, getCarbonIntensityRegion, getParameters, capitalizeFirstLetter, lowerFirstLetter, getRegions, setParameters, getStats, toMegaByteNoRound, toMegaByte, toMebiByte;
+var init, getOrCreateRawData, createEmptyRawData, setCarbonIntensityRegion, LS_init, LS_end, incBytesPerOrigin, incBytesDataCenter, incBytesNetwork, setRegion, getCarbonIntensityRegion, getParameters, capitalizeFirstLetter, lowerFirstLetter, getRegions, setParameters, getStats, toMegaByteNoRound, toMegaByte, toMebiByte;
 simplerRequire('../lib/carbonalyser/libStats.js');
-var getOrCreatePreferences, getPref, setPref, listenerStorage, injectPreferencesIntoHTML, createEntry, IPIrecurse, IPIPrecurse;
+var getOrCreatePreferences, ensureEntry, LP_init, LP_end, getPref, setPref, listenerStorage, injectPreferencesIntoHTML, createEntry, IPIrecurse, IPIPrecurse;
 simplerRequire('../lib/carbonalyser/libPreferences.js');
-var downloadCompletedCheckLoop, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
+var downloadCompletedCheckLoop, TA_init, TA_end, restartStorageF, buffer, bufferWritter, getOriginFromRequestDetail, getBytesFromHeaders, headersReceivedListener, sendHeadersListener, setBrowserIcon, addOneMinute, handleMessage, synchronizeGui;
 simplerRequire('../background/trafficAnalyzer.js');
 
 describe('extractHostname', function () {
@@ -98,33 +98,33 @@ describe('extractHostname', function () {
 describe('IPIrecurse', function () {
     it('ensure all leaf found', function (done) {
         let leafs = 0;
-        createEntry = function (table, name, value) {
+        ensureEntry = function (table, name, value) {
             leafs += 1;
         }
         let prefs = {
             daemon: {
                 changes: {
-                    auto_refresh: true,      // auto refresh
-                    msBetweenChanges: 500,   // refresh ms
-                    loopMs: 200              // daemon refresh speed
+                    auto_refresh: {value: true, description: ""},      // auto refresh
+                    msBetweenChanges: {value: 500,description: ""},   // refresh ms
+                    loopMs: {value: 200, description: ""},              // daemon refresh speed
                 },
                 downloads: {
-                    loopMs: 1000             // daemon download refresh speed
+                    loopMs: {value: 1000, description: ""},             // daemon download refresh speed
                 }
             },
             analysis: {
-                selectedRegion: 'default',   // selected region
+                selectedRegion: {value: 'default',description: ""},   // selected region
                 carbonIntensity: {
-                    refreshMs: 3600 * 1000   // refresh carbon interval
+                    refreshMs: {value: 3600 * 1000, description: ""},   // refresh carbon interval
                 }
             },
             tab: {
                 update: {
-                    minMs:  1000             // min ms between two data update
+                    minMs:  {value: 1000, description: ""},            // min ms between two data update
                 },
-                animate: true                // remove animation
+                animate: {value: true, description: ""},               // remove animation
             },
-            debug: false                      // enable debug log
+            debug: {value: false, description: ""},                      // enable debug log
         }
         IPIrecurse(undefined, prefs, undefined);
         leafs.should.equals(9);
@@ -132,23 +132,24 @@ describe('IPIrecurse', function () {
     });
 });
 
+ensureEntry = (table, name, obj) => {}
 describe('IPIPrecurse', function() {
     it('ensure leaf correctly setup', function (done) {
         let prefs = {
             daemon: {
                 changes: {
-                    auto_refresh: true,      // auto refresh
-                    msBetweenChanges: 500,   // refresh ms
-                    loopMs: 200              // daemon refresh speed
+                    auto_refresh: {value: true, description: ""},      // auto refresh
+                    msBetweenChanges: {value: 500, description: ""},   // refresh ms
+                    loopMs: {value: 200,description: ""}              // daemon refresh speed
                 },
                 downloads: {
-                    loopMs: 1000             // daemon download refresh speed
+                    loopMs: {value: 1000,description: ""}             // daemon download refresh speed
                 }
             }
         };
-        expect(prefs.daemon.changes.auto_refresh).with.equal(true);
+        expect(prefs.daemon.changes.auto_refresh.value).with.equal(true);
         IPIPrecurse(prefs, "daemon.changes.auto_refresh", false);
-        expect(prefs.daemon.changes.auto_refresh).with.equal(false);
+        expect(prefs.daemon.changes.auto_refresh.value).with.equal(false);
         done();
     });
 });
