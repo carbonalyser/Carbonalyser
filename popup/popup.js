@@ -287,7 +287,12 @@ onStorageChanged = async (changes, areaName) => {
     if ( storageChangedTimeout != null ) {
       clearTimeout(storageChangedTimeout);
     }
-    if ( await getPref("popup.update.auto_refresh") ) {
+
+    if ( changes["rawdata"] !== undefined ) {
+      if ( await getPref("popup.update.auto_refresh") ) {
+        storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+      }
+    } else {
       storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
     }
   }

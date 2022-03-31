@@ -1063,7 +1063,11 @@ handleStorageChanged = async (changes, areaName) => {
         }});
       }
     } 
-    if ( await getPref("tab.update.auto_refresh") ) {
+    if ( changes["rawdata"] !== undefined ) {
+      if ( await getPref("tab.update.auto_refresh") ) {
+        storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+      }
+    } else {
       storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
     }
   }
