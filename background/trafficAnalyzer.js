@@ -6,6 +6,12 @@ printDebug = (msg) => {
 }
 
 /**
+ * a copy of storage that is writted periodically.
+ * warning it holds delta not real values.
+ */
+ buffer = {rawdata: {}};
+
+/**
  * This is trigger when a download start.
  * Since the we can grab only the download start, we have to check manually for its completion.
  */
@@ -14,8 +20,13 @@ downloadCompletedCheckLoop = async (object) => {
   for(downloadItem of (await obrowser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
       const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
-      await incBytesDataCenter(origin, downloadItem.bytesReceived);
-      await incBytesNetwork(origin, BYTES_TCP_HEADER + BYTES_IP_HEADER);
+
+      if ( buffer.rawdata[origin] === undefined ) {
+        buffer.rawdata[origin] = createEmptyRawData();
+      }
+
+      buffer.rawdata[origin].datacenter.total += (downloadItem.bytesReceived);
+      buffer.rawdata[origin].network.total += (BYTES_TCP_HEADER + BYTES_IP_HEADER);
       return;
     }
   }
@@ -51,11 +62,6 @@ getBytesFromHeaders = (headers) => {
   return lengthNetwork;
 }
 
-/**
- * a copy of storage that is writted periodically.
- * warning it holds diff not real values.
- */
-buffer = {rawdata: {}};
 bufferWritter = async () => {
   const rawdata = await getOrCreateRawData();
   let someData = false;
@@ -103,12 +109,9 @@ headersReceivedListener = async (requestDetails) => {
     const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
     if ( buffer.rawdata[origin] === undefined ) {
       buffer.rawdata[origin] = createEmptyRawData();
-      buffer.rawdata[origin].datacenter.total = requestSize;
-      buffer.rawdata[origin].network.total = bnet;
-    } else {
-      buffer.rawdata[origin].datacenter.total += requestSize;
-      buffer.rawdata[origin].network.total += bnet;
     }
+    buffer.rawdata[origin].datacenter.total += requestSize;
+    buffer.rawdata[origin].network.total += bnet;
   }
 };
 
