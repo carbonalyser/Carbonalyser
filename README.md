@@ -18,7 +18,7 @@ Visualizing it will get you to understand that impacts of digital technologies o
 - [x] browsing analysis history
 - [x] preference screen
 - [x] live update of carbon intensities
-- [ ] per site power efficiency
+- [x] per site power efficiency
 - [ ] maintaining power
 
 ## Privacy
