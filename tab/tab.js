@@ -628,10 +628,12 @@ const tab = {
             );
           },
           update: async function () {
-            const parent = this.parent.parent.parent;
-            this.data.myChart.data = await this.createData();
-            this.data.data = this.data.myChart.data;
-            this.data.config.data = this.data.myChart.data;
+            const newdata = await this.createData();
+            for(let idataset = 0; idataset < 2; idataset = idataset + 1) {
+              for(let i = this.data.myChart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
+                this.data.myChart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+              }
+            }
             this.data.myChart.update();
           }
         }
