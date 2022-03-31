@@ -863,6 +863,7 @@ const tab = {
             data: null,
             config: null,
             chart: null,
+            dataIndex: null, // origin/index
           },
           CHART_COLORS: {
             red: 'rgb(255, 99, 132)',
@@ -895,6 +896,10 @@ const tab = {
           init: async function () {
             const data = await this.createData();
             this.data.data = data;
+            this.data.dataIndex = {};
+            for(let i = 0; i < data.labels.length; i = i + 1) {
+              this.data.dataIndex[data.labels[i]] = i;
+            }
             this.data.config = {
               type: 'bar',
               data: data,
@@ -936,9 +941,18 @@ const tab = {
             );
           },
           update: async function () {
-            this.data.chart.data = await this.createData();
-            this.data.data = this.data.chart.data;
-            this.data.config.data = this.data.chart.data;
+            const newdata = await this.createData();
+            let nkeys = Object.keys(this.data.dataIndex).length;
+            for(let i = 0; i < newdata.labels.length; i = i + 1) {
+              const origin = newdata.labels[i];
+              if ( this.data.dataIndex[origin] === undefined ) {
+                this.data.dataIndex[origin] = nkeys;
+                this.data.chart.data.labels.push(origin);
+                nkeys += 1;
+              }
+              const idx = this.data.dataIndex[origin];
+              this.data.chart.data.datasets[0].data[idx] = newdata.datasets[0].data[i];
+            }
             this.data.chart.update();
           }
         }
