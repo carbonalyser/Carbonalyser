@@ -674,12 +674,17 @@ const tab = {
             grey: 'rgb(201, 203, 207)'
           },
           data: {
+            dataIndex: null, // origin/index pair match
             pieData: null,
             pieConfig: null,
             chart: null,
           },
           createData: async function () {
             const parent = this.parent;
+            this.data.dataIndex = {};
+            for(const i in parent.model.data.labels) {
+              this.data.dataIndex[parent.model.data.labels[i]] = i;
+            }
             return {
               labels: parent.model.data.labels,
               datasets: [{
@@ -690,11 +695,11 @@ const tab = {
             };
           },
           init: async function () {
-            this.data.pieData = await this.createData();
-            
+            const pieData = await this.createData();
+            this.data.pieData = pieData;
             this.data.pieConfig = {
               type: 'pie',
-              data: this.data.pieData,
+              data: pieData,
               options: {
                 responsive: false,
                 plugins: {
@@ -711,9 +716,18 @@ const tab = {
             );
           },
           update: async function () {
-            this.data.chart.data = await this.createData();
-            this.data.pieData = this.data.chart.data;
-            this.data.pieConfig.data = this.data.chart.data;
+            for(let i = 0; i < this.parent.model.data.labels.length; i = i + 1) {
+              const label = this.parent.model.data.labels[i];
+              const idx = this.data.dataIndex[label];
+              if ( idx === undefined ) {
+                const newKey = this.data.pieData.datasets[0].data.length;
+                this.data.pieData.labels.push(label);
+                this.data.pieData.datasets[0].data.push(this.parent.model.data.series[i]);
+                this.data.dataIndex[label] = newKey;
+              } else {
+                this.data.pieData.datasets[0].data[idx] = this.parent.model.data.series[i];
+              }
+            }
             this.data.chart.update();
           }
         }
