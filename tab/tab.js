@@ -845,9 +845,12 @@ const tab = {
             );
           },
           update: async function () {
-            this.data.data = await this.createData();
-            this.data.config.data = this.data.data;
-            this.data.chart.data = this.data.data;
+            const newdata = await this.createData();
+            for(let idataset = 0; idataset < 2; idataset = idataset + 1) {
+              for(let i = this.data.chart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
+                this.data.chart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+              }
+            }
             this.data.chart.update();
           }
         }
