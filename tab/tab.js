@@ -571,6 +571,7 @@ const tab = {
               type: 'line',
               data: data,
               options: {
+                resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: true,
                 plugins: {
                   legend: {
@@ -714,6 +715,7 @@ const tab = {
               type: 'pie',
               data: pieData,
               options: {
+                resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: false,
                 plugins: {
                   legend: {
@@ -809,6 +811,7 @@ const tab = {
               type: 'line',
               data: data,
               options: {
+                resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: true,
                 plugins: {
                   legend: {
@@ -931,6 +934,7 @@ const tab = {
               type: 'bar',
               data: data,
               options: {
+                resizeDelay: await getPref("tab.update.resize_delay"),
                 plugins: {
                   legend: {
                     position: 'top',
@@ -1048,6 +1052,7 @@ const tab = {
               type: 'bar',
               data: data,
               options: {
+                resizeDelay: await getPref("tab.update.resize_delay"),
                 plugins: {
                   legend: {
                     position: 'top',
