@@ -1,4 +1,7 @@
 {
+  "general_number_format": {
+    "message": "fr"
+  },
   "moreInformation": {
     "message": "Informations",
     "description": "Titre du lien plus d'informations"

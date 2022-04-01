@@ -571,6 +571,7 @@ const tab = {
               type: 'line',
               data: data,
               options: {
+                locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: true,
                 plugins: {
@@ -715,6 +716,7 @@ const tab = {
               type: 'pie',
               data: pieData,
               options: {
+                locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: false,
                 plugins: {
@@ -811,6 +813,7 @@ const tab = {
               type: 'line',
               data: data,
               options: {
+                locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: true,
                 plugins: {
@@ -934,6 +937,7 @@ const tab = {
               type: 'bar',
               data: data,
               options: {
+                locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 plugins: {
                   legend: {
@@ -1052,6 +1056,7 @@ const tab = {
               type: 'bar',
               data: data,
               options: {
+                locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 plugins: {
                   legend: {

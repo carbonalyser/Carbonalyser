@@ -1,4 +1,7 @@
 {
+  "general_number_format": {
+    "message": "de"
+  },
   "moreInformation": {
     "message": "Über",
     "description": "Über link titel"
