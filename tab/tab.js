@@ -729,19 +729,24 @@ const tab = {
             );
           },
           update: async function () {
-            for(let i = 0; i < this.parent.model.data.labels.length; i = i + 1) {
-              const label = this.parent.model.data.labels[i];
-              const idx = this.data.dataIndex[label];
-              if ( idx === undefined ) {
-                const newKey = this.data.pieData.datasets[0].data.length;
-                this.data.pieData.labels.push(label);
-                this.data.pieData.datasets[0].data.push(this.parent.model.data.series[i]);
-                this.data.dataIndex[label] = newKey;
-              } else {
-                this.data.pieData.datasets[0].data[idx] = this.parent.model.data.series[i];
+            if ( this.parent.model.data.labels.length < this.data.pieData.labels.length ) {
+              this.data.chart.destroy();
+              await this.init();
+            } else {
+              for(let i = 0; i < this.parent.model.data.labels.length; i = i + 1) {
+                const label = this.parent.model.data.labels[i];
+                const idx = this.data.dataIndex[label];
+                if ( idx === undefined ) {
+                  const newKey = this.data.pieData.datasets[0].data.length;
+                  this.data.pieData.labels.push(label);
+                  this.data.pieData.datasets[0].data.push(this.parent.model.data.series[i]);
+                  this.data.dataIndex[label] = newKey;
+                } else {
+                  this.data.pieData.datasets[0].data[idx] = this.parent.model.data.series[i];
+                }
               }
+              this.data.chart.update();
             }
-            this.data.chart.update();
           }
         }
       },
