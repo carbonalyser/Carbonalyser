@@ -846,10 +846,19 @@ const tab = {
           },
           update: async function () {
             const newdata = await this.createData();
+            let deletionDetected = false;
             for(let idataset = 0; idataset < 2; idataset = idataset + 1) {
-              for(let i = this.data.chart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
-                this.data.chart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+              if ( false && newdata.datasets[idataset].data.length < this.data.chart.data.datasets[idataset].data.length ) {
+                deletionDetected = true;
+                break;
+              } else {
+                for(let i = this.data.chart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
+                  this.data.chart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+                }
               }
+            }
+            if ( deletionDetected ) {
+              console.warn("we should delete chart's data here however it is not currently implemented");
             }
             this.data.chart.update();
           }
@@ -943,17 +952,22 @@ const tab = {
           update: async function () {
             const newdata = await this.createData();
             let nkeys = Object.keys(this.data.dataIndex).length;
-            for(let i = 0; i < newdata.labels.length; i = i + 1) {
-              const origin = newdata.labels[i];
-              if ( this.data.dataIndex[origin] === undefined ) {
-                this.data.dataIndex[origin] = nkeys;
-                this.data.chart.data.labels.push(origin);
-                nkeys += 1;
+            if ( nkeys <= newdata.labels.length ) {
+              for(let i = 0; i < newdata.labels.length; i = i + 1) {
+                const origin = newdata.labels[i];
+                if ( this.data.dataIndex[origin] === undefined ) {
+                  this.data.dataIndex[origin] = nkeys;
+                  this.data.chart.data.labels.push(origin);
+                  nkeys += 1;
+                }
+                const idx = this.data.dataIndex[origin];
+                this.data.chart.data.datasets[0].data[idx] = newdata.datasets[0].data[i];
               }
-              const idx = this.data.dataIndex[origin];
-              this.data.chart.data.datasets[0].data[idx] = newdata.datasets[0].data[i];
+              this.data.chart.update();
+            } else {
+              this.data.chart.destroy();
+              await this.init();
             }
-            this.data.chart.update();
           }
         }
       },
@@ -1050,16 +1064,21 @@ const tab = {
           update: async function () {
             const parent = this.parent;
             let len = Object.keys(this.data.dataIndex).length;
-            for(const i in parent.model.data.labels) {
-              const origin = parent.model.data.labels[i];
-              if ( this.data.dataIndex[origin] === undefined ) {
-                this.data.dataIndex[origin] = parseInt(len);
-                this.data.chart.data.labels.push(origin);
-                len += 1;
+            if ( len <= parent.model.data.labels.length ) {
+              for(const i in parent.model.data.labels) {
+                const origin = parent.model.data.labels[i];
+                if ( this.data.dataIndex[origin] === undefined ) {
+                  this.data.dataIndex[origin] = parseInt(len);
+                  this.data.chart.data.labels.push(origin);
+                  len += 1;
+                }
+                this.data.chart.data.datasets[0].data[this.data.dataIndex[origin]] = parent.model.data.data[i];
               }
-              this.data.chart.data.datasets[0].data[this.data.dataIndex[origin]] = parent.model.data.data[i];
+              this.data.chart.update();
+            } else {
+              this.data.chart.destroy();
+              await this.init();
             }
-            this.data.chart.update();
           }
         },
       }
