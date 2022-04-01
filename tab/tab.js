@@ -848,7 +848,7 @@ const tab = {
             const newdata = await this.createData();
             let deletionDetected = false;
             for(let idataset = 0; idataset < 2; idataset = idataset + 1) {
-              if ( false && newdata.datasets[idataset].data.length < this.data.chart.data.datasets[idataset].data.length ) {
+              if ( newdata.datasets[idataset].data.length < this.data.chart.data.datasets[idataset].data.length ) {
                 deletionDetected = true;
                 break;
               } else {
@@ -858,9 +858,11 @@ const tab = {
               }
             }
             if ( deletionDetected ) {
-              console.warn("we should delete chart's data here however it is not currently implemented");
+              this.data.chart.destroy();
+              await this.init();
+            } else {
+              this.data.chart.update();
             }
-            this.data.chart.update();
           }
         }
       },
