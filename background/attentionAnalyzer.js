@@ -15,8 +15,22 @@ updateAttentionTime = async (url) => {
         // aborting
     } else {
         const urlOrigin = url;
-        const newOrigin = extractHostname(urlOrigin);
+        let newOrigin = extractHostname(urlOrigin);
         const dn = Date.now();
+
+        // prevent localhost pages.
+        for(const turl of [/^about:.*$/,/^chrome:.*$/,/^chrome-extension:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
+            if ( turl.test(urlOrigin) ) {
+                newOrigin = null;
+                break;
+            }
+        }
+
+        // prevent loopback ranges
+        if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(newOrigin) ) {
+            newOrigin = null;
+        }
+
         if ( currentOrigin === null || currentOrigin === undefined ) {
             // nothing to do
         } else {
@@ -30,22 +44,6 @@ updateAttentionTime = async (url) => {
         }
         currentOrigin = newOrigin;
         currentStart = dn;
-
-        // prevent localhost pages.
-        for(const turl of [/^about:.*$/,/^chrome:.*$/,/^chrome-extension:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
-            if ( turl.test(urlOrigin) ) {
-                currentOrigin = null;
-                currentStart = null;
-                break;
-            }
-        }
-
-        // prevent loopback ranges
-        const hostname = extractHostname(urlOrigin);
-        if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(hostname) ) {
-            currentOrigin = null;
-            currentStart = null;
-        }
     }
 }
 
@@ -67,9 +65,11 @@ handleTabActivated = async (activeInfo) => {
 }
 
 handleTabUpdated = async (tabId, changeInfo, tab) => {
-    if ( analysisRunning ) {
-        if( tab.status === "complete" ) {
-            stack.push(tab.url);
+    if ( tab.active ) {
+        if ( analysisRunning ) {
+            if( tab.status === "complete" ) {
+                stack.push(tab.url);
+            }
         }
     }
 }
