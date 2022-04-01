@@ -629,12 +629,23 @@ const tab = {
           },
           update: async function () {
             const newdata = await this.createData();
+            let clearDetected = false;
             for(let idataset = 0; idataset < 2; idataset = idataset + 1) {
-              for(let i = this.data.myChart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
-                this.data.myChart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+              if ( newdata.datasets[idataset].data.length < this.data.myChart.data.datasets[idataset].data.length ) {
+                clearDetected = true;
+                break;
+              } else {
+                for(let i = this.data.myChart.data.datasets[idataset].data.length; i < newdata.datasets[idataset].data.length; i = i + 1) {
+                  this.data.myChart.data.datasets[idataset].data.push(newdata.datasets[idataset].data[i]);
+                }
               }
             }
-            this.data.myChart.update();
+            if ( clearDetected ) {
+              this.data.myChart.destroy();
+              await this.init();
+            } else {
+              this.data.myChart.update();
+            }
           }
         }
       },
