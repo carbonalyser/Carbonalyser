@@ -983,6 +983,7 @@ const tab = {
         },
         view: {
           data: {
+            dataIndex: null,
             data: null,
             config: null,
             chart: null,
@@ -998,6 +999,11 @@ const tab = {
           },
           init: async function () {
             const parent = this.parent;
+            this.data.dataIndex = {};
+            for(const i in parent.model.data.labels) {
+              const origin = parent.model.data.labels[i];
+              this.data.dataIndex[origin] = parseInt(i);
+            }
             const data = {
               labels: parent.model.data.labels,
               datasets: [{
@@ -1043,15 +1049,16 @@ const tab = {
           },
           update: async function () {
             const parent = this.parent;
-            this.data.chart.data = {
-              labels: parent.model.data.labels,
-              datasets: [{
-                data: parent.model.data.data,
-                backgroundColor: Object.values(this.CHART_COLORS)
-              }]
-            };
-            this.data.data = this.data.chart.data;
-            this.data.config.data = this.data.chart.data;
+            let len = Object.keys(this.data.dataIndex).length;
+            for(const i in parent.model.data.labels) {
+              const origin = parent.model.data.labels[i];
+              if ( this.data.dataIndex[origin] === undefined ) {
+                this.data.dataIndex[origin] = parseInt(len);
+                this.data.chart.data.labels.push(origin);
+                len += 1;
+              }
+              this.data.chart.data.datasets[0].data[this.data.dataIndex[origin]] = parent.model.data.data[i];
+            }
             this.data.chart.update();
           }
         },
