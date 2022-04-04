@@ -284,5 +284,62 @@
   },
   "tab_custom_ci_factor_button": {
     "message": "Ajouter"
+  },
+  "tab_moreInfo": {
+    "message": "Informations"
+  },
+  "tab_moreInfo_title": {
+    "message": "Source de données et travail associés"
+  },
+  "tab_moreInfo_table_where": {
+    "message": "Adresse"
+  },
+  "tab_moreInfo_table_description": {
+    "message": "Description"
+  },
+  "tab_moreInfo_table_type": {
+    "message": "Type"
+  },
+  "tab_moreInfo_table_wattime_description": {
+    "message": "Attention les intensitées carbone sont affichées en pourcentage"
+  },
+  "tab_moreInfo_table_wattime_type": {
+    "message": "Intensité carbone sur une échelle de 100"
+  },
+  "tab_moreInfo_table_greenit_description": {
+    "message": "Une extension des outils developers qui donne un comparateur"
+  },
+  "tab_moreInfo_table_greenit_type": {
+    "message": "Emissions carbones d'un site web"
+  },
+  "tab_moreInfo_table_ecoindex_description": {
+    "message": ""
+  },
+  "tab_moreInfo_table_ecoindex_type": {
+    "message": "Emissions carbones d'un site web"
+  },
+  "tab_moreInfo_table_carbonintensity_description": {
+    "message": "Donnée regionnalisé de haute qualité des facteurs d'intensité carbone pour le royaume-uni"
+  },
+  "tab_moreInfo_table_carbonintensity_type": {
+    "message": "Facteurs d'intensité carbone"
+  },
+  "tab_moreInfo_table_edf_description": {
+    "message": "Facteur d'intensité carbone pour la france"
+  },
+  "tab_moreInfo_table_edf_type": {
+    "message": "Facteurs d'intensité carbone"
+  },
+  "tab_moreInfo_table_electricitymap_description": {
+    "message": "Facteurs d'intensité carbone par pays"
+  },
+  "tab_moreInfo_table_electricitymap_type": {
+    "message": "Facteurs d'intensité carbone"
+  },
+  "tab_moreInfo_table_pagespeed_description": {
+    "message": "Analyser les sites et voir d'où viens l'inutile"
+  },
+  "tab_moreInfo_table_pagespeed_type": {
+    "message": "Analyse de site web"
   }
 }

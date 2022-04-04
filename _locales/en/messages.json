@@ -284,5 +284,50 @@
   },
   "tab_custom_ci_factor_button": {
     "message": "Add"
+  },
+  "tab_moreInfo": {
+    "message": "Information"
+  },
+  "tab_moreInfo_table_wattime_description": {
+    "message": "Warning displayed carbon intensities are displayed in percentage"
+  },
+  "tab_moreInfo_table_wattime_type": {
+    "message": "carbon intensities scale"
+  },
+  "tab_moreInfo_table_greenit_description": {
+    "message": "extension of devtools that provide comparator"
+  },
+  "tab_moreInfo_table_greenit_type": {
+    "message": "site carbon emission comparator"
+  },
+  "tab_moreInfo_table_ecoindex_description": {
+    "message": ""
+  },
+  "tab_moreInfo_table_ecoindex_type": {
+    "message": "site carbon emission comparator"
+  },
+  "tab_moreInfo_table_carbonintensity_description": {
+    "message": "regionnalised carbon intensities for UK"
+  },
+  "tab_moreInfo_table_carbonintensity_type": {
+    "message": "carbon intensities"
+  },
+  "tab_moreInfo_table_edf_description": {
+    "message": "specialized carbon intensity factor for france"
+  },
+  "tab_moreInfo_table_edf_type": {
+    "message": "carbon intensities"
+  },
+  "tab_moreInfo_table_electricitymap_description": {
+    "message": "by country carbon intensity factors"
+  },
+  "tab_moreInfo_table_electricitymap_type": {
+    "message": "carbon intensities"
+  },
+  "tab_moreInfo_table_pagespeed_description": {
+    "message": "analysis of website from where does useless comes from"
+  },
+  "tab_moreInfo_table_pagespeed_type": {
+    "message": "website analysis"
   }
 }

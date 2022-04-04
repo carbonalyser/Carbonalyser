@@ -284,5 +284,50 @@
   },
   "tab_custom_ci_factor_button": {
     "message": "Addieren"
+  },
+  "tab_moreInfo": {
+    "message": "Information"
+  },
+  "tab_moreInfo_table_wattime_description": {
+    "message": "Warnung angezeigte Kohlenstoffintensitäten werden in Prozent angezeigt"
+  },
+  "tab_moreInfo_table_wattime_type": {
+    "message": "Kohlenstoffintensitätsskala"
+  },
+  "tab_moreInfo_table_greenit_description": {
+    "message": "Erweiterung von Devtools, die Comparator bereitstellen"
+  },
+  "tab_moreInfo_table_greenit_type": {
+    "message": "CO2-Emissionsvergleich vor Ort"
+  },
+  "tab_moreInfo_table_ecoindex_description": {
+    "message": ""
+  },
+  "tab_moreInfo_table_ecoindex_type": {
+    "message": "CO2-Emissionsvergleich vor Ort"
+  },
+  "tab_moreInfo_table_carbonintensity_description": {
+    "message": "regionalisierte Kohlenstoffintensitäten für Großbritannien"
+  },
+  "tab_moreInfo_table_carbonintensity_type": {
+    "message": "Kohlenstoffintensitäten"
+  },
+  "tab_moreInfo_table_edf_description": {
+    "message": "Spezieller CO2-Intensitätsfaktor für Frankreich"
+  },
+  "tab_moreInfo_table_edf_type": {
+    "message": "Kohlenstoffintensitäten"
+  },
+  "tab_moreInfo_table_electricitymap_description": {
+    "message": "nach CO2-Intensitätsfaktoren der Länder"
+  },
+  "tab_moreInfo_table_electricitymap_type": {
+    "message": "Kohlenstoffintensitäten"
+  },
+  "tab_moreInfo_table_pagespeed_description": {
+    "message": "Analyse der Website, woher nutzloses kommt"
+  },
+  "tab_moreInfo_table_pagespeed_type": {
+    "message": "Website-Analyse"
   }
 }
