@@ -282,6 +282,7 @@ const tab = {
     selectRegion: {
       model: {
         data: {
+          parent: null,
           selectedRegion: null,
         },
         init: async function () {
@@ -294,6 +295,7 @@ const tab = {
       },
       view: {
         data: {
+          parent: null,
           img: null,
           imgAnimation: null,
         },
@@ -362,6 +364,7 @@ const tab = {
       },
       view: {
         data: {
+          parent: null,
           div: null,
         },
         init: async function () {
@@ -385,6 +388,7 @@ const tab = {
       },
       view: {
         data: {
+          parent: null,
           settingsCICIS: null,
         },
         /**
@@ -449,6 +453,7 @@ const tab = {
     carbonFactorManual: {
       view: {
         data: {
+          parent: null,
           button: null,
           input: null,
         },
@@ -500,6 +505,7 @@ const tab = {
   history: {
     model: {
       data: {
+        parent: null,
         bytesDataCenterObjectForm: null,
         bytesNetworkObjectForm: null,
       },
@@ -537,6 +543,7 @@ const tab = {
       consumptionOverTime: {
         view: {
           data: {
+            parent: null,
             data: null,
             config: null,
             myChart: null,
@@ -657,6 +664,7 @@ const tab = {
       consumptionShareAmongSites: {
         model: {
           data: {
+            parent: null,
             topStats: null,
             labels: null,
             series: null,
@@ -689,6 +697,7 @@ const tab = {
             grey: 'rgb(201, 203, 207)'
           },
           data: {
+            parent: null,
             dataIndex: null, // origin/index pair match
             pieData: null,
             pieConfig: null,
@@ -759,6 +768,7 @@ const tab = {
       overTime: {
         model: {
           data: {
+            parent: null,
             electricityDataCenterObjectForm: null,
             electricityNetworkObjectForm: null,
           },
@@ -780,6 +790,7 @@ const tab = {
         },
         view: {
           data: {
+            parent: null,
             data: null,
             config: null,
             chart: null,
@@ -893,6 +904,7 @@ const tab = {
       time: {
         view: {
           data: {
+            parent: null,
             data: null,
             config: null,
             chart: null,
@@ -1000,6 +1012,7 @@ const tab = {
       efficiency: {
         model: {
           data: {
+            parent: null,
             labels: null,
             data: null,
           },
@@ -1023,6 +1036,7 @@ const tab = {
         },
         view: {
           data: {
+            parent: null,
             dataIndex: null,
             data: null,
             config: null,
