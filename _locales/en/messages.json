@@ -288,6 +288,15 @@
   "tab_moreInfo": {
     "message": "Information"
   },
+  "tab_moreInfo_project_title": {
+    "message": "About carbonalyzer"
+  },
+  "tab_moreInfo_project_description": {
+    "message": "Carbonalyzer is a derivative work of the shift project carbonalyser. Derived in the sense of improvements have been improved to the original project. The lead developer is AAABBBCCCAAAA. With this tool, you will be able to get an idea of ​​which sites are using the most resources."
+  },
+  "tab_moreInfo_support_title": {
+    "message": "Support & bug report"
+  },
   "tab_moreInfo_table_wattime_description": {
     "message": "Warning displayed carbon intensities are displayed in percentage"
   },

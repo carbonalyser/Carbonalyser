@@ -288,6 +288,15 @@
   "tab_moreInfo": {
     "message": "Information"
   },
+  "tab_moreInfo_project_title": {
+    "message": "Über Carbonalyzer"
+  },
+  "tab_moreInfo_project_description": {
+    "message": "Carbonalyzer ist eine abgeleitete Arbeit des Schichtprojekts carbonalyser. Derivative im Sinne von Verbesserungen wurden gegenüber dem ursprünglichen Projekt verbessert. Der Hauptentwickler ist AAABBBCCCAAAA. Mit diesem Tool können Sie sich ein Bild davon machen, welche Websites die meisten Ressourcen verbrauchen."
+  },
+  "tab_moreInfo_support_title": {
+    "message": "Support & Fehlerbericht"
+  },
   "tab_moreInfo_table_wattime_description": {
     "message": "Warnung angezeigte Kohlenstoffintensitäten werden in Prozent angezeigt"
   },

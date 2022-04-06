@@ -291,6 +291,15 @@
   "tab_moreInfo_title": {
     "message": "Source de données et travail associés"
   },
+  "tab_moreInfo_project_title": {
+    "message": "A propos de carbonalyzer"
+  },
+  "tab_moreInfo_project_description": {
+    "message": "Carbonalyzer est un travail dérivé de carbonalyser du shift project. Dérivé dans le sens des améliorations ont été apportées au projet initial. Le développeur principal est AAABBBCCCAAAA. Avec cet outil vous pourrez avoir une idée de quels sites use le plus de resources."
+  },
+  "tab_moreInfo_support_title": {
+    "message": "Support et rapport d'erreur"
+  },
   "tab_moreInfo_table_where": {
     "message": "Adresse"
   },
