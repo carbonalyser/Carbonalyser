@@ -294,6 +294,24 @@
   "tab_moreInfo_project_description": {
     "message": "Carbonalyzer is a derivative work of the shift project carbonalyser. Derived in the sense of improvements have been improved to the original project. The lead developer is AAABBBCCCAAAA. With this tool, you will be able to get an idea of ​​which sites are using the most resources."
   },
+  "tab_moreInfo_health_title": {
+    "message": "What can you do right now?"
+  },
+  "tab_moreInfo_health_description": {
+    "message": "Install extensions that decrease the amount of data sent over the network"
+  },
+  "tab_moreInfo_health_table_title": {
+    "message": "Extension"
+  },
+  "tab_moreInfo_health_table_ecoify_desc": {
+    "message": "Every time we ask Google to search for something, requests are sent back and forth. Internet service providers need power to run the internet and Google needs power for its servers."
+  },
+  "tab_moreInfo_health_table_decentralizedEyes_desc": {
+    "message": "Accélère de nombreuses requêtes (Google Hosted Libraries et autres) en les servant localement, allégeant la charge des sites. Complète les bloqueurs de contenus habituels."
+  },
+  "tab_moreInfo_health_table_ublockOrigin_desc": {
+    "message": "An effective nuisance blocker, which will spare your processor and RAM."
+  },
   "tab_moreInfo_support_title": {
     "message": "Support & bug report"
   },

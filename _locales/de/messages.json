@@ -294,6 +294,24 @@
   "tab_moreInfo_project_description": {
     "message": "Carbonalyzer ist eine abgeleitete Arbeit des Schichtprojekts carbonalyser. Derivative im Sinne von Verbesserungen wurden gegenüber dem ursprünglichen Projekt verbessert. Der Hauptentwickler ist AAABBBCCCAAAA. Mit diesem Tool können Sie sich ein Bild davon machen, welche Websites die meisten Ressourcen verbrauchen."
   },
+  "tab_moreInfo_health_title": {
+    "message": "Was können Sie jetzt tun?"
+  },
+  "tab_moreInfo_health_description": {
+    "message": "Installieren Sie Erweiterungen, die die über das Netzwerk gesendete Datenmenge verringern"
+  },
+  "tab_moreInfo_health_table_title": {
+    "message": "Verlängerung"
+  },
+  "tab_moreInfo_health_table_ecoify_desc": {
+    "message": "Jedes Mal, wenn wir Google bitten, nach etwas zu suchen, werden Anfragen hin und her gesendet. Internetdienstanbieter brauchen Strom, um das Internet zu betreiben, und Google braucht Strom für seine Server."
+  },
+  "tab_moreInfo_health_table_decentralizedEyes_desc": {
+    "message": "Beschleunigt viele Anfragen (von Google gehostete Bibliotheken und andere), indem sie lokal bereitgestellt werden, wodurch die Belastung der Websites verringert wird. Ergänzt reguläre Inhaltsblocker."
+  },
+  "tab_moreInfo_health_table_ublockOrigin_desc": {
+    "message": "Ein effektiver Belästigungsblocker, der Ihren Prozessor und Ihren Arbeitsspeicher schont."
+  },
   "tab_moreInfo_support_title": {
     "message": "Support & Fehlerbericht"
   },
