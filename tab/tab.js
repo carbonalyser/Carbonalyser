@@ -688,15 +688,15 @@ const tab = {
         },
         view: {
           data: {
-            CHART_COLORS: {
-              red: 'rgb(255, 99, 132)',
-              orange: 'rgb(255, 159, 64)',
-              yellow: 'rgb(255, 205, 86)',
-              green: 'rgb(75, 192, 192)',
-              blue: 'rgb(54, 162, 235)',
-              purple: 'rgb(153, 102, 255)',
-              grey: 'rgb(201, 203, 207)'
-            },
+            CHART_COLORS: [
+              'rgb(255, 99, 132)', // red
+              'rgb(255, 159, 64)', // orange
+              'rgb(255, 205, 86)', // yellow
+              'rgb(75, 192, 192)', // green
+              'rgb(54, 162, 235)', // blue
+              'rgb(153, 102, 255)', // purple
+              'rgb(201, 203, 207)' // grey
+            ],
             parent: null,
             dataIndex: null, // origin/index pair match
             pieData: null,
@@ -714,7 +714,7 @@ const tab = {
               datasets: [{
                 label: translate("tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel"),
                 data: parent.model.data.series,
-                backgroundColor: Object.values(this.data.CHART_COLORS)
+                backgroundColor: this.data.CHART_COLORS
               }]
             };
           },
@@ -909,15 +909,15 @@ const tab = {
             config: null,
             chart: null,
             dataIndex: null, // origin/index
-            CHART_COLORS: {
-              red: 'rgb(255, 99, 132)',
-              orange: 'rgb(255, 159, 64)',
-              yellow: 'rgb(255, 205, 86)',
-              green: 'rgb(75, 192, 192)',
-              blue: 'rgb(54, 162, 235)',
-              purple: 'rgb(153, 102, 255)',
-              grey: 'rgb(201, 203, 207)'
-            },
+            CHART_COLORS: [
+              'rgb(255, 99, 132)', // red
+              'rgb(255, 159, 64)', // orange
+              'rgb(255, 205, 86)', // yellow
+              'rgb(75, 192, 192)', // green
+              'rgb(54, 162, 235)', // blue
+              'rgb(153, 102, 255)', // purple
+              'rgb(201, 203, 207)' // grey
+            ],
           },
           createData: async function () {
             const rawdata = await getOrCreateRawData();
@@ -934,7 +934,7 @@ const tab = {
               datasets: [{
                 label: translate("tab_history_attention_time_canvas_x_axis"),
                 data: data,
-                backgroundColor: Object.values(this.data.CHART_COLORS)
+                backgroundColor: this.data.CHART_COLORS
               }]
             };
           },
@@ -1041,15 +1041,15 @@ const tab = {
             data: null,
             config: null,
             chart: null,
-            CHART_COLORS: {
-              red: 'rgb(255, 99, 132)',
-              orange: 'rgb(255, 159, 64)',
-              yellow: 'rgb(255, 205, 86)',
-              green: 'rgb(75, 192, 192)',
-              blue: 'rgb(54, 162, 235)',
-              purple: 'rgb(153, 102, 255)',
-              grey: 'rgb(201, 203, 207)'
-            },
+            CHART_COLORS: [
+              'rgb(255, 99, 132)', // red
+              'rgb(255, 159, 64)', // orange
+              'rgb(255, 205, 86)', // yellow
+              'rgb(75, 192, 192)', // green
+              'rgb(54, 162, 235)', // blue
+              'rgb(153, 102, 255)', // purple
+              'rgb(201, 203, 207)' // grey
+            ],
           },
           init: async function () {
             const parent = this.parent;
@@ -1062,7 +1062,7 @@ const tab = {
               labels: parent.model.data.labels,
               datasets: [{
                 data: parent.model.data.data,
-                backgroundColor: Object.values(this.data.CHART_COLORS)
+                backgroundColor: this.data.CHART_COLORS
               }]
             };
             this.data.data = data;
