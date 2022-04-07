@@ -312,6 +312,12 @@
   "tab_moreInfo_health_table_ublockOrigin_desc": {
     "message": "An effective nuisance blocker, which will spare your processor and RAM."
   },
+  "tab_moreInfo_health_table_ecosia_desc": {
+    "message": "Ecosia is a search engine that uses 80% of its revenue for tree planting. Help our planet by doing your research with Ecosia. This free extension adds Ecosia as the default search engine in Firefox."
+  },
+  "tab_moreInfo_health_table_lilo_desc": {
+    "message": "Hello. We are Lilo, the French and supportive search engine. Our mission: to allow you to finance solidarity projects for free thanks to your internet searches."
+  },
   "tab_moreInfo_support_title": {
     "message": "Support & bug report"
   },

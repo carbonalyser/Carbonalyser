@@ -312,6 +312,12 @@
   "tab_moreInfo_health_table_ublockOrigin_desc": {
     "message": "Ein effektiver Belästigungsblocker, der Ihren Prozessor und Ihren Arbeitsspeicher schont."
   },
+  "tab_moreInfo_health_table_ecosia_desc": {
+    "message": "Ecosia ist eine Suchmaschine, die 80 % ihrer Einnahmen für das Pflanzen von Bäumen verwendet. Helfen Sie unserem Planeten, indem Sie Ihre Forschung mit Ecosia durchführen. Diese kostenlose Erweiterung fügt Ecosia als Standardsuchmaschine in Firefox hinzu."
+  },
+  "tab_moreInfo_health_table_lilo_desc": {
+    "message": "Hallo. Wir sind Lilo, die französische und unterstützende Suchmaschine. Unsere Mission: Ihnen zu ermöglichen, dank Ihrer Internetrecherchen kostenlos Solidaritätsprojekte zu finanzieren."
+  },
   "tab_moreInfo_support_title": {
     "message": "Support & Fehlerbericht"
   },

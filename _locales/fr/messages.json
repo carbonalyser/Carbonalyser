@@ -315,6 +315,12 @@
   "tab_moreInfo_health_table_ublockOrigin_desc": {
     "message": "Un bloqueur de nuisances efficace, qui ménagera votre processeur et votre mémoire vive."
   },
+  "tab_moreInfo_health_table_ecosia_desc": {
+    "message": "Ecosia est un moteur de recherche qui utilise 80 % de ses revenus pour planter des arbres. Aide notre planète en faisant tes recherches avec Ecosia. Cette extension gratuite ajoute Ecosia comme moteur de recherche par défaut dans Firefox."
+  },
+  "tab_moreInfo_health_table_lilo_desc": {
+    "message": "Bonjour. Nous sommes Lilo, le moteur de recherche français et solidaire. Notre mission : vous permettre de financer gratuitement des projets solidaires grâce à vos recherches internet."
+  },
   "tab_moreInfo_support_title": {
     "message": "Support et rapport d'erreur"
   },
