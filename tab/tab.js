@@ -1125,6 +1125,12 @@ const tab = {
         },
       }
     }
+  },
+  /**
+   * More information.
+   */
+  moreInfo: {
+
   }
 }
 
@@ -1182,7 +1188,7 @@ T_init = async () => {
   attachHandlerToSelectRegion();
   loadTranslations();
 
-  await tab.init();
+  tab.init();
 
   // Animation button of refresh
   if ( await getPref("tab.animate") ) {
