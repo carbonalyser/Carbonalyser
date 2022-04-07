@@ -578,6 +578,7 @@ const tab = {
               type: 'line',
               data: data,
               options: {
+                parsing: false,
                 locale: translate("general_number_format"),
                 resizeDelay: await getPref("tab.update.resize_delay"),
                 responsive: true,
