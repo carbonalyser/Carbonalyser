@@ -3,81 +3,6 @@ printDebug = (msg) => {
   printDebugOrigin("tab: " + msg);
 }
 
-// Create a sum of data for all websites
-// tsInterval in s
-createSumOfData = (dataObject, type, tsInterval=60*10) => {
-  tsInterval *= 1000;
-  const rv = {};
-  for(const origin in dataObject) {
-    if ( dataObject[origin][type] === undefined ) {
-      printDebug("Found undefined at dataObject[" + origin + "][" + type + "]")
-      continue;
-    }
-    const keys = Object.keys(dataObject[origin][type].dots);
-    for(const tso in dataObject[origin][type].dots ) {
-      const originalTS = parseInt(tso);
-      let ts = originalTS;
-      const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
-      if ( newTs !== undefined ) {
-        ts = newTs;
-      }
-      if ( rv[ts] === undefined ) {
-        rv[ts] = 0;
-      }
-      rv[ts] += dataObject[origin][type].dots[originalTS];
-    }
-  }
-  return rv;
-}
-
-// create 0 data point when time ellapsed is too high
-// assuming sod sorted
-// ts in seconds
-fillSODGaps = (sod, tsInterval=60*10) => {
-  tsInterval *= 1000;
-  let previous = undefined;
-  const keys = Object.keys(sod).sort((a,b) => a > b);
-  for(let ts of keys) {
-    if (previous !== undefined) {
-      const pratInterv = (ts - previous);
-      if ( pratInterv > tsInterval ) {
-        const newTs = parseInt(previous) + parseInt(Math.round(pratInterv/2));
-        sod[newTs] = 0;
-      }
-    }
-    previous = ts;
-  }
-}
-
-// used to merge two sod (respecting interval constraint)
-// ts in seconds
-mergeTwoSOD = (sod1,sod2, tsInterval=60*10) => {
-  tsInterval *= 1000;
-  const keys = Object.keys(sod1);
-  const result = Object.assign({}, sod1);
-  for(let ts in sod2) {
-    const tsOrigin = ts;
-    const newTs = keys.find((a) => (ts-tsInterval) <= a && a <= (ts+tsInterval));
-    if ( newTs !== undefined ) {
-      ts = newTs;
-    }
-    if ( result[ts] === undefined ) {
-      result[ts] = 0;
-    } 
-    result[ts] += sod2[tsOrigin];
-  }
-  return result;
-}
-
-// create an object containing sum of data
-createObjectFromSumOfData = (sod) => {
-  const rv = [];
-  for(let ts in sod) {
-    rv.push({x: parseInt(ts), y: parseInt(sod[ts])});
-  }
-  return rv;
-}
-
 // create moving average from the sum of datas (ordered)
 // tsInterval number of seconds of interval
 createMovingAverage = (sod, tsInterval=10) => {
@@ -482,21 +407,8 @@ const tab = {
    */
   history: {
     model: {
-      data: {
-        parent: null,
-        bytesDataCenterObjectForm: null,
-        bytesNetworkObjectForm: null,
-      },
       createObject: async function () {
-        const root = this.parent.parent;
-        await root.updateRawData();
-        const bytesDataCenterUnordered = createSumOfData(root.rawdata, 'datacenter', 60);
-        let bytesNetworkUnordered = createSumOfData(root.rawdata, 'network', 60);
-        bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
-        fillSODGaps(bytesNetworkUnordered);
-        fillSODGaps(bytesDataCenterUnordered);
-        this.data.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
-        this.data.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+       
       },
       init: async function () {
         this.createObject();
@@ -528,18 +440,19 @@ const tab = {
           },
           createData: async function () {
             const parent = this.parent.parent.parent;
+            const root = this.parent.parent.parent.parent;
             return {
               datasets: [
                 {
                   label: translate("tab_history_data_consumptionOverTime_datacenterLabel"),
-                  data: parent.model.data.bytesDataCenterObjectForm,
+                  data: root.stats.bytesDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: translate("tab_history_data_consumptionOverTime_networkLabel"),
-                  data: parent.model.data.bytesNetworkObjectForm,
+                  data: root.stats.bytesNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2
@@ -753,13 +666,15 @@ const tab = {
           },
           init: async function () {
             const history = this.parent.parent.parent;
+            const root = this.parent.parent.parent.parent;
             printDebug("bytes per origin is not updated at the time (only electricity)...");
             this.data.electricityDataCenterObjectForm = [];
             this.data.electricityNetworkObjectForm = [];
-            for(let o of history.model.data.bytesDataCenterObjectForm) {
+            console.warn(root.stats);
+            for(let o of root.stats.bytesDataCenterObjectForm) {
               this.data.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
             }
-            for(let o of history.model.data.bytesNetworkObjectForm) {
+            for(let o of root.stats.bytesNetworkObjectForm) {
               this.data.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
             }
           },
@@ -889,13 +804,13 @@ const tab = {
             chart: null,
             dataIndex: null, // origin/index
             CHART_COLORS: [
-              'rgb(255, 99, 132)', // red
-              'rgb(255, 159, 64)', // orange
-              'rgb(255, 205, 86)', // yellow
-              'rgb(75, 192, 192)', // green
-              'rgb(54, 162, 235)', // blue
+              'rgb(255, 99, 132)',  // red
+              'rgb(255, 159, 64)',  // orange
+              'rgb(255, 205, 86)',  // yellow
+              'rgb(75, 192, 192)',  // green
+              'rgb(54, 162, 235)',  // blue
               'rgb(153, 102, 255)', // purple
-              'rgb(201, 203, 207)' // grey
+              'rgb(201, 203, 207)'  // grey
             ],
           },
           createData: async function () {
