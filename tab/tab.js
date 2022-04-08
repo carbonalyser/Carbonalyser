@@ -658,30 +658,6 @@ const tab = {
     },
     electricity: {
       overTime: {
-        model: {
-          data: {
-            parent: null,
-            electricityDataCenterObjectForm: null,
-            electricityNetworkObjectForm: null,
-          },
-          init: async function () {
-            const history = this.parent.parent.parent;
-            const root = this.parent.parent.parent.parent;
-            printDebug("bytes per origin is not updated at the time (only electricity)...");
-            this.data.electricityDataCenterObjectForm = [];
-            this.data.electricityNetworkObjectForm = [];
-            console.warn(root.stats);
-            for(let o of root.stats.bytesDataCenterObjectForm) {
-              this.data.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
-            }
-            for(let o of root.stats.bytesNetworkObjectForm) {
-              this.data.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
-            }
-          },
-          update: async function () {
-            await this.init();
-          }
-        },
         view: {
           data: {
             parent: null,
@@ -690,19 +666,19 @@ const tab = {
             chart: null,
           },
           createData: async function () {
-            const parent = this.parent;
+            const root = this.parent.parent.parent.parent;
             return {
               datasets: [
                 {
                   label: translate("tab_history_electricity_overTime_datasetDataCenter"),
-                  data: parent.model.data.electricityDataCenterObjectForm,
+                  data: root.stats.electricityDataCenterObjectForm,
                   borderColor: 'rgb(255, 0, 0)',
                   showLine: true,
                   lineTension: 0.2,
                 },
                 {
                   label: translate("tab_history_electricity_overTime_datasetNetwork"),
-                  data: parent.model.data.electricityNetworkObjectForm,
+                  data: root.stats.electricityNetworkObjectForm,
                   borderColor: 'rgb(0, 255, 0)',
                   showLine: true,
                   lineTension: 0.2,

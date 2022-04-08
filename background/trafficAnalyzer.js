@@ -104,6 +104,7 @@ writeStats = async (rawdata) => {
   stats.stats = await getStats(undefined, rawdata);
   stats.equivalence = await computeEquivalenceFromStatsItem(stats.stats);
 
+  // data
   const bytesDataCenterUnordered = createSumOfData(rawdata, 'datacenter', 60);
   let bytesNetworkUnordered = createSumOfData(rawdata, 'network', 60);
   bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
@@ -111,6 +112,16 @@ writeStats = async (rawdata) => {
   fillSODGaps(bytesDataCenterUnordered);
   stats.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
   stats.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+
+  // electricity
+  stats.electricityDataCenterObjectForm = [];
+  stats.bytesNetworkObjectForm = [];
+  for(let o of stats.bytesDataCenterObjectForm) {
+    stats.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
+  }
+  for(let o of stats.bytesNetworkObjectForm) {
+    stats.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
+  }
 
   await obrowser.storage.local.set({
     rawdata: JSON.stringify(rawdata), 
