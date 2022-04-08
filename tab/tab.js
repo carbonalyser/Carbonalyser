@@ -3,28 +3,6 @@ printDebug = (msg) => {
   printDebugOrigin("tab: " + msg);
 }
 
-// create moving average from the sum of datas (ordered)
-// tsInterval number of seconds of interval
-createMovingAverage = (sod, tsInterval=10) => {
-  let avgSum = 0;         // sum for average
-  const dots = [];        // dots for the graph
-  const stackedSums = []; // stack of sums
-
-  for(let obj of sod) {
-    let ts = obj.x;
-    const cmp = ts - tsInterval;
-    avgSum += obj.y;
-    stackedSums.push(obj);
-
-    while(stackedSums[0].x < cmp) {
-      avgSum -= stackedSums.shift().y;
-    }
-
-    dots.push({x: ts, y: (avgSum/(stackedSums[stackedSums.length-1].x-stackedSums[0].x))});
-  }
-  return dots;
-}
-
 const LAST_UPDATE_DATA = "lastDataUpdate";
 /**
  * This holds all the data from the storage
@@ -790,20 +768,12 @@ const tab = {
             ],
           },
           createData: async function () {
-            const rawdata = await getOrCreateRawData();
-            const labels = [];
-            const data = [];
-            for(const origin in rawdata) {
-              if ( (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime ) {
-                labels.push(origin);
-                data.push(rawdata[origin].attentionTime);
-              }
-            }
+            const root = this.parent.parent.parent.parent;
             return {
-              labels: labels,
+              labels: root.stats.attention.time.labels,
               datasets: [{
                 label: translate("tab_history_attention_time_canvas_x_axis"),
-                data: data,
+                data: root.stats.attention.time.data,
                 backgroundColor: this.data.CHART_COLORS
               }]
             };
