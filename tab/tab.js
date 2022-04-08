@@ -880,30 +880,6 @@ const tab = {
         }
       },
       efficiency: {
-        model: {
-          data: {
-            parent: null,
-            labels: null,
-            data: null,
-          },
-          init: async function () {
-            const rawdata = await getOrCreateRawData();
-            this.data.labels = [];
-            this.data.data = [];
-            for(const origin in rawdata) {
-              const o = rawdata[origin];
-              const od = o.datacenter.total;
-              const on = o.network.total;
-              if ( rawdata[origin] !== undefined && (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime  ) {
-                this.data.labels.push(origin);
-                this.data.data.push(rawdata[origin].attentionTime / (od + on));
-              }
-            }
-          },
-          update: async function () {
-            await this.init();
-          }
-        },
         view: {
           data: {
             parent: null,
@@ -922,16 +898,16 @@ const tab = {
             ],
           },
           init: async function () {
-            const parent = this.parent;
+            const root = this.parent.parent.parent.parent;
             this.data.dataIndex = {};
-            for(const i in parent.model.data.labels) {
-              const origin = parent.model.data.labels[i];
+            for(const i in root.stats.attention.efficiency.labels) {
+              const origin = root.stats.attention.efficiency.labels[i];
               this.data.dataIndex[origin] = parseInt(i);
             }
             const data = {
-              labels: parent.model.data.labels,
+              labels: root.stats.attention.efficiency.labels,
               datasets: [{
-                data: parent.model.data.data,
+                data: root.stats.attention.efficiency.data,
                 backgroundColor: this.data.CHART_COLORS
               }]
             };
@@ -974,17 +950,18 @@ const tab = {
             );
           },
           update: async function () {
+            const root = this.parent.parent.parent.parent;
             const parent = this.parent;
             let len = Object.keys(this.data.dataIndex).length;
-            if ( len <= parent.model.data.labels.length ) {
-              for(const i in parent.model.data.labels) {
-                const origin = parent.model.data.labels[i];
+            if ( len <= root.stats.attention.efficiency.labels.length ) {
+              for(const i in root.stats.attention.efficiency.labels) {
+                const origin = root.stats.attention.efficiency.labels[i];
                 if ( this.data.dataIndex[origin] === undefined ) {
                   this.data.dataIndex[origin] = parseInt(len);
                   this.data.chart.data.labels.push(origin);
                   len += 1;
                 }
-                this.data.chart.data.datasets[0].data[this.data.dataIndex[origin]] = parent.model.data.data[i];
+                this.data.chart.data.datasets[0].data[this.data.dataIndex[origin]] = root.stats.attention.efficiency.data[i];
               }
               this.data.chart.update();
             } else {

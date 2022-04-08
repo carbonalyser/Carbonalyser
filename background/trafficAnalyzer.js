@@ -123,6 +123,18 @@ writeStats = async (rawdata) => {
     stats.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork});
   }
 
+  // attention efficiency
+  stats.attention.efficiency = {labels: [], data: []};
+  for(const origin in rawdata) {
+    const o = rawdata[origin];
+    const od = o.datacenter.total;
+    const on = o.network.total;
+    if ( rawdata[origin] !== undefined && (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime  ) {
+      stats.attention.labels.push(origin);
+      stats.attention.data.push(rawdata[origin].attentionTime / (od + on));
+    }
+  }
+
   await obrowser.storage.local.set({
     rawdata: JSON.stringify(rawdata), 
     stats: JSON.stringify(stats)
