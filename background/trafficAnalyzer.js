@@ -130,8 +130,8 @@ writeStats = async (rawdata) => {
     const od = o.datacenter.total;
     const on = o.network.total;
     if ( rawdata[origin] !== undefined && (await getPref("tab.min_attention_time")) < rawdata[origin].attentionTime  ) {
-      stats.attention.labels.push(origin);
-      stats.attention.data.push(rawdata[origin].attentionTime / (od + on));
+      stats.attention.efficiency.labels.push(origin);
+      stats.attention.efficiency.data.push(rawdata[origin].attentionTime / (od + on));
     }
   }
 
