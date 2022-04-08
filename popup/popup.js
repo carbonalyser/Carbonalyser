@@ -1,18 +1,6 @@
 const LAST_UPDATE_DATA = "lastDataUpdate";
 const popup = {
   stats: null,
-  statsData5: null,
-  /**
-   * Responsible from update stats object.
-   */
-  updateStats: async function () {
-    if ( this.statsData5 == null  
-      || (Date.now() - this.statsData5[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
-      ) {
-        this.statsData5 = await getStats(5);
-        this.statsData5[LAST_UPDATE_DATA] = Date.now();
-    }
-  },
   init: async function () {
     await this.model.init();
     await this.view.init();
@@ -142,14 +130,6 @@ const popup = {
    * Part responsible from stats show.
    */
   statsView: {
-    model: {
-      init: async function() {
-        await this.update();
-      },
-      update: async function() {
-        await this.parent.parent.updateStats();
-      }
-    },
     view: {
       statsInterval: null,
       pieChart: null,
@@ -170,7 +150,7 @@ const popup = {
       },
       update: async function () {
         const root = this.parent.parent;
-        if (root.statsData5.total === 0) {
+        if (root.stats.stats.highestStats.total === 0) {
           return;
         }
       
@@ -183,14 +163,15 @@ const popup = {
           statsListItemsElement.removeChild(statsListItemsElement.firstChild);
         }
       
-        for (let index in root.statsData5.highestStats) {
-          if (root.statsData5.highestStats[index].percent < 1) {
+        const top5 = root.stats.stats.highestStats.slice(0, 5);
+        for (let index in top5) {
+          if (top5[index].percent < 1) {
             continue;
           }
       
-          labels.push(root.statsData5.highestStats[index].origin);
-          series.push(root.statsData5.highestStats[index].percent);
-          const text = document.createTextNode(`${root.statsData5.highestStats[index].percent}% ${root.statsData5.highestStats[index].origin}`);
+          labels.push(top5[index].origin);
+          series.push(top5[index].percent);
+          const text = document.createTextNode(`${top5[index].percent}% ${top5[index].origin}`);
           const li = document.createElement("LI");
           li.appendChild(text);
           statsListItemsElement.appendChild(li);
@@ -244,15 +225,6 @@ const popup = {
    * Show equivalence (more human understandable)
    */
   equivalence: {
-    model: {
-      init: async function() {
-        await this.update();
-      },
-      update: async function() {
-        const root = this.parent.parent;
-        await root.updateStats();
-      }
-    },
     view: {
       init: async function() {
         await this.update();

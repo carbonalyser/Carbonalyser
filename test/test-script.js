@@ -231,7 +231,7 @@ describe('getStats', function() {
         await incBytesDataCenter(d1, 2);
         await incBytesDataCenter(d2, 3);
         const storage = await getOrCreateRawData();
-        const stats = await getStats(1);
+        const stats = (await getStats()).highestStats.slice(0, 1);
         stats.totalDataCenter.should.equals(6);
         stats.total.should.equals(stats.totalDataCenter);
         stats.highestStats.length.should.equals(2);

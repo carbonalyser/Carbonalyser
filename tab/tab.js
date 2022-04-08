@@ -535,15 +535,14 @@ const tab = {
         model: {
           data: {
             parent: null,
-            topStats: null,
             labels: null,
             series: null,
           },
           init: async function () {
-            this.data.topStats = await getStats(100);
+            const topStats = (await getStats()).highestStats.slice(0, 100);
             this.data.labels = [];
             this.data.series = [];
-            for (const stat of this.data.topStats.highestStats) {
+            for (const stat of topStats) {
               if (stat.percent < 1) {
                 continue;
               }

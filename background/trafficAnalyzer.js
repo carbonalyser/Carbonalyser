@@ -101,7 +101,7 @@ writeStats = async (rawdata) => {
     rawdata = await getOrCreateRawData();
   }
   const stats = getEmptyStatsObject();
-  stats.stats = await getStats(undefined, rawdata);
+  stats.stats = await getStats(rawdata);
   stats.equivalence = await computeEquivalenceFromStatsItem(stats.stats);
 
   // data
