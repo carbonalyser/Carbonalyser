@@ -167,10 +167,10 @@ const tab = {
     equivalence: {
       view: {
         init: async function () {
-          await updateEquivalence(this.parent.parent.parent.stats.stats);
+          injectEquivalentIntoHTML(this.parent.parent.parent.stats.stats, this.parent.parent.parent.stats.equivalence);
         },
         update: async function () {
-          await updateEquivalence(this.parent.parent.parent.stats.stats);
+          injectEquivalentIntoHTML(this.parent.parent.parent.stats.stats, this.parent.parent.parent.stats.equivalence);
         }
       }
     }, 

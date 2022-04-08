@@ -67,7 +67,7 @@ const simplerRequire = (filename) => {
 var storageSetAnalysisState, L_init, L_end, storageGetAnalysisState, printDebug, printDebugOrigin, isInDebug, getBrowser, end, preferencesChange, emulateFirefox, isFirefox, obrowser, isChrome, translate, translateText, translateHref, loadTranslations, extractHostname, attachParent, attachParentRecurse, createMVC, hide, show;
 simplerRequire('../lib/carbonalyser/lib.js');
 obrowser = getBrowser();
-var injectEquivalentIntoHTML, getEmptyEquivalenceObject, computeEquivalenceFromStatsItem, updateEquivalence;
+var injectEquivalentIntoHTML, getEmptyEquivalenceObject, computeEquivalenceFromStatsItem;
 simplerRequire('../lib/carbonalyser/libEquivalence.js');
 var injectRegionIntoHTML, attachHandlerToSelectRegion, selectRegionHandler, getSelectedRegion, setSelectedRegion;
 simplerRequire('../lib/carbonalyser/libRegionSelect.js');

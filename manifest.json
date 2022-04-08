@@ -18,6 +18,7 @@
     "scripts": [
       "lib/carbonalyser/lib.js",
       "lib/carbonalyser/libPreferences.js",
+      "lib/carbonalyser/libRegionSelect.js",
       "lib/carbonalyser/libEquivalence.js",
       "lib/carbonalyser/libStats.js",
       "background/carbonIntensityUpdater.js",

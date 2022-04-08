@@ -88,14 +88,25 @@ bufferWritter = async () => {
   if ( someData ) {
 
     // Generate stats on the raw data
-    const stats = getEmptyStatsObject();
-    stats.stats = await getStats(undefined, rawdata);
-    console.warn(stats);
-
-    await obrowser.storage.local.set({rawdata: JSON.stringify(rawdata), stats: JSON.stringify(stats)});
+    await writeStats(rawdata);
     buffer.rawdata = {};
   }
 }
+
+/**
+ * Generate and write stats to the storage.
+ */
+writeStats = async (rawdata) => {
+  if ( rawdata === undefined ) {
+    rawdata = await getOrCreateRawData();
+  }
+  const stats = getEmptyStatsObject();
+  stats.stats = await getStats(undefined, rawdata);
+  stats.equivalence = await computeEquivalenceFromStatsItem(stats.stats);
+
+  await obrowser.storage.local.set({rawdata: JSON.stringify(rawdata), stats: JSON.stringify(stats)});
+}
+
 
 // This is triggered when some headers are received.
 headersReceivedListener = async (requestDetails) => {

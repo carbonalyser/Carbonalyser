@@ -244,7 +244,6 @@ const popup = {
    * Show equivalence (more human understandable)
    */
   equivalence: {
-    computedEquivalence: null,
     model: {
       init: async function() {
         await this.update();
@@ -252,7 +251,6 @@ const popup = {
       update: async function() {
         const root = this.parent.parent;
         await root.updateStats();
-        this.parent.computedEquivalence = await computeEquivalenceFromStatsItem(root.stats.stats);
       }
     },
     view: {
@@ -261,7 +259,7 @@ const popup = {
       },
       update: async function() {
         const root = this.parent.parent;
-        await injectEquivalentIntoHTML(root.stats.stats, this.parent.computedEquivalence);
+        injectEquivalentIntoHTML(root.stats.stats, root.stats.equivalence);
       }
     }
   },
