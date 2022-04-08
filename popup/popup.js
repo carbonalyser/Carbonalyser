@@ -1,17 +1,16 @@
 const LAST_UPDATE_DATA = "lastDataUpdate";
 const popup = {
- statsData: null,
- statsData5: null,
+  stats: null,
+  statsData5: null,
   /**
    * Responsible from update stats object.
    */
   updateStats: async function () {
-    if ( this.statsData == null  
-      || (Date.now() - this.statsData[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
+    if ( this.statsData5 == null  
+      || (Date.now() - this.statsData5[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
       ) {
-        this.statsData = await getStats();
         this.statsData5 = await getStats(5);
-        this.statsData[LAST_UPDATE_DATA] = Date.now();
+        this.statsData5[LAST_UPDATE_DATA] = Date.now();
     }
   },
   init: async function () {
@@ -142,7 +141,7 @@ const popup = {
   /**
    * Part responsible from stats show.
    */
-  stats: {
+  statsView: {
     model: {
       init: async function() {
         await this.update();
@@ -175,7 +174,7 @@ const popup = {
           return;
         }
       
-        show(root.stats.view.element);
+        show(root.statsView.view.element);
         const labels = [];
         const series = [];
       
@@ -253,7 +252,7 @@ const popup = {
       update: async function() {
         const root = this.parent.parent;
         await root.updateStats();
-        this.parent.computedEquivalence = await computeEquivalenceFromStatsItem(root.statsData);
+        this.parent.computedEquivalence = await computeEquivalenceFromStatsItem(root.stats.stats);
       }
     },
     view: {
@@ -262,7 +261,7 @@ const popup = {
       },
       update: async function() {
         const root = this.parent.parent;
-        await injectEquivalentIntoHTML(root.statsData, this.parent.computedEquivalence);
+        await injectEquivalentIntoHTML(root.stats.stats, this.parent.computedEquivalence);
       }
     }
   },
@@ -288,6 +287,10 @@ onStorageChanged = async (changes, areaName) => {
       clearTimeout(storageChangedTimeout);
     }
 
+    if ( changes["stats"] !== undefined ) {
+      popup.stats = await getOrCreateStats();
+    }
+
     if ( changes["rawdata"] !== undefined ) {
       if ( await getPref("popup.update.auto_refresh") ) {
         storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
@@ -308,6 +311,7 @@ P_init = async () => {
   window.removeEventListener("load", P_init);
   window.addEventListener("unload", end, { once: true });
 
+  popup.stats = await getOrCreateStats();
   popup.init();
   obrowser.storage.onChanged.addListener(onStorageChanged);
 }

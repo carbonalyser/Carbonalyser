@@ -86,8 +86,13 @@ bufferWritter = async () => {
     rawdata[origin] = originStorage;
   }
   if ( someData ) {
-    const rawDataStr = JSON.stringify(rawdata);
-    await obrowser.storage.local.set({rawdata: rawDataStr});
+
+    // Generate stats on the raw data
+    const stats = getEmptyStatsObject();
+    stats.stats = await getStats(undefined, rawdata);
+    console.warn(stats);
+
+    await obrowser.storage.local.set({rawdata: JSON.stringify(rawdata), stats: JSON.stringify(stats)});
     buffer.rawdata = {};
   }
 }

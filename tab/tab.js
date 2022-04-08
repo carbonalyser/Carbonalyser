@@ -121,18 +121,6 @@ const tab = {
   /**
    * Responsible from update stats object.
    */
-  updateStats: async function () {
-    if ( this.stats == null 
-      || (Date.now() - this.stats[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
-      ) {
-      this.stats = await getStats();
-      this.stats[LAST_UPDATE_DATA] = Date.now();
-    }
-  },
-
-  /**
-   * Responsible from update stats object.
-   */
   updateParameters: async function () {
     if ( this.parameters == null 
       || (Date.now() - this.parameters[LAST_UPDATE_DATA]) > (await getPref("general.update.storageFetchMs")) 
@@ -177,20 +165,12 @@ const tab = {
      * Equivalence in smartphone charged, kilometers by car.
      */
     equivalence: {
-      model: {
-        init: async function () {
-          await this.parent.parent.parent.updateStats();
-        },
-        update: async function () {
-          await this.parent.parent.parent.updateStats();
-        }
-      },
       view: {
         init: async function () {
-          await updateEquivalence(this.parent.parent.parent.stats);
+          await updateEquivalence(this.parent.parent.parent.stats.stats);
         },
         update: async function () {
-          await updateEquivalence(this.parent.parent.parent.stats);
+          await updateEquivalence(this.parent.parent.parent.stats.stats);
         }
       }
     }, 
@@ -201,12 +181,10 @@ const tab = {
       model: {
         init: async function () {
           const root = this.parent.parent.parent;
-          await root.updateStats();
           await root.updateRawData();
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          await root.updateStats();
           await root.updateRawData();
         }
       },
@@ -255,8 +233,8 @@ const tab = {
         init: async function () {
           const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
-          for(let i = 0; i < root.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.highestStats[i], topResults, true);
+          for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
+            this.createEntry(root.stats.stats.highestStats[i], topResults, true);
           }
 
           // Add some sorters
@@ -268,8 +246,8 @@ const tab = {
         update: async function () {
           const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
-          for(let i = 0; i < root.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.highestStats[i], topResults, false);
+          for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
+            this.createEntry(root.stats.stats.highestStats[i], topResults, false);
           }
         }
       }
@@ -1158,9 +1136,11 @@ storageChangedTimeoutCall = () => {
 
 handleStorageChanged = async (changes, areaName) => {
   if ( areaName == "local" ) {
+
     if ( storageChangedTimeout != null ) {
       clearTimeout(storageChangedTimeout);
     }
+
     if ( changes["pref"] !== undefined ) {
       $("#refreshButton").off("click");
       if ( await getPref("tab.animate") ) {
@@ -1171,13 +1151,19 @@ handleStorageChanged = async (changes, areaName) => {
         }});
       }
     } 
-    if ( changes["rawdata"] !== undefined ) {
+
+    if ( changes["stats"] !== undefined ) {
+      tab.stats = await getOrCreateStats();
+    }
+
+    if ( changes["rawdata"] === undefined ) {
+      storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+    } else {
       if ( await getPref("tab.update.auto_refresh") ) {
         storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
       }
-    } else {
-      storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
     }
+
   }
 }
 
@@ -1189,6 +1175,7 @@ T_init = async () => {
   attachHandlerToSelectRegion();
   loadTranslations();
 
+  tab.stats = await getOrCreateStats();
   tab.init();
 
   // Animation button of refresh
