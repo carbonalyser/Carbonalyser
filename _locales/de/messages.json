@@ -277,7 +277,7 @@
     "message": "Latenz, die eine Überbelegung des Speichers verhindert (in ms)."
   },
   "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
-    "message": "Anzeigeeinheit für Strom (Wh oder kWh) Warnung Neuladen der Seite erforderlich, um Änderungen anzuzeigen."
+    "message": "Anzeigeeinheit für Strom (mWh oder Wh oder kWh) Warnung Neuladen der Seite erforderlich, um Änderungen anzuzeigen."
   },
   "tab_settings_preferencesScreen_prefs_debug": {
     "message": "Aktivieren Sie das Debuggen über Protokolle."

@@ -667,8 +667,8 @@ const tab = {
             this.data.data = await this.createData();
   
             
-            const unitIndex = {Wh: 1000, kWh: 1};
-            const electricityUnit = unitIndex[await getPref("general.electricityUnit")];
+            
+            const electricityUnit = await getElectricityModifier();
             const data = this.data.data;
             this.data.config = {
               type: 'line',

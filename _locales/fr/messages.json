@@ -277,7 +277,7 @@
     "message": "Latence qui empêche le stockage d'être trop sollicité (en ms)."
   },
   "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
-    "message": "Unité d'affichage pour l'éléctricité (Wh ou kWh) attention un rechargement de la page est requis pour voir la différence."
+    "message": "Unité d'affichage pour l'éléctricité (mWh ou Wh ou kWh) attention un rechargement de la page est requis pour voir la différence."
   },
   "tab_settings_preferencesScreen_prefs_debug": {
     "message": "Activer le débogage via les logs."
