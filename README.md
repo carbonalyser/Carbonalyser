@@ -47,7 +47,7 @@ To report a bug, request a feature, check [here](https://github.com/AAABBBCCCAAA
 |[electricity map](https://app.electricitymap.org/map) | by country carbon intensity factors | carbon intensities |
 |[PageSpeed Insights](https://pagespeed.web.dev/?hl=fr) | analysis of website from where does useless comes from |website analysis |
 
-This carbon analyzer should be used as a website comparator (which one consume the more data) rather than an absolute measure of consummed electricity/data.<br />
+You can rely on metrics given in this analyzer, they are accurate for more check results on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).<br />
 For instance you can take [wikipedia](https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal) as the "green" site.
 
 ## Credits
