@@ -709,10 +709,15 @@ const tab = {
                     type: 'time'
                   },
                   y: {
-                      title: {
-                        display: true,
-                        text: translate("tab_history_electricity_overTime_graphYAxis")
+                    title: {
+                      display: true,
+                      text: translate("tab_history_electricity_overTime_graphYAxis")
+                    },
+                    ticks: {
+                      callback: function(value, index, ticks) {
+                          return (value * 1000);
                       }
+                    }
                   }
                 }
               },

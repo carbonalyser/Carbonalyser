@@ -196,7 +196,7 @@
     "message": "Temps"
   },
   "tab_history_electricity_overTime_graphYAxis": {
-    "message": "Consommation d'éléctricitée KWh"
+    "message": "Consommation d'éléctricité Wh"
   },
   "tab_history_attention_time_title": {
     "message": "Partage de votre temps en fonction des différents sites."
