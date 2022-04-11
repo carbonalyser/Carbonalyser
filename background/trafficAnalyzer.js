@@ -268,6 +268,9 @@ restartStorageF = async () => {
   clearInterval(storageSynchronizeThread);
   storageSynchronizeThread = setInterval(bufferWritter, await getPref("daemon.storage.flushingIntervalMs"));
   restartStorageT = null;
+
+  // update equivalence with new values
+  await writeStats(await getOrCreateRawData());
 }
 
 obrowser.storage.onChanged.addListener(async (changes, areaName) => {

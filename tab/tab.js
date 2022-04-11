@@ -987,7 +987,7 @@ handleStorageChanged = async (changes, areaName) => {
           await tab.update();
         }});
       }
-    } 
+    }
 
     if ( changes["stats"] !== undefined ) {
       tab.stats = await getOrCreateStats();
