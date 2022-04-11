@@ -196,7 +196,13 @@
     "message": "Temp"
   },
   "tab_history_electricity_overTime_graphYAxis": {
-    "message": "Stromverbrauch Wh"
+    "message": "Stromverbrauch $UNIT$",
+    "placeholders": {
+      "unit" : {
+        "content" : "$1",
+        "example" : "Wh"
+      }
+    }
   },
   "tab_history_attention_time_title": {
     "message": "Teilen Sie Ihre Zeit nach den verschiedenen Standorten."
@@ -269,6 +275,9 @@
   },
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "Latenz, die eine Überbelegung des Speichers verhindert (in ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
+    "message": "Anzeigeeinheit für Strom (Wh oder kWh) Warnung Neuladen der Seite erforderlich, um Änderungen anzuzeigen."
   },
   "tab_settings_preferencesScreen_prefs_debug": {
     "message": "Aktivieren Sie das Debuggen über Protokolle."

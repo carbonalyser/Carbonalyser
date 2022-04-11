@@ -666,6 +666,9 @@ const tab = {
           init: async function () {
             this.data.data = await this.createData();
   
+            
+            const unitIndex = {Wh: 1000, kWh: 1};
+            const electricityUnit = unitIndex[await getPref("general.electricityUnit")];
             const data = this.data.data;
             this.data.config = {
               type: 'line',
@@ -711,11 +714,11 @@ const tab = {
                   y: {
                     title: {
                       display: true,
-                      text: translate("tab_history_electricity_overTime_graphYAxis")
+                      text: obrowser.i18n.getMessage('tab_history_electricity_overTime_graphYAxis', [await getPref("general.electricityUnit")])
                     },
                     ticks: {
                       callback: function(value, index, ticks) {
-                          return (value * 1000);
+                        return (value * electricityUnit).toFixed(5);
                       }
                     }
                   }

@@ -196,7 +196,13 @@
     "message": "Time"
   },
   "tab_history_electricity_overTime_graphYAxis": {
-    "message": "Electricity consumption Wh"
+    "message": "Electricity consumption $UNIT$",
+    "placeholders": {
+      "unit" : {
+        "content" : "$1",
+        "example" : "Wh"
+      }
+    }
   },
   "tab_history_attention_time_title": {
     "message": "Share of your time among sites."
@@ -269,6 +275,9 @@
   },
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "latency induced for storage fetch by guis (ms)"
+  },
+  "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
+    "message": "Display unit for electricity (Wh or kWh) warning page reload is required to view changes."
   },
   "tab_settings_preferencesScreen_prefs_debug": {
     "message": "enable debug log"

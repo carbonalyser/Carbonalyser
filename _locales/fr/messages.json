@@ -196,7 +196,13 @@
     "message": "Temps"
   },
   "tab_history_electricity_overTime_graphYAxis": {
-    "message": "Consommation d'éléctricité Wh"
+    "message": "Consommation d'éléctricité $UNIT$",
+    "placeholders": {
+      "unit" : {
+        "content" : "$1",
+        "example" : "Wh"
+      }
+    }
   },
   "tab_history_attention_time_title": {
     "message": "Partage de votre temps en fonction des différents sites."
@@ -269,6 +275,9 @@
   },
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "Latence qui empêche le stockage d'être trop sollicité (en ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
+    "message": "Unité d'affichage pour l'éléctricité (Wh ou kWh) attention un rechargement de la page est requis pour voir la différence."
   },
   "tab_settings_preferencesScreen_prefs_debug": {
     "message": "Activer le débogage via les logs."
