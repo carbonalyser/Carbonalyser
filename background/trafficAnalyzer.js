@@ -115,7 +115,7 @@ writeStats = async (rawdata) => {
 
   // electricity
   stats.electricityDataCenterObjectForm = [];
-  stats.bytesNetworkObjectForm = [];
+  stats.electricityNetworkObjectForm = [];
   for(let o of stats.bytesDataCenterObjectForm) {
     stats.electricityDataCenterObjectForm.push({x: o.x, y: o.y * kWhPerByteDataCenter});
   }
