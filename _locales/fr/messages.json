@@ -42,7 +42,7 @@
     "message": "Les émissions de CO2 liées à votre utilisation d'internet équivaut à :"
   },
   "equivalenceTitle": {
-    "message": "En $MINUTES$ minutes de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ kWh d'électricité, soit $GCO2$ gCO2e",
+    "message": "En $MINUTES$ minutes de navigation, vous avez fait transiter $MBTOTAL$ Mo de données. Cela a nécessité $KWH$ $KWHUNIT$ d'électricité, soit $GCO2$ gCO2e",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
@@ -57,8 +57,12 @@
         "content" : "$3",
         "example" : "99"
       },
+      "kwhUnit": {
+        "content": "$4",
+        "example": "kWh"
+      },
       "gco2" : {
-        "content" : "$4",
+        "content" : "$5",
         "example" : "199"
       }
     }

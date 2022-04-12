@@ -42,7 +42,7 @@
     "message": "Die CO2-Emissionen deines Browsens entsprechen:"
   },
   "equivalenceTitle": {
-    "message": "In $MINUTES$ Minuten hast du $MBTOTAL$ MB heruntergeladen. Das hat $KWH$ kWh oder $GCO2$ gCO2e gebraucht",
+    "message": "In $MINUTES$ Minuten hast du $MBTOTAL$ MB heruntergeladen. Das hat $KWH$ $KWHUNIT$ oder $GCO2$ gCO2e gebraucht",
     "description": "Äquivalenz",
     "placeholders": {
       "minutes" : {
@@ -57,8 +57,12 @@
         "content" : "$3",
         "example" : "99"
       },
+      "kwhUnit": {
+        "content": "$4",
+        "example": "kWh"
+      },
       "gco2" : {
-        "content" : "$4",
+        "content" : "$5",
         "example" : "199"
       }
     }
