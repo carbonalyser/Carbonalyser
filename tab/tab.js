@@ -70,10 +70,11 @@ const tab = {
     equivalence: {
       view: {
         init: async function () {
-          injectEquivalentIntoHTML(this.parent.parent.parent.stats.stats, this.parent.parent.parent.stats.equivalence);
+          await injectEquivalentIntoHTML(this.parent.parent.parent.stats.stats, this.parent.parent.parent.stats.equivalence);
+          document.getElementById("kWhTotalUnit").textContent = (await getPref("general.electricityUnit"));
         },
         update: async function () {
-          injectEquivalentIntoHTML(this.parent.parent.parent.stats.stats, this.parent.parent.parent.stats.equivalence);
+          await this.init();
         }
       }
     }, 

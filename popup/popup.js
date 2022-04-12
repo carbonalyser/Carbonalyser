@@ -227,11 +227,12 @@ const popup = {
   equivalence: {
     view: {
       init: async function() {
-        await this.update();
+        const root = this.parent.parent;
+        await injectEquivalentIntoHTML(root.stats.stats, root.stats.equivalence);
+        document.getElementById("kWhTotalUnit").textContent = (await getPref("general.electricityUnit"));
       },
       update: async function() {
-        const root = this.parent.parent;
-        injectEquivalentIntoHTML(root.stats.stats, root.stats.equivalence);
+        await this.init();
       }
     }
   },
