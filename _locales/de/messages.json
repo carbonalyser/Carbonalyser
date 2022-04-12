@@ -1,4 +1,7 @@
 {
+  "general_datatables_locale": {
+    "message": "de-DE"
+  },
   "general_number_format": {
     "message": "de"
   },

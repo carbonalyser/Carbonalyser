@@ -143,8 +143,13 @@ const tab = {
 
           // Add some sorters
           $(document).ready(function() {
-            $('#topResultsTable').DataTable();
-            document.getElementById("topResultsTable_wrapper").style.width = "100%";
+            const dtt = $('#topResultsTable').DataTable({
+              language: {
+                  url: getDatatableTranslation()
+              }});
+              dtt.on("init", function() {
+                document.getElementById("topResultsTable_wrapper").style.width = "100%";
+              });
           });
         },
         update: async function () {
@@ -320,8 +325,14 @@ const tab = {
           }
           $(document).ready(function() {
             const table = $('#settingsCItable');
-            table.DataTable();
-            document.getElementById("settingsCItable_wrapper").style.width = "100%";
+            const dtt = table.DataTable({
+              language: {
+                  url: getDatatableTranslation()
+              }});
+              dtt.on("init", function() {
+                document.getElementById("settingsCItable_wrapper").style.width = "100%";
+              });
+            
           });
         },
         update: async function () {
