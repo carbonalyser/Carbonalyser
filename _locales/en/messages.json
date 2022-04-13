@@ -251,13 +251,13 @@
     "message": "Factor to apply when converting bytes into electricity (in kWh/byte)."
   },
   "tab_settings_preferencesScreen_prefs_general_kWhPerMinuteDevice": {
-    "message": ""
+    "message": "Factor to be applied to convert the time of use of a terminal (smartphone, computer) into electricity."
   },
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
-    "message": ""
+    "message": "Factor to be applied to convert the CO2 emission into km traveled by car."
   },
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
-    "message": ""
+    "message": "Factor to be applied to convert the CO2 emission of recharged smartphones."
   },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Start analysis at browser startup."
