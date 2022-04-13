@@ -199,6 +199,7 @@ addOneMinute = async () => {
   let o = await obrowser.storage.local.get('duration');
   let duration = undefined === o.duration ? 1 : 1 * o.duration + 1;
   await obrowser.storage.local.set({duration: duration});
+  await writeStats(await getOrCreateRawData());
 };
 
 let addOneMinuteInterval;
@@ -270,7 +271,7 @@ restartStorageF = async () => {
   restartStorageT = null;
 
   // update equivalence with new values
-  await writeStats(await getOrCreateRawData());
+  await writeStats();
 }
 
 obrowser.storage.onChanged.addListener(async (changes, areaName) => {
