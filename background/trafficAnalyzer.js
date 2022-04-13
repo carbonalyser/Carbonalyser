@@ -117,10 +117,10 @@ writeStats = async (rawdata) => {
   stats.electricityDataCenterObjectForm = [];
   stats.electricityNetworkObjectForm = [];
   for(let o of stats.bytesDataCenterObjectForm) {
-    stats.electricityDataCenterObjectForm.push({x: o.x, y: o.y * (kWhPerByteDataCenter * 1000000)});
+    stats.electricityDataCenterObjectForm.push({x: o.x, y: o.y * ((await getPref("general.kWhPerByteDataCenter")) * 1000000)});
   }
   for(let o of stats.bytesNetworkObjectForm) {
-    stats.electricityNetworkObjectForm.push({x: o.x, y: o.y * kWhPerByteNetwork * 1000000});
+    stats.electricityNetworkObjectForm.push({x: o.x, y: o.y * (await getPref("general.kWhPerByteNetwork")) * 1000000});
   }
 
   // attention time

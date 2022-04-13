@@ -244,6 +244,21 @@
   "tab_settings_preferencesScreen_prefsDescription": {
     "message": "Description"
   },
+  "tab_settings_preferencesScreen_prefs_general_kWhPerByteDataCenter": {
+    "message": "Facteur a appliquer quand on convertit les octets en electricité (en kWh/octet)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
+    "message": "Facteur a appliquer quand on convertit les octets en electricité (en kWh/octet)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_kWhPerMinuteDevice": {
+    "message": ""
+  },
+  "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
+    "message": ""
+  },
+  "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
+    "message": ""
+  },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Démarrer l'analyse au démarrage du navigateur."
   },
