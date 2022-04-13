@@ -106,6 +106,9 @@
   "chargedSmartphonesUnit": {
     "message": "smartphones rechargés"
   },
+  "OneHourBulbNumberDescription": {
+    "message": "ampoule pendant 1 heure"
+  },
   "kmByCarUnit": {
     "message": "kms en voiture"
   },
