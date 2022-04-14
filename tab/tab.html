@@ -24,6 +24,9 @@
                 <div href="#historyDiv" id="tab-history" class="nav-link" role="tab" data-toggle="tab" aria-controls="historyDiv" aria-selected="false" translate="history"></div>
             </li>
             <li class="nav-item" style="cursor: pointer;">
+                <div href="#tab_prediction" id="tab-prediction" class="nav-link" role="tab" data-toggle="tab" aria-controls="tab_prediction" aria-selected="false" translate="tab_prediction"></div>
+            </li>
+            <li class="nav-item" style="cursor: pointer;">
                 <div href="#settingsDiv" id="tab-settings" class="nav-link" role="tab" data-toggle="tab" aria-controls="settingsDiv" aria-selected="false" translate="settings"></div>
             </li>
             <li class="nav-item" style="cursor: pointer;">
@@ -116,67 +119,7 @@
                 </div>
             </div>
 
-            <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
-                <div class="container">
-                    <div class="row my-4">
-                        <div id="selectRegionForm" class="column">
-                            <p style="font-weight: bold;" class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
-                            <p>
-                                <select id="selectRegion"></select>
-                            </p>
-                            <p class="selectRegionHelp" translate="selectRegionHelp"></p>
-                        </div>
-                        <div id="settingsRefresh" class="column">
-                            <div class="container">
-                                <p id="carbonIntensityLastRefreshIP" class="row"></p>
-                                <div class="row" style="justify-content: center;">
-                                    <button id="carbonIntensityLastRefreshForceRefresh" class="button" translate="settingsLastRefreshButtonReset"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row my-4">
-                        <table class="table table-striped table-bordered" id="settingsCItable" style="width: 100%;">
-                            <thead>
-                                <tr style="text-align: center;vertical-align: middle;">
-                                    <th scope="col" translate="settingsCIcountry"></th>
-                                    <th scope="col" translate="settingsCICI"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="settingsCICIS"></tbody>
-                        </table>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-sm">
-                            <div class="row" style="font-weight: bold;" translate="tab_custom_ci_factor_title"></div>
-                            <div class="row" translate="tab_custom_ci_factor_description"></div>
-                        </div>
-                        <div class="col-sm">
-                            <input type="text" id="tab_custom_ci_factor_input" />
-                            <button id="tab_custom_ci_factor_button" class="button" translate="tab_custom_ci_factor_button"></button>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row my-4">
-                        <table class="table table-striped table-bordered" id="prefsTable" style="width: 100%;">
-                            <thead>
-                                <tr style="text-align: center;vertical-align: middle;">
-                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsTableName"></th>
-                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsTableValue"></th>
-                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsDescription"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="prefsTableTBODY"></tbody>
-                        </table>
-                    </div>
-                    <div class="row my-4" style="padding: 10px;">
-                        <button id="tab_settings_preferencesScreen_validateButton" class="button" style="padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;" translate="tab_settings_preferencesScreen_validateButton"></button>
-                    </div>
-                    <hr>
-                </div>  
-            </div>
-
+            
             <div id="historyDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-history">
                 <div class="container-fluid">
                     <br />
@@ -239,6 +182,75 @@
                     </div>
                     <hr>
                 </div>
+            </div>
+
+            <div id="tab_prediction" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-prediction">
+                <div class="container-fluid">
+                    <div class="row">
+                        <h1>A ce rythme en une année vous consommez 1 kWh.</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settingsDiv" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-settings">
+                <div class="container">
+                    <div class="row my-4">
+                        <div id="selectRegionForm" class="column">
+                            <p style="font-weight: bold;" class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
+                            <p>
+                                <select id="selectRegion"></select>
+                            </p>
+                            <p class="selectRegionHelp" translate="selectRegionHelp"></p>
+                        </div>
+                        <div id="settingsRefresh" class="column">
+                            <div class="container">
+                                <p id="carbonIntensityLastRefreshIP" class="row"></p>
+                                <div class="row" style="justify-content: center;">
+                                    <button id="carbonIntensityLastRefreshForceRefresh" class="button" translate="settingsLastRefreshButtonReset"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row my-4">
+                        <table class="table table-striped table-bordered" id="settingsCItable" style="width: 100%;">
+                            <thead>
+                                <tr style="text-align: center;vertical-align: middle;">
+                                    <th scope="col" translate="settingsCIcountry"></th>
+                                    <th scope="col" translate="settingsCICI"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="settingsCICIS"></tbody>
+                        </table>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-sm">
+                            <div class="row" style="font-weight: bold;" translate="tab_custom_ci_factor_title"></div>
+                            <div class="row" translate="tab_custom_ci_factor_description"></div>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" id="tab_custom_ci_factor_input" />
+                            <button id="tab_custom_ci_factor_button" class="button" translate="tab_custom_ci_factor_button"></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row my-4">
+                        <table class="table table-striped table-bordered" id="prefsTable" style="width: 100%;">
+                            <thead>
+                                <tr style="text-align: center;vertical-align: middle;">
+                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsTableName"></th>
+                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsTableValue"></th>
+                                    <th scope="col" translate="tab_settings_preferencesScreen_prefsDescription"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="prefsTableTBODY"></tbody>
+                        </table>
+                    </div>
+                    <div class="row my-4" style="padding: 10px;">
+                        <button id="tab_settings_preferencesScreen_validateButton" class="button" style="padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;" translate="tab_settings_preferencesScreen_validateButton"></button>
+                    </div>
+                    <hr>
+                </div>  
             </div>
 
             <div id="moreInfoDiv" class="container tab-pane fade" role="tabpanel" aria-labelledby="tab-moreInfo">

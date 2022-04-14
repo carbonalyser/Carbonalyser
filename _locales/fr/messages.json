@@ -238,6 +238,9 @@
   "tab_history_attention_efficiency_y_axis": {
     "message": "minute"
   },
+  "tab_prediction": {
+    "message": "Prévision"
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Préférence"
   },
