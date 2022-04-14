@@ -262,6 +262,9 @@
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
     "message": "Facteur a appliquer pour convertir l'emission CO2 smartphones rechargés."
   },
+  "tab_settings_preferencesScreen_prefs_general_BulbConsumptionKWh": {
+    "message": "Consommation (en kWh) d'une ampoule."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Démarrer l'analyse au démarrage du navigateur."
   },

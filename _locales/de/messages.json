@@ -262,6 +262,9 @@
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
     "message": "Anzuwendender Faktor zur Umrechnung des CO2-Ausstoßes aufgeladener Smartphones."
   },
+  "tab_settings_preferencesScreen_prefs_general_BulbConsumptionKWh": {
+    "message": "Verbrauch (in kWh) einer Glühbirne."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Start analysis at browser startup."
   },
