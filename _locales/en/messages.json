@@ -358,46 +358,55 @@
   "tab_moreInfo_support_title": {
     "message": "Support & bug report"
   },
-  "tab_moreInfo_table_wattime_description": {
+  "tab_computeMethods_related_title": {
+    "message": "Data source and related works"
+  },
+  "tab_computeMethods_computed_title": {
+    "message": "Data source and related works"
+  },
+  "tab_computeMethods_computed_description": {
+    "message": "The electricity consumed calculation includes: the electricity used to power your computer, the electricity your operator uses to deliver internet data to your home, and the electricity the site you are surfing on uses to stay online. This calculation is launched when you click on start analysis and stops when you click on stop analysis."
+  },
+  "tab_computeMethods_related_table_wattime_description": {
     "message": "Warning displayed carbon intensities are displayed in percentage"
   },
-  "tab_moreInfo_table_wattime_type": {
+  "tab_computeMethods_related_table_wattime_type": {
     "message": "carbon intensities scale"
   },
-  "tab_moreInfo_table_greenit_description": {
+  "tab_computeMethods_related_table_greenit_description": {
     "message": "extension of devtools that provide comparator"
   },
-  "tab_moreInfo_table_greenit_type": {
+  "tab_computeMethods_related_table_greenit_type": {
     "message": "site carbon emission comparator"
   },
-  "tab_moreInfo_table_ecoindex_description": {
+  "tab_computeMethods_related_table_ecoindex_description": {
     "message": ""
   },
-  "tab_moreInfo_table_ecoindex_type": {
+  "tab_computeMethods_related_table_ecoindex_type": {
     "message": "site carbon emission comparator"
   },
-  "tab_moreInfo_table_carbonintensity_description": {
+  "tab_computeMethods_related_table_carbonintensity_description": {
     "message": "regionnalised carbon intensities for UK"
   },
-  "tab_moreInfo_table_carbonintensity_type": {
+  "tab_computeMethods_related_table_carbonintensity_type": {
     "message": "carbon intensities"
   },
-  "tab_moreInfo_table_edf_description": {
+  "tab_computeMethods_related_table_edf_description": {
     "message": "specialized carbon intensity factor for france"
   },
-  "tab_moreInfo_table_edf_type": {
+  "tab_computeMethods_related_table_edf_type": {
     "message": "carbon intensities"
   },
-  "tab_moreInfo_table_electricitymap_description": {
+  "tab_computeMethods_related_table_electricitymap_description": {
     "message": "by country carbon intensity factors"
   },
-  "tab_moreInfo_table_electricitymap_type": {
+  "tab_computeMethods_related_table_electricitymap_type": {
     "message": "carbon intensities"
   },
-  "tab_moreInfo_table_pagespeed_description": {
+  "tab_computeMethods_related_table_pagespeed_description": {
     "message": "analysis of website from where does useless comes from"
   },
-  "tab_moreInfo_table_pagespeed_type": {
+  "tab_computeMethods_related_table_pagespeed_type": {
     "message": "website analysis"
   }
 }

@@ -358,46 +358,55 @@
   "tab_moreInfo_support_title": {
     "message": "Support & Fehlerbericht"
   },
-  "tab_moreInfo_table_wattime_description": {
+  "tab_computeMethods_related_title": {
+    "message": "Datenquelle und verwandte Arbeiten"
+  },
+  "tab_computeMethods_computed_title": {
+    "message": "Datenquelle und verwandte Arbeiten"
+  },
+  "tab_computeMethods_computed_description": {
+    "message": "Die Berechnung des Stromverbrauchs umfasst: den Strom, der für die Stromversorgung Ihres Computers verwendet wird, den Strom, den Ihr Betreiber verwendet, um Internetdaten zu Ihnen nach Hause zu liefern, und den Strom, den die Website, auf der Sie surfen, verwendet, um online zu bleiben. Diese Berechnung wird gestartet, wenn Sie auf Analyse starten klicken, und wird beendet, wenn Sie auf Analyse stoppen klicken."
+  },
+  "tab_computeMethods_related_table_wattime_description": {
     "message": "Warnung angezeigte Kohlenstoffintensitäten werden in Prozent angezeigt"
   },
-  "tab_moreInfo_table_wattime_type": {
+  "tab_computeMethods_related_table_wattime_type": {
     "message": "Kohlenstoffintensitätsskala"
   },
-  "tab_moreInfo_table_greenit_description": {
+  "tab_computeMethods_related_table_greenit_description": {
     "message": "Erweiterung von Devtools, die Comparator bereitstellen"
   },
-  "tab_moreInfo_table_greenit_type": {
+  "tab_computeMethods_related_table_greenit_type": {
     "message": "CO2-Emissionsvergleich vor Ort"
   },
-  "tab_moreInfo_table_ecoindex_description": {
+  "tab_computeMethods_related_table_ecoindex_description": {
     "message": ""
   },
-  "tab_moreInfo_table_ecoindex_type": {
+  "tab_computeMethods_related_table_ecoindex_type": {
     "message": "CO2-Emissionsvergleich vor Ort"
   },
-  "tab_moreInfo_table_carbonintensity_description": {
+  "tab_computeMethods_related_table_carbonintensity_description": {
     "message": "regionalisierte Kohlenstoffintensitäten für Großbritannien"
   },
-  "tab_moreInfo_table_carbonintensity_type": {
+  "tab_computeMethods_related_table_carbonintensity_type": {
     "message": "Kohlenstoffintensitäten"
   },
-  "tab_moreInfo_table_edf_description": {
+  "tab_computeMethods_related_table_edf_description": {
     "message": "Spezieller CO2-Intensitätsfaktor für Frankreich"
   },
-  "tab_moreInfo_table_edf_type": {
+  "tab_computeMethods_related_table_edf_type": {
     "message": "Kohlenstoffintensitäten"
   },
-  "tab_moreInfo_table_electricitymap_description": {
+  "tab_computeMethods_related_table_electricitymap_description": {
     "message": "nach CO2-Intensitätsfaktoren der Länder"
   },
-  "tab_moreInfo_table_electricitymap_type": {
+  "tab_computeMethods_related_table_electricitymap_type": {
     "message": "Kohlenstoffintensitäten"
   },
-  "tab_moreInfo_table_pagespeed_description": {
+  "tab_computeMethods_related_table_pagespeed_description": {
     "message": "Analyse der Website, woher nutzloses kommt"
   },
-  "tab_moreInfo_table_pagespeed_type": {
+  "tab_computeMethods_related_table_pagespeed_type": {
     "message": "Website-Analyse"
   }
 }
