@@ -262,8 +262,8 @@
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
     "message": "Factor to be applied to convert the CO2 emission of recharged smartphones."
   },
-  "tab_settings_preferencesScreen_prefs_general_BulbConsumptionKWh": {
-    "message": "Consumption (in kWh) of a bulb."
+  "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
+    "message": "Consumption (in Watt) of a bulb."
   },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Start analysis at browser startup."
