@@ -196,9 +196,27 @@ setBrowserIcon = (type) => {
 };
 
 addOneMinute = async () => {
-  let o = await obrowser.storage.local.get('duration');
-  let duration = undefined === o.duration ? 1 : 1 * o.duration + 1;
-  await obrowser.storage.local.set({duration: duration});
+  let o = await obrowser.storage.local.get('duration').duration;
+  if ( o === undefined ) {
+    o = {
+      total: 0,
+      set: {}
+    }
+  } else {
+    o = JSON.parse(o);
+  }
+  const minute = Math.trunc((Date.now()/1000)/60);
+  o.total += 1;
+  if ( o.set[minute] !== undefined ) {
+    o.set[minute] += 1;
+  } else if ( o.set[minute-1] !== undefined ) {
+    o.set[minute-1] += 1;
+  } else if ( o.set[minute+1] !== undefined ) {
+    o.set[minute+1] += 1;
+  } else {
+    o.set[minute] = 1;
+  }
+  await obrowser.storage.local.set({duration: JSON.stringify(o)});
   await writeStats(await getOrCreateRawData());
 };
 
