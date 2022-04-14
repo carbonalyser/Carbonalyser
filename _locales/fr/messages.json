@@ -241,6 +241,25 @@
   "tab_prediction": {
     "message": "Prévision"
   },
+  "tab_prediction_prediction_description": {
+    "message": "A ce rythme votre consommation totale sera de $POWER$ kWh pour $DURATION$ jours.",
+    "placeholders": {
+      "power" : {
+        "content" : "$1",
+        "example" : "10"
+      },
+      "duration": {
+        "content": "$2",
+        "example": "365"
+      }
+    }
+  },
+  "tab_prediction_prediction_input_description": {
+    "message": "Changer la durée de la prévision:"
+  },
+  "tab_prediction_prediction_button": {
+    "message": "Valider"
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Préférence"
   },

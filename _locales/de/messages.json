@@ -241,6 +241,25 @@
   "tab_prediction": {
     "message": "Vorhersage"
   },
+  "tab_prediction_prediction_description": {
+    "message": "Bei diesem Tarif beträgt Ihr Gesamtverbrauch für $DURATION$ Tage $POWER$ kWh.",
+    "placeholders": {
+      "power" : {
+        "content" : "$1",
+        "example" : "10"
+      },
+      "duration": {
+        "content": "$2",
+        "example": "365"
+      }
+    }
+  },
+  "tab_prediction_prediction_input_description": {
+    "message": "Prognosedauer ändern:"
+  },
+  "tab_prediction_prediction_button": {
+    "message": "Bestätigen"
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
   },

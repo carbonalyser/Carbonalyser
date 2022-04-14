@@ -186,8 +186,16 @@
 
             <div id="tab_prediction" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-prediction">
                 <div class="container-fluid">
+                    <div class="row" style="padding-top: 20px;">
+                        <div class="col" id="tab_prediction_prediction_description" translate="tab_prediction_prediction_description"></div>
+                    </div>
+                    <hr>
                     <div class="row">
-                        <h1>A ce rythme en une année vous consommez 1 kWh.</h1>
+                        <div class="col-sm" translate="tab_prediction_prediction_input_description"></div>
+                        <div class="col-sm">
+                            <input type="text" id="tab_prediction_prediction_input" />
+                            <button id="tab_prediction_prediction_button" class="button" translate="tab_prediction_prediction_button"></button>
+                        </div>
                     </div>
                 </div>
             </div>

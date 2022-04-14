@@ -162,243 +162,13 @@ const tab = {
       }
     }
   },
-  /**
-   * Parametrize the system.
-   */
-  settings: {
-    selectRegion: {
-      model: {
-        data: {
-          parent: null,
-          selectedRegion: null,
-        },
-        init: async function () {
-          await this.update();
-        },
-        update: async function () {
-          await this.parent.parent.parent.updateParameters();
-          this.data.selectedRegion = await getSelectedRegion();
-        }
-      },
-      view: {
-        data: {
-          parent: null,
-          img: null,
-          imgAnimation: null,
-        },
-        init: async function () {
-          const settings = this.parent.parent;
-          const img = document.createElement("img");
-          this.data.img = img;
-          img.setAttribute("width", "20px");
-          img.setAttribute("height", "20px");
-          img.setAttribute("style", "margin-left: 5px;");
-          img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
-          img.hidden = true;
-          const imgAnimation = rotateAnimation.newInstance();
-          this.data.imgAnimation = imgAnimation;
-          imgAnimation.button = $(img);
-          imgAnimation.loop = true;
-          this.data.imgAnimation.onAnimationEnd = async function () {
-            img.hidden = true;
-          };
-          // part of the refresh system
-          const div = $("#carbonIntensityLastRefreshForceRefresh");
-          div.click(async function() {
-            const dateNow = Date.now();
-            obrowser.runtime.sendMessage({action: "forceCIUpdater"});
-            if ( await getPref("tab.animate") ) {
-              img.hidden = false;
-              imgAnimation.start();
-              const interval = setInterval(async function() {
-                const parametersSTO = await obrowser.storage.local.get("parameters");
-                const parametersSTR = parametersSTO.parameters;
-                if ( parametersSTR !== undefined ) {
-                  const parameters = JSON.parse(parametersSTR);
-                  if ( parameters.lastRefresh !== undefined ) {
-                    if ( dateNow < parameters.lastRefresh ) {
-                      imgAnimation.loop = false;
-                      clearInterval(interval);
-                    } else {
-
-                    }
-                  }
-                }
-              }, 1000);
-            }
-          });
-          div.append(img);
-          const root = this.parent.parent.parent;
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
-        },
-        update: async function () {
-          const root = this.parent.parent.parent;
-          $("#" + regionSelectID).empty();
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
-        }
-      }
-    },
-    updateCarbonIntensity: {
-      model: {
-        init: async function () {
-          const root = this.parent.parent.parent;
-          await root.updateParameters();
-        },
-        update: async function () {
-          const root = this.parent.parent.parent;
-          await root.updateParameters();
-        }
-      },
-      view: {
-        data: {
-          parent: null,
-          div: null,
-        },
-        init: async function () {
-          this.data.div = document.getElementById("carbonIntensityLastRefreshIP");
-          await this.update();
-        },
-        update: async function () {
-          const root = this.parent.parent.parent;
-          this.data.div.textContent = obrowser.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
-        }
-      }
-    }, 
-    carbonIntensityView: {
-      model: {
-        init: async function () {
-          await this.parent.parent.parent.updateRegions();
-        },
-        update: async function () {
-          await this.parent.parent.parent.updateRegions();
-        }
-      },
-      view: {
-        data: {
-          parent: null,
-          settingsCICIS: null,
-        },
-        /**
-         * Create a new entry in region table.
-         * @param {*} root root for creation of entry.
-         * @param {*} settingsCICIS HTML div for settings.
-         * @param {*} name key in object array.
-         * @param {*} init true if in initial creation.
-         */
-        createEntry: function (settingsCICIS, name, init, newIntensity) {
-          const root = this.parent.parent.parent;
-          let region = translate("region" + capitalizeFirstLetter(name));
-          if ( region === "" || region === null ) {
-            region = name;
-          }
-          let foundValue = false;
-
-          if ( ! init ) {
-            for(const row of settingsCICIS.children) {
-              if( 1 < row.children.length ) {
-                if ( row.children[0].textContent == region ) {
-                  foundValue = true;
-                  row.children[1].textContent = newIntensity;
-                }
-              }
-            }
-          }
-
-          if ( init || ! foundValue) {
-            const row = document.createElement("tr");
-            const country = document.createElement("td");
-            country.textContent = region;
-            const ci = document.createElement("td");
-            ci.textContent = root.parameters.regions[name].carbonIntensity;
-            row.append(country);
-            row.append(ci);
-            row.style.textAlign = "center";
-            row.style.verticalAlign = "middle";
-            settingsCICIS.append(row);
-          }
-        },
-        init: async function () {
-          const root = this.parent.parent.parent;
-          this.data.settingsCICIS = document.getElementById("settingsCICIS");
-          for(const name in root.parameters.regions) {
-            this.createEntry(this.data.settingsCICIS, name, true, null);
-          }
-          $(document).ready(function() {
-            const table = $('#settingsCItable');
-            const dtt = table.DataTable({
-              language: {
-                  url: getDatatableTranslation()
-              }});
-              dtt.on("init", function() {
-                document.getElementById("settingsCItable_wrapper").style.width = "100%";
-              });
-            
-          });
-        },
-        update: async function () {
-          const root = this.parent.parent.parent;
-          for(const name in root.parameters.regions) {
-            this.createEntry(this.data.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
-          }
-        }
-      }
-    },
-    carbonFactorManual: {
-      view: {
-        data: {
-          parent: null,
-          button: null,
-          input: null,
-        },
-        init: async function() {
-          this.data.button = $("#tab_custom_ci_factor_button");
-          this.data.input = $("#tab_custom_ci_factor_input");
-          const input = this.data.input;
-          this.data.button.on("click", async function() {
-            await setCarbonIntensityRegion("custom", parseInt(input.val()));
-          });
-        },
-        update: async function() {
-
-        }
-      }
-    },
-    preferencesScreen: {
-      view: {
-        init: async function() {
-          await injectPreferencesIntoHTML("prefsTableTBODY");
-          document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
-            const prefs = await getOrCreatePreferences();
-            for(const row of document.getElementById("prefsTableTBODY").children) {
-              let value = row.children[1].children[0].value;
-              if ( typeof(value) === "string" ) {
-                try {
-                  const res = JSON.parse(value);
-                  if ( typeof(res) !== "string" ) {
-                    value = res;
-                  }
-                } catch(error) {
-                  // do nothing
-                }
-              }
-              IPIPrecurse(prefs, row.children[0].textContent, value);
-            }
-            await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
-          });
-        },
-        update: async function() {
-          await injectPreferencesIntoHTML("prefsTableTBODY");
-        }
-      }
-    }
-  }, 
-  /**
+ /**
    * View history of results.
    */
   history: {
     model: {
       createObject: async function () {
-       
+        
       },
       init: async function () {
         this.createObject();
@@ -962,10 +732,266 @@ const tab = {
       }
     }
   },
+  prediction: {
+    prediction: {
+      view: {
+        div: null,
+        init: async function() {
+          this.div = document.getElementById("tab_prediction_prediction_description");
+          document.getElementById("tab_prediction_prediction_button").addEventListener("click", () => {
+            console.warn("clicked");
+          });
+          await this.update();
+        },
+        update: async function() {
+          this.div.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_description', [10, 365]);
+        }
+      }
+    },
+    usage: {
+
+    }
+  },
+  /**
+   * Parametrize the system.
+   */
+  settings: {
+    selectRegion: {
+      model: {
+        data: {
+          parent: null,
+          selectedRegion: null,
+        },
+        init: async function () {
+          await this.update();
+        },
+        update: async function () {
+          await this.parent.parent.parent.updateParameters();
+          this.data.selectedRegion = await getSelectedRegion();
+        }
+      },
+      view: {
+        data: {
+          parent: null,
+          img: null,
+          imgAnimation: null,
+        },
+        init: async function () {
+          const settings = this.parent.parent;
+          const img = document.createElement("img");
+          this.data.img = img;
+          img.setAttribute("width", "20px");
+          img.setAttribute("height", "20px");
+          img.setAttribute("style", "margin-left: 5px;");
+          img.setAttribute("src", await obrowser.runtime.getURL("/img/refresh.png"));
+          img.hidden = true;
+          const imgAnimation = rotateAnimation.newInstance();
+          this.data.imgAnimation = imgAnimation;
+          imgAnimation.button = $(img);
+          imgAnimation.loop = true;
+          this.data.imgAnimation.onAnimationEnd = async function () {
+            img.hidden = true;
+          };
+          // part of the refresh system
+          const div = $("#carbonIntensityLastRefreshForceRefresh");
+          div.click(async function() {
+            const dateNow = Date.now();
+            obrowser.runtime.sendMessage({action: "forceCIUpdater"});
+            if ( await getPref("tab.animate") ) {
+              img.hidden = false;
+              imgAnimation.start();
+              const interval = setInterval(async function() {
+                const parametersSTO = await obrowser.storage.local.get("parameters");
+                const parametersSTR = parametersSTO.parameters;
+                if ( parametersSTR !== undefined ) {
+                  const parameters = JSON.parse(parametersSTR);
+                  if ( parameters.lastRefresh !== undefined ) {
+                    if ( dateNow < parameters.lastRefresh ) {
+                      imgAnimation.loop = false;
+                      clearInterval(interval);
+                    } else {
+
+                    }
+                  }
+                }
+              }, 1000);
+            }
+          });
+          div.append(img);
+          const root = this.parent.parent.parent;
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
+        },
+        update: async function () {
+          const root = this.parent.parent.parent;
+          $("#" + regionSelectID).empty();
+          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
+        }
+      }
+    },
+    updateCarbonIntensity: {
+      model: {
+        init: async function () {
+          const root = this.parent.parent.parent;
+          await root.updateParameters();
+        },
+        update: async function () {
+          const root = this.parent.parent.parent;
+          await root.updateParameters();
+        }
+      },
+      view: {
+        data: {
+          parent: null,
+          div: null,
+        },
+        init: async function () {
+          this.data.div = document.getElementById("carbonIntensityLastRefreshIP");
+          await this.update();
+        },
+        update: async function () {
+          const root = this.parent.parent.parent;
+          this.data.div.textContent = obrowser.i18n.getMessage('settingsLastRefresh', [new Date(root.parameters.lastRefresh).toLocaleString()]);
+        }
+      }
+    }, 
+    carbonIntensityView: {
+      model: {
+        init: async function () {
+          await this.parent.parent.parent.updateRegions();
+        },
+        update: async function () {
+          await this.parent.parent.parent.updateRegions();
+        }
+      },
+      view: {
+        data: {
+          parent: null,
+          settingsCICIS: null,
+        },
+        /**
+         * Create a new entry in region table.
+         * @param {*} root root for creation of entry.
+         * @param {*} settingsCICIS HTML div for settings.
+         * @param {*} name key in object array.
+         * @param {*} init true if in initial creation.
+         */
+        createEntry: function (settingsCICIS, name, init, newIntensity) {
+          const root = this.parent.parent.parent;
+          let region = translate("region" + capitalizeFirstLetter(name));
+          if ( region === "" || region === null ) {
+            region = name;
+          }
+          let foundValue = false;
+
+          if ( ! init ) {
+            for(const row of settingsCICIS.children) {
+              if( 1 < row.children.length ) {
+                if ( row.children[0].textContent == region ) {
+                  foundValue = true;
+                  row.children[1].textContent = newIntensity;
+                }
+              }
+            }
+          }
+
+          if ( init || ! foundValue) {
+            const row = document.createElement("tr");
+            const country = document.createElement("td");
+            country.textContent = region;
+            const ci = document.createElement("td");
+            ci.textContent = root.parameters.regions[name].carbonIntensity;
+            row.append(country);
+            row.append(ci);
+            row.style.textAlign = "center";
+            row.style.verticalAlign = "middle";
+            settingsCICIS.append(row);
+          }
+        },
+        init: async function () {
+          const root = this.parent.parent.parent;
+          this.data.settingsCICIS = document.getElementById("settingsCICIS");
+          for(const name in root.parameters.regions) {
+            this.createEntry(this.data.settingsCICIS, name, true, null);
+          }
+          $(document).ready(function() {
+            const table = $('#settingsCItable');
+            const dtt = table.DataTable({
+              language: {
+                  url: getDatatableTranslation()
+              }});
+              dtt.on("init", function() {
+                document.getElementById("settingsCItable_wrapper").style.width = "100%";
+              });
+            
+          });
+        },
+        update: async function () {
+          const root = this.parent.parent.parent;
+          for(const name in root.parameters.regions) {
+            this.createEntry(this.data.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
+          }
+        }
+      }
+    },
+    carbonFactorManual: {
+      view: {
+        data: {
+          parent: null,
+          button: null,
+          input: null,
+        },
+        init: async function() {
+          this.data.button = $("#tab_custom_ci_factor_button");
+          this.data.input = $("#tab_custom_ci_factor_input");
+          const input = this.data.input;
+          this.data.button.on("click", async function() {
+            await setCarbonIntensityRegion("custom", parseInt(input.val()));
+          });
+        },
+        update: async function() {
+
+        }
+      }
+    },
+    preferencesScreen: {
+      view: {
+        init: async function() {
+          await injectPreferencesIntoHTML("prefsTableTBODY");
+          document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
+            const prefs = await getOrCreatePreferences();
+            for(const row of document.getElementById("prefsTableTBODY").children) {
+              let value = row.children[1].children[0].value;
+              if ( typeof(value) === "string" ) {
+                try {
+                  const res = JSON.parse(value);
+                  if ( typeof(res) !== "string" ) {
+                    value = res;
+                  }
+                } catch(error) {
+                  // do nothing
+                }
+              }
+              IPIPrecurse(prefs, row.children[0].textContent, value);
+            }
+            await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
+          });
+        },
+        update: async function() {
+          await injectPreferencesIntoHTML("prefsTableTBODY");
+        }
+      }
+    }
+  }, 
   /**
    * More information.
    */
   moreInfo: {
+
+  },
+  /**
+   * Methods and related work.
+   */
+  methods: {
 
   }
 }
