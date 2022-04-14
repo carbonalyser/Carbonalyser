@@ -93,6 +93,7 @@ bufferWritter = async () => {
   }
 }
 
+let stats = null;
 /**
  * Generate and write stats to the storage.
  */
@@ -100,7 +101,7 @@ writeStats = async (rawdata) => {
   if ( rawdata === undefined ) {
     rawdata = await getOrCreateRawData();
   }
-  const stats = getEmptyStatsObject();
+  stats = getEmptyStatsObject();
   stats.stats = await getStats(rawdata);
   stats.equivalence = await computeEquivalenceFromStatsItem(stats.stats);
 
@@ -196,7 +197,7 @@ setBrowserIcon = (type) => {
 };
 
 addOneMinute = async () => {
-  let o = await obrowser.storage.local.get('duration').duration;
+  let o = (await obrowser.storage.local.get('duration')).duration;
   if ( o === undefined ) {
     o = {
       total: 0,
@@ -207,15 +208,22 @@ addOneMinute = async () => {
   }
   const minute = Math.trunc((Date.now()/1000)/60);
   o.total += 1;
-  if ( o.set[minute] !== undefined ) {
-    o.set[minute] += 1;
-  } else if ( o.set[minute-1] !== undefined ) {
-    o.set[minute-1] += 1;
-  } else if ( o.set[minute+1] !== undefined ) {
-    o.set[minute+1] += 1;
-  } else {
-    o.set[minute] = 1;
+  let durationObj;
+  let key;
+  let setup = false;
+  for(key = minute-5; key < minute + 5; key += 1) {
+    if ( o.set[key] !== undefined ) {
+      setup = true;
+      break;
+    }
   }
+  if ( ! setup ) {
+    key = minute;
+    durationObj = {duration: 0};
+    o.set[minute] = durationObj;
+  }
+  durationObj = o.set[key];
+  durationObj.duration += 1;
   await obrowser.storage.local.set({duration: JSON.stringify(o)});
   await writeStats(await getOrCreateRawData());
 };
