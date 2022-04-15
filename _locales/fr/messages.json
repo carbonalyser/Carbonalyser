@@ -242,7 +242,7 @@
     "message": "Prévision"
   },
   "tab_prediction_prediction_description": {
-    "message": "A ce rythme votre consommation totale sera de $POWER$ kWh pour $DURATION$ jours.",
+    "message": "Avec votre usage actuel sur internet, vous consommez $RATE$ kWh par jour. A ce rythme votre consommation totale sera de $POWER$ kWh pour $DURATION$ jours. Gardez en tête que la prévision est inexacte si vous n'avez pas encore beaucoup utilisé l'extension (exemple après une semaine d'utilisation elle refletera parfaitement votre réalité mais juste après avoir installer l'extension elle sera approximative).",
     "placeholders": {
       "power" : {
         "content" : "$1",
@@ -251,6 +251,10 @@
       "duration": {
         "content": "$2",
         "example": "365"
+      },
+      "rate": {
+        "content": "$3",
+        "example": "1"
       }
     }
   },

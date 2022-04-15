@@ -735,21 +735,28 @@ const tab = {
   prediction: {
     prediction: {
       view: {
+        data: {
+          days: 365
+        },
         div: null,
         init: async function() {
+          const _this = this;
           this.div = document.getElementById("tab_prediction_prediction_description");
           document.getElementById("tab_prediction_prediction_button").addEventListener("click", () => {
-            console.warn("clicked");
+            _this.data.days = parseInt(document.getElementById("tab_prediction_prediction_input").value);
+            _this.update();
           });
           await this.update();
         },
         update: async function() {
-          this.div.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_description', [10, 365]);
+          const root = this.parent.parent.parent; 
+          const dayRateKWh = root.stats.forecast.dayRateKWh;
+          const days = this.data.days;
+          const forecastedKWh = dayRateKWh * days;
+          console.warn(dayRateKWh, days, forecastedKWh);
+          this.div.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_description', [forecastedKWh.toFixed(5), days, dayRateKWh.toFixed(5)]);
         }
       }
-    },
-    usage: {
-
     }
   },
   /**
