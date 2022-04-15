@@ -242,7 +242,7 @@
     "message": "Vorhersage"
   },
   "tab_prediction_prediction_description": {
-    "message": "Bei diesem Tarif beträgt Ihr Gesamtverbrauch für $DURATION$ Tage $POWER$ kWh.",
+    "message": "Mit Ihrer aktuellen Internetnutzung verbrauchen Sie $RATE$ kWh pro Tag. Bei diesem Tarif beträgt Ihr Gesamtverbrauch (Computer + Netzbetreiber + Rechenzentrum) $POWER$ kWh für $DURATION$ Tage. Denken Sie daran, dass die Prognose ungenau ist, wenn Sie die Erweiterung noch nicht oft verwendet haben (z. B. nach einer Woche der Verwendung wird sie Ihre Realität perfekt widerspiegeln, aber direkt nach der Installation der Erweiterung wird sie ungefähr sein).",
     "placeholders": {
       "power" : {
         "content" : "$1",
@@ -251,6 +251,10 @@
       "duration": {
         "content": "$2",
         "example": "365"
+      },
+      "rate": {
+        "content": "$3",
+        "example": "1"
       }
     }
   },
