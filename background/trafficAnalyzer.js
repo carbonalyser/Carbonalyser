@@ -135,7 +135,10 @@ writeStats = async (rawdata) => {
   // electricity & electricity in attention time
   stats.electricityDataCenterObjectForm = [];
   stats.electricityNetworkObjectForm = [];
-
+  for(const object of Object.values(duration.set)) {
+    object.kWh = 0;
+  }
+  
   for(const object of [
     {
       bytes: stats.bytesDataCenterObjectForm, 
@@ -149,9 +152,27 @@ writeStats = async (rawdata) => {
     }
   ]) {
     for(const o of object.bytes) {
-      const kwh = o.y * ((await getPref(object.pref)) * 1000000);
-      object.electricity.push({x: o.x, y: kwh});
+      const mWh = o.y * ((await getPref(object.pref)) * 1000000.0);
+      const kWh = mWh * 0.000001;
+      const minute = Math.trunc(((o.x)/1000)/60);
+      let key;
+      for(key = minute-5; key < minute + 5; key += 1) {
+        const durationObj = duration.set[key];
+        if ( durationObj !== undefined ) {
+          durationObj.kWh += kWh;
+          break;
+        }
+      }
+      if ( duration.set[key] === undefined ) {
+        duration.set[key] = {duration: 0, kWh: kWh};
+      }
+      object.electricity.push({x: o.x, y: mWh});
     }
+  }
+
+  // update electricity of duration parts
+  for(const object of Object.values(duration.set)) {
+    object.kWh += (object.duration * (await getPref("general.kWhPerMinuteDevice")));
   }
 
   // attention time
@@ -177,7 +198,8 @@ writeStats = async (rawdata) => {
 
   await obrowser.storage.local.set({
     rawdata: JSON.stringify(rawdata), 
-    stats: JSON.stringify(stats)
+    stats: JSON.stringify(stats),
+    duration: JSON.stringify(duration)
   });
 }
 
@@ -227,26 +249,26 @@ setBrowserIcon = (type) => {
 };
 
 addOneMinute = async () => {
-  const o = getDuration();
+  const duration = await getDuration();
   const minute = Math.trunc((Date.now()/1000)/60);
-  o.total += 1;
-  let durationObj;
+  duration.total += 1;
+  let oneDuration;
   let key;
   let setup = false;
   for(key = minute-5; key < minute + 5; key += 1) {
-    if ( o.set[key] !== undefined ) {
+    if ( duration.set[key] !== undefined ) {
       setup = true;
       break;
     }
   }
   if ( ! setup ) {
     key = minute;
-    durationObj = {duration: 0, kWh: 0};
-    o.set[minute] = durationObj;
+    oneDuration = {duration: 0, kWh: 0};
+    duration.set[minute] = oneDuration;
   }
-  durationObj = o.set[key];
-  durationObj.duration += 1;
-  await obrowser.storage.local.set({duration: JSON.stringify(o)});
+  oneDuration = duration.set[key];
+  oneDuration.duration += 1;
+  await obrowser.storage.local.set({duration: JSON.stringify(duration)});
   await writeStats(await getOrCreateRawData());
 };
 
