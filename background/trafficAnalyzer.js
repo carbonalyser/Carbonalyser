@@ -93,6 +93,23 @@ bufferWritter = async () => {
   }
 }
 
+/**
+ * Get a duration object.
+ */
+getDuration = async () => {
+  let duration = (await obrowser.storage.local.get('duration')).duration;
+  if ( duration === undefined ) {
+    duration = {
+      total: 0,
+      set: {}
+    }
+    await obrowser.storage.local.set({duration: JSON.stringify(duration)});
+  } else {
+    duration = JSON.parse(duration);
+  }
+  return duration;
+}
+
 let stats = null;
 /**
  * Generate and write stats to the storage.
@@ -104,6 +121,7 @@ writeStats = async (rawdata) => {
   stats = getEmptyStatsObject();
   stats.stats = await getStats(rawdata);
   stats.equivalence = await computeEquivalenceFromStatsItem(stats.stats);
+  const duration = await getDuration();
 
   // data
   const bytesDataCenterUnordered = createSumOfData(rawdata, 'datacenter', 60);
@@ -114,14 +132,26 @@ writeStats = async (rawdata) => {
   stats.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
   stats.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
 
-  // electricity
+  // electricity & electricity in attention time
   stats.electricityDataCenterObjectForm = [];
   stats.electricityNetworkObjectForm = [];
-  for(let o of stats.bytesDataCenterObjectForm) {
-    stats.electricityDataCenterObjectForm.push({x: o.x, y: o.y * ((await getPref("general.kWhPerByteDataCenter")) * 1000000)});
-  }
-  for(let o of stats.bytesNetworkObjectForm) {
-    stats.electricityNetworkObjectForm.push({x: o.x, y: o.y * (await getPref("general.kWhPerByteNetwork")) * 1000000});
+
+  for(const object of [
+    {
+      bytes: stats.bytesDataCenterObjectForm, 
+      electricity: stats.electricityDataCenterObjectForm,
+      pref: "general.kWhPerByteDataCenter"
+    },
+    {
+      bytes: stats.bytesNetworkObjectForm, 
+      electricity: stats.electricityNetworkObjectForm,
+      pref: "general.kWhPerByteNetwork"
+    }
+  ]) {
+    for(const o of object.bytes) {
+      const kwh = o.y * ((await getPref(object.pref)) * 1000000);
+      object.electricity.push({x: o.x, y: kwh});
+    }
   }
 
   // attention time
@@ -197,15 +227,7 @@ setBrowserIcon = (type) => {
 };
 
 addOneMinute = async () => {
-  let o = (await obrowser.storage.local.get('duration')).duration;
-  if ( o === undefined ) {
-    o = {
-      total: 0,
-      set: {}
-    }
-  } else {
-    o = JSON.parse(o);
-  }
+  const o = getDuration();
   const minute = Math.trunc((Date.now()/1000)/60);
   o.total += 1;
   let durationObj;
@@ -219,7 +241,7 @@ addOneMinute = async () => {
   }
   if ( ! setup ) {
     key = minute;
-    durationObj = {duration: 0};
+    durationObj = {duration: 0, kWh: 0};
     o.set[minute] = durationObj;
   }
   durationObj = o.set[key];
