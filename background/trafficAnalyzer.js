@@ -152,19 +152,28 @@ writeStats = async (rawdata) => {
     }
   ]) {
     for(const o of object.bytes) {
-      const mWh = o.y * ((await getPref(object.pref)) * 1000000.0);
-      const kWh = mWh * 0.000001;
+      const kWh = o.y * (await getPref(object.pref));
+      const mWh = kWh * 1000000;
       const minute = Math.trunc(((o.x)/1000)/60);
       let key;
+      let passed = false;
       for(key = minute-5; key < minute + 5; key += 1) {
         const durationObj = duration.set[key];
         if ( durationObj !== undefined ) {
           durationObj.kWh += kWh;
+          passed = true;
           break;
         }
       }
+      if ( ! passed ) {
+        key = minute;
+      }
       if ( duration.set[key] === undefined ) {
+        passed = true;
         duration.set[key] = {duration: 0, kWh: kWh};
+      }
+      if ( passed == false ) {
+        console.error("leaks", key, kWh, mWh);
       }
       object.electricity.push({x: o.x, y: mWh});
     }
@@ -172,7 +181,8 @@ writeStats = async (rawdata) => {
 
   // update electricity of duration parts
   for(const object of Object.values(duration.set)) {
-    object.kWh += (object.duration * (await getPref("general.kWhPerMinuteDevice")));
+    const kWhDevice = (object.duration * (await getPref("general.kWhPerMinuteDevice")))
+    object.kWh += kWhDevice;
   }
 
   // attention time
