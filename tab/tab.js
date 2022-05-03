@@ -100,9 +100,9 @@ const tab = {
               console.error("not avaliable at the time");
             } else if ( selectedOptionId === "results_export_option_data" ) {
               if (fileformat === "csv") {
-                data = compileBytes(root.stats, ",");
+                data = compileBytes(root.rawdata, ",");
               } else if(fileformat === "tsv") {
-                data = compileBytes(root.stats, "\t");
+                data = compileBytes(root.rawdata, "\t");
               } else {
                 console.error("unsupported format " + fileformat);
               }

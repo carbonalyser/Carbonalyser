@@ -124,13 +124,7 @@ writeStats = async (rawdata) => {
   const duration = await getDuration();
 
   // data
-  const bytesDataCenterUnordered = createSumOfData(rawdata, 'datacenter', 60);
-  let bytesNetworkUnordered = createSumOfData(rawdata, 'network', 60);
-  bytesNetworkUnordered = mergeTwoSOD(bytesDataCenterUnordered, bytesNetworkUnordered);
-  fillSODGaps(bytesNetworkUnordered);
-  fillSODGaps(bytesDataCenterUnordered);
-  stats.bytesDataCenterObjectForm = createObjectFromSumOfData(bytesDataCenterUnordered).sort((a,b) => a.x > b.x);
-  stats.bytesNetworkObjectForm = createObjectFromSumOfData(bytesNetworkUnordered).sort((a,b) => a.x > b.x);
+  Object.assign(stats, createStatsFromData(rawdata));
 
   // electricity & electricity in attention time
   stats.electricityDataCenterObjectForm = [];
