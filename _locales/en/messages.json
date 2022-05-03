@@ -100,6 +100,9 @@
   "results_export_format_csv": {
     "message": "Csv"
   },
+  "results_export_format_tsv": {
+    "message": "Tsv"
+  },
   "selectRegionPlaceholder": {
     "message": "Select your location"
   },
