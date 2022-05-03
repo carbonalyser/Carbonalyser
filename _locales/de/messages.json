@@ -94,6 +94,12 @@
   "results_export_export_button": {
     "message": "Export"
   },
+  "results_export_format_title": {
+    "message": "Exportformat:"
+  },
+  "results_export_format_csv": {
+    "message": "Csv"
+  },
   "selectRegionPlaceholder": {
     "message": "Wähle dein Land aus"
   },

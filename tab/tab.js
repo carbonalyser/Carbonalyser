@@ -86,15 +86,17 @@ const tab = {
         init: async function () {
           const button = document.getElementById("results_export_export_button");
           const select = document.getElementById("results_export_select");
+          const results_export_format_select = document.getElementById("results_export_format_select");
           button.addEventListener("click", function() {
             const selectedOption = select.options[select.selectedIndex];
+            const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
             const blob = new Blob(["ok"]);
             const url = URL.createObjectURL(blob);
             const date = new Date();
             const fname = translate(selectedOption.id + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
             obrowser.downloads.download({
               url: url,
-              filename : fname + ".csv",
+              filename : fname + "." + selectedFormat.getAttribute("fileFormat"),
             });
           });
         }
