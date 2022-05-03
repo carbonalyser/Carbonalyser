@@ -77,7 +77,13 @@ const tab = {
           await this.init();
         }
       }
-    }, 
+    },
+    /**
+     * Export results of analysis.
+     */
+    export: {
+
+    },
     /**
      * Detailled view of electricity consumption during browsing.
      */

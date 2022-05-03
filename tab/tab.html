@@ -43,63 +43,83 @@
                 <div class="container-fluid">
                     <div class="row flex-fill">
                         <div id="resultsLeftColumn" class="col-4">
-                            <div id="equivalence">
-                                <p id="equivalenceTitle"></p>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/time.svg" />
-                                        <span id="duration"></span>
-                                        <span id="durationItem" class="unit">minutes</span>
+                            <div class="container-fluid">
+                                <div id="equivalence" class="row">
+                                    <p id="equivalenceTitle"></p>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/time.svg" />
+                                            <span id="duration"></span>
+                                            <span id="durationItem" class="unit">minutes</span>
+                                        </div>
+                                    </div>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/energy.svg" />
+                                            <span id="kWhTotalValue"></span>
+                                            <span id="kWhTotalUnit" class="unit">kWh</span>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/arrows.svg" />
+                                            <span id="mbTotalValue"></span>
+                                            <span id="mbTotalUnit" class="unit" translate="mbTotalUnit"></span>
+                                        </div>
+                                    </div>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/gco2.svg" />
+                                            <span id="gCO2Value"></span>
+                                            <span id="gCO2Item" class="unit">gCO<sub>2</sub>e</span>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                        
+                                    <p translate="digitalEquivalenceTitle"></p>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/smartphone.svg" />
+                                            <span id="chargedSmartphonesValue"></span>
+                                            <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
+                                        </div>
+                                    </div>
+                                    <div class="column50">
+                                        <div class="block">
+                                            <img src="/img/car.svg" class="icon-car" />
+                                            <span id="kmByCarValue"></span>
+                                            <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
+                                        </div>
+                                    </div>
+                                    <div class="column50" style="padding-bottom: 20px;padding-top: 20px;">
+                                        <div class="block">
+                                            <img src="/img/ampoule-electrique.png" class="icon-car" />
+                                            <span id="OneHourBulbNumberValue"></span>
+                                            <span id="OneHourBulbNumberDescription" class="unit" translate="OneHourBulbNumberDescription"></span>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div><a class="button" translate="howToChange" translate-href="howToChangeUrl" target="_blank"></a></div>
+                                </div>
+                                <hr>
+                                <div id="results_export" class="row">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                        <div class="col" id="results_export_title" translate="results_export_title"></div>
+                                        <div class="col">
+                                            <select>
+                                                <option translate="results_export_option_data"></option>
+                                                <option translate="results_export_option_electricity"></option>
+                                                <option translate="results_export_option_co2"></option>
+                                            </select>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                            <button class="button" translate="results_export_export_button"></button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/energy.svg" />
-                                        <span id="kWhTotalValue"></span>
-                                        <span id="kWhTotalUnit" class="unit">kWh</span>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/arrows.svg" />
-                                        <span id="mbTotalValue"></span>
-                                        <span id="mbTotalUnit" class="unit" translate="mbTotalUnit"></span>
-                                    </div>
-                                </div>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/gco2.svg" />
-                                        <span id="gCO2Value"></span>
-                                        <span id="gCO2Item" class="unit">gCO<sub>2</sub>e</span>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                    
-                                <p translate="digitalEquivalenceTitle"></p>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/smartphone.svg" />
-                                        <span id="chargedSmartphonesValue"></span>
-                                        <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
-                                    </div>
-                                </div>
-                                <div class="column50">
-                                    <div class="block">
-                                        <img src="/img/car.svg" class="icon-car" />
-                                        <span id="kmByCarValue"></span>
-                                        <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
-                                    </div>
-                                </div>
-                                <div class="column50" style="padding-bottom: 20px;padding-top: 20px;">
-                                    <div class="block">
-                                        <img src="/img/ampoule-electrique.png" class="icon-car" />
-                                        <span id="OneHourBulbNumberValue"></span>
-                                        <span id="OneHourBulbNumberDescription" class="unit" translate="OneHourBulbNumberDescription"></span>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                                <div><a class="button" translate="howToChange" translate-href="howToChangeUrl" target="_blank"></a></div>
                             </div>
                         </div>
                         <div id="resultsRightColumn" class="col-7">

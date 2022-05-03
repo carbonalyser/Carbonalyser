@@ -70,6 +70,21 @@
       }
     }
   },
+  "results_export_title": {
+    "message": "Jeu de données à exporter:"
+  },
+  "results_export_option_data": {
+    "message": "Données"
+  },
+  "results_export_option_electricity": {
+    "message": "Electricité"
+  },
+  "results_export_option_co2": {
+    "message": "CO² équivalent"
+  },
+  "results_export_export_button": {
+    "message": "Exporter"
+  },
   "selectRegionPlaceholder": {
     "message": "Sélectionnez votre zone géographique"
   },
