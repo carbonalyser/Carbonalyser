@@ -70,6 +70,30 @@
       }
     }
   },
+  "results_export_title": {
+    "message": "Data set to export:"
+  },
+  "results_export_option_data": {
+    "message": "Data"
+  },
+  "results_export_option_data_prefix": {
+    "message": "data_export"
+  },
+  "results_export_option_electricity": {
+    "message": "Electricity"
+  },
+  "results_export_option_electricity_prefix": {
+    "message": "electricity_export"
+  },
+  "results_export_option_co2": {
+    "message": "CO² equivalent"
+  },
+  "results_export_option_co2_prefix": {
+    "message": "co2_export"
+  },
+  "results_export_export_button": {
+    "message": "Export"
+  },
   "selectRegionPlaceholder": {
     "message": "Select your location"
   },

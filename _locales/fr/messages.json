@@ -76,11 +76,20 @@
   "results_export_option_data": {
     "message": "Données"
   },
+  "results_export_option_data_prefix": {
+    "message": "export_data"
+  },
   "results_export_option_electricity": {
     "message": "Electricité"
   },
+  "results_export_option_electricity_prefix": {
+    "message": "export_electricite"
+  },
   "results_export_option_co2": {
     "message": "CO² équivalent"
+  },
+  "results_export_option_co2_prefix": {
+    "message": "export_co2"
   },
   "results_export_export_button": {
     "message": "Exporter"

@@ -82,7 +82,23 @@ const tab = {
      * Export results of analysis.
      */
     export: {
-
+      view: {
+        init: async function () {
+          const button = document.getElementById("results_export_export_button");
+          const select = document.getElementById("results_export_select");
+          button.addEventListener("click", function() {
+            const selectedOption = select.options[select.selectedIndex];
+            const blob = new Blob(["ok"]);
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const fname = translate(selectedOption.id + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
+            obrowser.downloads.download({
+              url: url,
+              filename : fname + ".csv",
+            });
+          });
+        }
+      }
     },
     /**
      * Detailled view of electricity consumption during browsing.
@@ -759,7 +775,6 @@ const tab = {
           const dayRateKWh = root.stats.forecast.dayRateKWh;
           const days = this.data.days;
           const forecastedKWh = dayRateKWh * days;
-          console.warn(dayRateKWh, days, forecastedKWh);
           this.div.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_description', [forecastedKWh.toFixed(5), days, dayRateKWh.toFixed(5)]);
         }
       }

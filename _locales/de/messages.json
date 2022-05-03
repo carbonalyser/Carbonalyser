@@ -70,6 +70,30 @@
       }
     }
   },
+  "results_export_title": {
+    "message": "Zu exportierender Datensatz:"
+  },
+  "results_export_option_data": {
+    "message": "Daten"
+  },
+  "results_export_option_data_prefix": {
+    "message": "daten_export"
+  },
+  "results_export_option_electricity": {
+    "message": "Elektrizität"
+  },
+  "results_export_option_electricity_prefix": {
+    "message": "elektrizitat_export"
+  },
+  "results_export_option_co2": {
+    "message": "CO²-Äquivalent"
+  },
+  "results_export_option_co2_prefix": {
+    "message": "co2_export"
+  },
+  "results_export_export_button": {
+    "message": "Export"
+  },
   "selectRegionPlaceholder": {
     "message": "Wähle dein Land aus"
   },
