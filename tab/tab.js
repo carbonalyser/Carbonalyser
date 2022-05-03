@@ -87,16 +87,33 @@ const tab = {
           const button = document.getElementById("results_export_export_button");
           const select = document.getElementById("results_export_select");
           const results_export_format_select = document.getElementById("results_export_format_select");
+          const root = this.parent.parent.parent;
           button.addEventListener("click", function() {
-            const selectedOption = select.options[select.selectedIndex];
+            const selectedData = select.options[select.selectedIndex];
             const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
-            const blob = new Blob(["ok"]);
-            const url = URL.createObjectURL(blob);
             const date = new Date();
-            const fname = translate(selectedOption.id + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
+            const fileformat = selectedFormat.getAttribute("fileFormat");
+            const selectedOptionId = selectedData.id;
+            const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
+            let data = "";
+            if ( selectedOptionId === "results_export_option_co2" ) {
+              console.error("not avaliable at the time");
+            } else if ( selectedOptionId === "results_export_option_data" ) {
+              if (fileformat === "csv") {
+                data = compileBytes(root.stats, ",");
+              } else if(fileformat === "tsv") {
+                data = compileBytes(root.stats, "\t");
+              } else {
+                console.error("unsupported format " + fileformat);
+              }
+            } else if ( selectedOptionId === "results_export_option_electricity" ) {
+              
+            }
+            const blob = new Blob([data]);
+            const url = URL.createObjectURL(blob);
             obrowser.downloads.download({
               url: url,
-              filename : fname + "." + selectedFormat.getAttribute("fileFormat"),
+              filename : fname + "." + fileformat,
             });
           });
         }
