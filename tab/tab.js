@@ -88,6 +88,7 @@ const tab = {
           const select = document.getElementById("results_export_select");
           const results_export_format_select = document.getElementById("results_export_format_select");
           const root = this.parent.parent.parent;
+          const results_export_origin_input = document.getElementById("results_export_origin_input");
           button.addEventListener("click", function() {
             const selectedData = select.options[select.selectedIndex];
             const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
@@ -96,13 +97,17 @@ const tab = {
             const selectedOptionId = selectedData.id;
             const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
             let data = "";
+            let originFilter = undefined;
+            if ( results_export_origin_input.value !== undefined && results_export_origin_input.value !== null && results_export_origin_input !== "" ) {
+              originFilter = results_export_origin_input.value.split(",");
+            }
             if ( selectedOptionId === "results_export_option_co2" ) {
               console.error("not avaliable at the time");
             } else if ( selectedOptionId === "results_export_option_data" ) {
               if (fileformat === "csv") {
-                data = compileBytes(root.rawdata, ",", "www.addictivetips.com");
+                data = compileBytes(root.rawdata, ",", originFilter);
               } else if(fileformat === "tsv") {
-                data = compileBytes(root.rawdata, "\t", "www.addictivetips.com");
+                data = compileBytes(root.rawdata, "\t", originFilter);
               } else {
                 console.error("unsupported format " + fileformat);
               }

@@ -103,6 +103,9 @@
   "results_export_format_tsv": {
     "message": "Tsv"
   },
+  "results_export_origin_title": {
+    "message": "Comma separated list of sites on which to restrict export:"
+  },
   "selectRegionPlaceholder": {
     "message": "Select your location"
   },

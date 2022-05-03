@@ -103,6 +103,9 @@
   "results_export_format_tsv": {
     "message": "Tsv"
   },
+  "results_export_origin_title": {
+    "message": "Durch Kommas getrennte Liste von Websites, auf denen Sie den Export einschränken möchten:"
+  },
   "selectRegionPlaceholder": {
     "message": "Wähle dein Land aus"
   },

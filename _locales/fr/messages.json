@@ -103,6 +103,9 @@
   "results_export_format_tsv": {
     "message": "Tsv"
   },
+  "results_export_origin_title": {
+    "message": "Liste de sites séparés par une virgules sur lesquels vous voulez restreindre l'export:"
+  },
   "selectRegionPlaceholder": {
     "message": "Sélectionnez votre zone géographique"
   },
