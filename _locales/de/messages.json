@@ -321,8 +321,8 @@
   "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
     "message": "Anzuwendender Faktor bei der Umwandlung von Bytes in Strom (in kWh/Byte)."
   },
-  "tab_settings_preferencesScreen_prefs_general_kWhPerMinuteDevice": {
-    "message": "Anzuwendender Faktor, um die Nutzungszeit eines Endgerätes (Smartphone, Computer) in Strom umzurechnen."
+  "tab_settings_preferencesScreen_prefs_general_DeviceConsumptionW": {
+    "message": "Verbrauch des Gerätes auf dem der Carbonalyser läuft (Watt)"
   },
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
     "message": "Anzuwendender Faktor zur Umrechnung der CO2-Emission in mit dem Auto gefahrene km."

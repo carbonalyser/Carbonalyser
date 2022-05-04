@@ -321,8 +321,8 @@
   "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
     "message": "Factor to apply when converting bytes into electricity (in kWh/byte)."
   },
-  "tab_settings_preferencesScreen_prefs_general_kWhPerMinuteDevice": {
-    "message": "Factor to be applied to convert the time of use of a terminal (smartphone, computer) into electricity."
+  "tab_settings_preferencesScreen_prefs_general_DeviceConsumptionW": {
+    "message": "Consumption of the device on which the carbonalyser is running(Watt)"
   },
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
     "message": "Factor to be applied to convert the CO2 emission into km traveled by car."

@@ -321,8 +321,8 @@
   "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
     "message": "Facteur a appliquer quand on convertit les octets en electricité (en kWh/octet)."
   },
-  "tab_settings_preferencesScreen_prefs_general_kWhPerMinuteDevice": {
-    "message": "Facteur a appliquer pour convertir le temps d'utilisation d'un terminal (smartphone, ordinateur) en electricité."
+  "tab_settings_preferencesScreen_prefs_general_DeviceConsumptionW": {
+    "message": "Consommation de l'appareil sur lequel tourne carbonalyser(Watt)."
   },
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
     "message": "Facteur a appliquer pour convertir l'emission CO2 en km parcourus en voiture."
