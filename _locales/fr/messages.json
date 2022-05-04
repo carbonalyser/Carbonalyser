@@ -74,7 +74,7 @@
     "message": "Exporter les données"
   },
   "results_export_title_desc": {
-    "message": "L'électricité n'inclut celle de votre machine(constante)"
+    "message": "L'électricité n'inclut celle de votre machine(constante) de même pour l'équivalent CO²"
   },
   "results_export_title": {
     "message": "Jeu de données à exporter:"

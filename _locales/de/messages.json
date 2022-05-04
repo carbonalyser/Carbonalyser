@@ -74,7 +74,7 @@
     "message": "Datenexport"
   },
   "results_export_title_desc": {
-    "message": "Der Strom Ihrer Maschine ist nicht enthalten(konstante)"
+    "message": "Der Strom Ihrer Maschine ist nicht enthalten(konstante) dasselbe gilt für das CO²-Äquivalent"
   },
   "results_export_title": {
     "message": "Zu exportierender Datensatz:"

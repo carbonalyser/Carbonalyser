@@ -104,7 +104,13 @@ const tab = {
               originFilter = results_export_origin_input.value.split(",");
             }
             if ( selectedOptionId === "results_export_option_co2" ) {
-              console.error("not avaliable at the time");
+              if (fileformat === "csv") {
+                data = await compileCO2equivalent(root.rawdata, ",", originFilter);
+              } else if(fileformat === "tsv") {
+                data = await compileCO2equivalent(root.rawdata, "\t", originFilter);
+              } else {
+                console.error("unsupported format " + fileformat);
+              }
             } else if ( selectedOptionId === "results_export_option_data" ) {
               if (fileformat === "csv") {
                 data = compileBytes(root.rawdata, ",", originFilter);
@@ -121,6 +127,8 @@ const tab = {
               } else {
                 console.error("unsupported format " + fileformat);
               }
+            } else {
+              console.error("unsupported option");
             }
             const blob = new Blob([data]);
             const url = URL.createObjectURL(blob);

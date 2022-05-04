@@ -74,7 +74,7 @@
     "message": "Data export"
   },
   "results_export_title_desc": {
-    "message": "Electricity does not include that of your machine(constant)"
+    "message": "Electricity does not include that of your machine(constant) the same for the CO² equivalent"
   },
   "results_export_title": {
     "message": "Data set to export:"
