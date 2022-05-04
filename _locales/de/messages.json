@@ -104,7 +104,7 @@
     "message": "Tsv"
   },
   "results_export_origin_title": {
-    "message": "Durch Kommas getrennte Liste von Websites, auf denen Sie den Export einschränken möchten:"
+    "message": "Durch Kommas getrennte Liste von Websites, auf denen Sie den Export einschränken möchten(regex erlaubt):"
   },
   "selectRegionPlaceholder": {
     "message": "Wähle dein Land aus"

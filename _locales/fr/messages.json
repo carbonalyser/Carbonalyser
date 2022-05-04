@@ -104,7 +104,7 @@
     "message": "Tsv"
   },
   "results_export_origin_title": {
-    "message": "Liste de sites séparés par une virgules sur lesquels vous voulez restreindre l'export:"
+    "message": "Liste de sites séparés par une virgule sur lesquels vous voulez restreindre l'export (regex autorisées):"
   },
   "selectRegionPlaceholder": {
     "message": "Sélectionnez votre zone géographique"

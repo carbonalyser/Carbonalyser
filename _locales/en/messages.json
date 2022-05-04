@@ -104,7 +104,7 @@
     "message": "Tsv"
   },
   "results_export_origin_title": {
-    "message": "Comma separated list of sites on which to restrict export:"
+    "message": "Comma separated list of sites on which to restrict export (regex allowed):"
   },
   "selectRegionPlaceholder": {
     "message": "Select your location"
