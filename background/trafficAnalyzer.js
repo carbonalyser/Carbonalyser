@@ -113,10 +113,7 @@ writeStats = async (rawdata) => {
   Object.assign(stats, await generateElectricityConsumptionFromBytes(stats.bytesDataCenterObjectForm, stats.bytesNetworkObjectForm, duration));
 
   // update electricity of duration parts
-  for(const object of Object.values(duration.set)) {
-    const kWhDevice = (object.duration * (await getPref("general.kWhPerMinuteDevice")))
-    object.kWh += kWhDevice;
-  }
+  await updateDurationElectricity(duration);
 
   // attention time
   stats.attention.time = {labels: [], data: []};
