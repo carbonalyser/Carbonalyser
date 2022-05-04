@@ -93,23 +93,6 @@ bufferWritter = async () => {
   }
 }
 
-/**
- * Get a duration object.
- */
-getDuration = async () => {
-  let duration = (await obrowser.storage.local.get('duration')).duration;
-  if ( duration === undefined ) {
-    duration = {
-      total: 0,
-      set: {}
-    }
-    await obrowser.storage.local.set({duration: JSON.stringify(duration)});
-  } else {
-    duration = JSON.parse(duration);
-  }
-  return duration;
-}
-
 let stats = null;
 /**
  * Generate and write stats to the storage.
@@ -127,7 +110,7 @@ writeStats = async (rawdata) => {
   Object.assign(stats, createStatsFromData(rawdata));
 
   // electricity & electricity in attention time
-  Object.assign(stats, await generateElectricityConsumptionFromBytes(stats.bytesDataCenterObjectForm, stats.bytesNetworkObjectForm));
+  Object.assign(stats, await generateElectricityConsumptionFromBytes(stats.bytesDataCenterObjectForm, stats.bytesNetworkObjectForm, duration));
 
   // update electricity of duration parts
   for(const object of Object.values(duration.set)) {

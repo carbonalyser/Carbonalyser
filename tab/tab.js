@@ -89,7 +89,7 @@ const tab = {
           const results_export_format_select = document.getElementById("results_export_format_select");
           const root = this.parent.parent.parent;
           const results_export_origin_input = document.getElementById("results_export_origin_input");
-          button.addEventListener("click", function() {
+          button.addEventListener("click", async function() {
             const selectedData = select.options[select.selectedIndex];
             const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
             const date = new Date();
@@ -98,6 +98,8 @@ const tab = {
             const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
             let data = "";
             let originFilter = undefined;
+            results_export_origin_input.value = results_export_origin_input.value.replace(/^[ \t]+/,"");
+            results_export_origin_input.value = results_export_origin_input.value.replace(/[ \t]+$/,"");
             if ( results_export_origin_input.value !== undefined && results_export_origin_input.value !== null && results_export_origin_input !== "" ) {
               originFilter = results_export_origin_input.value.split(",");
             }
@@ -112,7 +114,13 @@ const tab = {
                 console.error("unsupported format " + fileformat);
               }
             } else if ( selectedOptionId === "results_export_option_electricity" ) {
-
+              if (fileformat === "csv") {
+                data = await compileElectricity(root.rawdata, ",", originFilter);
+              } else if(fileformat === "tsv") {
+                data = await compileElectricity(root.rawdata, "\t", originFilter);
+              } else {
+                console.error("unsupported format " + fileformat);
+              }
             }
             const blob = new Blob([data]);
             const url = URL.createObjectURL(blob);
