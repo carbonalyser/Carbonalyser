@@ -112,7 +112,7 @@ const tab = {
                 console.error("unsupported format " + fileformat);
               }
             } else if ( selectedOptionId === "results_export_option_electricity" ) {
-              
+
             }
             const blob = new Blob([data]);
             const url = URL.createObjectURL(blob);

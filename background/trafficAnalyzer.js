@@ -127,51 +127,7 @@ writeStats = async (rawdata) => {
   Object.assign(stats, createStatsFromData(rawdata));
 
   // electricity & electricity in attention time
-  stats.electricityDataCenterObjectForm = [];
-  stats.electricityNetworkObjectForm = [];
-  for(const object of Object.values(duration.set)) {
-    object.kWh = 0;
-  }
-  
-  for(const object of [
-    {
-      bytes: stats.bytesDataCenterObjectForm, 
-      electricity: stats.electricityDataCenterObjectForm,
-      pref: "general.kWhPerByteDataCenter"
-    },
-    {
-      bytes: stats.bytesNetworkObjectForm, 
-      electricity: stats.electricityNetworkObjectForm,
-      pref: "general.kWhPerByteNetwork"
-    }
-  ]) {
-    for(const o of object.bytes) {
-      const kWh = o.y * (await getPref(object.pref));
-      const mWh = kWh * 1000000;
-      const minute = Math.trunc(((o.x)/1000)/60);
-      let key;
-      let passed = false;
-      for(key = minute-5; key < minute + 5; key += 1) {
-        const durationObj = duration.set[key];
-        if ( durationObj !== undefined ) {
-          durationObj.kWh += kWh;
-          passed = true;
-          break;
-        }
-      }
-      if ( ! passed ) {
-        key = minute;
-      }
-      if ( duration.set[key] === undefined ) {
-        passed = true;
-        duration.set[key] = {duration: 0, kWh: kWh};
-      }
-      if ( passed == false ) {
-        console.error("leaks", key, kWh, mWh);
-      }
-      object.electricity.push({x: o.x, y: mWh});
-    }
-  }
+  Object.assign(stats, await generateElectricityConsumptionFromBytes(stats.bytesDataCenterObjectForm, stats.bytesNetworkObjectForm));
 
   // update electricity of duration parts
   for(const object of Object.values(duration.set)) {
