@@ -70,6 +70,12 @@
       }
     }
   },
+  "results_export_title_short": {
+    "message": "Datenexport"
+  },
+  "results_export_title_desc": {
+    "message": "Der Strom Ihrer Maschine ist nicht enthalten(konstante)"
+  },
   "results_export_title": {
     "message": "Zu exportierender Datensatz:"
   },

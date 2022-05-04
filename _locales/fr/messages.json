@@ -70,6 +70,12 @@
       }
     }
   },
+  "results_export_title_short": {
+    "message": "Exporter les données"
+  },
+  "results_export_title_desc": {
+    "message": "L'électricité n'inclut celle de votre machine(constante)"
+  },
   "results_export_title": {
     "message": "Jeu de données à exporter:"
   },

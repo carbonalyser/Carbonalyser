@@ -70,6 +70,12 @@
       }
     }
   },
+  "results_export_title_short": {
+    "message": "Data export"
+  },
+  "results_export_title_desc": {
+    "message": "Electricity does not include that of your machine(constant)"
+  },
   "results_export_title": {
     "message": "Data set to export:"
   },
