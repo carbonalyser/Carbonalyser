@@ -83,60 +83,64 @@ const tab = {
      */
     export: {
       view: {
-        init: async function () {
-          const button = document.getElementById("results_export_export_button");
+        data: {
+          lastDownload: null
+        },
+        run: async function () {
           const select = document.getElementById("results_export_select");
           const results_export_format_select = document.getElementById("results_export_format_select");
           const root = this.parent.parent.parent;
           const results_export_origin_input = document.getElementById("results_export_origin_input");
-          button.addEventListener("click", async function() {
-            const selectedData = select.options[select.selectedIndex];
-            const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
-            const date = new Date();
-            const fileformat = selectedFormat.getAttribute("fileFormat");
-            const selectedOptionId = selectedData.id;
-            const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
-            let data = "";
-            let originFilter = undefined;
-            results_export_origin_input.value = results_export_origin_input.value.replace(/^[ \t]+/,"");
-            results_export_origin_input.value = results_export_origin_input.value.replace(/[ \t]+$/,"");
-            if ( results_export_origin_input.value !== undefined && results_export_origin_input.value !== null && results_export_origin_input !== "" ) {
-              originFilter = results_export_origin_input.value.split(",");
-            }
-            if ( selectedOptionId === "results_export_option_co2" ) {
-              if (fileformat === "csv") {
-                data = await compileCO2equivalent(root.rawdata, ",", originFilter);
-              } else if(fileformat === "tsv") {
-                data = await compileCO2equivalent(root.rawdata, "\t", originFilter);
-              } else {
-                console.error("unsupported format " + fileformat);
-              }
-            } else if ( selectedOptionId === "results_export_option_data" ) {
-              if (fileformat === "csv") {
-                data = compileBytes(root.rawdata, ",", originFilter);
-              } else if(fileformat === "tsv") {
-                data = compileBytes(root.rawdata, "\t", originFilter);
-              } else {
-                console.error("unsupported format " + fileformat);
-              }
-            } else if ( selectedOptionId === "results_export_option_electricity" ) {
-              if (fileformat === "csv") {
-                data = await compileElectricity(root.rawdata, ",", originFilter);
-              } else if(fileformat === "tsv") {
-                data = await compileElectricity(root.rawdata, "\t", originFilter);
-              } else {
-                console.error("unsupported format " + fileformat);
-              }
+          const selectedData = select.options[select.selectedIndex];
+          const selectedFormat = results_export_format_select.options[results_export_format_select.selectedIndex];
+          const date = new Date();
+          const fileformat = selectedFormat.getAttribute("fileFormat");
+          const selectedOptionId = selectedData.id;
+          const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
+          let data = "";
+          let originFilter = undefined;
+          results_export_origin_input.value = results_export_origin_input.value.replace(/^[ \t]+/,"");
+          results_export_origin_input.value = results_export_origin_input.value.replace(/[ \t]+$/,"");
+          if ( results_export_origin_input.value !== undefined && results_export_origin_input.value !== null && results_export_origin_input !== "" ) {
+            originFilter = results_export_origin_input.value.split(",");
+          }
+          if ( selectedOptionId === "results_export_option_co2" ) {
+            if (fileformat === "csv") {
+              data = await compileCO2equivalent(root.rawdata, ",", originFilter);
+            } else if(fileformat === "tsv") {
+              data = await compileCO2equivalent(root.rawdata, "\t", originFilter);
             } else {
-              console.error("unsupported option");
+              console.error("unsupported format " + fileformat);
             }
-            const blob = new Blob([data]);
-            const url = URL.createObjectURL(blob);
-            obrowser.downloads.download({
-              url: url,
-              filename : fname + "." + fileformat,
-            });
+          } else if ( selectedOptionId === "results_export_option_data" ) {
+            if (fileformat === "csv") {
+              data = compileBytes(root.rawdata, ",", originFilter);
+            } else if(fileformat === "tsv") {
+              data = compileBytes(root.rawdata, "\t", originFilter);
+            } else {
+              console.error("unsupported format " + fileformat);
+            }
+          } else if ( selectedOptionId === "results_export_option_electricity" ) {
+            if (fileformat === "csv") {
+              data = await compileElectricity(root.rawdata, ",", originFilter);
+            } else if(fileformat === "tsv") {
+              data = await compileElectricity(root.rawdata, "\t", originFilter);
+            } else {
+              console.error("unsupported format " + fileformat);
+            }
+          } else {
+            console.error("unsupported option");
+          }
+          const blob = new Blob([data]);
+          const url = URL.createObjectURL(blob);
+          this.data.lastDownload = await obrowser.downloads.download({
+            url: url,
+            filename : fname + "." + fileformat,
           });
+        },
+        init: async function () {
+          const button = document.getElementById("results_export_export_button");
+          button.addEventListener("click", this.run.bind(this));
         }
       }
     },
