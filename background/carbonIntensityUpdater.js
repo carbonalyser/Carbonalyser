@@ -49,12 +49,16 @@ let intervalID = null;
  */
  insertUpdatedCarbonIntensity = async () => {
     for(const name in updateList) {
-        const region = updateList[name];
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", region.url, false);
-        xhr.send();
-        const v = region.extractor(xhr.responseText);
-        await setCarbonIntensityRegion(name, v);
+        try {
+            const region = updateList[name];
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", region.url, false);
+            xhr.send();
+            const v = region.extractor(xhr.responseText);
+            await setCarbonIntensityRegion(name, v);
+        } catch (e) {
+            console.warn(e.name + " : " + e.message);
+        }
     }
     const parameters = await getParameters();
     parameters.lastRefresh = Date.now();
