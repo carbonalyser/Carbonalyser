@@ -37,7 +37,8 @@ let intervalID = null;
  * Insert the default carbon intensities.
  */
  insertDefaultCarbonIntensity = async () => {
-    await setCarbonIntensityRegion('france', 34.8);    
+    // https://app.electricitymap.org/zone/FR 05/05/2022
+    await setCarbonIntensityRegion('france', 80);    
     await setCarbonIntensityRegion('europeanUnion', 276);
     await setCarbonIntensityRegion('unitedStates', 493);
     await setCarbonIntensityRegion('china', 681);
