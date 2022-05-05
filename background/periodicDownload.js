@@ -3,10 +3,10 @@
  */
 
 let periodicDownloadT = null;
-
+let lastDownloaded = null;
 doPeriodicDownload = async (type,filename,format,filter) => {
     const rawdata = await getOrCreateRawData();
-    await compileAndDownload(rawdata,type,filename,format,filter);
+    return (await compileAndDownload(rawdata,type,filename,format,filter));
 }
 
 startPeriodicIfNeeded = async () => {
@@ -17,9 +17,14 @@ startPeriodicIfNeeded = async () => {
         const format = await getPref("general.export.autoDownload.format");
         const filename = await getPref("general.export.autoDownload.filename");
         const type = await getPref("general.export.autoDownload.type");
-        doPeriodicDownload(type,filename,format,filter);
-        periodicDownloadT = setInterval(() => {
-            doPeriodicDownload(type,filename,format,filter)
+        lastDownloaded = (await doPeriodicDownload(type,filename,format,filter));
+        periodicDownloadT = setInterval(async () => {
+            if ( lastDownloaded !== null && lastDownloaded !== undefined ) {
+                await obrowser.downloads.erase({
+                    id: lastDownloaded
+                });
+            }
+            lastDownloaded = (await doPeriodicDownload(type,filename,format,filter))
         }, interval);
     }
 }
