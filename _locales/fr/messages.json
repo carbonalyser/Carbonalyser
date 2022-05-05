@@ -330,6 +330,24 @@
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
     "message": "Facteur a appliquer pour convertir l'emission CO2 smartphones rechargés."
   },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_enabled": {
+    "message": "Le téléchargement automatique est activé."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filename": {
+    "message": "Nom du fichier dans lequel exporter (sans l'extension)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_format": {
+    "message": "Format du fichier de sortie (csv ou tsv)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filter": {
+    "message": "Filtrer par site le jeu de données (er séparées par des virgules)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_interval": {
+    "message": "Interval en ms entre chaque mise à jour du fichier."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
+    "message": "Type de données à télécharger (data,co2,electricity)."
+  },
   "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
     "message": "Consommation (en Watt) d'une ampoule."
   },

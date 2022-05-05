@@ -330,6 +330,24 @@
   "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
     "message": "Anzuwendender Faktor zur Umrechnung des CO2-Ausstoßes aufgeladener Smartphones."
   },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_enabled": {
+    "message": "Der automatische Download ist aktiviert."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filename": {
+    "message": "Name der Datei, in die exportiert werden soll (ohne Erweiterung)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_format": {
+    "message": "Ausgabedateiformat (csv oder tsv)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filter": {
+    "message": "Filtern Sie das Dataset nach Website (durch Kommas getrennt)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_interval": {
+    "message": "Intervall in ms zwischen jeder Dateiaktualisierung."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
+    "message": "Art der herunterzuladenden Daten (data,co2,electricity)."
+  },
   "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
     "message": "Verbrauch (in Watt) einer Glühbirne."
   },

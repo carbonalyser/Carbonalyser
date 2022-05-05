@@ -30,7 +30,7 @@ downloadCompletedCheckLoop = async (object) => {
       return;
     }
   }
-  setTimeout(downloadCompletedCheckLoop, await getPref("daemon.download.loopMs"), object);
+  setTimeout(downloadCompletedCheckLoop, await getPref("daemon.downloads.latencyBetweenChecksMs"), object);
 }
 
 const BYTES_TCP_HEADER = 20;

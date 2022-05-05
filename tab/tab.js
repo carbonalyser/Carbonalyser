@@ -94,56 +94,7 @@ const tab = {
           const fileformat = selectedFormat.getAttribute("fileFormat");
           const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
 
-          await this.runWithFname(rawdata,selectedOptionId,fname,fileformat,results_export_origin_input.value);
-        },
-        /**
-         * @param {*} rawdata data
-         * @param {*} fname name of the file to export (no terminal part)
-         */
-        runWithFname: async function (rawdata,selectedOptionId,fname,fileformat,originFilterStr=undefined) {
-
-          let originFilter = undefined;
-          let data = "";
-          originFilterStr = originFilterStr.replace(/^[ \t]+/,"");
-          originFilterStr = originFilterStr.replace(/[ \t]+$/,"");
-          if ( originFilterStr !== undefined && originFilterStr !== null && originFilterStr !== "" ) {
-            originFilter = originFilterStr.split(",");
-          }
-
-          if ( selectedOptionId === "results_export_option_co2" ) {
-            if (fileformat === "csv") {
-              data = await compileCO2equivalent(rawdata, ",", originFilter);
-            } else if(fileformat === "tsv") {
-              data = await compileCO2equivalent(rawdata, "\t", originFilter);
-            } else {
-              console.error("unsupported format " + fileformat);
-            }
-          } else if ( selectedOptionId === "results_export_option_data" ) {
-            if (fileformat === "csv") {
-              data = compileBytes(rawdata, ",", originFilter);
-            } else if(fileformat === "tsv") {
-              data = compileBytes(rawdata, "\t", originFilter);
-            } else {
-              console.error("unsupported format " + fileformat);
-            }
-          } else if ( selectedOptionId === "results_export_option_electricity" ) {
-            if (fileformat === "csv") {
-              data = await compileElectricity(rawdata, ",", originFilter);
-            } else if(fileformat === "tsv") {
-              data = await compileElectricity(rawdata, "\t", originFilter);
-            } else {
-              console.error("unsupported format " + fileformat);
-            }
-          } else {
-            console.error("unsupported option");
-          }
-          const blob = new Blob([data]);
-          const url = URL.createObjectURL(blob);
-          obrowser.downloads.download({
-            url: url,
-            filename: fname + "." + fileformat,
-            conflictAction: "overwrite"
-          });
+          await compileAndDownload(rawdata,selectedOptionId.replace("results_export_option_",""),fname,fileformat,results_export_origin_input.value);
         },
         init: async function () {
           const root = this.parent.parent.parent;

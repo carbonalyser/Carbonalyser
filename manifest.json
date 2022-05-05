@@ -23,7 +23,8 @@
       "lib/carbonalyser/libStats.js",
       "background/carbonIntensityUpdater.js",
       "background/trafficAnalyzer.js",
-      "background/attentionAnalyzer.js"
+      "background/attentionAnalyzer.js",
+      "background/periodicDownload.js"
     ]
   },
   "browser_action": {
