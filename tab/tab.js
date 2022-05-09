@@ -126,7 +126,7 @@ const tab = {
          * @param {*} topResults tbody to insert in.
          * @param {*} init force creation.
          */
-        createEntry: function (stat, topResults, init) {
+        createEntry: function (stat, topResults, init, filter="") {
           const root = this.parent.parent.parent;
 
           let foundValue = false;
@@ -143,7 +143,8 @@ const tab = {
             }
           }
 
-          if ( init || ! foundValue) {
+          const filtered = filter === "" || filter === undefined || filter === null || (stat.origin.replace(filter, "") != stat.origin);
+          if ( (init || ! foundValue) && filtered ) {
             const tr = document.createElement("tr");
             const percent = document.createElement("td");
             const site = document.createElement("td");
@@ -182,8 +183,9 @@ const tab = {
         update: async function () {
           const root = this.parent.parent.parent;
           const topResults = document.getElementById("topResults");
+          const filter = document.getElementById("topResultsTable_filter");
           for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.stats.highestStats[i], topResults, false);
+            this.createEntry(root.stats.stats.highestStats[i], topResults, false, filter.children[0].children[0].value);
           }
         }
       }
