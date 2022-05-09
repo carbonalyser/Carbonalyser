@@ -120,31 +120,38 @@ const tab = {
         }
       },
       view: {
+        data: {
+          dtt: null
+        },
         /**
          * Create or update an entry in the detailled view.
          * @param {*} stat stat to insert / update.
          * @param {*} topResults tbody to insert in.
          * @param {*} init force creation.
          */
-        createEntry: function (stat, topResults, init, filter="") {
+        createEntry: function (stat, init) {
           const root = this.parent.parent.parent;
 
           let foundValue = false;
           if ( ! init ) {
-            for(const row of topResults.children) {
-              if ( 1 < row.children.length ) {
-                if ( row.children[1].textContent == stat.origin ) {
-                  foundValue = true;
-                  row.children[0].textContent = stat.percent;
-                  row.children[2].textContent = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
-                  row.children[3].textContent = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
-                }
+            const childrens = this.data.dtt.rows()[0];
+            for(let j = 0; j < childrens.length; j = j + 1) {
+              const rowId = childrens[j];
+              const row = this.data.dtt.row(rowId);
+              const rowData = row.data();
+              if ( rowData !== undefined && rowData !== null && rowData[1] === stat.origin ) {
+                foundValue = true;
+                rowData[0] = stat.percent;
+                rowData[2] = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
+                rowData[3] = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
+                row.data(rowData);
+                row.draw();
+                break;
               }
             }
           }
 
-          const filtered = filter === "" || filter === undefined || filter === null || (stat.origin.replace(filter, "") != stat.origin);
-          if ( (init || ! foundValue) && filtered ) {
+          if ( (init || ! foundValue) ) {
             const tr = document.createElement("tr");
             const percent = document.createElement("td");
             const site = document.createElement("td");
@@ -159,33 +166,31 @@ const tab = {
             tr.appendChild(site);
             tr.appendChild(data);
             tr.appendChild(network);
-            topResults.appendChild(tr);
+            this.data.dtt.row.add(tr).draw();
           }
         },
         init: async function () {
-          const root = this.parent.parent.parent;
-          const topResults = document.getElementById("topResults");
-          for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.stats.highestStats[i], topResults, true);
-          }
-
           // Add some sorters
-          $(document).ready(function() {
-            const dtt = $('#topResultsTable').DataTable({
+          $(document).ready(() => {
+            this.data.dtt = $('#topResultsTable').DataTable({
               language: {
                   url: getDatatableTranslation()
-              }});
-              dtt.on("init", function() {
-                document.getElementById("topResultsTable_wrapper").style.width = "100%";
-              });
+              }
+            });
+            this.data.dtt.on("init", function() {
+              document.getElementById("topResultsTable_wrapper").style.width = "100%";
+            });
+            
+            const root = this.parent.parent.parent;
+            for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
+              this.createEntry(root.stats.stats.highestStats[i], true);
+            }
           });
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          const topResults = document.getElementById("topResults");
-          const filter = document.getElementById("topResultsTable_filter");
           for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.stats.highestStats[i], topResults, false, filter.children[0].children[0].value);
+            this.createEntry(root.stats.stats.highestStats[i], false);
           }
         }
       }
