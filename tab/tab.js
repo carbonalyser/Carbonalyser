@@ -773,9 +773,11 @@ const tab = {
           days: 365
         },
         div: null,
+        divGlobalPop: null,
         init: async function() {
           const _this = this;
           this.div = document.getElementById("tab_prediction_prediction_description");
+          this.divGlobalPop = document.getElementById("tab_prediction_prediction_global_pop");
           document.getElementById("tab_prediction_prediction_button").addEventListener("click", () => {
             _this.data.days = parseInt(document.getElementById("tab_prediction_prediction_input").value);
             _this.update();
@@ -787,7 +789,10 @@ const tab = {
           const dayRateKWh = root.stats.forecast.dayRateKWh;
           const days = this.data.days;
           const forecastedKWh = dayRateKWh * days;
+          const people = await getPref("general.populationNumber");
+          const extrapolateTWh = (forecastedKWh * people) / 1000000000;
           this.div.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_description', [forecastedKWh.toFixed(5), days, dayRateKWh.toFixed(5)]);
+          this.divGlobalPop.textContent = obrowser.i18n.getMessage('tab_prediction_prediction_global_pop', [people, days, extrapolateTWh.toFixed(1)]);
         }
       }
     }

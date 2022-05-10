@@ -306,6 +306,23 @@
   "tab_prediction_prediction_button": {
     "message": "Bestätigen"
   },
+  "tab_prediction_prediction_global_pop": {
+    "message": "Wenn jeder Mensch wie Sie verbrauchen würde, würde der globale Stromverbrauch (für $PEOPLE$ Menschen für $DAYS$ Tage) mindestens : $POWER$ TWh betragen. Zum Vergleich: Der weltweite Stromverbrauch im Jahr 2022 liegt bei etwa 22000 TWh, wobei 10 % auf neue Technologien entfallen (2200 TWh).",
+    "placeholders": {
+      "people": {
+        "content": "$1",
+        "example": "8000000000"
+      },
+      "days": {
+        "content": "$2",
+        "example": "365"
+      },
+      "power": {
+        "content": "$3",
+        "example": "500"
+      }
+    }
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
   },

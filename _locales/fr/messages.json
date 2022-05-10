@@ -306,6 +306,23 @@
   "tab_prediction_prediction_button": {
     "message": "Valider"
   },
+  "tab_prediction_prediction_global_pop": {
+    "message": "Si chaque humain consommait comme vous, la consommation globale d'électricité (pour $PEOPLE$ personnes pendant $DAYS$ jours) serait d'au moins : $POWER$ TWh. Pour vous donner une idée de comparaison la consommation mondiale d'électricité en 2022 est d'environ 22000 TWh dont 10% alloués aux nouvelles technologies (2200 TWh).",
+    "placeholders": {
+      "people": {
+        "content": "$1",
+        "example": "8000000000"
+      },
+      "days": {
+        "content": "$2",
+        "example": "365"
+      },
+      "power": {
+        "content": "$3",
+        "example": "500"
+      }
+    }
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Préférence"
   },
