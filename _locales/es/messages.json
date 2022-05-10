@@ -1,0 +1,511 @@
+{
+    "general_datatables_locale": {
+      "message": "es-ES"
+    },
+    "general_number_format": {
+      "message": "es"
+    },
+    "moreInformation": {
+      "message": "Información",
+      "description": "Título del enlace más información"
+    },
+    "moreInformationUrl": {
+      "message": "https://theshiftproject.org/carbonalyser-extension-navigateur/",
+      "description": "URL más información"
+    },
+    "legalNotice": {
+      "message": "Notas legales",
+      "description": "Título del enlace avisos legales"
+    },
+    "legalNoticeUrl": {
+      "message": "https://theshiftproject.org/mentions-legales/",
+      "description": "URL de los avisos legales"
+    },
+    "start": {
+      "message": "Iniciar análisis",
+      "description": "botón Iniciar análisis"
+    },
+    "stop": {
+      "message": "Detener análisis",
+      "description": "botón Detener análisis"
+    },
+    "reset": {
+      "message": "Reiniciar datos",
+      "description": "Botón restablecer datos"
+    },
+    "analysisInProgress": {
+      "message": "Análisis en curso. Navegue por la web y luego vuelva aquí para ver los resultados.",
+      "description": "Análisis de mensajes en curso"
+    },
+    "topTraffic": {
+      "message": "Top 5 de tráfico relacionado con tu navegación",
+      "description": "Título de la lista de tráfico principal"
+    },
+    "digitalEquivalenceTitle": {
+      "message": "Las emisiones de CO² relacionadas con su uso de Internet equivalen a:"
+    },
+    "equivalenceTitle": {
+      "message": "En $MINUTES$ minutos de navegación, ha transmitido $MBTOTAL$ MB de datos. Esto requirió $KWH$ $KWHUNIT$ de electricidad, o $GCO2$ gCO²e",
+      "description": "Equivalencia",
+      "placeholders": {
+        "minutes" : {
+          "content" : "$1",
+          "example" : "60"
+        },
+        "mbtotal" : {
+          "content" : "$2",
+          "example" : "10"
+        },
+        "kwh" : {
+          "content" : "$3",
+          "example" : "99"
+        },
+        "kwhUnit": {
+          "content": "$4",
+          "example": "kWh"
+        },
+        "gco2" : {
+          "content" : "$5",
+          "example" : "199"
+        }
+      }
+    },
+    "results_export_title_short": {
+      "message": "Exportar datos"
+    },
+    "results_export_title_desc": {
+      "message": "La electricidad no incluye la de su máquina (constante) lo mismo para el CO² equivalente"
+    },
+    "results_export_title": {
+      "message": "Conjunto de datos para exportar:"
+    },
+    "results_export_option_data": {
+      "message": "Datos"
+    },
+    "results_export_option_data_prefix": {
+      "message": "export_data"
+    },
+    "results_export_option_electricity": {
+      "message": "electricidad"
+    },
+    "results_export_option_electricity_prefix": {
+      "message": "export_electricidad"
+    },
+    "results_export_option_co2": {
+      "message": "CO² equivalente"
+    },
+    "results_export_option_co2_prefix": {
+      "message": "export_co2"
+    },
+    "results_export_export_button": {
+      "message": "Exportar"
+    },
+    "results_export_format_title": {
+      "message": "Formato de exportación:"
+    },
+    "results_export_format_csv": {
+      "message": "Csv"
+    },
+    "results_export_format_tsv": {
+      "message": "Tsv"
+    },
+    "results_export_origin_title": {
+      "message": "Lista separada por comas de sitios en los que desea restringir la exportación (regex permitida):"
+    },
+    "selectRegionPlaceholder": {
+      "message": "Selecciona tu zona geográfica"
+    },
+    "regionEuropeanUnion": {
+      "message": "Unión Europea"
+    },
+    "regionFrance": {
+      "message": "Francia"
+    },
+    "regionUnitedStates": {
+      "message": "Estados Unidos"
+    },
+    "regionCustom": {
+      "message": "Costumbre"
+    },
+    "regionChina": {
+      "message": "Porcelana"
+    },
+    "regionDefault": {
+      "message": "Otro"
+    },
+    "regionUnitedKingdom": {
+      "message": "Reino Unido"
+    },
+    "selectRegionHelp": {
+      "message": "No es obligatorio pero hará que el resultado sea más relevante."
+    },
+    "howToChange": {
+      "message": "¿Cómo cambiar esto? ¿Qué responsabilidad?"
+    },
+    "howToChangeUrl": {
+      "message": "https://theshiftproject.org/article/climat-insoutenable-usage-video/"
+    },
+    "chargedSmartphonesUnit": {
+      "message": "smartphones recargados"
+    },
+    "OneHourBulbNumberDescription": {
+      "message": "bombilla por 1 hora"
+    },
+    "kmByCarUnit": {
+      "message": "km en coche"
+    },
+    "mbTotalUnit": {
+      "message": "MB"
+    },
+    "statsOthers": {
+      "message": "Otros"
+    },
+    "resetConfirmation": {
+      "message": "¿Confirmar restablecimiento de estadísticas?"
+    },
+    "statsMoreResults": {
+      "message": "Más resultados"
+    },
+    "topResultsSite": {
+      "message": "Sitio"
+    },
+    "topResultsData": {
+      "message": "Datos descargados del centro de datos (MB)"
+    },
+    "topResultsDataNetwork": {
+      "message": "Ancho de banda consumido (MB)"
+    },
+    "topResultsPercent": {
+      "message": "Participación en total (%)"
+    },
+    "settings": {
+      "message": "Configuraciones"
+    },
+    "topResultsTabTitle": {
+      "message": "Resultados"
+    },
+    "history": {
+      "message": "Histórico"
+    },
+    "tab_history_data_consumptionShareAmongSites_title": {
+      "message": "Distribución de los datos utilizados durante su navegación."
+    },
+    "historyChartXAxis": {
+      "message": "Tiempo"
+    },
+    "historyChartYAxis": {
+      "message": "Datos en MB"
+    },
+    "settingsLastRefresh": {
+      "message": "Factores de intensidad de carbono actualizados por última vez el $TIME$.",
+      "placeholders": {
+        "time" : {
+          "content" : "$1",
+          "example" : "03/03/2022, 19:16:03"
+        }
+      }
+    },
+    "settingsLastRefreshButtonReset": {
+      "message": "Forzar actualización"
+    },
+    "settingsCIcountry": {
+      "message": "País"
+    },
+    "settingsCICI": {
+      "message": "Factor de intensidad de carbono en gCO2e/kWh"
+    },
+    "tab_history_data_consumptionOverTime_title": {
+      "message": "Uso de datos suavizado por tiempo"
+    },
+    "tab_history_data_consumptionOverTime_description": {
+      "message": "Representa transferencias de datos durante su navegación. Esta medida te permite estimar en qué punto de tu navegación estás utilizando más datos."
+    },
+    "tab_history_data_consumptionOverTime_datacenterLabel": {
+      "message": "Datos utilizados del centro de datos"
+    },
+    "tab_history_data_consumptionOverTime_networkLabel": {
+      "message": "Datos utilizados en la red"
+    },
+    "tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel": {
+      "message": "Distribución de datos entre sitios"
+    },
+    "tab_history_data_consumptionShareAmongSites_description": {
+      "message": "Representa la distribución de tu consumo de datos según los sitios. Una gran parte muestra que usa un sitio con frecuencia o que el sitio en cuestión requiere una gran cantidad de datos."
+    },
+    "tab_history_electricity_overTime_title": {
+      "message": "Consumo de electricidad relacionado con tu navegación (no solo tu ordenador)"
+    },
+    "tab_history_electricity_overTime_description": {
+      "message": "Representa el consumo eléctrico instantáneo durante tu navegación. La cantidad de electricidad incluye la electricidad utilizada por el centro de datos para mantener la página web, pero también la electricidad consumida por la infraestructura de enrutamiento entre usted y el sitio. Los picos altos pueden indicar que está utilizando un sitio que consume mucha energía (por ejemplo, si no está optimizado o utiliza efectos que no son útiles para el usuario)."
+    },
+    "tab_history_electricity_overTime_datasetDataCenter": {
+      "message": "Electricidad consumida por el centro de datos"
+    },
+    "tab_history_electricity_overTime_datasetNetwork": {
+      "message": "Electricidad consumida por la infraestructura de red"
+    },
+    "tab_history_electricity_overTime_graphXAxis": {
+      "message": "Tiempo"
+    },
+    "tab_history_electricity_overTime_graphYAxis": {
+      "message": "Consumo de electricidad $UNIT$",
+      "placeholders": {
+        "unit" : {
+          "content" : "$1",
+          "example" : "Wh"
+        }
+      }
+    },
+    "tab_history_attention_time_title": {
+      "message": "Compartiendo tu tiempo según los diferentes sitios."
+    },
+    "tab_history_attention_time_canvas_x_axis": {
+      "message": "Diferentes sitios web."
+    },
+    "tab_history_attention_time_canvas_y_axis": {
+      "message": "Tiempo de permanencia en el sitio (en minutos)."
+    },
+    "tab_history_attention_time_description": {
+      "message": "Representa su tiempo mientras navega, las barras altas indican que pasa mucho tiempo en el sitio dado."
+    },
+    "tab_history_attention_efficiency_title": {
+      "message": "Eficacia del sitio en minutos/bytes de atención"
+    },
+    "tab_history_attention_efficiency_description": {
+      "message": "Cuanto más alta sea la barra, más efectivo será el sitio. Los sitios que tienen un valor bajo consumen muchos bytes por poca atención (esto puede deberse a un sitio mal optimizado o que hace cosas innecesarias, por ejemplo, en segundo plano)."
+    },
+    "tab_history_attention_efficiency_x_axis": {
+      "message": ""
+    },
+    "tab_history_attention_efficiency_y_axis": {
+      "message": "minuto"
+    },
+    "tab_prediction": {
+      "message": "Pronóstico"
+    },
+    "tab_prediction_prediction_description": {
+      "message": "Con tu uso actual de internet, consumes $RATE$ kWh por día. A esta tarifa, su consumo total (computadora + operador de red + centro de datos) será de $POWER$ kWh por $DURATION$ días. Ten en cuenta que la previsión es inexacta si aún no has usado mucho la extensión (ejemplo después de una semana de uso reflejará perfectamente tu realidad pero justo después de instalar la extensión será aproximada).",
+      "placeholders": {
+        "power" : {
+          "content" : "$1",
+          "example" : "10"
+        },
+        "duration": {
+          "content": "$2",
+          "example": "365"
+        },
+        "rate": {
+          "content": "$3",
+          "example": "1"
+        }
+      }
+    },
+    "tab_prediction_prediction_input_description": {
+      "message": "Cambiar la duración del pronóstico:"
+    },
+    "tab_prediction_prediction_button": {
+      "message": "Validar"
+    },
+    "tab_settings_preferencesScreen_prefsTableName": {
+      "message": "Preferencia"
+    },
+    "tab_settings_preferencesScreen_prefsTableValue": {
+      "message": "Valor"
+    },
+    "tab_settings_preferencesScreen_prefsDescription": {
+      "message": "Descripción"
+    },
+    "tab_settings_preferencesScreen_prefs_general_kWhPerByteDataCenter": {
+      "message": "Factor a aplicar al convertir bytes en electricidad (en kWh/byte)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
+      "message": "Factor a aplicar al convertir bytes en electricidad (en kWh/byte)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_DeviceConsumptionW": {
+      "message": "Consumo del equipo en el que está funcionando el carbonalizador (vatios)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
+      "message": "Factor a aplicar para convertir la emisión de CO² en km recorridos en coche."
+    },
+    "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
+      "message": "Factor a aplicar para convertir la emisión de CO² de los smartphones recargados."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_enabled": {
+      "message": "La descarga automática está habilitada."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filename": {
+      "message": "Nombre del archivo a exportar (sin extensión)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_format": {
+      "message": "Formato de archivo de salida (csv o tsv)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filter": {
+      "message": "Filtre el conjunto de datos por sitio (separado por comas)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_interval": {
+      "message": "Intervalo en ms entre cada actualización de archivo."
+    },
+    "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
+      "message": "Tipo de datos a descargar (datos, co2, electricidad)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
+      "message": "Consumo (en Watt) de una bombilla."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
+      "message": "Comience a escanear cuando se inicie el navegador."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
+      "message": "Intervalo (en ms) con el que escribir en el almacenamiento real."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
+      "message": "La latencia que se aplica entre la escritura en el almacenamiento y el reinicio del lavado."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
+      "message": "Frecuencia (en ms) de monitoreo después de que se haya iniciado una descarga."
+    },
+    "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
+      "message": "Región seleccionada."
+    },
+    "tab_settings_preferencesScreen_prefs_analysis_carbonIntensity_refreshMs": {
+      "message": "Intervalo (en ms) para actualizar los factores de intensidad de carbono."
+    },
+    "tab_settings_preferencesScreen_prefs_tab_update_resize_delay": {
+      "message": "Aplicar latencia cuando se cambia el tamaño de un gráfico (en ms)."
+    },
+    "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
+      "message": "Actualización automática."
+    },
+    "tab_settings_preferencesScreen_prefs_tab_min_attention_time": {
+      "message": "Umbral mínimo de atención para gráficos de atención (en ms)."
+    },
+    "tab_settings_preferencesScreen_prefs_tab_animate": {
+      "message": "Eliminar animaciones en la pestaña de historial."
+    },
+    "tab_settings_preferencesScreen_prefs_tab_settings_preferencesScreen_msBeforeStopEdit": {
+      "message": "Retraso (en ms) después del cual la edición de preferencias se considera completa."
+    },
+    "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
+      "message": "Actualización automática."
+    },
+    "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
+      "message": "Latencia que evita que el almacenamiento se comprometa en exceso (en ms)."
+    },
+    "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
+      "message": "Unidad de visualización de electricidad (mWh o Wh o kWh) atención, se requiere recargar la página para ver la diferencia."
+    },
+    "tab_settings_preferencesScreen_prefs_debug": {
+      "message": "Habilite la depuración a través de registros."
+    },
+    "tab_settings_preferencesScreen_validateButton": {
+      "message": "Validar"
+    },
+    "tab_custom_ci_factor_title": {
+      "message": "Añadir factor"
+    },
+    "tab_custom_ci_factor_description": {
+      "message": "Agregue manualmente un factor de intensidad de carbono."
+    },
+    "tab_custom_ci_factor_button": {
+      "message": "Agregar"
+    },
+    "tab_computeMethods": {
+      "message": "Como funciona"
+    },
+    "tab_moreInfo": {
+      "message": "Información"
+    },
+    "tab_computeMethods_related_title": {
+      "message": "Fuente de datos y obras asociadas"
+    },
+    "tab_computeMethods_computed_title": {
+      "message": "Métodos de cálculo"
+    },
+    "tab_computeMethods_computed_description": {
+      "message": "El cálculo de la electricidad consumida incluye: la electricidad utilizada para alimentar su computadora, la electricidad que su operador usa para entregar datos de Internet a su hogar y la electricidad que usa el sitio en el que navega para permanecer en línea. Este cálculo se inicia cuando hace clic en iniciar análisis y se detiene cuando hace clic en detener análisis."
+    },
+    "tab_moreInfo_project_title": {
+      "message": "Acerca del carbonalizador"
+    },
+    "tab_moreInfo_project_description": {
+      "message": "Carbonalyzer es un trabajo derivado de carbonalyser del proyecto shift. Derivado en el sentido de que se realizaron mejoras al proyecto original. El desarrollador principal es AAABBBCCCAAAA. Con esta herramienta puedes hacerte una idea de qué sitios están utilizando más recursos."
+    },
+    "tab_moreInfo_health_title": {
+      "message": "¿Qué puedes hacer ahora?"
+    },
+    "tab_moreInfo_health_description": {
+      "message": "Instale extensiones que disminuyan la cantidad de datos enviados a través de la red"
+    },
+    "tab_moreInfo_health_table_title": {
+      "message": "Extensión"
+    },
+    "tab_moreInfo_health_table_ecoify_desc": {
+      "message": "Cada vez que le pedimos a Google que busque algo, las solicitudes se envían de un lado a otro. Los proveedores de servicios de Internet necesitan energía para operar Internet y Google necesita energía para sus servidores."
+    },
+    "tab_moreInfo_health_table_decentralizedEyes_desc": {
+      "message": "Acelera muchas solicitudes (bibliotecas alojadas de Google y otras) al atenderlas localmente, aligerando la carga en los sitios. Complementa los bloqueadores de contenido habituales."
+    },
+    "tab_moreInfo_health_table_ublockOrigin_desc": {
+      "message": "Un bloqueador de molestias eficaz, que ahorrará su procesador y RAM."
+    },
+    "tab_moreInfo_health_table_ecosia_desc": {
+      "message": "Ecosia es un motor de búsqueda que utiliza el 80% de sus ingresos para plantar árboles. Ayuda a nuestro planeta haciendo tu investigación con Ecosia. Esta extensión gratuita agrega Ecosia como motor de búsqueda predeterminado en Firefox."
+    },
+    "tab_moreInfo_health_table_lilo_desc": {
+      "message": "Buenos dias. Somos Lilo, el buscador francés y solidario. Nuestra misión: permitirte financiar proyectos solidarios de forma gratuita gracias a tus búsquedas en Internet."
+    },
+    "tab_moreInfo_support_title": {
+      "message": "Soporte e informe de errores"
+    },
+    "tab_computeMethods_related_table_where": {
+      "message": "Dirección"
+    },
+    "tab_computeMethods_related_table_description": {
+      "message": "Descripción"
+    },
+    "tab_computeMethods_related_table_type": {
+      "message": "Clase"
+    },
+    "tab_computeMethods_related_table_wattime_description": {
+      "message": "Tenga en cuenta que las intensidades de carbono se muestran en porcentaje"
+    },
+    "tab_computeMethods_related_table_wattime_type": {
+      "message": "Intensidad de carbono en una escala de 100"
+    },
+    "tab_computeMethods_related_table_greenit_description": {
+      "message": "Una extensión de las herramientas de desarrollo que proporciona un comparador."
+    },
+    "tab_computeMethods_related_table_greenit_type": {
+      "message": "Emisiones de carbono de un sitio web"
+    },
+    "tab_computeMethods_related_table_ecoindex_description": {
+      "message": ""
+    },
+    "tab_computeMethods_related_table_ecoindex_type": {
+      "message": "Emisiones de carbono de un sitio web"
+    },
+    "tab_computeMethods_related_table_carbonintensity_description": {
+      "message": "Datos regionalizados de alta calidad de factores de intensidad de carbono para el Reino Unido"
+    },
+    "tab_computeMethods_related_table_carbonintensity_type": {
+      "message": "Factores de intensidad de carbono"
+    },
+    "tab_computeMethods_related_table_edf_description": {
+      "message": "Factor de intensidad de carbono para Francia"
+    },
+    "tab_computeMethods_related_table_edf_type": {
+      "message": "Factores de intensidad de carbono"
+    },
+    "tab_computeMethods_related_table_electricitymap_description": {
+      "message": "Factores de intensidad de carbono por país"
+    },
+    "tab_computeMethods_related_table_electricitymap_type": {
+      "message": "Factores de intensidad de carbono"
+    },
+    "tab_computeMethods_related_table_pagespeed_description": {
+      "message": "Analizar sitios y ver de dónde viene lo inútil"
+    },
+    "tab_computeMethods_related_table_pagespeed_type": {
+      "message": "Análisis del sitio web"
+    }
+}
+  
