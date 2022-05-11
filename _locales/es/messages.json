@@ -307,7 +307,7 @@
       "message": "Validar"
     },
     "tab_prediction_prediction_global_pop": {
-      "message": "Si cada ser humano consumiera como tú, el consumo global de electricidad (para $PEOPLE$ personas durante $DAYS$ días) sería como mínimo de: $POWER$ TWh. Para que os hagáis una idea de comparación, el consumo eléctrico mundial en 2022 es de aproximadamente 22000 TWh, de los cuales el 10% se destinará a nuevas tecnologías (2.200 TWh).",
+      "message": "Si todos los usuarios de Internet consumieran como usted, el consumo total de electricidad (para $PEOPLE$ personas durante $DAYS$ días) sería de al menos $POWER$ TWh. Para darle una idea de la comparación del consumo de electricidad en el mundo real en $YEAR$ se trata de $ELECTRICITYTWHYEAR$ TWh de los cuales $ELECTRICITYPERCENTTECK$% corresponden a nuevas tecnologías (por lo tanto $TERAWATTTECK$ TWh) y que para $NETPEOPLEPERCENT$% de La población mundial. Si la medición del carbonalyser es superior a $TERAWATTTECK$ TWh, puede estar seguro de que su consumo de electricidad es superior al de otros usuarios de Internet. Si es más bajo, consume al menos a este nivel, pero tenga en cuenta que el carbonalysing subestima el segmento de infraestructura de enrutamiento de centros de datos.",
       "placeholders": {
         "people": {
           "content": "$1",
@@ -320,6 +320,26 @@
         "power": {
           "content": "$3",
           "example": "500"
+        },
+        "netpeoplepercent": {
+          "content": "$4",
+          "example": "50"
+        },
+        "year": {
+          "content": "$5",
+          "example": "2022"
+        },
+        "electricitytwhyear": {
+          "content": "$6",
+          "example": "22000"
+        },
+        "electricitypercentteck": {
+          "content": "$7",
+          "example": "10"
+        },
+        "terawattteck": {
+          "content": "$8",
+          "example": "2200"
         }
       }
     },
