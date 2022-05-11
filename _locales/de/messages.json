@@ -343,6 +343,15 @@
       }
     }
   },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_teck_percent": {
+    "message": "Prozentsatz des Weltverbrauchs, der neuen Technologien zugeteilt wird."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_total_twh": {
+    "message": "Weltstromverbrauch in TWh."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_value": {
+    "message": "Vergleichsjahr für die Vorhersage."
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Präferenz"
   },

@@ -343,6 +343,15 @@
       }
     }
   },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_teck_percent": {
+    "message": "Percentage of world consumption allocated to new technologies."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_total_twh": {
+    "message": "World electricity consumption in TWh."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_value": {
+    "message": "Comparison year for the prediction."
+  },
   "tab_settings_preferencesScreen_prefsTableName": {
     "message": "Preference"
   },
