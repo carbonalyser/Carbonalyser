@@ -436,6 +436,12 @@
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "latency induced for storage fetch by guis (ms)"
   },
+  "tab_settings_preferencesScreen_prefs_general_population_number": {
+    "message": "Number of people on Earth."
+  },
+  "tab_settings_preferencesScreen_prefs_general_population_internetPercent": {
+    "message": "Percentage of population using the internet."
+  },
   "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
     "message": "Display unit for electricity (mWh or Wh or kWh) warning page reload is required to view changes."
   },

@@ -436,6 +436,12 @@
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "Latence qui empêche le stockage d'être trop sollicité (en ms)."
   },
+  "tab_settings_preferencesScreen_prefs_general_population_number": {
+    "message": "Nombre de personnes sur Terre."
+  },
+  "tab_settings_preferencesScreen_prefs_general_population_internetPercent": {
+    "message": "Pourcentage de la population utilisant internet."
+  },
   "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
     "message": "Unité d'affichage pour l'éléctricité (mWh ou Wh ou kWh) attention un rechargement de la page est requis pour voir la différence."
   },

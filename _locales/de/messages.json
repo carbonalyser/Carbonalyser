@@ -436,6 +436,12 @@
   "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
     "message": "Latenz, die eine Überbelegung des Speichers verhindert (in ms)."
   },
+  "tab_settings_preferencesScreen_prefs_general_population_number": {
+    "message": "Anzahl der Menschen auf der Erde."
+  },
+  "tab_settings_preferencesScreen_prefs_general_population_internetPercent": {
+    "message": "Prozentsatz der Bevölkerung, die das Internet nutzt."
+  },
   "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
     "message": "Anzeigeeinheit für Strom (mWh oder Wh oder kWh) Warnung Neuladen der Seite erforderlich, um Änderungen anzuzeigen."
   },
