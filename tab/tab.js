@@ -189,8 +189,12 @@ const tab = {
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
-            this.createEntry(root.stats.stats.highestStats[i], false);
+          if ( root.stats.stats.highestStats.length == 0 ) {
+            this.data.dtt.clear().draw();
+          } else {
+            for(let i = 0; i < root.stats.stats.highestStats.length; i ++) {
+              this.createEntry(root.stats.stats.highestStats[i], false);
+            }
           }
         }
       }
