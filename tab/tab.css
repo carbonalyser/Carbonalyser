@@ -6,3 +6,7 @@
 html, body, .tab-content, #historyDiv {
     height: 100%;
 }
+
+.table th, .table td {
+    overflow-wrap: anywhere;
+}
