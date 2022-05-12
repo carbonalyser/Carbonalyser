@@ -1,7 +1,7 @@
 # <p align="center">Carbonalyser</p>
 
 
-|     <img src="https://user-images.githubusercontent.com/97546053/156412348-c4f6eafc-626b-4f62-8f33-c496f4d767d2.png" width="500px" />         |        <img src="https://user-images.githubusercontent.com/97546053/156412354-92ae4c36-8b3a-4744-82c9-8b73fbfa0a6a.png" width="500px" />         |
+|     <img src="https://user-images.githubusercontent.com/97546053/168147462-af5a8280-04fb-43d7-8712-34cc89910733.png" width="500px" />         |        <img src="https://user-images.githubusercontent.com/97546053/168147090-8574a6a7-1579-4010-87ff-6d7ccd63bc42.png" width="500px" />         |
 |--------------|-----------------|
 
 
@@ -21,21 +21,22 @@ Visualizing it will get you to understand that impacts of digital technologies o
 - [x] preference screen
 - [x] live update of carbon intensities
 - [x] per site power efficiency
+- [x] export the data
+- [x] equivalence screen
+- [x] solutions for consumers
 - [ ] maintaining power
 
 ## Privacy
 
-None of your data are collected: all browsing data are analyzed directly on the user device and are not sent or processed anywhere else in any way.
-
+None of your data are collected: all browsing data are analyzed directly on the user device and are not sent or processed anywhere else in any way.<br />
 The source code of this program is available in open access, to ensure transparency and for any other purpose. 
 
 ## Support
 
-Documentation is on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).
-
+Documentation is on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki).<br />
 To report a bug, request a feature, check [here](https://github.com/AAABBBCCCAAAA/Carbonalyser/issues).
 
-## Results & Related work
+## Related work
 
 | where | description | type |
 |:----------:|:------------------------:|:-----:|
@@ -46,9 +47,6 @@ To report a bug, request a feature, check [here](https://github.com/AAABBBCCCAAA
 |[edf](https://opendata.edf.fr/api/records/1.0/search/?dataset=indicateurs-de-performance-extra-financiere&q=&facet=annee&facet=engagements_rse&facet=csr_goals&facet=indicateurs_cles_de_performance&facet=performance_indicators&refine.indicateurs_cles_de_performance=Intensit%C3%A9+carbone%C2%A0%3A+%C3%A9missions+sp%C3%A9cifiques+de+CO2+dues+%C3%A0+la+production+d%E2%80%99%C3%A9lectricit%C3%A9+%E2%88%9A+(gCO2%2FkWh)) | specialized carbon intensity factor for france | carbon intensities |
 |[electricity map](https://app.electricitymap.org/map) | by country carbon intensity factors | carbon intensities |
 |[PageSpeed Insights](https://pagespeed.web.dev/?hl=fr) | analysis of website from where does useless comes from |website analysis |
-
-You can rely on metrics given in this analyzer, they are accurate for more check results on the [wiki](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki/Results).<br />
-For instance you can take [wikipedia](https://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Accueil_principal) as the "green" site.
 
 ## Credits
 
