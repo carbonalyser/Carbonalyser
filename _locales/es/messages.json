@@ -148,6 +148,9 @@
     "chargedSmartphonesUnit": {
       "message": "smartphones recargados"
     },
+    "tab_equivalence_cigarette_description": {
+      "message": "cigarrillo quemado"
+    },
     "OneHourBulbNumberDescription": {
       "message": "bombilla por 1 hora"
     },

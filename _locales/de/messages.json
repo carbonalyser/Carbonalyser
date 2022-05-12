@@ -148,6 +148,9 @@
   "chargedSmartphonesUnit": {
     "message": "geladene Handys"
   },
+  "tab_equivalence_cigarette_description": {
+    "message": "verbrannte Zigarette"
+  },
   "OneHourBulbNumberDescription": {
     "message": "birne während 1 Stunde"
   },
