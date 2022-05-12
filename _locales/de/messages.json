@@ -397,6 +397,9 @@
   "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
     "message": "Art der herunterzuladenden Daten (data,co2,electricity)."
   },
+  "tab_settings_preferencesScreen_prefs_general_equivalence_cigarette": {
+    "message": "CO²g pro Zigarettenkonsum."
+  },
   "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
     "message": "Verbrauch (in Watt) einer Glühbirne."
   },

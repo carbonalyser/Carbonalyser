@@ -397,6 +397,9 @@
     "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
       "message": "Tipo de datos a descargar (datos, co2, electricidad)."
     },
+    "tab_settings_preferencesScreen_prefs_general_equivalence_cigarette": {
+      "message": "Consumo de CO²g por cigarrillo."
+    },
     "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
       "message": "Consumo (en Watt) de una bombilla."
     },

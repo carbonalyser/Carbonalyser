@@ -397,6 +397,9 @@
   "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
     "message": "Type of data to download (data,co2,electricity)."
   },
+  "tab_settings_preferencesScreen_prefs_general_equivalence_cigarette": {
+    "message": "CO²g per cigarette consumption."
+  },
   "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
     "message": "Consumption (in Watt) of a bulb."
   },
