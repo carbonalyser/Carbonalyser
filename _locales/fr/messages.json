@@ -148,6 +148,9 @@
   "chargedSmartphonesUnit": {
     "message": "smartphones rechargés"
   },
+  "tab_equivalence_cigarette_description": {
+    "message": "cigarette consumées"
+  },
   "OneHourBulbNumberDescription": {
     "message": "ampoule pendant 1 heure"
   },
