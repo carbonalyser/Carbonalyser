@@ -9,4 +9,6 @@ html, body, .tab-content, #historyDiv {
 
 .table th, .table td {
     overflow-wrap: anywhere;
+    display: table-cell;
+    vertical-align: middle;
 }
