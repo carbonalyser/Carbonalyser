@@ -400,6 +400,9 @@
     "tab_settings_preferencesScreen_prefs_general_equivalence_cigarette": {
       "message": "Consumo de CO²g por cigarrillo."
     },
+    "tab_settings_preferencesScreen_prefs_general_equivalence_smartphone_capacityWh": {
+      "message": "Capacidad de carga de tu smartphone (en Wh)."
+    },
     "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
       "message": "Consumo (en Watt) de una bombilla."
     },
