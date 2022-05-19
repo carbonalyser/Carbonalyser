@@ -175,7 +175,18 @@ const tab = {
             this.data.dtt = $('#topResultsTable').DataTable({
               language: {
                   url: getDatatableTranslation()
-              }
+              },
+              columns: [
+                { data: 0 },
+                {   
+                  data: 1,
+                  render: function (data) {
+                       return '<a href="https://' + data + '/" target="_blank">' + data + '</a>';
+                 }
+                },
+                { data: 2 },
+                { data: 3 }
+              ]
             });
             this.data.dtt.on("init", function() {
               document.getElementById("topResultsTable_wrapper").style.width = "100%";
