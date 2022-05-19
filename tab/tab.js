@@ -141,11 +141,14 @@ const tab = {
               const rowData = row.data();
               if ( rowData !== undefined && rowData !== null && rowData[1] === stat.origin ) {
                 foundValue = true;
+                const dataOrigin = root.rawdata[stat.origin];
+
                 rowData[0] = stat.percent;
-                rowData[2] = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
-                rowData[3] = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
-                row.data(rowData);
-                row.draw();
+                rowData[2] = toMegaByteNoRound(dataOrigin.datacenter.total);
+                rowData[3] = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
+                rowData[4] = "2";
+
+                row.data(rowData).draw();
                 break;
               }
             }
@@ -157,15 +160,21 @@ const tab = {
             const site = document.createElement("td");
             const data = document.createElement("td");
             const network = document.createElement("td");
+            const ecoindex = document.createElement("td");
+            const dataOrigin = root.rawdata[stat.origin];
             tr.className = "oneResult";
+
             percent.textContent = stat.percent;
             site.textContent = stat.origin;
-            data.textContent = toMegaByteNoRound(root.rawdata[stat.origin].datacenter.total);
-            network.textContent = toMegaByteNoRound(root.rawdata[stat.origin].network.total + root.rawdata[stat.origin].datacenter.total);
+            data.textContent = toMegaByteNoRound(dataOrigin.datacenter.total);
+            network.textContent = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
+            ecoindex.textContent = "1";
+
             tr.appendChild(percent);
             tr.appendChild(site);
             tr.appendChild(data);
             tr.appendChild(network);
+            tr.appendChild(ecoindex);
             this.data.dtt.row.add(tr).draw();
           }
         },
@@ -185,7 +194,8 @@ const tab = {
                  }
                 },
                 { data: 2 },
-                { data: 3 }
+                { data: 3 },
+                { data: 4 }
               ]
             });
             this.data.dtt.on("init", function() {
