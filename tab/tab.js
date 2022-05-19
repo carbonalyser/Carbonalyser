@@ -124,6 +124,26 @@ const tab = {
           dtt: null
         },
         /**
+         * Compute average ecoindex from a given origin (site).<br />
+         * A better system would be by frequency of use of each url.<br />
+         */
+        getAverageEcoIndex: function(ecoindexData) {
+          let avg = 0, ecoindexDataLen = 0;
+          for(const url in ecoindexData) {
+            const keys = Object.keys(ecoindexData[url]);
+            if ( 0 < keys.length ) {
+              const current = ecoindexData[url][keys[keys.length-1]];
+              avg += current;
+              ecoindexDataLen += 1;
+            }
+          }
+          if ( ecoindexDataLen === 0 ) {
+            return 0;
+          } else {
+            return avg / ecoindexDataLen;
+          }
+        },
+        /**
          * Create or update an entry in the detailled view.
          * @param {*} stat stat to insert / update.
          * @param {*} topResults tbody to insert in.
@@ -146,7 +166,7 @@ const tab = {
                 rowData[0] = stat.percent;
                 rowData[2] = toMegaByteNoRound(dataOrigin.datacenter.total);
                 rowData[3] = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
-                rowData[4] = "2";
+                rowData[4] = this.getAverageEcoIndex(dataOrigin.ecoindex);
 
                 row.data(rowData).draw();
                 break;
@@ -168,7 +188,7 @@ const tab = {
             site.textContent = stat.origin;
             data.textContent = toMegaByteNoRound(dataOrigin.datacenter.total);
             network.textContent = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
-            ecoindex.textContent = "1";
+            ecoindex.textContent = this.getAverageEcoIndex(dataOrigin.ecoindex);
 
             tr.appendChild(percent);
             tr.appendChild(site);

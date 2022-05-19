@@ -86,6 +86,7 @@ bufferWritter = async () => {
       }
       originClassTypeStorage.dots[ts] += data[classType].total;
     }
+    originStorage["ecoindex"] = data["ecoindex"];
     rawdata[origin] = originStorage;
   }
   if ( someData ) {
@@ -222,13 +223,12 @@ sendHeadersListener = async (requestDetails) => {
     }
 
     const INVALID = -1; // just to ensure that in case of error, no more requests are sendt
-    const deltaMs = 10000; // 10s
-    let currentEcoIndex = buffer.rawdata[origin].ecoindex[originUrl];
+    const deltaMs = 0; // 10s
     let shouldIFetch = !(currentProcessing === true);
-    if ( currentEcoIndex === undefined ) {
-      currentEcoIndex = {};
+    if ( buffer.rawdata[origin].ecoindex[originUrl] === undefined ) {
+      buffer.rawdata[origin].ecoindex[originUrl] = {};
     } else {
-      for(let k in currentEcoIndex) {
+      for(let k in buffer.rawdata[origin].ecoindex[originUrl]) {
         if ( (now - k) < deltaMs ) {
           shouldIFetch = false;
           break;
@@ -236,11 +236,13 @@ sendHeadersListener = async (requestDetails) => {
       }
     }
     if ( shouldIFetch ) {
-      try {
+      buffer.rawdata[origin].ecoindex[originUrl][now] = 3;
+      /*try {
         const xhr = new XMLHttpRequest();
         let A = "da26fd" + 4, B = 8 + "bfmsh75fb" + (2 * 40), C = 368 + "b6c91fp", D = 12 + "c445jsnb", E = 29 + "f495", F = "c321a";
         B = B.replaceAll("8", "6");
         xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", false);
+        xhr.timeout = 10000;
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.setRequestHeader("X-RapidAPI-Host", "ecoindex.p.rapidapi.com");
         xhr.setRequestHeader("X-RapidAPI-Key", A + B + C + D + E + F);
@@ -251,17 +253,22 @@ sendHeadersListener = async (requestDetails) => {
         }));
         if ( xhr.response === 200 ) {
           const result = JSON.parse(xhr.responseText);
-          currentEcoIndex[now] = result.score;
-          buffer.rawdata[origin].ecoindex[originUrl] = currentEcoIndex;
-          console.warn("now=" + now + "originUrl=" + originUrl + " currentEcoIndex=" + currentEcoIndex + " result.score=" + result.score);
+          buffer.rawdata[origin].ecoindex[originUrl][now] = result.score;
+          console.warn("now=" + now + "originUrl=" + originUrl + " currentEcoIndex=" + buffer.rawdata[origin].ecoindex[originUrl] + " result.score=" + result.score);
         } else {
-          currentEcoIndex[now] = INVALID;
-          buffer.rawdata[origin].ecoindex[originUrl] = currentEcoIndex;
+          buffer.rawdata[origin].ecoindex[originUrl][now] = INVALID;
           throw "";
         }
       } catch(e) {
         console.warn("Cannot get ecoindex for " + originUrl);
-      }
+      }*/
+      buffer.rawdata[origin].ecoindex[originUrl] = Object.keys(buffer.rawdata[origin].ecoindex[originUrl]).sort().reduce(
+        (obj, key) => { 
+          obj[key] = buffer.rawdata[origin].ecoindex[originUrl][key]; 
+          return obj;
+        }, 
+        {}
+      );
       processing[originUrl] = undefined;
     } else {
       printDebug(originUrl + " ecoindex do not need to be fetched");
