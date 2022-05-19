@@ -38,18 +38,21 @@ const BYTES_IP_HEADER  = 20;
 // Headers line are always terminated by CRLF cf https://stackoverflow.com/questions/5757290/http-header-line-break-style
 const BYTES_HTTP_END   = 2;
 
+getOriginUrlFromRequestDetail = (requestDetails) => {
+  let result = null;
+  if ( isFirefox() ) {
+    result = !requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl;
+  } else if (isChrome()) {
+    result = !requestDetails.initiator ? requestDetails.url : requestDetails.initiator;
+  }
+  return result;
+}
 /**
  * Get origin from request details.
  * Or null if browser is un supported.
  */
 getOriginFromRequestDetail = (requestDetails) => {
-  let result = null;
-  if ( isFirefox() ) {
-    result = extractHostname(!requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl);
-  } else if (isChrome()) {
-    result = extractHostname(!requestDetails.initiator ? requestDetails.url : requestDetails.initiator);
-  }
-  return result;
+  return extractHostname(getOriginUrlFromRequestDetail(requestDetails));
 }
 
 // Exact definition of HTTP headers is here : https://developer.mozilla.org/fr/docs/Web/HTTP/Headers
@@ -187,19 +190,27 @@ headersReceivedListener = async (requestDetails) => {
     // nothing todo
   } else {
     const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
-    if ( buffer.rawdata[origin] === undefined ) {
-      buffer.rawdata[origin] = createEmptyRawData();
+    let originData = buffer.rawdata[origin];
+    if ( originData === undefined ) {
+      originData = createEmptyRawData();
     }
-    buffer.rawdata[origin].datacenter.total += requestSize;
-    buffer.rawdata[origin].network.total += bnet;
+    originData.datacenter.total += requestSize;
+    originData.network.total += bnet;
   }
 };
 
+const processing = {};
 // Take amount of data sent by the client in headers
 sendHeadersListener = async (requestDetails) => {
-  lastTimeTrafficSeen = Date.now();
+  const now = Date.now();
+  lastTimeTrafficSeen = now;
   const origin = getOriginFromRequestDetail(requestDetails);
-  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) ) {
+  const originUrl = getOriginUrlFromRequestDetail(requestDetails);
+  const currentProcessing = processing[originUrl];
+  if ( currentProcessing !== true ) {
+    processing[originUrl] = true;
+  }
+  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) || /^moz-extension:\/\//.test(originUrl) || "ecoindex.p.rapidapi.com" === origin ) {
     // nothing todo
   } else {
     const bnet = getBytesFromHeaders(requestDetails.requestHeaders);
@@ -208,6 +219,52 @@ sendHeadersListener = async (requestDetails) => {
       buffer.rawdata[origin].network.total = bnet;
     } else {
       buffer.rawdata[origin].network.total += bnet;
+    }
+
+    const INVALID = -1; // just to ensure that in case of error, no more requests are sendt
+    const deltaMs = 10000; // 10s
+    let currentEcoIndex = buffer.rawdata[origin].ecoindex[originUrl];
+    let shouldIFetch = !(currentProcessing === true);
+    if ( currentEcoIndex === undefined ) {
+      currentEcoIndex = {};
+    } else {
+      for(let k in currentEcoIndex) {
+        if ( (now - k) < deltaMs ) {
+          shouldIFetch = false;
+          break;
+        }
+      }
+    }
+    if ( shouldIFetch ) {
+      try {
+        const xhr = new XMLHttpRequest();
+        let A = "da26fd" + 4, B = 8 + "bfmsh75fb" + (2 * 40), C = 368 + "b6c91fp", D = 12 + "c445jsnb", E = 29 + "f495", F = "c321a";
+        B = B.replaceAll("8", "6");
+        xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", false);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-RapidAPI-Host", "ecoindex.p.rapidapi.com");
+        xhr.setRequestHeader("X-RapidAPI-Key", A + B + C + D + E + F);
+        xhr.send(JSON.stringify({
+          "height": 1960,
+          "url": originUrl,
+          "width": 1820
+        }));
+        if ( xhr.response === 200 ) {
+          const result = JSON.parse(xhr.responseText);
+          currentEcoIndex[now] = result.score;
+          buffer.rawdata[origin].ecoindex[originUrl] = currentEcoIndex;
+          console.warn("now=" + now + "originUrl=" + originUrl + " currentEcoIndex=" + currentEcoIndex + " result.score=" + result.score);
+        } else {
+          currentEcoIndex[now] = INVALID;
+          buffer.rawdata[origin].ecoindex[originUrl] = currentEcoIndex;
+          throw "";
+        }
+      } catch(e) {
+        console.warn("Cannot get ecoindex for " + originUrl);
+      }
+      processing[originUrl] = undefined;
+    } else {
+      printDebug(originUrl + " ecoindex do not need to be fetched");
     }
   }
 }
