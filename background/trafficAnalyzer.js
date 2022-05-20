@@ -41,7 +41,26 @@ const BYTES_HTTP_END   = 2;
 getOriginUrlFromRequestDetail = (requestDetails) => {
   let result = null;
   if ( isFirefox() ) {
-    result = !requestDetails.originUrl ? requestDetails.url : requestDetails.originUrl;
+    if ( requestDetails.originUrl === undefined ) {
+      if ( requestDetails.frameAncestors === undefined ) {
+        result = requestDetails.url;
+      } else {
+        let res = false;
+        for(let a = requestDetails.frameAncestors.length - 1; 0 <= a; a = a + 1) {
+          const fa = requestDetails.frameAncestors[a];
+          if ( fa.url !== undefined && fa.url.match(/^https?:\/\//) ) {
+            result = fa.url;
+            res = true;
+            break;
+          }
+        }
+        if ( ! res ) {
+          result = requestDetails.url;
+        }
+      }
+    } else {
+      result = requestDetails.originUrl;
+    }
   } else if (isChrome()) {
     result = !requestDetails.initiator ? requestDetails.url : requestDetails.initiator;
   }
