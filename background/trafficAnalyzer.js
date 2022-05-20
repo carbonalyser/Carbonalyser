@@ -199,6 +199,8 @@ writeStats = async (rawdata) => {
 headersReceivedListener = async (requestDetails) => {
   lastTimeTrafficSeen = Date.now();
   const origin = getOriginFromRequestDetail(requestDetails);
+  const originUrl = getOriginUrlFromRequestDetail(requestDetails);
+
   // Extract bytes from datacenters
   const responseHeadersContentLength = requestDetails.responseHeaders.find(element => element.name.toLowerCase() === "content-length");
   const contentLength = undefined === responseHeadersContentLength ? {value: 0}
@@ -206,7 +208,7 @@ headersReceivedListener = async (requestDetails) => {
   const requestSize = parseInt(contentLength.value, 10);
 
   // Extract bytes from the network
-  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) ) {
+  if ( isRestricted(originUrl) ) {
     // nothing todo
   } else {
     const bnet = getBytesFromHeaders(requestDetails.responseHeaders);
@@ -230,7 +232,7 @@ sendHeadersListener = async (requestDetails) => {
   if ( currentProcessing !== true ) {
     processing[originUrl] = true;
   }
-  if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(origin) || /^moz-extension:\/\//.test(originUrl) || "ecoindex.p.rapidapi.com" === origin ) {
+  if ( isRestricted(originUrl) || "ecoindex.p.rapidapi.com" === origin ) {
     // nothing todo
   } else {
     const bnet = getBytesFromHeaders(requestDetails.requestHeaders);

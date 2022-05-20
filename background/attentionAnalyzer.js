@@ -19,15 +19,7 @@ updateAttentionTime = async (url) => {
         const dn = Date.now();
 
         // prevent localhost pages.
-        for(const turl of [/^about:.*$/,/^chrome:.*$/,/^chrome-extension:.*$/,/^moz-extension:.*$/,/^https?:\/\/localhost\/.*$/]) {
-            if ( turl.test(urlOrigin) ) {
-                newOrigin = null;
-                break;
-            }
-        }
-
-        // prevent loopback ranges
-        if ( /^127\.[0-9]+\.[0-9]+\.[0-9]+$/.test(newOrigin) ) {
+        if ( isRestricted(urlOrigin) ) {
             newOrigin = null;
         }
 
