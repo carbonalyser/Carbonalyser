@@ -169,6 +169,9 @@
   "statsMoreResults": {
     "message": "Plus de résultats"
   },
+  "topResults_ecoindex": {
+    "message": "Ecoindex moyen"
+  },
   "topResultsSite": {
     "message": "Site"
   },
@@ -417,6 +420,12 @@
   },
   "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
     "message": "Fréquence (en ms) de surveillance après qu'un téléchargement ai commencé."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_enabled": {
+    "message": "Activer le téléchargement de l'ecoindex (va chercher l'ecoindex sur chaque site visité)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_intervalMs": {
+    "message": "Interval au bout du quel on considère qu'un ecoindex n'est plus à jour (en ms)."
   },
   "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
     "message": "Region selectionnée."

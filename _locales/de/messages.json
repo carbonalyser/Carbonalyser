@@ -169,6 +169,9 @@
   "statsMoreResults": {
     "message": "Mehr ergebnisse"
   },
+  "topResults_ecoindex": {
+    "message": "durchschnittlicher Ecoindex"
+  },
   "topResultsSite": {
     "message": "Site"
   },
@@ -414,6 +417,12 @@
   },
   "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
     "message": "Die Latenz, die zwischen dem Schreiben in den Speicher und dem Neustart des Flushers gilt."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_enabled": {
+    "message": "Ecoindex-Download aktivieren (Ökoindex auf jeder besuchten Seite abrufen)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_intervalMs": {
+    "message": "Intervall, nach dem ein Ecoindex als nicht mehr aktuell angesehen wird (in ms)."
   },
   "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
     "message": "Häufigkeit (in ms) der Überwachung, nachdem ein Download gestartet wurde."

@@ -169,6 +169,9 @@
   "statsMoreResults": {
     "message": "More results"
   },
+  "topResults_ecoindex": {
+    "message": "Average Ecoindex"
+  },
   "topResultsSite": {
     "message": "Site"
   },
@@ -414,6 +417,12 @@
   },
   "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
     "message": "latency that apply when preferences have been changed"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_enabled": {
+    "message": "Enable ecoindex download (fetch the ecoindex on each site visited)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_intervalMs": {
+    "message": "Interval after which it is considered that an ecoindex is no longer up to date (in ms)."
   },
   "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
     "message": "interval at which we check for download end (ms)."

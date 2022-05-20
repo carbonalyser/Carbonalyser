@@ -169,6 +169,9 @@
     "statsMoreResults": {
       "message": "Más resultados"
     },
+    "topResults_ecoindex": {
+      "message": "Ecoindex promedio"
+    },
     "topResultsSite": {
       "message": "Sitio"
     },
@@ -414,6 +417,12 @@
     },
     "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
       "message": "La latencia que se aplica entre la escritura en el almacenamiento y el reinicio del lavado."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_ecoindex_enabled": {
+      "message": "Habilite la descarga de Ecoindex (busque el ecoindex en cada sitio visitado)."
+    },
+    "tab_settings_preferencesScreen_prefs_daemon_ecoindex_intervalMs": {
+      "message": "Intervalo a partir del cual un Ecoindex se considera obsoleto (en ms)."
     },
     "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
       "message": "Frecuencia (en ms) de monitoreo después de que se haya iniciado una descarga."
