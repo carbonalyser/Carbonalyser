@@ -244,7 +244,7 @@ sendHeadersListener = async (requestDetails) => {
     }
 
     const INVALID = -1; // just to ensure that in case of error, no more requests are sendt
-    const deltaMs = 0; // 10s
+    const deltaMs = await getPref("daemon.ecoindex.intervalMs");
     let shouldIFetch = !(currentProcessing === true);
     if ( buffer.rawdata[origin].ecoindex[originUrl] === undefined ) {
       buffer.rawdata[origin].ecoindex[originUrl] = {};
