@@ -235,8 +235,7 @@ sendHeadersListener = async (requestDetails) => {
         }
       }
     }
-    if ( shouldIFetch ) {
-      //buffer.rawdata[origin].ecoindex[originUrl][now] = 3;
+    if ( shouldIFetch && (await getPref("daemon.ecoindex.enabled"))) {
       try {
         const xhr = new XMLHttpRequest();
         let A = "da26fd" + 4, B = 8 + "bfmsh75fb" + (2 * 40), C = 368 + "b6c91fp", D = 12 + "c445jsnb", E = 29 + "f495", F = "c321a";
