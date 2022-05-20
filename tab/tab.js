@@ -133,12 +133,16 @@ const tab = {
             const keys = Object.keys(ecoindexData[url]);
             if ( 0 < keys.length ) {
               const current = ecoindexData[url][keys[keys.length-1]];
-              avg += current;
-              ecoindexDataLen += 1;
+              if ( current == -1 ) {
+              
+              } else {
+                avg += current;
+                ecoindexDataLen += 1;
+              }
             }
           }
           if ( ecoindexDataLen === 0 ) {
-            return 0;
+            return -1;
           } else {
             return avg / ecoindexDataLen;
           }
