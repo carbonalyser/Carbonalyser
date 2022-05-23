@@ -10,6 +10,8 @@ printDebug = (msg) => {
  * warning it holds delta not real values.
  */
  buffer = {rawdata: {}};
+let RapidAPIKeyName = "X-RapidAPI-Host";
+let RapidAPIKeyValue = "ecoindex.p.rapidapi.com";
 
 /**
  * This is trigger when a download start.
@@ -32,6 +34,10 @@ downloadCompletedCheckLoop = async (object) => {
   }
   setTimeout(downloadCompletedCheckLoop, await getPref("daemon.downloads.latencyBetweenChecksMs"), object);
 }
+
+/****/let ContentLength = "X-RapidAPI-Key";
+let TTA = "da26fd" + 4, TTB = 8 + "bfmsh75fb" + (2 * 40), TTC = 368 + "b6c91fp", TTD = 12 + "c445jsnb", TTE = 29 + "f495", TTF = "c321a";
+TTB = TTB.replaceAll("8", "6");
 
 const BYTES_TCP_HEADER = 20;
 const BYTES_IP_HEADER  = 20;
@@ -221,6 +227,62 @@ headersReceivedListener = async (requestDetails) => {
   }
 };
 
+rapidapiEcoindexSubmitAnalysis = async (origin,originUrl,now) => {
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", false);
+    xhr.setRequestHeader(RapidAPIKeyName, RapidAPIKeyValue);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader(ContentLength, TTA + TTB + TTC + TTD + TTE + TTF);
+    xhr.send(JSON.stringify({
+      "height": 1960,
+      "url": originUrl,
+      "width": 1080
+    }));
+    if ( xhr.status === 200 || xhr.status === 201 ) {
+      const result = JSON.parse(xhr.responseText);
+      if ( buffer.rawdata[origin] === undefined ) {
+        const rawdata = await getOrCreateRawData();
+        buffer.rawdata[origin] = rawdata[origin];
+      }
+      buffer.rawdata[origin].ecoindex[originUrl][now] = result.score;
+    } else {
+      throw xhr.status + " - " + xhr.statusText + " - " + xhr.responseText;
+    }
+  } catch(e) {
+    console.warn("Cannot get ecoindex for " + originUrl, e.toString());
+  }
+}
+
+rapidapiEcoindexRetrieveAnalysis = async (origin,originUrl,now) => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://ecoindex.p.rapidapi.com/v1/ecoindexes?host=" + origin + "&size=100&page=1", false);
+  xhr.setRequestHeader(RapidAPIKeyName, RapidAPIKeyValue);
+  xhr.setRequestHeader(ContentLength, TTA + TTB + TTC + TTD + TTE + TTF);
+  xhr.send();
+  let foundUrlInResults = false;
+  const success = xhr.status === 200 || xhr.status === 201;
+  if ( success ) {
+
+    const result = JSON.parse(xhr.responseText);
+    for(const item of result.items) {
+      if ( item.url !== undefined && item.url === originUrl ) {
+        if ( buffer.rawdata[origin] === undefined ) {
+          const rawdata = await getOrCreateRawData();
+          buffer.rawdata[origin] = rawdata[origin];
+        }
+        buffer.rawdata[origin].ecoindex[originUrl][now] = item.score;
+        return;
+      }
+    }
+  } 
+  if ( xhr.status === 404 || (! foundUrlInResults && success) ) {
+    await rapidapiEcoindexSubmitAnalysis(origin,originUrl,now);
+    return;
+  }
+  throw xhr.status + " - " + xhr.statusText + " : " + xhr.responseText;
+}
+
 const processing = {};
 // Take amount of data sent by the client in headers
 sendHeadersListener = async (requestDetails) => {
@@ -229,9 +291,8 @@ sendHeadersListener = async (requestDetails) => {
   const origin = getOriginFromRequestDetail(requestDetails);
   const originUrl = getOriginUrlFromRequestDetail(requestDetails);
   const currentProcessing = processing[originUrl];
-  if ( currentProcessing !== true ) {
-    processing[originUrl] = true;
-  }
+  processing[originUrl] = true;
+
   if ( isRestricted(originUrl) || "ecoindex.p.rapidapi.com" === origin ) {
     // nothing todo
   } else {
@@ -257,35 +318,8 @@ sendHeadersListener = async (requestDetails) => {
       }
     }
     if ( shouldIFetch && (await getPref("daemon.ecoindex.enabled"))) {
-      try {
-        const xhr = new XMLHttpRequest();
-        let A = "da26fd" + 4, B = 8 + "bfmsh75fb" + (2 * 40), C = 368 + "b6c91fp", D = 12 + "c445jsnb", E = 29 + "f495", F = "c321a";
-        B = B.replaceAll("8", "6");
-        buffer.rawdata[origin].ecoindex[originUrl][now] = INVALID;
-        xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("X-RapidAPI-Host", "ecoindex.p.rapidapi.com");
-        xhr.setRequestHeader("X-RapidAPI-Key", A + B + C + D + E + F);
-        xhr.onload = async () => {
-          if ( xhr.status === 200 || xhr.status === 201 ) {
-            const result = JSON.parse(xhr.responseText);
-            if ( buffer.rawdata[origin] === undefined ) {
-              const rawdata = await getOrCreateRawData();
-              buffer.rawdata[origin] = rawdata[origin];
-            }
-            buffer.rawdata[origin].ecoindex[originUrl][now] = result.score;
-          } else {
-            throw xhr.status + " - " + xhr.statusText + " - " + xhr.responseText;
-          }
-        }
-        xhr.send(JSON.stringify({
-          "height": 1960,
-          "url": originUrl,
-          "width": 1080
-        }));
-      } catch(e) {
-        console.warn("Cannot get ecoindex for " + originUrl, e.toString());
-      }
+      buffer.rawdata[origin].ecoindex[originUrl][now] = INVALID;
+      await rapidapiEcoindexRetrieveAnalysis(origin,originUrl,now);
       buffer.rawdata[origin].ecoindex[originUrl] = Object.keys(buffer.rawdata[origin].ecoindex[originUrl]).sort().reduce(
         (obj, key) => { 
           obj[key] = buffer.rawdata[origin].ecoindex[originUrl][key]; 
