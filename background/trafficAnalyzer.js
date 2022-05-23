@@ -111,7 +111,15 @@ bufferWritter = async () => {
       }
       originClassTypeStorage.dots[ts] += data[classType].total;
     }
-    originStorage["ecoindex"] = data["ecoindex"];
+    for(const url in data["ecoindex"]) {
+      if ( originStorage["ecoindex"][url] === undefined || originStorage["ecoindex"][url] === null ) {
+        originStorage["ecoindex"][url] = data["ecoindex"][url];
+      } else {
+        for(const ts in data["ecoindex"][url]) {
+          originStorage["ecoindex"][url][ts] = data["ecoindex"][url][ts];
+        }
+      }
+    }
     rawdata[origin] = originStorage;
   }
   if ( someData ) {
@@ -228,29 +236,25 @@ headersReceivedListener = async (requestDetails) => {
 };
 
 rapidapiEcoindexSubmitAnalysis = async (origin,originUrl,now) => {
-  try {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", false);
-    xhr.setRequestHeader(RapidAPIKeyName, RapidAPIKeyValue);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader(ContentLength, TTA + TTB + TTC + TTD + TTE + TTF);
-    xhr.send(JSON.stringify({
-      "height": 1960,
-      "url": originUrl,
-      "width": 1080
-    }));
-    if ( xhr.status === 200 || xhr.status === 201 ) {
-      const result = JSON.parse(xhr.responseText);
-      if ( buffer.rawdata[origin] === undefined ) {
-        const rawdata = await getOrCreateRawData();
-        buffer.rawdata[origin] = rawdata[origin];
-      }
-      buffer.rawdata[origin].ecoindex[originUrl][now] = result.score;
-    } else {
-      throw xhr.status + " - " + xhr.statusText + " - " + xhr.responseText;
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "https://ecoindex.p.rapidapi.com/v1/ecoindexes", false);
+  xhr.setRequestHeader(RapidAPIKeyName, RapidAPIKeyValue);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.setRequestHeader(ContentLength, TTA + TTB + TTC + TTD + TTE + TTF);
+  xhr.send(JSON.stringify({
+    "height": 1960,
+    "url": originUrl,
+    "width": 1080
+  }));
+  if ( xhr.status === 200 || xhr.status === 201 ) {
+    const result = JSON.parse(xhr.responseText);
+    if ( buffer.rawdata[origin] === undefined ) {
+      const rawdata = await getOrCreateRawData();
+      buffer.rawdata[origin] = rawdata[origin];
     }
-  } catch(e) {
-    console.warn("Cannot get ecoindex for " + originUrl, e.toString());
+    buffer.rawdata[origin].ecoindex[originUrl][now] = result.score;
+  } else {
+    console.warn(xhr.status + " - " + xhr.statusText + " - " + xhr.responseText);
   }
 }
 
@@ -261,7 +265,7 @@ rapidapiEcoindexRetrieveAnalysis = async (origin,originUrl,now) => {
   xhr.setRequestHeader(ContentLength, TTA + TTB + TTC + TTD + TTE + TTF);
   xhr.send();
   let foundUrlInResults = false;
-  const success = xhr.status === 200 || xhr.status === 201;
+  const success = xhr.status === 200;
   if ( success ) {
 
     const result = JSON.parse(xhr.responseText);
@@ -280,7 +284,7 @@ rapidapiEcoindexRetrieveAnalysis = async (origin,originUrl,now) => {
     await rapidapiEcoindexSubmitAnalysis(origin,originUrl,now);
     return;
   }
-  throw xhr.status + " - " + xhr.statusText + " : " + xhr.responseText;
+  console.warn(xhr.status + " - " + xhr.statusText + " : " + xhr.responseText);
 }
 
 const processing = {};
