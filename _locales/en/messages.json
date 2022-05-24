@@ -172,6 +172,9 @@
   "topResults_ecoindex": {
     "message": "Average Ecoindex"
   },
+  "topResults_ecoindex_subtitle": {
+    "message": "-1 if the API request limit is exceeded"
+  },
   "topResultsSite": {
     "message": "Site"
   },

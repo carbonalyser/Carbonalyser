@@ -172,6 +172,9 @@
   "topResults_ecoindex": {
     "message": "durchschnittlicher Ecoindex"
   },
+  "topResults_ecoindex_subtitle": {
+    "message": "-1, wenn das API-Anforderungslimit überschritten wird"
+  },
   "topResultsSite": {
     "message": "Site"
   },
