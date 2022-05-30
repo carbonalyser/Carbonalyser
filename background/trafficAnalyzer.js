@@ -370,7 +370,7 @@ let addOneMinuteInterval;
 let currentState = '';
 
 handleMessage = async (request) => {
-  printDebug("request: {action: " + request.action + ", currentState: " + currentState + "}");
+  printDebug("trafficAnalyzer: request: {action: " + request.action + ", currentState: " + currentState + "}");
   if ( request.action === currentState ) {
     // event duplicate emission
     printDebug("event duplicate request=" + request.action);
@@ -398,6 +398,7 @@ handleMessage = async (request) => {
       if (!addOneMinuteInterval) {
         addOneMinuteInterval = setInterval(addOneMinute, 60000);
       }
+      await storageSetAnalysisState(1);
       break;
     case 'stop':
       printDebug("trafficAnalyzer: stop");
@@ -409,6 +410,7 @@ handleMessage = async (request) => {
         clearInterval(addOneMinuteInterval);
         addOneMinuteInterval = null;
       }
+      await storageSetAnalysisState(0);
       break;
     case 'reinitCIUpdater':
     case 'forceCIUpdater':

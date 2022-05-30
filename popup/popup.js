@@ -36,7 +36,6 @@ const popup = {
       model: {
         run: async () => {
           obrowser.runtime.sendMessage({ action: 'stop' });
-          await storageSetAnalysisState(0);
         },
       },
       view: {
@@ -63,7 +62,6 @@ const popup = {
       model: {
         run: async () => {
           obrowser.runtime.sendMessage({ action: 'start' });
-          await storageSetAnalysisState(1);
         },
         init: async function () {
 
