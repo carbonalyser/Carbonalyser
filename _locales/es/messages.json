@@ -42,7 +42,7 @@
       "description": "Título de la lista de tráfico principal"
     },
     "digitalEquivalenceTitle": {
-      "message": "Las emisiones de CO² relacionadas con su uso de Internet equivalen a:"
+      "message": "Las emisiones de CO² equivalente vinculadas a su uso de Internet equivalen a:"
     },
     "equivalenceTitle": {
       "message": "En $MINUTES$ minutos de navegación, ha transmitido $MBTOTAL$ MB de datos. Esto requirió $KWH$ $KWHUNIT$ de electricidad, o $GCO2$ gCO²e",
@@ -91,10 +91,10 @@
     "results_export_option_electricity_prefix": {
       "message": "export_electricidad"
     },
-    "results_export_option_co2": {
+    "results_export_option_co2e": {
       "message": "CO² equivalente"
     },
-    "results_export_option_co2_prefix": {
+    "results_export_option_co2e_prefix": {
       "message": "export_co2"
     },
     "results_export_export_button": {

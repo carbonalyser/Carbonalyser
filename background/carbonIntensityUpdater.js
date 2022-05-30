@@ -3,6 +3,8 @@
  */
 
  const updateList = {
+    // only CO² emission linked to electricity (not natural gases)
+    // so resulting should be CO² emission not CO²eq
     unitedKingdom: {
         url: "https://api.carbonintensity.org.uk/intensity",
         extractor: function (text) {

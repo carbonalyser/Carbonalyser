@@ -42,7 +42,7 @@
     "description": "Top traffic list title"
   },
   "digitalEquivalenceTitle": {
-    "message": "The CO2 emissions related to your digital use is equivalent to:"
+    "message": "The CO² equivalent emissions linked to your use of the internet are equivalent to:"
   },
   "equivalenceTitle": {
     "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ $KWHUNIT$ of electricity, or $GCO2$ gCO2e",
@@ -91,10 +91,10 @@
   "results_export_option_electricity_prefix": {
     "message": "electricity_export"
   },
-  "results_export_option_co2": {
+  "results_export_option_co2e": {
     "message": "CO² equivalent"
   },
-  "results_export_option_co2_prefix": {
+  "results_export_option_co2e_prefix": {
     "message": "co2_export"
   },
   "results_export_export_button": {

@@ -42,7 +42,7 @@
     "description": "Top 5 Datenverbraucher liste titel"
   },
   "digitalEquivalenceTitle": {
-    "message": "Die CO2-Emissionen deines Browsens entsprechen:"
+    "message": "Die mit Ihrer Internetnutzung verbundenen CO²-äquivalenten Emissionen entsprechen:"
   },
   "equivalenceTitle": {
     "message": "In $MINUTES$ Minuten hast du $MBTOTAL$ MB heruntergeladen. Das hat $KWH$ $KWHUNIT$ oder $GCO2$ gCO2e gebraucht",
@@ -91,10 +91,10 @@
   "results_export_option_electricity_prefix": {
     "message": "elektrizitat_export"
   },
-  "results_export_option_co2": {
+  "results_export_option_co2e": {
     "message": "CO²-Äquivalent"
   },
-  "results_export_option_co2_prefix": {
+  "results_export_option_co2e_prefix": {
     "message": "co2_export"
   },
   "results_export_export_button": {
