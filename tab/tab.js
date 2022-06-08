@@ -94,7 +94,7 @@ const tab = {
           const fileformat = selectedFormat.getAttribute("fileFormat");
           const fname = translate(selectedOptionId + "_prefix") + "_" + date.getHours() + "h" + date.getMinutes() + "_" + date.getDay() + "_" + date.getMonth() + "_" + date.getFullYear();
 
-          await compileAndDownload(rawdata,selectedOptionId.replace("results_export_option_",""),fname,fileformat,results_export_origin_input.value);
+          await compileAndDownload(rawdata,selectedOptionId.replace("results_export_option_",""),fname,fileformat,results_export_origin_input.value,(await obrowser.tabs.getCurrent()).incognito);
         },
         init: async function () {
           const root = this.parent.parent.parent;
