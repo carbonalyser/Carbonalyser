@@ -3,6 +3,26 @@ printDebug = (msg) => {
   printDebugOrigin("tab: " + msg);
 }
 
+/**
+ * search for a given row in dtt.
+ */
+DTTsearchEntry = (dtt, matcher, updateOnFound) => {
+  let foundValue = false;
+  const childrens = dtt.rows()[0];
+  for(let j = 0; j < childrens.length; j = j + 1) {
+    const rowId = childrens[j];
+    const row = dtt.row(rowId);
+    let rowData = row.data();
+    if ( rowData !== undefined && rowData !== null && matcher(rowData) ) {
+      foundValue = true;
+      rowData = updateOnFound(rowData);
+      row.data(rowData).draw();
+      break;
+    }
+  }
+  return foundValue;
+}
+
 const LAST_UPDATE_DATA = "lastDataUpdate";
 /**
  * This holds all the data from the storage
@@ -148,25 +168,6 @@ const tab = {
           }
         },
         /**
-         * search for a given row in dtt.
-         */
-        searchEntry: function (dtt, matcher, updateOnFound) {
-          let foundValue = false;
-          const childrens = dtt.rows()[0];
-          for(let j = 0; j < childrens.length; j = j + 1) {
-            const rowId = childrens[j];
-            const row = dtt.row(rowId);
-            const rowData = row.data();
-            if ( rowData !== undefined && rowData !== null && matcher(rowData) ) {
-              foundValue = true;
-              rowData = updateOnFound(rowData);
-              row.data(rowData).draw();
-              break;
-            }
-          }
-          return foundValue;
-        },
-        /**
          * Create or update an entry in the detailled view.
          * @param {*} stat stat to insert / update.
          * @param {*} topResults tbody to insert in.
@@ -177,7 +178,7 @@ const tab = {
 
           let foundValue = false;
           if ( ! init ) {
-            foundValue = this.searchEntry(this.data.dtt, 
+            foundValue = DTTsearchEntry(this.data.dtt, 
               (rowData) => rowData[1] === stat.origin, 
               (rowData) => {
                 const dataOrigin = root.rawdata[stat.origin];
@@ -980,6 +981,7 @@ const tab = {
         data: {
           parent: null,
           settingsCICIS: null,
+          dtt: null
         },
         /**
          * Create a new entry in region table.
@@ -988,7 +990,7 @@ const tab = {
          * @param {*} name key in object array.
          * @param {*} init true if in initial creation.
          */
-        createEntry: function (settingsCICIS, name, init, newIntensity) {
+        createEntry: function (name, init, newIntensity) {
           const root = this.parent.parent.parent;
           let region = translate("region" + capitalizeFirstLetter(name));
           if ( region === "" || region === null ) {
@@ -997,14 +999,13 @@ const tab = {
           let foundValue = false;
 
           if ( ! init ) {
-            for(const row of settingsCICIS.children) {
-              if( 1 < row.children.length ) {
-                if ( row.children[0].textContent == region ) {
-                  foundValue = true;
-                  row.children[1].textContent = newIntensity;
-                }
+            foundValue = DTTsearchEntry(this.data.dtt, 
+              (rowData) => rowData[0] === region, 
+              (rowData) => {
+                rowData[1] = newIntensity;
+                return rowData;
               }
-            }
+            );
           }
 
           if ( init || ! foundValue) {
@@ -1017,16 +1018,13 @@ const tab = {
             row.append(ci);
             row.style.textAlign = "center";
             row.style.verticalAlign = "middle";
-            settingsCICIS.append(row);
+            this.data.dtt.row.add(row).draw();
           }
         },
         init: async function () {
           const root = this.parent.parent.parent;
           this.data.settingsCICIS = document.getElementById("settingsCICIS");
-          for(const name in root.parameters.regions) {
-            this.createEntry(this.data.settingsCICIS, name, true, null);
-          }
-          $(document).ready(function() {
+          $(document).ready(() => {
             const table = $('#settingsCItable');
             const dtt = table.DataTable({
               language: {
@@ -1035,13 +1033,16 @@ const tab = {
               dtt.on("init", function() {
                 document.getElementById("settingsCItable_wrapper").style.width = "100%";
               });
-            
+            this.data.dtt = dtt;
+            for(const name in root.parameters.regions) {
+              this.createEntry(name, true, null);
+            }
           });
         },
         update: async function () {
           const root = this.parent.parent.parent;
           for(const name in root.parameters.regions) {
-            this.createEntry(this.data.settingsCICIS, name, false, root.parameters.regions[name].carbonIntensity);
+            this.createEntry(name, false, root.parameters.regions[name].carbonIntensity);
           }
         }
       }
