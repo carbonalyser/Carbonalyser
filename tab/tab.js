@@ -148,6 +148,25 @@ const tab = {
           }
         },
         /**
+         * search for a given row in dtt.
+         */
+        searchEntry: function (dtt, matcher, updateOnFound) {
+          let foundValue = false;
+          const childrens = dtt.rows()[0];
+          for(let j = 0; j < childrens.length; j = j + 1) {
+            const rowId = childrens[j];
+            const row = dtt.row(rowId);
+            const rowData = row.data();
+            if ( rowData !== undefined && rowData !== null && matcher(rowData) ) {
+              foundValue = true;
+              rowData = updateOnFound(rowData);
+              row.data(rowData).draw();
+              break;
+            }
+          }
+          return foundValue;
+        },
+        /**
          * Create or update an entry in the detailled view.
          * @param {*} stat stat to insert / update.
          * @param {*} topResults tbody to insert in.
@@ -158,24 +177,18 @@ const tab = {
 
           let foundValue = false;
           if ( ! init ) {
-            const childrens = this.data.dtt.rows()[0];
-            for(let j = 0; j < childrens.length; j = j + 1) {
-              const rowId = childrens[j];
-              const row = this.data.dtt.row(rowId);
-              const rowData = row.data();
-              if ( rowData !== undefined && rowData !== null && rowData[1] === stat.origin ) {
-                foundValue = true;
+            foundValue = this.searchEntry(this.data.dtt, 
+              (rowData) => rowData[1] === stat.origin, 
+              (rowData) => {
                 const dataOrigin = root.rawdata[stat.origin];
 
                 rowData[0] = stat.percent;
                 rowData[2] = toMegaByteNoRound(dataOrigin.datacenter.total);
                 rowData[3] = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
                 rowData[4] = this.getAverageEcoIndex(dataOrigin.ecoindex);
-
-                row.data(rowData).draw();
-                break;
+                return rowData;
               }
-            }
+              );
           }
 
           if ( (init || ! foundValue) ) {
@@ -1055,6 +1068,9 @@ const tab = {
     },
     preferencesScreen: {
       view: {
+        data: {
+          table: null
+        },
         init: async function() {
           await injectPreferencesIntoHTML("prefsTableTBODY");
           document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
