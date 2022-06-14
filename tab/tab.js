@@ -15,8 +15,7 @@ DTTsearchEntry = (dtt, matcher, updateOnFound) => {
     let rowData = row.data();
     if ( rowData !== undefined && rowData !== null && matcher(rowData) ) {
       foundValue = true;
-      rowData = updateOnFound(rowData);
-      row.data(rowData).draw();
+      rowData = updateOnFound(row,rowData);
       break;
     }
   }
@@ -180,13 +179,14 @@ const tab = {
           if ( ! init ) {
             foundValue = DTTsearchEntry(this.data.dtt, 
               (rowData) => rowData[1] === stat.origin, 
-              (rowData) => {
+              (row,rowData) => {
                 const dataOrigin = root.rawdata[stat.origin];
 
                 rowData[0] = stat.percent;
                 rowData[2] = toMegaByteNoRound(dataOrigin.datacenter.total);
                 rowData[3] = toMegaByteNoRound(dataOrigin.network.total + dataOrigin.datacenter.total);
                 rowData[4] = this.getAverageEcoIndex(dataOrigin.ecoindex);
+                row.data(rowData).draw();
                 return rowData;
               }
               );
@@ -1001,8 +1001,9 @@ const tab = {
           if ( ! init ) {
             foundValue = DTTsearchEntry(this.data.dtt, 
               (rowData) => rowData[0] === region, 
-              (rowData) => {
+              (row,rowData) => {
                 rowData[1] = newIntensity;
+                row.data(rowData).draw();
                 return rowData;
               }
             );
@@ -1095,8 +1096,9 @@ const tab = {
           if ( ! init ) {
             foundValue = DTTsearchEntry(this.data.dtt, 
               (rowData) => rowData[0] === name, 
-              (rowData) => {
+              (row,rowData) => {
                 rowData[1] = value;
+                row.data(rowData).draw();
                 return rowData;
               }
             );
@@ -1116,24 +1118,6 @@ const tab = {
               row.style.textAlign = "center";
               row.style.verticalAlign = "middle";
               this.data.dtt.row.add(row).draw();
-
-              /*const prefchangerTextA = document.createElement("input");
-              prefchangerTextA.addEventListener('focusin', (event) => {
-                this.editing = true;
-              }, true);
-              prefchangerTextA.addEventListener('focusout', async (event) => {
-                  if ( this.editingTMO != null ) {
-                      clearTimeout(this.editingTMO);
-                  }
-                  this.editingTMO = setTimeout(() => {
-                      this.editing = false;
-                      this.editingTMO = null;
-                  }, await getPref("tab.settings.preferencesScreen.msBeforeStopEdit"));
-              }, true);
-              prefchangerTextA.setAttribute("type", "text");
-              prefchangerTextA.value = value;
-              prefchanger.appendChild(prefchangerTextA);
-              */
           }
         },
         /**
@@ -1141,7 +1125,7 @@ const tab = {
         * Recurse in preference tree and create entries in the table.<br />
         */
         IPIrecurse: function (obj, name, init) {
-          if ( this.editing ) {
+          if ( this.data.editing ) {
               return;
           } else {
               if ( typeof(obj) === "object" ) {
@@ -1171,7 +1155,32 @@ const tab = {
                   }
                 },
                 { data: 2 }
-              ]
+              ],
+              rowCallback: ( row, data ) => {
+                const prefchangerTextA = row.children[1].children[0];
+                prefchangerTextA.addEventListener('focusin', (event) => {
+                  this.data.editing = true;
+                }, true);
+                prefchangerTextA.addEventListener('focusout', async (event) => {
+                    if ( this.data.editingTMO != null ) {
+                        clearTimeout(this.data.editingTMO);
+                    }
+                    this.data.editingTMO = setTimeout(() => {
+                        this.data.editing = false;
+                        this.data.editingTMO = null;
+                    }, await getPref("tab.settings.preferencesScreen.msBeforeStopEdit"));
+                }, true);
+                prefchangerTextA.setAttribute("type", "text");
+                prefchangerTextA.addEventListener('input', (event) => {
+                  DTTsearchEntry(dtt, 
+                    (rowData) => rowData[0] === data[0], 
+                    (row,rowData) => {
+                      rowData[1] = prefchangerTextA.value;
+                      return rowData;
+                    }
+                  );
+                });
+              }
             });
             dtt.on("init", function() {
               document.getElementById("prefsTable_wrapper").style.width = "100%";
