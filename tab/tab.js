@@ -1070,10 +1070,86 @@ const tab = {
     preferencesScreen: {
       view: {
         data: {
-          table: null
+          table: null,
+          editing: false,
+          editingTMO: null
+        },
+        /**
+         * Inject preference table into html.<br />
+         */
+        injectPreferencesIntoHTML: async function (divID) {
+          const prefs = await getPref(null);
+          const table = document.getElementById(divID);
+          this.IPIrecurse(table, prefs, undefined);
+        },
+        /**
+        * PRIVATE<br />
+        * Create or update entry into preference table.<br />
+        */
+        ensureEntry: function (table, name, obj) {
+          const value = typeof(obj.value)==="string" ? obj.value : JSON.stringify(obj.value);
+          let foundInPrefTable = false;
+          for(const child of table.children) {
+              if ( child.children[0].textContent === name ) {
+                  foundInPrefTable = true;
+                  const input = child.children[1].children[0];
+                  input.value = value;
+              }
+          }
+          if ( foundInPrefTable ) { 
+              // nothing to do
+          } else {
+              const row = document.createElement("tr");
+              const prefnameTD = document.createElement("td");
+              prefnameTD.textContent = name;
+              row.append(prefnameTD);
+              const prefchanger = document.createElement("td");
+              const prefchangerTextA = document.createElement("input");
+              prefchangerTextA.addEventListener('focusin', (event) => {
+                this.editing = true;
+              }, true);
+              prefchangerTextA.addEventListener('focusout', async (event) => {
+                  if ( this.editingTMO != null ) {
+                      clearTimeout(this.editingTMO);
+                  }
+                  this.editingTMO = setTimeout(() => {
+                      this.editing = false;
+                      this.editingTMO = null;
+                  }, await getPref("tab.settings.preferencesScreen.msBeforeStopEdit"));
+              }, true);
+              prefchangerTextA.setAttribute("type", "text");
+              prefchangerTextA.value = value;
+              prefchanger.appendChild(prefchangerTextA);
+              row.append(prefchanger);
+              const prefDescription = document.createElement("td");
+              prefDescription.textContent = translate("tab_settings_preferencesScreen_prefs_" + name.replaceAll(".", "_"));
+              row.append(prefDescription);
+              row.style.textAlign = "center";
+              row.style.verticalAlign = "middle";
+              table.append(row);
+          }
+        },
+        /**
+        * PRIVATE<br />
+        * Recurse in preference tree and create entries in the table.<br />
+        */
+        IPIrecurse: function (table, obj, name) {
+          if ( this.editing ) {
+              return;
+          } else {
+              if ( typeof(obj) === "object" ) {
+                  if ( obj.value !== undefined && obj.description !== undefined ) {
+                      this.ensureEntry(table, name, obj);
+                  } else {
+                      for(const k of Object.keys(obj)) {
+                          this.IPIrecurse(table, obj[k], name === undefined ? k : name + "." + k);
+                      }
+                  }
+              }
+          }
         },
         init: async function() {
-          await injectPreferencesIntoHTML("prefsTableTBODY");
+          await this.injectPreferencesIntoHTML("prefsTableTBODY");
           document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
             const prefs = await getOrCreatePreferences();
             for(const row of document.getElementById("prefsTableTBODY").children) {
@@ -1088,13 +1164,13 @@ const tab = {
                   // do nothing
                 }
               }
-              IPIPrecurse(prefs, row.children[0].textContent, value);
+              this.IPIPrecurse(prefs, row.children[0].textContent, value);
             }
             await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
           });
         },
         update: async function() {
-          await injectPreferencesIntoHTML("prefsTableTBODY");
+          await this.injectPreferencesIntoHTML("prefsTableTBODY");
         }
       }
     }
