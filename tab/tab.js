@@ -1029,10 +1029,11 @@ const tab = {
             const dtt = table.DataTable({
               language: {
                   url: getDatatableTranslation()
-              }});
-              dtt.on("init", function() {
-                document.getElementById("settingsCItable_wrapper").style.width = "100%";
-              });
+              }
+            });
+            dtt.on("init", function() {
+              document.getElementById("settingsCItable_wrapper").style.width = "100%";
+            });
             this.data.dtt = dtt;
             for(const name in root.parameters.regions) {
               this.createEntry(name, true, null);
@@ -1072,39 +1073,51 @@ const tab = {
         data: {
           table: null,
           editing: false,
-          editingTMO: null
+          editingTMO: null,
+          dtt: null
         },
         /**
          * Inject preference table into html.<br />
          */
-        injectPreferencesIntoHTML: async function (divID) {
+        injectPreferencesIntoHTML: async function (init) {
           const prefs = await getPref(null);
-          const table = document.getElementById(divID);
-          this.IPIrecurse(table, prefs, undefined);
+          this.IPIrecurse(prefs, undefined,init);
         },
         /**
         * PRIVATE<br />
         * Create or update entry into preference table.<br />
         */
-        ensureEntry: function (table, name, obj) {
+        ensureEntry: function (name, obj,init) {
           const value = typeof(obj.value)==="string" ? obj.value : JSON.stringify(obj.value);
-          let foundInPrefTable = false;
-          for(const child of table.children) {
-              if ( child.children[0].textContent === name ) {
-                  foundInPrefTable = true;
-                  const input = child.children[1].children[0];
-                  input.value = value;
+
+          let foundValue = false;
+
+          if ( ! init ) {
+            foundValue = DTTsearchEntry(this.data.dtt, 
+              (rowData) => rowData[0] === name, 
+              (rowData) => {
+                rowData[1] = value;
+                return rowData;
               }
+            );
           }
-          if ( foundInPrefTable ) { 
-              // nothing to do
-          } else {
+
+          if ( init || ! foundValue) {
               const row = document.createElement("tr");
               const prefnameTD = document.createElement("td");
-              prefnameTD.textContent = name;
-              row.append(prefnameTD);
               const prefchanger = document.createElement("td");
-              const prefchangerTextA = document.createElement("input");
+              const prefDescription = document.createElement("td");
+              prefnameTD.textContent = name;
+              prefchanger.textContent = value;
+              prefDescription.textContent = translate("tab_settings_preferencesScreen_prefs_" + name.replaceAll(".", "_"));
+              row.append(prefnameTD);
+              row.append(prefchanger);
+              row.append(prefDescription);
+              row.style.textAlign = "center";
+              row.style.verticalAlign = "middle";
+              this.data.dtt.row.add(row).draw();
+
+              /*const prefchangerTextA = document.createElement("input");
               prefchangerTextA.addEventListener('focusin', (event) => {
                 this.editing = true;
               }, true);
@@ -1120,57 +1133,77 @@ const tab = {
               prefchangerTextA.setAttribute("type", "text");
               prefchangerTextA.value = value;
               prefchanger.appendChild(prefchangerTextA);
-              row.append(prefchanger);
-              const prefDescription = document.createElement("td");
-              prefDescription.textContent = translate("tab_settings_preferencesScreen_prefs_" + name.replaceAll(".", "_"));
-              row.append(prefDescription);
-              row.style.textAlign = "center";
-              row.style.verticalAlign = "middle";
-              table.append(row);
+              */
           }
         },
         /**
         * PRIVATE<br />
         * Recurse in preference tree and create entries in the table.<br />
         */
-        IPIrecurse: function (table, obj, name) {
+        IPIrecurse: function (obj, name, init) {
           if ( this.editing ) {
               return;
           } else {
               if ( typeof(obj) === "object" ) {
                   if ( obj.value !== undefined && obj.description !== undefined ) {
-                      this.ensureEntry(table, name, obj);
+                      this.ensureEntry(name, obj,init);
                   } else {
                       for(const k of Object.keys(obj)) {
-                          this.IPIrecurse(table, obj[k], name === undefined ? k : name + "." + k);
+                          this.IPIrecurse(obj[k], name === undefined ? k : name + "." + k,init);
                       }
                   }
               }
           }
         },
         init: async function() {
-          await this.injectPreferencesIntoHTML("prefsTableTBODY");
-          document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
-            const prefs = await getOrCreatePreferences();
-            for(const row of document.getElementById("prefsTableTBODY").children) {
-              let value = row.children[1].children[0].value;
-              if ( typeof(value) === "string" ) {
-                try {
-                  const res = JSON.parse(value);
-                  if ( typeof(res) !== "string" ) {
-                    value = res;
+          $(document).ready(async () => {
+            const table = $('#prefsTable');
+            const dtt = table.DataTable({
+              language: {
+                  url: getDatatableTranslation()
+              },
+              columns: [
+                { data: 0 },
+                {   
+                  data: 1,
+                  render: function (data) {
+                       return '<input type="text" value="' + data + '" />';
                   }
-                } catch(error) {
-                  // do nothing
+                },
+                { data: 2 }
+              ]
+            });
+            dtt.on("init", function() {
+              document.getElementById("prefsTable_wrapper").style.width = "100%";
+            });
+            this.data.dtt = dtt;
+            await this.injectPreferencesIntoHTML(true);
+            document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
+              const prefs = await getOrCreatePreferences();
+              const childrens = dtt.rows()[0];
+              for(let j = 0; j < childrens.length; j = j + 1) {
+                const rowId = childrens[j];
+                const row = dtt.row(rowId);
+                let rowData = row.data();
+                let value = rowData[1];
+                if ( typeof(value) === "string" ) {
+                  try {
+                    const res = JSON.parse(value);
+                    if ( typeof(res) !== "string" ) {
+                      value = res;
+                    }
+                  } catch(error) {
+                    // do nothing
+                  }
                 }
+                IPIPrecurse(prefs, rowData[0], value);
               }
-              this.IPIPrecurse(prefs, row.children[0].textContent, value);
-            }
-            await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
+              await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
+            });
           });
         },
         update: async function() {
-          await this.injectPreferencesIntoHTML("prefsTableTBODY");
+          await this.injectPreferencesIntoHTML(false);
         }
       }
     }
