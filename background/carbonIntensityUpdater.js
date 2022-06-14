@@ -58,7 +58,9 @@ let intervalID = null;
             xhr.open("GET", region.url, false);
             xhr.send();
             const v = region.extractor(xhr.responseText);
-            await setCarbonIntensityRegion(name, v);
+            if ( v !== null && v !== undefined && v !== "" ) {
+                await setCarbonIntensityRegion(name, v);
+            }
         } catch (e) {
             console.warn(e.name + " : " + e.message);
         }
