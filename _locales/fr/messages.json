@@ -506,10 +506,7 @@
     "message": "Que pouvez vous faire dans l'immédiat ?"
   },
   "tab_moreInfo_health_description": {
-    "message": "Installer des extensions qui diminue la quantité de données envoyée sur le réseau"
-  },
-  "tab_moreInfo_health_table_title": {
-    "message": "Extension"
+    "message": "Installer des extensions qui diminuent la quantité de données envoyée sur le réseau"
   },
   "tab_moreInfo_health_table_ecoify_desc": {
     "message": "Chaque fois que nous demandons à Google de rechercher quelque chose, des demandes sont envoyées dans les deux sens. Les fournisseurs de services Internet ont besoin d'énergie pour faire fonctionner Internet et Google a besoin d'énergie pour ses serveurs."

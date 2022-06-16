@@ -496,9 +496,6 @@
   "tab_moreInfo_health_description": {
     "message": "Install extensions that decrease the amount of data sent over the network"
   },
-  "tab_moreInfo_health_table_title": {
-    "message": "Extension"
-  },
   "tab_moreInfo_health_table_ecoify_desc": {
     "message": "Every time we ask Google to search for something, requests are sent back and forth. Internet service providers need power to run the internet and Google needs power for its servers."
   },

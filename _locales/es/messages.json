@@ -508,9 +508,6 @@
     "tab_moreInfo_health_description": {
       "message": "Instale extensiones que disminuyan la cantidad de datos enviados a través de la red"
     },
-    "tab_moreInfo_health_table_title": {
-      "message": "Extensión"
-    },
     "tab_moreInfo_health_table_ecoify_desc": {
       "message": "Cada vez que le pedimos a Google que busque algo, las solicitudes se envían de un lado a otro. Los proveedores de servicios de Internet necesitan energía para operar Internet y Google necesita energía para sus servidores."
     },
