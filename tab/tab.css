@@ -1,3 +1,4 @@
+
 #topResultsDiv th, .oneResult, .table th, #settingsCItable th, #prefsTable th, #tab_computeMethods_related th {
     text-align: center;
     vertical-align: middle;
@@ -26,4 +27,17 @@ input, .form-control {
     text-align: center;
     padding-left: 0;
     padding-right: 0;
+}
+#tab_moreInfo_health tr td:first-child {
+    min-width: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+#tab_moreInfo_health *, #tab_moreInfo_health {
+    border: none;
+}
+
+[topResults_icon] {
+    min-width: 40px;
 }
