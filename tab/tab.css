@@ -7,10 +7,6 @@
     table-layout: fixed;
 }
 
-html, body, .tab-content, #historyDiv {
-    height: 100%;
-}
-
 .table th, .table td {
     overflow-wrap: anywhere;
     display: table-cell;
@@ -25,4 +21,9 @@ html, body, .tab-content, #historyDiv {
 .nav-pills {
     padding-left: 2px;
     padding-top: 2px;
+}
+input, .form-control {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
 }
