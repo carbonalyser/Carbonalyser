@@ -1140,6 +1140,11 @@ const tab = {
           }
         },
         init: async function() {
+          $("#tab-settings").on("click", () => {
+            setTimeout(() => {
+              this.data.dtt.columns.adjust().draw();
+            }, 1000);
+          });
           $(document).ready(async () => {
             const table = $('#prefsTable');
             const dtt = table.DataTable({
