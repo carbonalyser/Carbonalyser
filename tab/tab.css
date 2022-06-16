@@ -1,6 +1,10 @@
-#topResultsDiv th, .oneResult {
+#topResultsDiv th, .oneResult, .table th, #settingsCItable th, #prefsTable th {
     text-align: center;
     vertical-align: middle;
+}
+
+#topResultsTable {
+    table-layout: fixed;
 }
 
 html, body, .tab-content, #historyDiv {
