@@ -1,4 +1,4 @@
-#topResultsDiv th, .oneResult, .table th, #settingsCItable th, #prefsTable th {
+#topResultsDiv th, .oneResult, .table th, #settingsCItable th, #prefsTable th, #tab_computeMethods_related th {
     text-align: center;
     vertical-align: middle;
 }
