@@ -1140,26 +1140,29 @@ const tab = {
           }
         },
         init: async function() {
-          $("#tab-settings").on("click", () => {
-            setTimeout(() => {
-              this.data.dtt.columns.adjust().draw();
-            }, 1000);
-          });
           $(document).ready(async () => {
             const table = $('#prefsTable');
             const dtt = table.DataTable({
+              autoWidth: false,
               language: {
                   url: getDatatableTranslation()
               },
               columns: [
-                { data: 0 },
+                { 
+                  data: 0,
+                  width: "40%"
+                },
                 {   
                   data: 1,
                   render: function (data) {
                        return '<input type="text" value="' + data + '" />';
-                  }
+                  },
+                  width: "0%"
                 },
-                { data: 2 }
+                { 
+                  data: 2,
+                  width: "60%"
+                }
               ],
               rowCallback: ( row, data ) => {
                 const prefchangerTextA = row.children[1].children[0];
