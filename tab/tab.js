@@ -1143,25 +1143,21 @@ const tab = {
           $(document).ready(async () => {
             const table = $('#prefsTable');
             const dtt = table.DataTable({
-              autoWidth: false,
               language: {
                   url: getDatatableTranslation()
               },
               columns: [
                 { 
-                  data: 0,
-                  width: "40%"
+                  data: 0
                 },
                 {   
                   data: 1,
                   render: function (data) {
-                       return '<input type="text" value="' + data + '" />';
-                  },
-                  width: "0%"
+                       return '<div class="form-group"><input class="form-control" type="text" value="' + data + '" /></div>';
+                  }
                 },
                 { 
-                  data: 2,
-                  width: "60%"
+                  data: 2
                 }
               ],
               rowCallback: ( row, data ) => {
