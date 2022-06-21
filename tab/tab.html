@@ -320,6 +320,31 @@
                         <div class="col">
                             <button id="tab_settings_preferencesScreen_validateButton" translate="tab_settings_preferencesScreen_validateButton" class="button col"></button>
                         </div>    
+                        <div class="col">
+                            <button id="tab_settings_preferencesScreen_importExportButton" translate="tab_settings_preferencesScreen_importExportButton" class="button col" data-toggle="modal" data-target="#tab_settings_preferencesScreen_importExport_modal">Importer/Exporter</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="tab_settings_preferencesScreen_importExport_modal" tabindex="-1" role="dialog" aria-labelledby="tab_settings_preferencesScreen_importExport_modal_title" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="tab_settings_preferencesScreen_importExport_modal_title" translate="tab_settings_preferencesScreen_importExport_modal_title">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <textarea id="tab_settings_preferencesScreen_importExport_modal_input" class="form-control" type="text" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" translate="tab_settings_preferencesScreen_importExport_dismiss" id="tab_settings_preferencesScreen_importExport_dismiss">Close</button>
+                                            <button type="button" class="btn btn-primary" translate="tab_settings_preferencesScreen_importExport_modal_save" id="tab_settings_preferencesScreen_importExport_modal_save">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr>
                 </div>  

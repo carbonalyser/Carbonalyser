@@ -1222,7 +1222,20 @@ const tab = {
             document.getElementById("tab_settings_preferencesScreen_resetButton").addEventListener("click", async () => {
               this.stopEditing();
               await obrowser.storage.local.remove("pref");
-
+            });
+            document.getElementById("tab_settings_preferencesScreen_importExportButton").addEventListener("click", async () => {
+              const element = document.getElementById("tab_settings_preferencesScreen_importExport_modal_input");
+              element.value = JSON.stringify(await getOrCreatePreferences());
+            });
+            document.getElementById("tab_settings_preferencesScreen_importExport_modal_save").addEventListener("click", async () => {
+              const element = document.getElementById("tab_settings_preferencesScreen_importExport_modal_input");
+              try {
+                JSON.parse(element.value);
+                $('#tab_settings_preferencesScreen_importExport_modal').modal('hide');
+                await obrowser.storage.local.set({pref: element.value});
+              } catch(error) {
+                alert("Cannot set preferences : \n " + error.name + "\n  " + error.message);
+              }
             });
           });
         },
