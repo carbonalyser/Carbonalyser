@@ -415,6 +415,9 @@
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Start analysis at browser startup."
   },
+  "tab_settings_preferencesScreen_prefs_daemon_fetchCurrentLocation": {
+    "message": "Enables geolocation at browser startup via a third-party service (the value is set to false if you manually select a region)."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
     "message": "interval (ms) at which we write the storage"
   },

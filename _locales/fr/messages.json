@@ -415,6 +415,9 @@
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
     "message": "Démarrer l'analyse au démarrage du navigateur."
   },
+  "tab_settings_preferencesScreen_prefs_daemon_fetchCurrentLocation": {
+    "message": "Active la geolocalisation au démarrage du navigateur via un service tier (la valeure est mise à faux si vous selectionnez manuellement une region)."
+  },
   "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
     "message": "Interval (en ms) avec lequel on écrit dans le vrai stockage."
   },

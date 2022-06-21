@@ -413,7 +413,10 @@
     "message": "Verbrauch (in Watt) einer Glühbirne."
   },
   "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
-    "message": "Start analysis at browser startup."
+    "message": "Analyse beim Browserstart starten."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_fetchCurrentLocation": {
+    "message": "Aktiviert die Geolokalisierung beim Browserstart über einen Drittanbieterdienst (der Wert wird auf „false“ gesetzt, wenn Sie eine Region manuell auswählen)."
   },
   "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
     "message": "Interval (in ms), mit dem in den realen Speicher geschrieben wird."
