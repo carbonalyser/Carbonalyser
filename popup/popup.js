@@ -96,7 +96,9 @@ const popup = {
       },
       model: {
         run: async () => {
+          const pref = (await obrowser.storage.local.get()).pref;
           await obrowser.storage.local.clear();
+          await obrowser.storage.local.set({pref: pref});
           await obrowser.runtime.sendMessage({action: "stop"});
           await obrowser.runtime.sendMessage({action: "reinitCIUpdater"});
         },
