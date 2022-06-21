@@ -475,6 +475,9 @@
   "tab_settings_preferencesScreen_validateButton": {
     "message": "validate"
   },
+  "tab_settings_preferencesScreen_resetButton": {
+    "message": "By default"
+  },
   "tab_custom_ci_factor_title": {
     "message": "Add factor"
   },

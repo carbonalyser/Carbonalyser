@@ -472,6 +472,9 @@
     "tab_settings_preferencesScreen_prefs_debug": {
       "message": "Habilite la depuración a través de registros."
     },
+    "tab_settings_preferencesScreen_resetButton": {
+      "message": "Por defecto"
+    },
     "tab_settings_preferencesScreen_validateButton": {
       "message": "Validar"
     },
