@@ -461,6 +461,7 @@ TA_init = async () => {
   } else {
     await storageSetAnalysisState(0);
   }
+  await fetchCurrentCountryWhenNeeded();
 }
 
 TA_init();

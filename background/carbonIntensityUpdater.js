@@ -34,11 +34,20 @@
 };
 
 let intervalID = null;
+/**
+ * Convert a given country code to its name in carbonalyzer.
+ */
+const alpha2TOname = {
+    FR: 'france',
+    CN: 'china',
+    UK: 'unitedKingdom',
+    US: 'unitedStates'
+}
 
 /**
  * Insert the default carbon intensities.
  */
- insertDefaultCarbonIntensity = async () => {
+insertDefaultCarbonIntensity = async () => {
     // https://app.electricitymap.org/zone/FR 05/05/2022
     await setCarbonIntensityRegion('france', 80);    
     await setCarbonIntensityRegion('europeanUnion', 276);
