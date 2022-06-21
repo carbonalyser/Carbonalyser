@@ -44,7 +44,7 @@ let intervalID = null;
     await setCarbonIntensityRegion('europeanUnion', 276);
     await setCarbonIntensityRegion('unitedStates', 493);
     await setCarbonIntensityRegion('china', 681);
-    await setCarbonIntensityRegion('default', 519);
+    await setCarbonIntensityRegion(DEFAULT_REGION, 519);
 }
 
 /**

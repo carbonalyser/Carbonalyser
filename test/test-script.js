@@ -113,7 +113,7 @@ describe('IPIrecurse', function () {
                 }
             },
             analysis: {
-                selectedRegion: {value: 'default',description: ""},   // selected region
+                selectedRegion: {value: DEFAULT_REGION,description: ""},   // selected region
                 carbonIntensity: {
                     refreshMs: {value: 3600 * 1000, description: ""},   // refresh carbon interval
                 }
