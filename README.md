@@ -29,6 +29,8 @@ Visualizing it will get you to understand that impacts of digital technologies o
 ## Privacy
 
 None of your data are collected: all browsing data are analyzed directly on the user device and are not sent or processed anywhere else in any way.<br />
+However you can enable 3rd party services from preferences.<br />
+For instances ecoindex, ipinfo in that case you should refer to them instead.<br />
 The source code of this program is available in open access, to ensure transparency and for any other purpose. 
 
 ## Support
