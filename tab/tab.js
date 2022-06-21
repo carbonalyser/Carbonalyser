@@ -1077,6 +1077,12 @@ const tab = {
           editingTMO: null,
           dtt: null
         },
+        stopEditing: function() {
+          if ( this.data.editingTMO != null ) {
+            clearTimeout(this.data.editingTMO);
+          }
+          this.data.editing = false;
+        },
         /**
          * Inject preference table into html.<br />
          */
@@ -1170,8 +1176,7 @@ const tab = {
                         clearTimeout(this.data.editingTMO);
                     }
                     this.data.editingTMO = setTimeout(() => {
-                        this.data.editing = false;
-                        this.data.editingTMO = null;
+                       this.stopEditing();
                     }, await getPref("tab.settings.preferencesScreen.msBeforeStopEdit"));
                 }, true);
                 prefchangerTextA.setAttribute("type", "text");
@@ -1191,7 +1196,8 @@ const tab = {
             });
             this.data.dtt = dtt;
             await this.injectPreferencesIntoHTML(true);
-            document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async function(){
+            document.getElementById("tab_settings_preferencesScreen_validateButton").addEventListener("click", async () => {
+              this.stopEditing();
               const prefs = await getOrCreatePreferences();
               const childrens = dtt.rows()[0];
               for(let j = 0; j < childrens.length; j = j + 1) {
@@ -1212,6 +1218,11 @@ const tab = {
                 IPIPrecurse(prefs, rowData[0], value);
               }
               await obrowser.storage.local.set({pref: JSON.stringify(prefs)});
+            });
+            document.getElementById("tab_settings_preferencesScreen_resetButton").addEventListener("click", async () => {
+              this.stopEditing();
+              await obrowser.storage.local.remove("pref");
+
             });
           });
         },
