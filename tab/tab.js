@@ -1179,7 +1179,7 @@ const tab = {
                   DTTsearchEntry(dtt, 
                     (rowData) => rowData[0] === data[0], 
                     (row,rowData) => {
-                      rowData[1] = prefchangerTextA.value;
+                      rowData[1] = event.target.value;
                       return rowData;
                     }
                   );
