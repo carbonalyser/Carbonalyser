@@ -475,6 +475,18 @@
   "tab_settings_preferencesScreen_validateButton": {
     "message": "bestätigen"
   },
+  "tab_settings_preferencesScreen_importExportButton": {
+    "message": "Import/Export"
+  },
+  "tab_settings_preferencesScreen_importExport_modal_title": {
+    "message": "Benutzereinrichtung"
+  },
+  "tab_settings_preferencesScreen_importExport_dismiss": {
+    "message": "Abbrechen"
+  },
+  "tab_settings_preferencesScreen_importExport_modal_save": {
+    "message": "Zu schützen"
+  },
   "tab_settings_preferencesScreen_resetButton": {
     "message": "standardmäßig"
   },

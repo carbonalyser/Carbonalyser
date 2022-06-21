@@ -478,6 +478,18 @@
     "tab_settings_preferencesScreen_validateButton": {
       "message": "Validar"
     },
+    "tab_settings_preferencesScreen_importExportButton": {
+      "message": "Importación y exportación"
+    },
+    "tab_settings_preferencesScreen_importExport_modal_title": {
+      "message": "Configuración de usuario"
+    },
+    "tab_settings_preferencesScreen_importExport_dismiss": {
+      "message": "Anular"
+    },
+    "tab_settings_preferencesScreen_importExport_modal_save": {
+      "message": "Para salvaguardar"
+    },
     "tab_custom_ci_factor_title": {
       "message": "Añadir factor"
     },
