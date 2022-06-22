@@ -69,7 +69,7 @@ simplerRequire('../lib/carbonalyser/lib.js');
 obrowser = getBrowser();
 var injectEquivalentIntoHTML, getEmptyEquivalenceObject, computeEquivalenceFromStatsItem;
 simplerRequire('../lib/carbonalyser/libEquivalence.js');
-var injectRegionIntoHTML, attachHandlerToSelectRegion, selectRegionHandler, getSelectedRegion, setSelectedRegion;
+var injectRegionIntoHTML, selectRegionHandler, getSelectedRegion, setSelectedRegion;
 simplerRequire('../lib/carbonalyser/libRegionSelect.js');
 var init, getOrCreateRawData, createEmptyRawData, setCarbonIntensityRegion, LS_init, LS_end, incBytesPerOrigin, incBytesDataCenter, incBytesNetwork, setRegion, getCarbonIntensityRegion, getParameters, capitalizeFirstLetter, lowerFirstLetter, getRegions, setParameters, getStats, toMegaByteNoRound, toMegaByte, toMebiByte;
 simplerRequire('../lib/carbonalyser/libStats.js');

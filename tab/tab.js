@@ -889,9 +889,25 @@ const tab = {
           parent: null,
           img: null,
           imgAnimation: null,
+          selectRegion: null
+        },
+        /**
+         * Inject regions in the select region chooser.
+         */
+        injectRegionIntoHTML: function (regions, selectedRegion) {
+          this.data.selectRegion = document.getElementById('selectRegion');
+          for(const name in regions) {
+            const opt = document.createElement("option");
+            opt.value = name;
+            const translated = translate("region" + capitalizeFirstLetter(name));
+            opt.text = (translated === '') ? name : translated;
+            this.data.selectRegion.add(opt);
+          }
+          if( selectedRegion !== '' && selectedRegion !== null ) {
+              this.data.selectRegion.value = selectedRegion;
+          }
         },
         init: async function () {
-          const settings = this.parent.parent;
           const img = document.createElement("img");
           this.data.img = img;
           img.setAttribute("width", "20px");
@@ -933,12 +949,23 @@ const tab = {
           });
           div.append(img);
           const root = this.parent.parent.parent;
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
+          this.injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
+          this.data.selectRegion.addEventListener('change', async (event) => {
+            // prevent useless requests
+            await setPref("daemon.fetchCurrentLocation", false);
+            const selectedRegion = lowerFirstLetter(event.target.value);
+          
+            if ('' === selectedRegion) {
+              return;
+            }
+          
+            await setSelectedRegion(selectedRegion);
+          });
         },
         update: async function () {
           const root = this.parent.parent.parent;
-          $("#" + regionSelectID).empty();
-          injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
+          $(this.data.selectRegion).empty();
+          this.injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
         }
       }
     },
@@ -1318,7 +1345,6 @@ T_init = async () => {
   window.removeEventListener("load", T_init);
   window.addEventListener("unload", end);
 
-  attachHandlerToSelectRegion();
   loadTranslations();
 
   tab.stats = await getOrCreateStats();

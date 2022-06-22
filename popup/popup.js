@@ -193,35 +193,6 @@ const popup = {
     }
   },
   /**
-   * Select the region in popup
-   */
-  region: {
-    model: {
-      selectedRegion: null,
-      regions: null,
-      init: async function () {
-        await this.update();
-      },
-      update: async function () {
-        this.selectedRegion = await getSelectedRegion();
-        this.regions = await getRegions();
-      }
-    },
-    view: {
-      init: async function () {
-        attachHandlerToSelectRegion();
-        injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
-      }, 
-      update: async function () {
-        const select = document.getElementById(regionSelectID);
-        while (select.firstChild) {
-          select.removeChild(select.firstChild);
-        }
-        injectRegionIntoHTML(this.parent.model.regions, this.parent.model.selectedRegion);
-      }
-    }
-  },
-  /**
    * Show equivalence (more human understandable)
    */
   equivalence: {
