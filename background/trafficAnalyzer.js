@@ -456,16 +456,24 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
 });
 
 TA_init = async () => {
+
   if ( await getPref("daemon.runAtStart") ) {
     await handleMessage({action: 'start'});
   } else {
     await storageSetAnalysisState(0);
   }
   await fetchCurrentCountryWhenNeeded();
-  console.warn("fetch current location");
-  navigator.geolocation.getCurrentPosition(function(o) {
-    console.warn("fetched " + o.coords.latitude + "," + o.coords.longitude);
+
+  navigator.geolocation.getCurrentPosition((o) => {
+    const point = [o.coords.longitude, o.coords.latitude];
+    for(const countryObject of countriesObject.features) {
+      if ( d3.geoContains(countryObject, point) ) {
+        console.warn("ISO_A3=" + countryObject.properties.ISO_A3);
+        break;
+      }
+    }
   });
+
 }
 
 TA_init();
