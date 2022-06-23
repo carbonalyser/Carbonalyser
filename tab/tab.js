@@ -893,13 +893,15 @@ const tab = {
         },
         /**
          * Inject regions in the select region chooser.
+         * @param regions regions to which display their names.
+         * @param selectedRegion currently selected region for instance 'regionChina'.
          */
         injectRegionIntoHTML: function (regions, selectedRegion) {
           this.data.selectRegion = document.getElementById('selectRegion');
           for(const name in regions) {
             const opt = document.createElement("option");
             opt.value = name;
-            const translated = translate("region" + capitalizeFirstLetter(name));
+            const translated = translate(name);
             opt.text = (translated === '') ? name : translated;
             this.data.selectRegion.add(opt);
           }
@@ -951,10 +953,7 @@ const tab = {
           const root = this.parent.parent.parent;
           this.injectRegionIntoHTML(root.parameters.regions, this.parent.model.data.selectedRegion);
           this.data.selectRegion.addEventListener('change', async (event) => {
-            // prevent useless requests
-            await setPref("daemon.fetchCurrentLocation", false);
-            const selectedRegion = lowerFirstLetter(event.target.value);
-          
+            const selectedRegion = event.target.value;
             if ('' === selectedRegion) {
               return;
             }
@@ -1017,9 +1016,9 @@ const tab = {
          * @param {*} name key in object array.
          * @param {*} init true if in initial creation.
          */
-        createEntry: function (name, init, newIntensity) {
+        createEntry: function (name, init, regionObject) {
           const root = this.parent.parent.parent;
-          let region = translate("region" + capitalizeFirstLetter(name));
+          let region = translate(name);
           if ( region === "" || region === null ) {
             region = name;
           }
@@ -1029,7 +1028,7 @@ const tab = {
             foundValue = DTTsearchEntry(this.data.dtt, 
               (rowData) => rowData[0] === region, 
               (row,rowData) => {
-                rowData[1] = newIntensity;
+                rowData[1] = regionObject.carbonIntensity;
                 row.data(rowData).draw();
                 return rowData;
               }
@@ -1041,7 +1040,7 @@ const tab = {
             const country = document.createElement("td");
             country.textContent = region;
             const ci = document.createElement("td");
-            ci.textContent = root.parameters.regions[name].carbonIntensity;
+            ci.textContent = regionObject.carbonIntensity;
             row.append(country);
             row.append(ci);
             row.style.textAlign = "center";
@@ -1064,14 +1063,14 @@ const tab = {
             });
             this.data.dtt = dtt;
             for(const name in root.parameters.regions) {
-              this.createEntry(name, true, null);
+              this.createEntry(name, true, root.parameters.regions[name]);
             }
           });
         },
         update: async function () {
           const root = this.parent.parent.parent;
           for(const name in root.parameters.regions) {
-            this.createEntry(name, false, root.parameters.regions[name].carbonIntensity);
+            this.createEntry(name, false, root.parameters.regions[name]);
           }
         }
       }
@@ -1088,7 +1087,8 @@ const tab = {
           this.data.input = $("#tab_custom_ci_factor_input");
           const input = this.data.input;
           this.data.button.on("click", async function() {
-            await setCarbonIntensityRegion("custom", parseInt(input.val()));
+            //await setCarbonIntensityRegion("custom", parseInt(input.val()));
+            throw "not done";
           });
         },
         update: async function() {

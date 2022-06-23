@@ -462,18 +462,7 @@ TA_init = async () => {
   } else {
     await storageSetAnalysisState(0);
   }
-  await fetchCurrentCountryWhenNeeded();
-
-  navigator.geolocation.getCurrentPosition((o) => {
-    const point = [o.coords.longitude, o.coords.latitude];
-    for(const countryObject of countriesObject.features) {
-      if ( d3.geoContains(countryObject, point) ) {
-        console.warn("ISO_A3=" + countryObject.properties.ISO_A3);
-        break;
-      }
-    }
-  });
-
+  await fetchCurrentPositionIfEmpty();
 }
 
 TA_init();

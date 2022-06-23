@@ -5,14 +5,15 @@
  const updateList = {
     // only CO² emission linked to electricity (not natural gases)
     // so resulting should be CO² emission not CO²eq
-    unitedKingdom: {
+    regionUnitedKingdom: {
         url: "https://api.carbonintensity.org.uk/intensity",
         extractor: function (text) {
             return JSON.parse(text).data[0].intensity.actual;
-        }
+        },
+        ISO_A3: 'GBR'
     },
     // at 2022 this represents 90% of people
-    france: {
+    regionFrance: {
         url: "https://opendata.edf.fr/api/records/1.0/search/?dataset=indicateurs-de-performance-extra-financiere&q=&facet=annee&facet=engagements_rse&facet=csr_goals&facet=indicateurs_cles_de_performance&facet=performance_indicators&refine.indicateurs_cles_de_performance=Intensit%C3%A9+carbone%C2%A0%3A+%C3%A9missions+sp%C3%A9cifiques+de+CO2+dues+%C3%A0+la+production+d%E2%80%99%C3%A9lectricit%C3%A9+%E2%88%9A+(gCO2%2FkWh)",
         extractor: function (text) {
             const records = JSON.parse(text).records;
@@ -29,31 +30,23 @@
                 return fieldMax.valeur;
             }
             return null;
-        }
+        },
+        ISO_A3: 'FRA'
     }
 };
 
 let intervalID = null;
-/**
- * Convert a given country code to its name in carbonalyzer.
- */
-const alpha2TOname = {
-    FR: 'france',
-    CN: 'china',
-    UK: 'unitedKingdom',
-    US: 'unitedStates'
-}
 
 /**
  * Insert the default carbon intensities.
  */
 insertDefaultCarbonIntensity = async () => {
     // https://app.electricitymap.org/zone/FR 05/05/2022
-    await setCarbonIntensityRegion('france', 80);    
-    await setCarbonIntensityRegion('europeanUnion', 276);
-    await setCarbonIntensityRegion('unitedStates', 493);
-    await setCarbonIntensityRegion('china', 681);
-    await setCarbonIntensityRegion(DEFAULT_REGION, 519);
+    await setCarbonIntensityRegion('regionFrance', 80, 'FRA');    
+    await setCarbonIntensityRegion('regionEuropeanUnion', 276, EUObjectUnified.features[0].geometry);
+    await setCarbonIntensityRegion('regionUnitedStates', 493, 'USA');
+    await setCarbonIntensityRegion('regionChina', 681, 'CHN');
+    await setCarbonIntensityRegion(DEFAULT_REGION, 519, defaultObject.geometry);
 }
 
 /**
@@ -68,7 +61,7 @@ insertDefaultCarbonIntensity = async () => {
             xhr.send();
             const v = region.extractor(xhr.responseText);
             if ( v !== null && v !== undefined && v !== "" ) {
-                await setCarbonIntensityRegion(name, v);
+                await setCarbonIntensityRegion(name, v, region.ISO_A3);
             }
         } catch (e) {
             console.warn(e.name + " : " + e.message);
