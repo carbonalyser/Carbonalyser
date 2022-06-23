@@ -462,6 +462,10 @@ TA_init = async () => {
     await storageSetAnalysisState(0);
   }
   await fetchCurrentCountryWhenNeeded();
+  console.warn("fetch current location");
+  navigator.geolocation.getCurrentPosition(function(o) {
+    console.warn("fetched " + o.coords.latitude + "," + o.coords.longitude);
+  });
 }
 
 TA_init();

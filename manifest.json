@@ -12,10 +12,14 @@
     "webRequest",
     "<all_urls>",
     "downloads",
-    "tabs"
+    "tabs",
+    "geolocation"
   ],
   "background": {
     "scripts": [
+      "data/countries.js",
+      "lib/d3/d3-array@3",
+      "lib/d3/d3-geo@3",
       "lib/carbonalyser/lib.js",
       "lib/carbonalyser/libPreferences.js",
       "lib/carbonalyser/libRegionSelect.js",
