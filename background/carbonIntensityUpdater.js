@@ -10,7 +10,7 @@
         extractor: function (text) {
             return JSON.parse(text).data[0].intensity.actual;
         },
-        ISO_A3: 'GBR'
+        geometryDescription: 'GBR'
     },
     // at 2022 this represents 90% of people
     regionFrance: {
@@ -31,7 +31,7 @@
             }
             return null;
         },
-        ISO_A3: 'FRA'
+        geometryDescription: 'FRA'
     }
 };
 
@@ -55,13 +55,13 @@ insertDefaultCarbonIntensity = async () => {
  insertUpdatedCarbonIntensity = async () => {
     for(const name in updateList) {
         try {
-            const region = updateList[name];
+            const regionUpdater = updateList[name];
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", region.url, false);
+            xhr.open("GET", regionUpdater.url, false);
             xhr.send();
-            const v = region.extractor(xhr.responseText);
+            const v = regionUpdater.extractor(xhr.responseText);
             if ( v !== null && v !== undefined && v !== "" ) {
-                await setCarbonIntensityRegion(name, v, region.ISO_A3);
+                await setCarbonIntensityRegion(name, v, regionUpdater.geometryDescription);
             }
         } catch (e) {
             console.warn(e.name + " : " + e.message);
