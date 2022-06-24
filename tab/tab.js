@@ -1087,8 +1087,7 @@ const tab = {
           this.data.input = $("#tab_custom_ci_factor_input");
           const input = this.data.input;
           this.data.button.on("click", async function() {
-            //await setCarbonIntensityRegion("custom", parseInt(input.val()));
-            throw "not done";
+            await setCarbonIntensityRegion("regionCustom", parseInt(input.val()), earthObject.features[0].geometry);
           });
         },
         update: async function() {
