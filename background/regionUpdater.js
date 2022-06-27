@@ -24,7 +24,7 @@ const regionUpdateList = {
                 return JSON.parse(text).data[0].intensity.actual;
             }
         },
-        geometryDescription: 'GBR'
+        geometryDescription: getGeometryForCountry('GBR')
     },
     // at 2022 this represents 90% of people
     regionFrance: {
@@ -48,7 +48,7 @@ const regionUpdateList = {
             },
             default: 80
         },
-        geometryDescription: 'FRA'
+        geometryDescription: getGeometryForCountry('FRA')
     }
 };
 
@@ -100,7 +100,7 @@ insertDefaultCarbonIntensity = async () => {
     for(const name in regionUpdateList) {
         try {
             const regionUpdater = regionUpdateList[name];
-            regionUpdater.carbonIntensity.fetch();
+            const v = regionUpdater.carbonIntensity.fetch();
             if ( v !== null && v !== undefined && v !== "" ) {
                 await setCarbonIntensityRegion(name, v, regionUpdater.geometryDescription);
             }
