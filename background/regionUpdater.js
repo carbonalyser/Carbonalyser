@@ -86,7 +86,7 @@ for(const regionName in regionsList) {
         if ( region.carbonIntensity.fetch === undefined ) {
             region.carbonIntensity.fetch = () => {
                 if ( region.carbonIntensity.url === undefined || region.carbonIntensity.extractor === undefined ) {
-                    console.info("region " + regionName + " got not carbon intensity updater defined");
+                    console.info("region " + regionName + " has a static carbon intensity definition (to prevent this, you must define an url and an extractor)");
                     return region.carbonIntensity.default;
                 } else {
                     return regionFetchExtractor(region);
