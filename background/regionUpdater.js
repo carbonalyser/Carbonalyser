@@ -1,5 +1,5 @@
 /**
- * Part responsible from carbon intensities updates.
+ * Update informations of parts of the world.
  */
 
  const updateList = {
@@ -42,6 +42,7 @@ let intervalID = null;
  */
 insertDefaultCarbonIntensity = async () => {
     // https://app.electricitymap.org/zone/FR 05/05/2022
+    await setCarbonIntensityRegion('regionCurrentLocation', 10000, 'FRA');
     await setCarbonIntensityRegion('regionFrance', 80, 'FRA');    
     await setCarbonIntensityRegion('regionEuropeanUnion', 276, EUObjectUnified.features[0].geometry);
     await setCarbonIntensityRegion('regionUnitedStates', 493, 'USA');
@@ -75,7 +76,7 @@ insertDefaultCarbonIntensity = async () => {
 /**
  * Init the script.
  */
-CIU_init = async () => {
+RU_init = async () => {
     await insertDefaultCarbonIntensity();
     const interval = await getPref("analysis.carbonIntensity.refreshMs");
     await insertUpdatedCarbonIntensity();
@@ -85,17 +86,17 @@ CIU_init = async () => {
 /**
  * Stop the script.
  */
-CIU_stop = () => {
+RU_stop = () => {
     clearInterval(intervalID);
     intervalID = null;
 }
 
-CIU_init();
+RU_init();
 
 obrowser.storage.onChanged.addListener(async (changes, areaName) => {
     if ( areaName == "local" ) {
         if ( changes["pref"] !== undefined ) {
-            CIU_stop();
+            RU_stop();
             const ri = await getPref("analysis.carbonIntensity.refreshMs");
             intervalID = setInterval(insertUpdatedCarbonIntensity, ri);
         } else {
@@ -110,8 +111,8 @@ obrowser.storage.onChanged.addListener(async (changes, areaName) => {
 obrowser.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
     if (request.action == "reinitCIUpdater") {
-        CIU_stop();
-        await CIU_init();
+        RU_stop();
+        await RU_init();
     }
 
     if ( request.action == "forceCIUpdater" ) {

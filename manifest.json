@@ -25,7 +25,7 @@
       "lib/carbonalyser/libRegionSelect.js",
       "lib/carbonalyser/libEquivalence.js",
       "lib/carbonalyser/libStats.js",
-      "background/carbonIntensityUpdater.js",
+      "background/regionUpdater.js",
       "background/trafficAnalyzer.js",
       "background/attentionAnalyzer.js",
       "background/periodicDownload.js"
