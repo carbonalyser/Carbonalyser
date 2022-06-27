@@ -14,7 +14,7 @@ regionFetchExtractor = (regionUpdater) => {
     }
 };
 
-const regionUpdateList = {
+const regionsList = {
     // only CO² emission linked to electricity (not natural gases)
     // so resulting should be CO² emission not CO²eq
     regionUnitedKingdom: {
@@ -49,21 +49,48 @@ const regionUpdateList = {
             default: 80
         },
         geometryDescription: getGeometryForCountry('FRA')
+    },
+    regionEuropeanUnion: {
+        carbonIntensity: {
+            // https://app.electricitymap.org/zone/FR 05/05/2022
+            default: 276
+        },
+        geometryDescription: EUObjectUnified.features[0].geometry
+    },
+    regionUnitedStates: {
+        carbonIntensity: {
+            default: 493
+        },
+        geometryDescription: getGeometryForCountry('USA')
+    },
+    regionChina: {
+        carbonIntensity: {
+            default: 681
+        },
+        geometryDescription: getGeometryForCountry('CHN')
+    },
+    regionDefault: {
+        carbonIntensity: {
+            default: 519
+        },
+        geometryDescription: defaultObject.features[0].geometry
     }
 };
 
 // define fetch for all region that do not have some
-for(const regionName in regionUpdateList) {
-    const region = regionUpdateList[regionName];
+for(const regionName in regionsList) {
+    const region = regionsList[regionName];
     if ( region.carbonIntensity === undefined ) {
         console.warn("region " + regionName + " got no carbon intensity defined");
     } else {
         if ( region.carbonIntensity.fetch === undefined ) {
             region.carbonIntensity.fetch = () => {
                 if ( region.carbonIntensity.url === undefined || region.carbonIntensity.extractor === undefined ) {
-                    throw "Configuration error missing properties to fetch carbon intensities";
+                    console.info("region " + regionName + " got not carbon intensity updater defined");
+                    return region.carbonIntensity.default;
+                } else {
+                    return regionFetchExtractor(region);
                 }
-                return regionFetchExtractor(region);
             };
         } else {
             // region has already a fetcher...
@@ -77,14 +104,8 @@ let intervalID = null;
  * Insert the default carbon intensities.
  */
 insertDefaultCarbonIntensity = async () => {
-    // https://app.electricitymap.org/zone/FR 05/05/2022
-    await setCarbonIntensityRegion('regionEuropeanUnion', 276, EUObjectUnified.features[0].geometry);
-    await setCarbonIntensityRegion('regionUnitedStates', 493, 'USA');
-    await setCarbonIntensityRegion('regionChina', 681, 'CHN');
-    await setCarbonIntensityRegion(DEFAULT_REGION, 519, defaultObject.features[0].geometry);
-
-    for(const regionName in regionUpdateList) {
-        const region = regionUpdateList[regionName];
+    for(const regionName in regionsList) {
+        const region = regionsList[regionName];
         if ( region.carbonIntensity.default === undefined || region.carbonIntensity.default === null ) {
 
         } else {
@@ -97,15 +118,15 @@ insertDefaultCarbonIntensity = async () => {
  * This class fetch carbon intensity from the remote.
  */
  insertUpdatedCarbonIntensity = async () => {
-    for(const name in regionUpdateList) {
+    for(const name in regionsList) {
         try {
-            const regionUpdater = regionUpdateList[name];
+            const regionUpdater = regionsList[name];
             const v = regionUpdater.carbonIntensity.fetch();
             if ( v !== null && v !== undefined && v !== "" ) {
                 await setCarbonIntensityRegion(name, v, regionUpdater.geometryDescription);
             }
         } catch (e) {
-            console.warn(e.name + " : " + e.message);
+            console.warn(e.name + " : " + e.message + " for " + name);
         }
     }
     const parameters = await getParameters();
