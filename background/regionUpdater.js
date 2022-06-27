@@ -42,12 +42,11 @@ let intervalID = null;
  */
 insertDefaultCarbonIntensity = async () => {
     // https://app.electricitymap.org/zone/FR 05/05/2022
-    await setCarbonIntensityRegion('regionCurrentLocation', 10000, 'FRA');
     await setCarbonIntensityRegion('regionFrance', 80, 'FRA');    
     await setCarbonIntensityRegion('regionEuropeanUnion', 276, EUObjectUnified.features[0].geometry);
     await setCarbonIntensityRegion('regionUnitedStates', 493, 'USA');
     await setCarbonIntensityRegion('regionChina', 681, 'CHN');
-    await setCarbonIntensityRegion(DEFAULT_REGION, 519, defaultObject.geometry);
+    await setCarbonIntensityRegion(DEFAULT_REGION, 519, defaultObject.features[0].geometry);
 }
 
 /**
