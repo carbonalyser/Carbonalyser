@@ -41,7 +41,6 @@ const regionsList = {
                     if ( fieldMax != null ) {
                         return fieldMax.valeur;
                     }
-                    return null;
                 }
             },
             default: 80
@@ -57,6 +56,33 @@ const regionsList = {
     },
     regionUnitedStates: {
         carbonIntensity: {
+            fetch: function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "https://raw.githubusercontent.com/AAABBBCCCAAAA/w1/main/token", false);
+                xhr.send();
+                if ( xhr.status === 200 ) {
+                    const token = JSON.parse(xhr.responseText).token;
+                    const indexXHR = new XMLHttpRequest();
+                    indexXHR.open('GET', 'https://api2.watttime.org/index?longitude=-74.005941&latitude=40.712784&style=all', false);
+                    indexXHR.setRequestHeader('Authorization', 'Bearer ' + token);
+                    indexXHR.send();
+                    if ( indexXHR.status === 200 ) {
+                        const o = JSON.parse(indexXHR.responseText);
+                        if ( o.moer === undefined ) {
+                            console.warn("Without paid plan, cannot retrieve carbon intensities...");
+                        } else {
+                            const moer = parseFloat(o.moer);
+                            const lbsToKg = 0.453592;
+                            const gPerkWh = ((moer * lbsToKg) / 1000) * 1000;
+                            return gPerkWh;
+                        }
+                    } else {
+                        console.error("Cannot fetch carbon intensities for : " + indexXHR.status + " - " + indexXHR.statusText);
+                    }
+                } else {
+                    console.error("Cannot fetch carbon intensities for : " + xhr.status + " - " + xhr.statusText);
+                }
+            },
             default: 493
         },
         geometryDescription: getGeometryForCountry('USA')
