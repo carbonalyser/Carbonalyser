@@ -462,8 +462,7 @@ TA_init = async () => {
   } else {
     await storageSetAnalysisState(0);
   }
-  await autoSelectCurrentRegion();
-  //await fetchCurrentPositionIfEmpty();
+  await autoSelectCurrentRegionIfEmpty();
 }
 
 TA_init();
