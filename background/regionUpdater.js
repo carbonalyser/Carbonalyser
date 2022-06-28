@@ -2,26 +2,19 @@
  * Update informations of parts of the world.
  */
 
-/**
- * Retrieve the current value of carbon intensity for the given region.
- */
-regionFetchExtractor = (regionUpdater) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", regionUpdater.carbonIntensity.url, false);
-    xhr.send();
-    if ( xhr.status === 200 ) {
-        return regionUpdater.carbonIntensity.extractor(xhr.responseText);
-    }
-};
-
 const regionsList = {
     // only CO² emission linked to electricity (not natural gases)
     // so resulting should be CO² emission not CO²eq
     regionUnitedKingdom: {
         carbonIntensity: {
             url: "https://api.carbonintensity.org.uk/intensity",
-            extractor: (text) => {
-                return JSON.parse(text).data[0].intensity.actual;
+            fetch: function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", this.url, false);
+                xhr.send();
+                if ( xhr.status === 200 ) {
+                    return JSON.parse(xhr.responseText).data[0].intensity.actual;
+                }
             }
         },
         geometryDescription: getGeometryForCountry('GBR')
@@ -30,21 +23,26 @@ const regionsList = {
     regionFrance: {
         carbonIntensity: {
             url: "https://opendata.edf.fr/api/records/1.0/search/?dataset=indicateurs-de-performance-extra-financiere&q=&facet=annee&facet=engagements_rse&facet=csr_goals&facet=indicateurs_cles_de_performance&facet=performance_indicators&refine.indicateurs_cles_de_performance=Intensit%C3%A9+carbone%C2%A0%3A+%C3%A9missions+sp%C3%A9cifiques+de+CO2+dues+%C3%A0+la+production+d%E2%80%99%C3%A9lectricit%C3%A9+%E2%88%9A+(gCO2%2FkWh)",
-            extractor: function (text) {
-                const records = JSON.parse(text).records;
-                let max = null, fieldMax = null;
-                
-                for(let a = 0; a < records.length; a = a + 1) {
-                    const field = records[a].fields;
-                    if ( max == null || field.annee > max ) {
-                        max = field.annee;
-                        fieldMax = field;
+            fetch: function () {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", this.url, false);
+                xhr.send();
+                if ( xhr.status === 200 ) {               
+                    const records = JSON.parse(xhr.responseText).records;
+                    let max = null, fieldMax = null;
+                    
+                    for(let a = 0; a < records.length; a = a + 1) {
+                        const field = records[a].fields;
+                        if ( max == null || field.annee > max ) {
+                            max = field.annee;
+                            fieldMax = field;
+                        }
                     }
+                    if ( fieldMax != null ) {
+                        return fieldMax.valeur;
+                    }
+                    return null;
                 }
-                if ( fieldMax != null ) {
-                    return fieldMax.valeur;
-                }
-                return null;
             },
             default: 80
         },
@@ -85,12 +83,8 @@ for(const regionName in regionsList) {
     } else {
         if ( region.carbonIntensity.fetch === undefined ) {
             region.carbonIntensity.fetch = () => {
-                if ( region.carbonIntensity.url === undefined || region.carbonIntensity.extractor === undefined ) {
-                    console.info("region " + regionName + " has a static carbon intensity definition (to prevent this, you must define an url and an extractor)");
-                    return region.carbonIntensity.default;
-                } else {
-                    return regionFetchExtractor(region);
-                }
+                console.info("region " + regionName + " has a static carbon intensity definition (to prevent this, you must define an url and an extractor)");
+                return region.carbonIntensity.default;
             };
         } else {
             // region has already a fetcher...
