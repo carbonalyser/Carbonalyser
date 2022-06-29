@@ -17,9 +17,9 @@
   ],
   "background": {
     "scripts": [
-      "data/countries.js",
       "lib/d3/d3-array.js",
       "lib/d3/d3-geo.js",
+      "background/countries.js",
       "lib/carbonalyser/lib.js",
       "lib/carbonalyser/libPreferences.js",
       "lib/carbonalyser/libRegionSelect.js",
