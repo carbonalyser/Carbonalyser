@@ -24,7 +24,7 @@ Visualizing it will get you to understand that impacts of digital technologies o
 - [x] export the data
 - [x] equivalence screen
 - [x] solutions for consumers
-- [ ] maintaining power
+- [x] forecast based on your current use
 
 ## Privacy
 
