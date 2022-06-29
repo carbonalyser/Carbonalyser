@@ -499,6 +499,9 @@
   "tab_custom_ci_factor_button": {
     "message": "Addieren"
   },
+  "tab_computeMethods": {
+    "message": "Wie es funktioniert"
+  },
   "tab_moreInfo": {
     "message": "Information"
   },
@@ -531,6 +534,15 @@
   },
   "tab_moreInfo_support_title": {
     "message": "Support & Fehlerbericht"
+  },
+  "tab_computeMethods_related_table_where": {
+    "message": "die Anschrift"
+  },
+  "tab_computeMethods_related_table_description": {
+    "message": "Beschreibung"
+  },
+  "tab_computeMethods_related_table_type": {
+    "message": "Nett"
   },
   "tab_computeMethods_related_title": {
     "message": "Datenquelle und verwandte Arbeiten"
