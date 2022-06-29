@@ -19,6 +19,7 @@
     "scripts": [
       "lib/d3/d3-array.js",
       "lib/d3/d3-geo.js",
+      "lib/carbonalyser/countries.js",
       "background/countries.js",
       "lib/carbonalyser/lib.js",
       "lib/carbonalyser/libPreferences.js",
