@@ -10,9 +10,9 @@ Carbonalyser allows to visualize the electricity consumption and greenhouse gase
 Visualizing it will get you to understand that impacts of digital technologies on climate change and natural resources are not virtual, although they are hidden behind our screens.
 <br />
 
-| firefox  | firefox via github | chrome                |
-|:----------:|:------------------------:|:-------------------------:|
-| [<img alt="firefox" width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Firefox_logo.png/636px-Firefox_logo.png" />](https://addons.mozilla.org/fr/firefox/addon/carbonalyser-fork/)     | [<img alt="firefox via github" width="40px" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"/>](https://github.com/AAABBBCCCAAAA/Carbonalyser/releases) | dropped at the time |
+| firefox  | firefox via github | chrome                | firefox for android |
+|:----------:|:------------------------:|:-------------------------:|:------------:|
+| [<img alt="firefox" width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Firefox_logo.png/636px-Firefox_logo.png" />](https://addons.mozilla.org/fr/firefox/addon/carbonalyser-fork/)     | [<img alt="firefox via github" width="40px" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"/>](https://github.com/AAABBBCCCAAAA/Carbonalyser/releases) | dropped at the time | https://addons.mozilla.org/fr/firefox/collections/17360161/carbonalyser/ |
 
 <!-- [<img alt="chrome via github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Google_Chrome_icon_%282011%29.svg/512px-Google_Chrome_icon_%282011%29.svg.png" width="40px" />](https://github.com/AAABBBCCCAAAA/Carbonalyser/wiki/Install-for-chrome---without-chrome-webstore)  -->
 
