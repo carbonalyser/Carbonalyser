@@ -37,8 +37,8 @@ To report a bug, request a feature, check [here](https://github.com/AAABBBCCCAAA
 - [x] equivalence screen
 - [x] solutions for consumers
 - [x] forecast based on your current use
-#### Languages
-FR,ES,EN,DE
+#### Supported languages
+FR ES EN DE
 
 ## Related work
 
