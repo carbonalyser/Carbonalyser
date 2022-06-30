@@ -1,247 +1,265 @@
-const defaultLocation = 'regionOther';
-let userLocation = defaultLocation;
+const LAST_UPDATE_DATA = "lastDataUpdate";
+const popup = {
+  stats: null,
+  init: async function () {
+    await this.model.init();
+    await this.view.init();
+  },
+  update: async function () {
+    await this.model.update();
+    await this.view.update();
+  },
+  /**
+   * Header with project title and more information.
+   */
+  header: {
 
-const defaultCarbonIntensityFactorIngCO2PerKWh = 519;
-const kWhPerByteDataCenter = 0.000000000072;
-const kWhPerByteNetwork = 0.000000000152;
-const kWhPerMinuteDevice = 0.00021;
+  },
+  /**
+   * Some buttons to control analysis.
+   */
+  analysisCtrl: {
+    view: { 
+      analysisInProgressMessage: null,
+      init: async function () {
+        await this.parent.start.view.init();
+        await this.parent.stop.view.init();
+        await this.parent.reset.view.init();
+        this.analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
+      }
+    },
+    stop: {
+      run: async function () {
+        await this.model.run();
+        await this.parent.view.update();
+      },
+      model: {
+        run: async () => {
+          obrowser.runtime.sendMessage({ action: 'stop' });
+        },
+      },
+      view: {
+        button: null,
+        init: async function () {
+          this.button = document.getElementById('stopButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          if ( (await storageGetAnalysisState()) == 1 ) {
+            show(this.button);
+          } else {
+            hide(this.button);
+          }
+        },
+        update: async function () {
+          await this.init();
+        }
+      }
+    },
+    start: {
+      run: async function () {
+        await this.model.run();
+        await this.parent.view.update();
+      },
+      model: {
+        run: async () => {
+          obrowser.runtime.sendMessage({ action: 'start' });
+        },
+        init: async function () {
 
-const GESgCO2ForOneKmByCar = 220;
-const GESgCO2ForOneChargedSmartphone = 8.3;
+        },
+        update: async function () {
 
-const carbonIntensityFactorIngCO2PerKWh = {
-  'regionEuropeanUnion': 276,
-  'regionFrance': 34.8,
-  'regionUnitedStates': 493,
-  'regionChina': 681,
-  'regionOther': defaultCarbonIntensityFactorIngCO2PerKWh
+        }
+      },
+      view: {
+        button: null,
+        init: async function () {
+          this.button = document.getElementById('startButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          if ( (await storageGetAnalysisState()) == 1 ) {
+            hide(this.button);
+          } else {
+            show(this.button);
+          }
+        },
+        update: async function () {
+          await this.init();
+        }
+      }
+    },
+    reset: {
+      run: async function () {
+        if (!confirm(translate('resetConfirmation'))) {
+          return;
+        }
+        await this.model.run();
+        await this.parent.parent.view.update();
+      },
+      model: {
+        run: async () => {
+          const pref = (await obrowser.storage.local.get()).pref;
+          await obrowser.storage.local.clear();
+          await obrowser.storage.local.set({pref: pref});
+          await obrowser.runtime.sendMessage({action: "stop"});
+          await obrowser.runtime.sendMessage({action: "reinitCIUpdater"});
+        },
+        init: async function () {
+
+        },
+        update: async function () {
+
+        }
+      },
+      view: {
+        button: null,
+        init: async function () {
+          this.button = document.getElementById('resetButton');
+          this.button.addEventListener('click', this.parent.run.bind(this.parent));
+          await this.update();
+        },
+        update: async function () {
+          if ((await obrowser.storage.local.get("rawdata")).rawdata === undefined) {
+            hide(this.button);
+          } else {
+            show(this.button);
+          }
+        }
+      }
+    },
+  },
+  /**
+   * Part responsible from stats show.
+   */
+  statsView: {
+    view: {
+      statsInterval: null,
+      pieChart: null,
+      element: null,
+      init: async function () {
+        const statsMoreResults = document.getElementById('statsMoreResults');
+        statsMoreResults.addEventListener('click', this.parent.openMoreResults);
+        this.element = document.getElementById('stats');
+        const labels = [], series = [];
+        this.pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
+          donut: true,
+          donutWidth: 60,
+          donutSolid: true,
+          startAngle: 270,
+          showLabel: true
+        });
+        await this.update();
+      },
+      update: async function () {
+        const root = this.parent.parent;
+        if (root.stats.stats.highestStats.total === 0) {
+          return;
+        }
+      
+        show(root.statsView.view.element);
+        const labels = [];
+        const series = [];
+      
+        const statsListItemsElement = document.getElementById('statsListItems');
+        while (statsListItemsElement.firstChild) {
+          statsListItemsElement.removeChild(statsListItemsElement.firstChild);
+        }
+      
+        const top5 = root.stats.stats.highestStats.slice(0, 5);
+        for (let index in top5) {
+          if (top5[index].percent < 1) {
+            continue;
+          }
+      
+          labels.push(top5[index].origin);
+          series.push(top5[index].percent);
+          const text = document.createTextNode(`${top5[index].percent}% ${top5[index].origin}`);
+          const li = document.createElement("LI");
+          li.appendChild(text);
+          statsListItemsElement.appendChild(li);
+        }
+
+        this.pieChart.update({labels, series});
+
+        if ( (await obrowser.storage.local.get("rawdata")).rawdata === undefined ) {
+          hide(this.element);
+        } else {
+          show(this.element);
+        }
+      }
+    },
+    openMoreResults: async () => {
+      const url = obrowser.runtime.getURL("/tab/tab.html");
+      obrowser.tabs.create({url: url, active: true});
+      window.close();
+    }
+  },
+  /**
+   * Show equivalence (more human understandable)
+   */
+  equivalence: {
+    view: {
+      init: async function() {
+        const root = this.parent.parent;
+        await injectEquivalentIntoHTML(root.stats.stats, root.stats.equivalence);
+        document.getElementById("kWhTotalUnit").textContent = (await getPref("general.electricityUnit"));
+      },
+      update: async function() {
+        await this.init();
+      }
+    }
+  },
+  /**
+   * Footer with legal notice
+   */
+  footer: {
+
+  }
 };
 
-let statsInterval;
-let pieChart;
-
-parseStats = () => {
-  const stats = localStorage.getItem('stats');
-  return null === stats ? {} : JSON.parse(stats);
+let storageChangedTimeout = null;
+storageChangedTimeoutCall = () => {
+  popup.update();
+  storageChangedTimeout = null;
 }
-
-getStats = () => {
-  const stats = parseStats();
-  let total = 0;
-  const sortedStats = [];
-
-  for (let origin in stats) {
-    total += stats[origin];
-    sortedStats.push({ 'origin': origin, 'byte': stats[origin] });
-  }
-
-  sortedStats.sort(function(a, b) {
-    return a.byte < b.byte ? 1 : a.byte > b.byte ? -1 : 0
-  });
-
-  const highestStats = sortedStats.slice(0, 4);
-  let subtotal = 0;
-  for (let index in highestStats) {
-    subtotal += highestStats[index].byte;
-  }
-
-  if (total > 0) {
-    const remaining = total - subtotal;
-    if (remaining > 0) {
-      highestStats.push({'origin': translate('statsOthers'), 'byte': remaining});
+/**
+ * listen for modification of storage.
+ */
+onStorageChanged = async (changes, areaName) => {
+  if ( areaName === "local" ) {
+    if ( storageChangedTimeout != null ) {
+      clearTimeout(storageChangedTimeout);
     }
 
-    highestStats.forEach(function (item) {
-      item.percent = Math.round(100 * item.byte / total)
-    });
-  }
-
-  return {
-    'total': total,
-    'highestStats': highestStats
-  }
-}
-
-toMegaByte = (value) => (Math.round(value/1024/1024));
-
-showStats = () => {
-  const stats = getStats();
-
-  if (stats.total === 0) {
-    return;
-  }
-
-  show(statsElement);
-  const labels = [];
-  const series = [];
-
-  const statsListItemsElement = document.getElementById('statsListItems');
-  while (statsListItemsElement.firstChild) {
-    statsListItemsElement.removeChild(statsListItemsElement.firstChild);
-  }
-
-  for (let index in stats.highestStats) {
-    if (stats.highestStats[index].percent < 1) {
-      continue;
+    if ( changes["stats"] !== undefined ) {
+      popup.stats = await getOrCreateStats();
     }
 
-    labels.push(stats.highestStats[index].origin);
-    series.push(stats.highestStats[index].percent);
-    const text = document.createTextNode(`${stats.highestStats[index].percent}% ${stats.highestStats[index].origin}`);
-    const li = document.createElement("LI");
-    li.appendChild(text);
-    statsListItemsElement.appendChild(li);
+    if ( changes["rawdata"] !== undefined ) {
+      if ( await getPref("popup.update.auto_refresh") ) {
+        storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+      }
+    } else {
+      storageChangedTimeout = setTimeout(storageChangedTimeoutCall, 100);
+    }
   }
-
-  let duration = localStorage.getItem('duration');
-  duration = null === duration ? 0 : duration;
-
-  const kWhDataCenterTotal = stats.total * kWhPerByteDataCenter;
-  const GESDataCenterTotal = kWhDataCenterTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-  const kWhNetworkTotal = stats.total * kWhPerByteNetwork;
-  const GESNetworkTotal = kWhNetworkTotal * defaultCarbonIntensityFactorIngCO2PerKWh;
-
-  const kWhDeviceTotal = duration * kWhPerMinuteDevice;
-  const GESDeviceTotal = kWhDeviceTotal * carbonIntensityFactorIngCO2PerKWh[userLocation];
-
-  const kWhTotal = Math.round(1000 * (kWhDataCenterTotal + kWhNetworkTotal + kWhDeviceTotal)) / 1000;
-  const gCO2Total = Math.round(GESDataCenterTotal + GESNetworkTotal + GESDeviceTotal);
-
-  const kmByCar = Math.round(1000 * gCO2Total / GESgCO2ForOneKmByCar) / 1000;
-  const chargedSmartphones = Math.round(gCO2Total / GESgCO2ForOneChargedSmartphone);
-
-  if (!pieChart) {
-    pieChart = new Chartist.Pie('.ct-chart', {labels, series}, {
-      donut: true,
-      donutWidth: 60,
-      donutSolid: true,
-      startAngle: 270,
-      showLabel: true
-    });
-  } else {
-    pieChart.update({labels, series});
-  }
-
-  const megaByteTotal = toMegaByte(stats.total);
-  document.getElementById('duration').textContent = duration.toString();
-  document.getElementById('mbTotalValue').textContent = megaByteTotal;
-  document.getElementById('kWhTotalValue').textContent = kWhTotal.toString();
-  document.getElementById('gCO2Value').textContent = gCO2Total.toString();
-  document.getElementById('chargedSmartphonesValue').textContent = chargedSmartphones.toString();
-  document.getElementById('kmByCarValue').textContent = kmByCar.toString();
-
-  const equivalenceTitle = document.getElementById('equivalenceTitle');
-  while (equivalenceTitle.firstChild) {
-    equivalenceTitle.removeChild(equivalenceTitle.firstChild);
-  }
-  equivalenceTitle.appendChild(document.createTextNode(chrome.i18n.getMessage('equivalenceTitle', [duration.toString(), megaByteTotal, kWhTotal.toString(), gCO2Total.toString()])));
 }
 
-start = () => {
-  chrome.runtime.sendMessage({ action: 'start' });
+P_init = async () => {
 
-  hide(startButton);
-  show(stopButton);
-  show(analysisInProgressMessage);
-  localStorage.setItem('analysisStarted', '1');
+  createMVC(popup);
+  attachParent(popup);
+  
+  loadTranslations();
+
+  window.removeEventListener("load", P_init);
+  window.addEventListener("unload", end, { once: true });
+
+  popup.stats = await getOrCreateStats();
+  popup.init();
+  obrowser.storage.onChanged.addListener(onStorageChanged);
 }
 
-stop = () => {
-  chrome.runtime.sendMessage({ action: 'stop' });
+end = () => {
 
-  hide(stopButton);
-  show(startButton);
-  hide(analysisInProgressMessage);
-  clearInterval(statsInterval);
-  localStorage.removeItem('analysisStarted');
 }
 
-reset = () => {
-  if (!confirm(translate('resetConfirmation'))) {
-    return;
-  }
-
-  localStorage.removeItem('stats');
-  localStorage.removeItem('duration');
-  hide(statsElement);
-  showStats();
-  hide(resetButton);
-}
-
-init = () => {
-  const selectedRegion = localStorage.getItem('selectedRegion');
-
-  if (null !== selectedRegion) {
-    userLocation = selectedRegion;
-    selectRegion.value = selectedRegion;
-  }
-
-  if (null === localStorage.getItem('stats')) {
-    hide(resetButton);
-  } else {
-    show(resetButton);
-  }
-
-  showStats();
-
-  if (null === localStorage.getItem('analysisStarted')) {
-    return;
-  }
-
-  start();
-  statsInterval = setInterval(showStats, 2000);
-}
-
-selectRegionHandler = (event) => {
-  const selectedRegion = event.target.value;
-
-  if ('' === selectedRegion) {
-    return;
-  }
-
-  localStorage.setItem('selectedRegion', selectedRegion);
-  userLocation = selectedRegion;
-  showStats();
-}
-
-translate = (translationKey) => {
-  return chrome.i18n.getMessage(translationKey);
-}
-
-translateText = (target, translationKey) => {
-  target.appendChild(document.createTextNode(translate(translationKey)));
-}
-
-translateHref = (target, translationKey) => {
-  target.href = chrome.i18n.getMessage(translationKey);
-}
-
-hide = element => element.classList.add('hidden');
-show = element => element.classList.remove('hidden');
-
-const analysisInProgressMessage = document.getElementById('analysisInProgressMessage');
-
-const statsElement = document.getElementById('stats');
-
-const startButton = document.getElementById('startButton');
-startButton.addEventListener('click', start);
-
-const stopButton = document.getElementById('stopButton');
-stopButton.addEventListener('click', stop);
-
-const resetButton = document.getElementById('resetButton');
-resetButton.addEventListener('click', reset);
-
-const selectRegion = document.getElementById('selectRegion');
-selectRegion.addEventListener('change', selectRegionHandler);
-
-document.querySelectorAll('[translate]').forEach(function(element) {
-  translateText(element, element.getAttribute('translate'));
-});
-
-document.querySelectorAll('[translate-href]').forEach(function(element) {
-  translateHref(element, element.getAttribute('translate-href'));
-});
-
-init();
+window.addEventListener("load", P_init);

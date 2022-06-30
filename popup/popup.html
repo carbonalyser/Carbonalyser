@@ -3,7 +3,8 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="vendor/chartist/chartist.css"/>
+<link rel="stylesheet" href="/lib/chartist/chartist.css"/>
+<link rel="stylesheet" href="/lib/carbonalyser/equivalence.css"/>
 <link rel="stylesheet" href="popup.css"/>
 </head>
 
@@ -24,7 +25,7 @@
     </div>
 
     <p id="analysisInProgressMessage" class="hidden" translate="analysisInProgress"></p>
-
+    
     <div id="stats" class="hidden">
         <hr>
 
@@ -32,40 +33,25 @@
         <div class="rightColumn">
             <span id="statsListTitle" translate="topTraffic"></span>
             <ul id="statsListItems"></ul>
+            <a id="statsMoreResults" translate="statsMoreResults"></a>
         </div>
         <div class="clear"></div>
 
         <hr>
 
-        <div id="selectRegionForm">
-            <p class="selectRegionHelp" translate="selectRegionPlaceholder"></p>
-            <p>
-                <select id="selectRegion">
-                    <option value="" translate="selectRegionPlaceholder"></option>
-                    <option value="regionEuropeanUnion" translate="regionEuropeanUnion"></option>
-                    <option value="regionFrance" translate="regionFrance"></option>
-                    <option value="regionUnitedStates" translate="regionUnitedStates"></option>
-                    <option value="regionChina" translate="regionChina"></option>
-                    <option value="regionOther" translate="regionOther"></option>
-                </select>
-            </p>
-            <p class="selectRegionHelp" translate="selectRegionHelp"></p>
-        </div>
-
         <div class="clear"></div>
-
         <div id="equivalence">
             <p id="equivalenceTitle"></p>
             <div class="column50">
                 <div class="block">
-                    <img src="img/time.svg" />
+                    <img src="/img/time.svg" />
                     <span id="duration"></span>
                     <span id="durationItem" class="unit">minutes</span>
                 </div>
             </div>
             <div class="column50">
                 <div class="block">
-                    <img src="img/energy.svg" />
+                    <img src="/img/energy.svg" />
                     <span id="kWhTotalValue"></span>
                     <span id="kWhTotalUnit" class="unit">kWh</span>
                 </div>
@@ -73,14 +59,14 @@
             <div class="clear"></div>
             <div class="column50">
                 <div class="block">
-                    <img src="img/arrows.svg" />
+                    <img src="/img/arrows.svg" />
                     <span id="mbTotalValue"></span>
                     <span id="mbTotalUnit" class="unit" translate="mbTotalUnit"></span>
                 </div>
             </div>
             <div class="column50">
                 <div class="block">
-                    <img src="img/gco2.svg" />
+                    <img src="/img/gco2.svg" />
                     <span id="gCO2Value"></span>
                     <span id="gCO2Item" class="unit">gCO<sub>2</sub>e</span>
                 </div>
@@ -88,27 +74,52 @@
             <div class="clear"></div>
 
             <p translate="digitalEquivalenceTitle"></p>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/smartphone.svg" />
-                    <span id="chargedSmartphonesValue"></span>
-                    <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
-                </div>
-            </div>
-            <div class="column50">
-                <div class="block">
-                    <img src="img/car.svg" class="icon-car" />
-                    <span id="kmByCarValue"></span>
-                    <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
-                </div>
-            </div>
+            <table class="equivalencenTable">
+                <tr>
+                    <td class="column50">
+                        <div class="block">
+                            <img src="/img/smartphone.svg" />
+                            <span id="chargedSmartphonesValue"></span>
+                            <span id="chargedSmartphonesUnit" class="unit" translate="chargedSmartphonesUnit"></span>
+                        </div>
+                    </td>
+                    <td class="column50">
+                        <div class="block">
+                            <img src="/img/car.svg" class="icon-car" />
+                            <span id="kmByCarValue"></span>
+                            <span id="kmByCarUnit" class="unit" translate="kmByCarUnit"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="column50" style="padding-bottom: 20px;padding-top: 20px;">
+                        <div class="block">
+                            <img src="/img/GameFreak7744-Cigarette-Symbol.svg" class="icon-car" />
+                            <span id="tab_equivalence_cigarette_value"></span>
+                            <span id="tab_equivalence_cigarette_description" class="unit" translate="tab_equivalence_cigarette_description"></span>
+                        </div>
+                    </td>
+                    <td class="column50" style="padding-bottom: 20px;padding-top: 20px;">
+                        <div class="block">
+                            <img src="/img/ampoule-electrique.png" class="icon-car" />
+                            <span id="OneHourBulbNumberValue"></span>
+                            <span id="OneHourBulbNumberDescription" class="unit" translate="OneHourBulbNumberDescription"></span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <div class="clear"></div>
             <p><a class="button" translate="howToChange" translate-href="howToChangeUrl" target="_blank"></a></p>
         </div>
     </div>
 
 </div>
-<script src="vendor/chartist/chartist.js"></script>
-<script src="popup.js"></script>
+<script src="/lib/chartist/chartist.js"></script>
+<script src="/lib/carbonalyser/lib.js"></script>
+<script src="/lib/carbonalyser/libEquivalence.js"></script>
+<script src="/lib/carbonalyser/libRegionSelect.js"></script>
+<script src="/lib/carbonalyser/libStats.js"></script>
+<script src="/lib/carbonalyser/libPreferences.js"></script>
+<script async src="popup.js"></script>
 </body>
 </html>

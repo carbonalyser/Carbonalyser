@@ -1,0 +1,49 @@
+name: build-web-ext
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Extract release version from ref
+        run: | 
+            echo "::set-output name=version::$(echo ${{ github.ref }} | sed 's/.*\///')"
+        id: set_version
+      - name: Update version in the manifest
+        run: |
+          sed "s/\"version\":.*/\"version\": \"${{steps.set_version.outputs.version}}\", /" manifest.json > .aaa
+          mv .aaa manifest.json
+      - run: npm install -g web-ext
+      - run: web-ext build
+      - name: Step 3 - Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: carbonalyser
+          path: web-ext-artifacts
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release ${{steps.set_version.outputs.version}}.
+          draft: false
+          prerelease: false
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: web-ext-artifacts/carbonalyser-${{steps.set_version.outputs.version}}.zip
+          asset_name: carbonalyser-${{steps.set_version.outputs.version}}.zip
+          asset_content_type: application/zip

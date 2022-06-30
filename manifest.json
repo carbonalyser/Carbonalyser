@@ -3,18 +3,33 @@
   "name": "Carbonalyser",
   "description": "Analyse Internet usage carbon footprint",
   "author": "TheShiftProject",
-  "version": "1.2.0",
+  "version": "1.2.10",
   "icons": {
-    "48": "icons/icon-on-48.png"
+    "48": "icons/icon-off-48.png"
   },
   "permissions": [
     "storage",
     "webRequest",
-    "<all_urls>"
+    "<all_urls>",
+    "downloads",
+    "tabs",
+    "geolocation"
   ],
   "background": {
     "scripts": [
-      "script.js"
+      "lib/d3/d3-array.js",
+      "lib/d3/d3-geo.js",
+      "lib/carbonalyser/countries.js",
+      "background/countries.js",
+      "lib/carbonalyser/lib.js",
+      "lib/carbonalyser/libPreferences.js",
+      "lib/carbonalyser/libRegionSelect.js",
+      "lib/carbonalyser/libEquivalence.js",
+      "lib/carbonalyser/libStats.js",
+      "background/regionUpdater.js",
+      "background/trafficAnalyzer.js",
+      "background/attentionAnalyzer.js",
+      "background/periodicDownload.js"
     ]
   },
   "browser_action": {
@@ -24,5 +39,6 @@
       "48": "icons/icon-off-48.png"
     }
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "devtools_page": "devtools/loader.html"
 }

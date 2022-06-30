@@ -1,4 +1,10 @@
 {
+  "general_datatables_locale": {
+    "message": "en-GB"
+  },
+  "general_number_format": {
+    "message": "en"
+  },
   "moreInformation": {
     "message": "More information",
     "description": "More information link title"
@@ -36,10 +42,10 @@
     "description": "Top traffic list title"
   },
   "digitalEquivalenceTitle": {
-    "message": "The CO2 emissions related to your digital use is equivalent to:"
+    "message": "The CO² equivalent emissions linked to your use of the internet are equivalent to:"
   },
   "equivalenceTitle": {
-    "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ kWh of electricity, or $GCO2$ gCO2e",
+    "message": "In $MINUTES$ minutes of browsing, you have downloaded $MBTOTAL$ MB of data. This required $KWH$ $KWHUNIT$ of electricity, or $GCO2$ gCO2e",
     "description": "Equivalence",
     "placeholders": {
       "minutes" : {
@@ -54,14 +60,63 @@
         "content" : "$3",
         "example" : "99"
       },
+      "kwhUnit": {
+        "content": "$4",
+        "example": "kWh"
+      },
       "gco2" : {
-        "content" : "$4",
+        "content" : "$5",
         "example" : "199"
       }
     }
   },
+  "results_export_title_short": {
+    "message": "Data export"
+  },
+  "results_export_title_desc": {
+    "message": "Electricity does not include that of your machine(constant) the same for the CO² equivalent"
+  },
+  "results_export_title": {
+    "message": "Data set to export:"
+  },
+  "results_export_option_data": {
+    "message": "Data"
+  },
+  "results_export_option_data_prefix": {
+    "message": "data_export"
+  },
+  "results_export_option_electricity": {
+    "message": "Electricity"
+  },
+  "results_export_option_electricity_prefix": {
+    "message": "electricity_export"
+  },
+  "results_export_option_co2e": {
+    "message": "CO² equivalent"
+  },
+  "results_export_option_co2e_prefix": {
+    "message": "co2_export"
+  },
+  "results_export_export_button": {
+    "message": "Export"
+  },
+  "results_export_format_title": {
+    "message": "Export format:"
+  },
+  "results_export_format_csv": {
+    "message": "Csv"
+  },
+  "results_export_format_tsv": {
+    "message": "Tsv"
+  },
+  "results_export_origin_title": {
+    "message": "Comma separated list of sites on which to restrict export (regex allowed):"
+  },
   "selectRegionPlaceholder": {
     "message": "Select your location"
+  },
+  "regionCustom": {
+    "message": "Custom"
   },
   "regionEuropeanUnion": {
     "message": "European Union"
@@ -75,8 +130,11 @@
   "regionChina": {
     "message": "China"
   },
-  "regionOther": {
+  "regionDefault": {
     "message": "Other"
+  },
+  "regionUnitedKingdom": {
+    "message": "United Kingdom"
   },
   "selectRegionHelp": {
     "message": "Not required but the result will be more relevant."
@@ -90,16 +148,451 @@
   "chargedSmartphonesUnit": {
     "message": "charged smartphones"
   },
+  "tab_equivalence_cigarette_description": {
+    "message": "burnt cigarette"
+  },
+  "OneHourBulbNumberDescription": {
+    "message": "bulb during 1 hour"
+  },
   "kmByCarUnit": {
     "message": "kms by car"
   },
   "mbTotalUnit": {
-    "message": "Mb"
+    "message": "MB"
   },
   "statsOthers": {
     "message": "Others"
   },
   "resetConfirmation": {
     "message": "Confirm the statistics reset?"
+  },
+  "statsMoreResults": {
+    "message": "More results"
+  },
+  "topResults_ecoindex": {
+    "message": "Average Ecoindex"
+  },
+  "topResults_ecoindex_subtitle": {
+    "message": "-1 if the API request limit is exceeded"
+  },
+  "topResultsSite": {
+    "message": "Site"
+  },
+  "topResultsData": {
+    "message": "Data retrieved from datacenter (MB)"
+  },
+  "topResultsDataNetwork": {
+    "message": "Bandwidth consumed (MB)"
+  },
+  "topResultsPercent": {
+    "message": "Share in total (%)"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "topResultsTabTitle": {
+    "message": "Results"
+  },
+  "history": {
+    "message": "Historic"
+  },
+  "tab_history_data_consumptionShareAmongSites_title": {
+    "message": "Data comsumption repartition between web sites"
+  },
+  "tab_history_data_consumptionOverTime_title": {
+    "message": "Smoothed data consumption over the time"
+  },
+  "historyChartXAxis": {
+    "message": "Time"
+  },
+  "historyChartYAxis": {
+    "message": "Data consumption (MB)"
+  },
+  "settingsLastRefresh": {
+    "message": "Last carbon intensity factors refresh at $TIME$.",
+    "placeholders": {
+      "time" : {
+        "content" : "$1",
+        "example" : "03/03/2022, 19:16:03"
+      }
+    }
+  },
+  "settingsLastRefreshButtonReset": {
+    "message": "Force update"
+  },
+  "settingsCIcountry": {
+    "message": "Country"
+  },
+  "settingsCICI": {
+    "message": "Carbone intensity factor in gCO2e/kWh"
+  },
+  "tab_history_data_consumptionOverTime_description": {
+    "message": "Represent data transferts during your browsing. This measurement allows you to estimate at what point in your navigation you are using the most data."
+  },
+  "tab_history_data_consumptionOverTime_datacenterLabel": {
+    "message": "Data used from datacenter"
+  },
+  "tab_history_data_consumptionOverTime_networkLabel": {
+    "message": "Data used over network"
+  },
+  "tab_history_data_consumptionShareAmongSites_sitesShareDatasetLabel": {
+    "message": "Share of websites"
+  },
+  "tab_history_data_consumptionShareAmongSites_description": {
+    "message": "Represents the distribution of your data consumption according to the sites. A large part shows that you use a site frequently or that the site in question requires a lot of data."
+  },
+  "tab_history_electricity_overTime_title": {
+    "message": "Comsumption of electricity linked to your online activity (not only your computer)"
+  },
+  "tab_history_electricity_overTime_description": {
+    "message": "Represents the instantaneous electricity consumption during your navigation. The amount of electricity includes the electricity used by the data center to maintain the web page but also the electricity consumed by the routing infrastructure between you and the site. High peaks can show that you are using a power-hungry site (for example if it is not optimized or uses unnecessary effects for the user)."
+  },
+  "tab_history_electricity_overTime_datasetDataCenter": {
+    "message": "Electricity consummed in datacenter"
+  },
+  "tab_history_electricity_overTime_datasetNetwork": {
+    "message": "Electricity consummed routing infra"
+  },
+  "tab_history_electricity_overTime_graphXAxis": {
+    "message": "Time"
+  },
+  "tab_history_electricity_overTime_graphYAxis": {
+    "message": "Electricity consumption $UNIT$",
+    "placeholders": {
+      "unit" : {
+        "content" : "$1",
+        "example" : "Wh"
+      }
+    }
+  },
+  "tab_history_attention_time_title": {
+    "message": "Share of your time among sites."
+  },
+  "tab_history_attention_time_canvas_x_axis": {
+    "message": "Differents web sites."
+  },
+  "tab_history_attention_time_canvas_y_axis": {
+    "message": "Time spent on site (minutes)."
+  },
+  "tab_history_attention_time_description": {
+    "message": "Represents your time while browsing, high bars indicate that you spend a lot of time on the given site."
+  },
+  "tab_history_attention_efficiency_title": {
+    "message": "Site efficiency in attention minute/bytes"
+  },
+  "tab_history_attention_efficiency_description": {
+    "message": "The more bar is high the more site is efficient. Sites that got a low value consume many bytes for few of your time (it could be a wrongly optimized, or a site that do useless things for instance in background)."
+  },
+  "tab_history_attention_efficiency_x_axis": {
+    "message": ""
+  },
+  "tab_history_attention_efficiency_y_axis": {
+    "message": "minute"
+  },
+  "tab_prediction": {
+    "message": "Forecast"
+  },
+  "tab_prediction_prediction_description": {
+    "message": "With your current internet usage, you are consuming $RATE$ kWh per day. At this rate your total consumption (computer + network operator + datacenter) will be $POWER$ kWh for $DURATION$ days. Keep in mind that the forecast is inaccurate if you haven't used the extension much yet (example after a week of use it will perfectly reflect your reality but just after installing the extension it will be approximate).",
+    "placeholders": {
+      "power" : {
+        "content" : "$1",
+        "example" : "10"
+      },
+      "duration": {
+        "content": "$2",
+        "example": "365"
+      },
+      "rate": {
+        "content": "$3",
+        "example": "1"
+      }
+    }
+  },
+  "tab_prediction_prediction_input_description": {
+    "message": "Change duration of forecast:"
+  },
+  "tab_prediction_prediction_button": {
+    "message": "Validate"
+  },
+  "tab_prediction_prediction_global_pop": {
+    "message": "If every Internet user consumed like you, the overall electricity consumption (for $PEOPLE$ people for $DAYS$ days) would be at least $POWER$ TWh. To give you an idea of ​​comparison of the real world electricity consumption in $YEAR$ is about $ELECTRICITYTWHYEAR$ TWh of which $ELECTRICITYPERCENTTECK$% say to new technologies (therefore $TERAWATTTECK$ TWh) and that for $NETPEOPLEPERCENT$% of the world's population. If the carbonalyser measurement is greater than $TERAWATTTECK$ TWh you can be sure that your electricity usage is higher than other internet users. If it is lower, you consume at least at this level, but keep in mind that carbonalysing underestimates the datacenters + routing infrastructure segment.",
+    "placeholders": {
+      "people": {
+        "content": "$1",
+        "example": "8000000000"
+      },
+      "days": {
+        "content": "$2",
+        "example": "365"
+      },
+      "power": {
+        "content": "$3",
+        "example": "500"
+      },
+      "netpeoplepercent": {
+        "content": "$4",
+        "example": "50"
+      },
+      "year": {
+        "content": "$5",
+        "example": "2022"
+      },
+      "electricitytwhyear": {
+        "content": "$6",
+        "example": "22000"
+      },
+      "electricitypercentteck": {
+        "content": "$7",
+        "example": "10"
+      },
+      "terawattteck": {
+        "content": "$8",
+        "example": "2200"
+      }
+    }
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_teck_percent": {
+    "message": "Percentage of world consumption allocated to new technologies."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_electricity_total_twh": {
+    "message": "World electricity consumption in TWh."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_forecast_compareYear_value": {
+    "message": "Comparison year for the prediction."
+  },
+  "tab_settings_preferencesScreen_prefsTableName": {
+    "message": "Preference"
+  },
+  "tab_settings_preferencesScreen_prefsTableValue": {
+    "message": "Value"
+  },
+  "tab_settings_preferencesScreen_prefsDescription": {
+    "message": "Description"
+  },
+  "tab_settings_preferencesScreen_prefs_general_kWhPerByteDataCenter": {
+    "message": "Factor to apply when converting bytes into electricity (in kWh/byte)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_kWhPerByteNetwork": {
+    "message": "Factor to apply when converting bytes into electricity (in kWh/byte)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_DeviceConsumptionW": {
+    "message": "Consumption of the device on which the carbonalyser is running(Watt)"
+  },
+  "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneKmByCar": {
+    "message": "Factor to be applied to convert the CO2 emission into km traveled by car."
+  },
+  "tab_settings_preferencesScreen_prefs_general_GESgCO2ForOneChargedSmartphone": {
+    "message": "Factor to be applied to convert the CO2 emission of recharged smartphones."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_enabled": {
+    "message": "Automatic download is enabled."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filename": {
+    "message": "Name of file to export to (without extension)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_format": {
+    "message": "Output file format (csv or tsv)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_filter": {
+    "message": "Filter the dataset by site (separated by commas)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_interval": {
+    "message": "Interval in ms between each file update."
+  },
+  "tab_settings_preferencesScreen_prefs_general_export_autoDownload_type": {
+    "message": "Type of data to download (data,co2,electricity)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_equivalence_cigarette": {
+    "message": "CO²g per cigarette consumption."
+  },
+  "tab_settings_preferencesScreen_prefs_general_equivalence_smartphone_capacityWh": {
+    "message": "Charging capacity of your smartphone (in Wh)."
+  },
+  "tab_settings_preferencesScreen_prefs_general_BulbConsumptionW": {
+    "message": "Consumption (in Watt) of a bulb."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_runAtStart": {
+    "message": "Start analysis at browser startup."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_fetchCurrentLocation": {
+    "message": "Enables geolocation at browser startup via a third-party service (the value is set to false if you manually select a region)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_flushingIntervalMs": {
+    "message": "interval (ms) at which we write the storage"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_storage_restartCheckerMsLatency": {
+    "message": "latency that apply when preferences have been changed"
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_enabled": {
+    "message": "Enable ecoindex download (fetch the ecoindex on each site visited)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_ecoindex_intervalMs": {
+    "message": "Interval after which it is considered that an ecoindex is no longer up to date (in ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_daemon_downloads_latencyBetweenChecksMs": {
+    "message": "interval at which we check for download end (ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_selectedRegion": {
+    "message": "selected region"
+  },
+  "tab_settings_preferencesScreen_prefs_analysis_carbonIntensity_refreshMs": {
+    "message": "refresh carbon interval"
+  },
+  "tab_settings_preferencesScreen_prefs_tab_update_resize_delay": {
+    "message": "Latency to apply when graph resize is triggered (in ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_update_auto_refresh": {
+    "message": "auto refresh"
+  },
+  "tab_settings_preferencesScreen_prefs_tab_min_attention_time": {
+    "message": "Threshold for attention time do not show anything below that (in ms)."
+  },
+  "tab_settings_preferencesScreen_prefs_tab_animate": {
+    "message": "remove animation"
+  },
+  "tab_settings_preferencesScreen_prefs_tab_settings_preferencesScreen_msBeforeStopEdit": {
+    "message": "Delay (ms) after which we consider user has finished editing."
+  },
+  "tab_settings_preferencesScreen_prefs_popup_update_auto_refresh": {
+    "message": "auto refresh"
+  },
+  "tab_settings_preferencesScreen_prefs_general_update_storageFetchMs": {
+    "message": "latency induced for storage fetch by guis (ms)"
+  },
+  "tab_settings_preferencesScreen_prefs_general_population_number": {
+    "message": "Number of people on Earth."
+  },
+  "tab_settings_preferencesScreen_prefs_general_population_internetPercent": {
+    "message": "Percentage of population using the internet."
+  },
+  "tab_settings_preferencesScreen_prefs_general_electricityUnit": {
+    "message": "Display unit for electricity (mWh or Wh or kWh) warning page reload is required to view changes."
+  },
+  "tab_settings_preferencesScreen_prefs_debug": {
+    "message": "enable debug log"
+  },
+  "tab_settings_preferencesScreen_validateButton": {
+    "message": "validate"
+  },
+  "tab_settings_preferencesScreen_importExportButton": {
+    "message": "Import/Export"
+  },
+  "tab_settings_preferencesScreen_importExport_modal_title": {
+    "message": "User configuration"
+  },
+  "tab_settings_preferencesScreen_importExport_dismiss": {
+    "message": "Cancel"
+  },
+  "tab_settings_preferencesScreen_importExport_modal_save": {
+    "message": "Save"
+  },
+  "tab_settings_preferencesScreen_resetButton": {
+    "message": "By default"
+  },
+  "tab_custom_ci_factor_title": {
+    "message": "Add factor"
+  },
+  "tab_custom_ci_factor_description": {
+    "message": "Add carbon intensity factor by hand."
+  },
+  "tab_custom_ci_factor_button": {
+    "message": "Add"
+  },
+  "tab_computeMethods": {
+    "message": "How it works"
+  },
+  "tab_moreInfo": {
+    "message": "Information"
+  },
+  "tab_moreInfo_project_title": {
+    "message": "About carbonalyzer"
+  },
+  "tab_moreInfo_project_description": {
+    "message": "Carbonalyzer is a derivative work of the shift project carbonalyser. Derived in the sense of improvements have been improved to the original project. The lead developer is AAABBBCCCAAAA. With this tool, you will be able to get an idea of ​​which sites are using the most resources."
+  },
+  "tab_moreInfo_health_title": {
+    "message": "What can you do right now?"
+  },
+  "tab_moreInfo_health_description": {
+    "message": "Install extensions that decrease the amount of data sent over the network"
+  },
+  "tab_moreInfo_health_table_ecoify_desc": {
+    "message": "Every time we ask Google to search for something, requests are sent back and forth. Internet service providers need power to run the internet and Google needs power for its servers."
+  },
+  "tab_moreInfo_health_table_decentralizedEyes_desc": {
+    "message": "Accélère de nombreuses requêtes (Google Hosted Libraries et autres) en les servant localement, allégeant la charge des sites. Complète les bloqueurs de contenus habituels."
+  },
+  "tab_moreInfo_health_table_ublockOrigin_desc": {
+    "message": "An effective nuisance blocker, which will spare your processor and RAM."
+  },
+  "tab_moreInfo_health_table_ecosia_desc": {
+    "message": "Ecosia is a search engine that uses 80% of its revenue for tree planting. Help our planet by doing your research with Ecosia. This free extension adds Ecosia as the default search engine in Firefox."
+  },
+  "tab_moreInfo_health_table_lilo_desc": {
+    "message": "Hello. We are Lilo, the French and supportive search engine. Our mission: to allow you to finance solidarity projects for free thanks to your internet searches."
+  },
+  "tab_moreInfo_support_title": {
+    "message": "Support & bug report"
+  },
+  "tab_computeMethods_related_table_where": {
+    "message": "Addresse"
+  },
+  "tab_computeMethods_related_table_description": {
+    "message": "Description"
+  },
+  "tab_computeMethods_related_table_type": {
+    "message": "Kind"
+  },
+  "tab_computeMethods_related_title": {
+    "message": "Data source and related works"
+  },
+  "tab_computeMethods_computed_title": {
+    "message": "Data source and related works"
+  },
+  "tab_computeMethods_computed_description": {
+    "message": "The electricity consumed calculation includes: the electricity used to power your computer, the electricity your operator uses to deliver internet data to your home, and the electricity the site you are surfing on uses to stay online. This calculation is launched when you click on start analysis and stops when you click on stop analysis."
+  },
+  "tab_computeMethods_related_table_wattime_description": {
+    "message": "Warning displayed carbon intensities are displayed in percentage"
+  },
+  "tab_computeMethods_related_table_wattime_type": {
+    "message": "carbon intensities scale"
+  },
+  "tab_computeMethods_related_table_greenit_description": {
+    "message": "extension of devtools that provide comparator"
+  },
+  "tab_computeMethods_related_table_greenit_type": {
+    "message": "site carbon emission comparator"
+  },
+  "tab_computeMethods_related_table_ecoindex_description": {
+    "message": ""
+  },
+  "tab_computeMethods_related_table_ecoindex_type": {
+    "message": "site carbon emission comparator"
+  },
+  "tab_computeMethods_related_table_carbonintensity_description": {
+    "message": "regionnalised carbon intensities for UK"
+  },
+  "tab_computeMethods_related_table_carbonintensity_type": {
+    "message": "carbon intensities"
+  },
+  "tab_computeMethods_related_table_edf_description": {
+    "message": "specialized carbon intensity factor for france"
+  },
+  "tab_computeMethods_related_table_edf_type": {
+    "message": "carbon intensities"
+  },
+  "tab_computeMethods_related_table_electricitymap_description": {
+    "message": "by country carbon intensity factors"
+  },
+  "tab_computeMethods_related_table_electricitymap_type": {
+    "message": "carbon intensities"
+  },
+  "tab_computeMethods_related_table_pagespeed_description": {
+    "message": "analysis of website from where does useless comes from"
+  },
+  "tab_computeMethods_related_table_pagespeed_type": {
+    "message": "website analysis"
   }
 }
