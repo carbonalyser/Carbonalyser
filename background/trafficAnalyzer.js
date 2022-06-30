@@ -21,15 +21,20 @@ downloadCompletedCheckLoop = async (object) => {
   lastTimeTrafficSeen = Date.now();
   for(downloadItem of (await obrowser.downloads.search({id: object.id}))) {
     if ( downloadItem.state == "complete" ) {
-      const origin = extractHostname(!downloadItem.referrer ? downloadItem.url : downloadItem.referrer);
+      const url = !downloadItem.referrer ? downloadItem.url : downloadItem.referrer;
+      if ( isRestricted(url) ) {
+        return;
+      } else {
+        const origin = extractHostname(url);
 
-      if ( buffer.rawdata[origin] === undefined ) {
-        buffer.rawdata[origin] = createEmptyRawData();
+        if ( buffer.rawdata[origin] === undefined ) {
+          buffer.rawdata[origin] = createEmptyRawData();
+        }
+
+        buffer.rawdata[origin].datacenter.total += (downloadItem.bytesReceived);
+        buffer.rawdata[origin].network.total += (BYTES_TCP_HEADER + BYTES_IP_HEADER);
+        return;
       }
-
-      buffer.rawdata[origin].datacenter.total += (downloadItem.bytesReceived);
-      buffer.rawdata[origin].network.total += (BYTES_TCP_HEADER + BYTES_IP_HEADER);
-      return;
     }
   }
   setTimeout(downloadCompletedCheckLoop, await getPref("daemon.downloads.latencyBetweenChecksMs"), object);
