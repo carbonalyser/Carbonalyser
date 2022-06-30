@@ -1,7 +1,7 @@
 # <p align="center">Carbonalyser</p>
 
 
-|     <img src="https://user-images.githubusercontent.com/97546053/168147462-af5a8280-04fb-43d7-8712-34cc89910733.png" width="500px" />         |        <img src="https://user-images.githubusercontent.com/97546053/168147090-8574a6a7-1579-4010-87ff-6d7ccd63bc42.png" width="500px" />         |
+|     <img src="https://user-images.githubusercontent.com/97546053/176733414-6d79545c-f14e-4438-bfcd-d1d85fd298fc.png" width="500px" />         |        <img src="https://user-images.githubusercontent.com/97546053/176733126-b628e353-7f05-409f-a47f-1e8d322ed5d1.png" width="500px" />         |
 |--------------|-----------------|
 
 
